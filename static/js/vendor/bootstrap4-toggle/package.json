@@ -1,0 +1,67 @@
+{
+  "_from": "bootstrap4-toggle",
+  "_id": "bootstrap4-toggle@3.4.0",
+  "_inBundle": false,
+  "_integrity": "sha512-vKfBgsjICW6mOqb264qwwbbGtpcOx+p9jOlQmLfRZ07iGE+b5YbQlY4ft9aAhPulh7V3oKOtEuuq0FcSKAI4bQ==",
+  "_location": "/bootstrap4-toggle",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "bootstrap4-toggle",
+    "name": "bootstrap4-toggle",
+    "escapedName": "bootstrap4-toggle",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/bootstrap4-toggle/-/bootstrap4-toggle-3.4.0.tgz",
+  "_shasum": "58264d4c7fd24eb2e09cca5156a338b2b22a4792",
+  "_spec": "bootstrap4-toggle",
+  "_where": "/Users/willdayble/dev/ux-sandbox/simple-gulp",
+  "author": {
+    "name": "Brent Ely",
+    "url": "https://github.com/gitbrent/"
+  },
+  "bugs": {
+    "url": "https://github.com/gitbrent/bootstrap4-toggle/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Bootstrap 4 Toggle is a bootstrap 4 plugin that converts checkboxes into toggles.",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-uglify": "^0.6.0"
+  },
+  "files": [
+    "css/bootstrap4-toggle.css",
+    "js/bootstrap4-toggle.js"
+  ],
+  "homepage": "https://gitbrent.github.io/bootstrap4-toggle/",
+  "keywords": [
+    "bootstrap",
+    "bootstrap4",
+    "bootstrap-4",
+    "bootstrap 4",
+    "bootstrap 4 checkbox",
+    "bootstrap 4 switch",
+    "bootstrap 4 toggle",
+    "bootstrap-checkbox",
+    "bootstrap-switch",
+    "bootstrap-toggle"
+  ],
+  "license": "MIT",
+  "main": "js/bootstrap4-toggle.js",
+  "name": "bootstrap4-toggle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitbrent/bootstrap4-toggle.git"
+  },
+  "version": "3.4.0"
+}
