@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import sass
 
 app = Flask('FitzroyFrontend', static_url_path='')
-sass.compile(dirname=("assets/scss", 'static/css'))
+sass.compile(dirname=("static/assets/scss", 'static/css'))
 
 @app.route('/')
 def index():
