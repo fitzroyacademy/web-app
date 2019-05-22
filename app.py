@@ -8,6 +8,10 @@ sass.compile(dirname=("static/assets/scss", 'static/css'))
 def index():
     return render_template('welcome.html')
 
+@app.route('/playground')
+def playground():
+    return render_template('playground.html')
+
 @app.route('/lessons')
 def lessons():
     return render_template('lesson_chart.html')

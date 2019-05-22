@@ -7,10 +7,14 @@ change .fas to [class^='fa'] or <i> ?
 
 */
 
-$bg: #f6f7f8;
+$bg: #f5f7f8;
 
 $brand: #464749;
-$blue: #139ddd;
+$brand_dark: #1c1f20;
+
+$blue: #0f7ff4;
+$blue_alt: #139ddd;
+
 $blue_dark: #0a6da2;
 $red: #e8151f;
 $impact_green: #65ae48;
@@ -23,8 +27,15 @@ $text_light: #717b81;
 $text_lighter: #b0b4b7;
 $text_lightest: #d2d7da;
 
-$border_light: #e1e4e5;
+$text_subtle: #b0b4b7;
 
+$border_lighter: #eff1f1;
+$border_light: #e1e4e5;
+$border_medium: #d5d8d9;
+$border_dark: #c6cbcc;
+
+
+$white_fade: rgba(255,255,255,0.95);
 
 
 // -----------------------------------------------------------------------------------------
@@ -60,19 +71,23 @@ $nav_left_width_min: 10rem;
 $nav_left_width_max: 20rem;
 $nav_left_width_collapsed: 4rem;
 
+$nav_right_width_flex: 30%;
+$nav_right_width_max: 25rem;
+
+$header_height: 3.2rem;
 
 // borders
 $border_rad_xs: .1rem;
 $border_rad_sm: .2rem;
 $border_rad_md: .3rem;
 $border_rad_lg: .4rem;
-$border_rad_round: 9999em;
+$border_rad_r: 9999em;
 
 
 // -----------------------------------------------------------------------------------------
 /* header */
 
-header{height: 3.5rem; background: #fff; position: fixed; top:0; left: 0; right: 0;}
+header{height: $header_height; background: #fff; position: fixed; top:0; left: 0; right: 0; display: flex;}
 
 header .fit_link:hover,
 .fit_sidepanel .panel .head .fit_link:hover{background: none;}
@@ -89,13 +104,13 @@ aside,
 .modal-content,
 .fit_sidepanel .panel{box-shadow: 0 0 1.5rem rgba(82,63,105,0.1);}
 
-main{display:flex; height:100%; padding-top: 3.5rem; align-items:stretch;}
+main{display:flex; height:100%; padding-top: $header_height; align-items:stretch;}
 
 nav, aside{ overflow-y: scroll;}
 article{position: static;}
 
 nav, aside{flex: 0 0 $nav_left_width_flex; min-width: $nav_left_width_min; max-width: $nav_left_width_max;}
-/*aside{flex: 0 0 30%}*/
+aside{flex: 0 0 $nav_right_width_flex; max-width: $nav_right_width_max;}
 
 article{flex: 3;}
 
@@ -154,12 +169,6 @@ html.fit_minleft{}
 // html.fit_minright aside .fit_hider .fit_link:hover .fas{transform: rotate(0deg);}
 
 // -----------------------------------------------------------------------------------------
-/* links: */
-nav .fit_link,
-aside .fit_link{color: #696b70}
-
-.fit_link.subtle{color: #696b70}
-
 
 
 // -----------------------------------------------------------------------------------------
@@ -196,6 +205,14 @@ aside .fit_link{color: #696b70}
 aside .fit{border-bottom: 1px solid #e1e4e5;}
 
 
+
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// the old, block level way
+
+
+
 .fit_link{display: block; padding: 1rem 1.5rem; position: relative; min-height: 3.5rem; font-weight: 400;}
 
 .fit_link > .fas,
@@ -206,7 +223,7 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 .fit_time .progress{width: 2rem; right:1rem; position: relative;}
 
 
-/*flag is different*/
+// flag is different
 .fit_link > .flag-icon{width: 1.5rem; height: 1.125rem; top:1.1rem; left: 1.5rem;}
 
 .fit_link > .fas.lg{font-size: 2rem;}
@@ -231,7 +248,6 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 .fit_left{float: left;}
 .fit_right{float: right;}
 
-
 // stuff on the right is different?
 .fit_controls{width: auto; padding-right: 1rem;}
 
@@ -254,6 +270,145 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 .fit_link.collapsed .fa-chevron-down{transform: rotate(-270deg);}
 
 // -----------------------------------------------------------------------------------------
+// subtler links
+.fit_link.subtle{font-size: 0.9rem; padding: 0.75rem 1.5rem; min-height: 2.9rem; padding-bottom: 0.5rem; color:$text_lighter;}
+.fit_link.subtle:hover{color:$text;}
+.fit_link.subtle.i-l{padding-left: 4rem;}
+
+// ------------------------------------------------------------------------------------------
+// compact links
+
+.fit_link.compact{padding:0.75rem; min-height: 3rem;}
+.fit_link.compact.i-l{padding-left: 3rem}
+.fit_link.compact .fit_video, 
+.fit_link.compact .fit_avatar{width: 1.5rem; height: 1.5rem; left: 0.75rem; top:0.75rem;}
+
+
+// this is an icon to show minimusing up
+.fit_link > .fit_lesson_min{position: absolute; top:0; right: 0; left: auto; height: 100%; width: 4rem; align-items: center; justify-content: center; color: $text_lighter; background: $bg; display: none;}
+
+.fit_link:hover > .fit_lesson_min{display: flex;}
+.fit_link.collapsed > .fit_lesson_min{transform: rotate(-180deg);}
+
+
+
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// The new, sexy way to do fitzroy linkies
+
+
+// remember this is how flex sets widths:
+// flex-grow: 0;      						/* do not grow   - initial value: 0 */
+// flex-shrink: 0;    						/* do not shrink - initial value: 1 */
+// flex-basis: 25em;  						/* width/height  - initial value: auto */
+// flex: grow shrink basis;				/* shorthand */
+// flex: 0 0 25em;    						/* means "set width to 25em", do not shrink or grow */
+
+// some standards:
+// icons are all 4rem wide, which is $nav_left_width_collapsed.
+
+
+
+.fit_btn .fa-chevron-down,
+.fit_btn .fa-chevron-left,
+.fit_btn .fa-chevron-right,
+.fit_btn .fa-chevron-up{transition: all .1s ease-in-out;}
+
+
+// the basics and mods:
+.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem;}
+
+.fit_btn > * {padding: 1rem 0;}
+
+nav .fit_btn,
+aside .fit_btn{color: $text;}
+
+.fit_btn:hover,
+.fit_btn.active{text-decoration: none; background: $bg;}
+.fit_btn:hover{color:$blue;}
+
+// icons, fixed width
+.fit_btn > [class*="fa-"]{flex: 0 0 $nav_left_width_collapsed; justify-content: center; text-align: center;}
+
+// wee bits of text on the right
+.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: center; color: $text_lighter; font-size: 0.8rem;}
+
+// videos are weird
+.fit_btn > .fit_pic{padding: 0; height:2rem; flex: 0 0 2rem; margin: 0.5rem 1rem; overflow: hidden; border-radius: $border_rad_sm; position: relative;}
+.fit_btn > .fit_pic img{height: 100%;}
+.fit_btn > .fit_pic.vid img{margin-left: -25%;}
+.fit_btn > .fit_pic.circle{border-radius: $border_rad_r;}
+
+// close the circle
+.fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
+
+.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;} /* wtf is happening here?! */
+.fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
+.fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
+
+.fit_btn > .fit_circle{}
+
+// underlines for showing things
+.fit_lesson > .fit_btn{border-top:1px solid $border_light;}
+.fit_btn.collapsed{border-top-color: #fff;}
+.fit_lesson > .collapse.show{border-bottom: 1px solid $border_light;}
+
+// weird hover thingy
+.fit_hovermin{display:none; position: absolute; top:0; width: 4rem; border-radius: 999rem;}
+
+// omg this is some hacky bullshit right here
+// we need the hover to go over the top of the _sub text, so we make a psuedoelement with the chevron in it.
+// it's a circle so it doesn't look weird when rotating. JAYSIS.
+.fit_sub + .fit_hovermin:after{display: block; content: "\f077"; display: flex; align-items: center; justify-content: center; background: $bg; height: 3rem; width: 3rem;  position: absolute; top:0rem; left: 0.5rem; border-radius: $border_rad_r;}
+.fit_hovermin:last-child{right: 0;}
+.fit_hovermin:first-child{left: 0;}
+.fit_btn:hover .fit_hovermin{display: block;}
+
+// make the text have a sneaky overflow
+aside .fit_btn .fit_txt{overflow: hidden; position: relative; white-space: nowrap;}
+aside .fit_btn .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), #fff); display: block; position: absolute; content: ''; height: 100%; top:0; right: 0; width: 1.5rem;}
+aside .fit_btn:hover .fit_txt:after,
+aside .fit_btn.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
+
+
+// rotate all the chevrons and things
+html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
+.fit_btn.collapsed .fa-chevron-down{transform: rotate(90deg);}
+
+.fit_btn > .fit_hovermin{transform: rotate(0deg);}
+.fit_btn.collapsed > .fit_hovermin{transform: rotate(-180deg);}
+
+.fit_lesson > .fit_btn{border-top: 1px solid $border_light; transition: border-top .2s ease-in-out;}
+.fit_lesson > .fit_btn.collapsed{border-top: 1px solid #fff;}
+
+
+// subtler colours sometimes
+.fit_btn.subtle{color: $text_subtle;}
+
+
+// resources (i.e. docs and other links)
+.fit_btn.resource [class*="fa-"]{font-size: 2rem;}
+.fit_txt small{display: block; color:#ccd}
+
+
+// weird in the header
+header{justify-content:space-around;}
+header .fit_btn > .fit_txt{white-space:nowrap;}
+.fit_btn.left{margin-right: auto;}
+.fit_btn.right{margin-left: auto;}
+
+// weird in the sidebar within a content thingo
+.fit_body_content > .fit_btn{margin: 0 -1.5rem 0;}
+.fit_body_content > .fit_btn:first-child{margin-top: -.5rem;}
+.fit_body_content > .fit_btn:last-child{margin-bottom: -.5rem;}
+
+
+
+
+
+
+// -----------------------------------------------------------------------------------------
 /* fit body */
 .fit_body{padding:0;}
 .fit_body_content{padding: 0.5rem 1.5rem 0.3rem;}
@@ -274,7 +429,7 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 .fit_link small{display: block; color: #ccc;}
 
 // no wrap on the main text
-.fit_link .fit_txt{white-space: nowrap; display: block; overflow: hidden;position: relative;}
+.fit_link .fit_txt{white-space: nowrap; overflow: hidden;position: relative;}
 .fit_link .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), #fff); display: block; position: absolute; content: ''; height: 100%; top:0; right: 0; width: 1.5rem;}
 .fit_link:hover .fit_txt:after,
 .fit_link.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
@@ -317,28 +472,10 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 .fit_segments .fa-check{color: #aaa;}
 .fit_segments .fa-play{color: $aqua;}
 
-// -----------------------------------------------------------------------------------------
-/* subtler links */
-.fit_link.subtle{font-size: 0.9rem; padding: 0.75rem 1.5rem; min-height: 2.9rem; padding-bottom: 0.5rem; color:$text_lighter;}
-.fit_link.subtle:hover{color:$text;}
-.fit_link.subtle.i-l{padding-left: 4rem;}
 
-// ------------------------------------------------------------------------------------------
-// compact links
-
-.fit_link.compact{padding:0.75rem; min-height: 3rem;}
-.fit_link.compact.i-l{padding-left: 3rem}
-.fit_link.compact .fit_video, 
-.fit_link.compact .fit_avatar{width: 1.5rem; height: 1.5rem; left: 0.75rem; top:0.75rem;}
-
-
-// this is an icon to show minimusing up
-.fit_link > .fit_lesson_min{position: absolute; top:0; right: 0; left: auto; height: 100%; width: 4rem; align-items: center; justify-content: center; color: $text_lighter; background: $bg; display: none;}
-
-.fit_link:hover > .fit_lesson_min{display: flex;}
-.fit_link.collapsed > .fit_lesson_min{transform: rotate(-180deg);}
-
-
+.fit_lesson_manage{box-sizing:border-box;margin:0.5rem; border-radius: $border_rad_sm; background: $bg; overflow: hidden; border:0.15rem solid $bg; }
+.fit_lesson_manage .fit_btn{margin:0 -0.5rem;}
+.fit_lesson_manage .fit_btn:hover{background: #fff;}
 
 
 // -----------------------------------------------------------------------------------------
@@ -352,6 +489,9 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 @media (min-width: 768px) {
   .fit_subvidya{padding: 2rem;}
 }
+
+// for the close button if he's there
+.fit_subvidya h2{margin-right: 4rem;}
 
 .fit_closepanel{font-size: 2rem; position: absolute; top:.75rem; right: .75rem; width: 3rem; height: 3rem;  display: flex; align-items: center; justify-content: center; color: $text_lighter;}
 .fit_closepanel:hover{background: $bg; text-decoration: none; color:$blue;}
@@ -462,11 +602,16 @@ a.card.rating h5{color: #f4b115;}
 .fit_course .fit_lessons{border: 1px solid #e1e4e5; border-radius: 0.3rem; margin-top: 1rem} 
 
 .fit_course h3{padding-top: 2rem; line-height: 2.5rem; display: flex; align-items: baseline;}
+
 .fit_course h3 .txt{}
 .fit_course .subtxt{margin-left: auto;}
 .fit_course small.subtxt{color: #717b81; font-size: 0.9rem;}
 .fit_course small.subtxt i{margin-right: 0.2rem; color: inherit;}
 
+@media (max-width: 575px) {
+	.fit_course h3{display: block;}
+	.fit_course .subtxt{margin: 0; display: block;}
+}
 
 // mess with the headers
 
@@ -774,7 +919,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // ----------------------------------------------------------------------------------------------------------------
 // modals
 
-.modal{background: rgba(255,255,255,0.9);}
+.modal{background: $white_fade;}
 .modal-content{border:1px solid #fff;}
 
 
@@ -783,7 +928,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // as set of icons that can be selected!
 .fit_iconselects{display: flex; align-items:center; justify-content:space-evenly; text-align: center;margin-bottom: 2rem;}
 
-.fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_round; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; }
+.fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; }
 
 .fit_iconselect i{font-size: 3.5rem; display: block; color: $text_lighter;}
 .fit_iconselect .sub{color:$text_lighter; font-size: 0.75rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
@@ -866,13 +1011,13 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_sidepanel,
 .fit_sidepanel .whiteout{position: fixed; top:0; right: 0; left: 0; height: 100%; width: 100%; overflow: hidden;}
 
-.fit_sidepanel .whiteout{background: rgba(255,255,255,0.9);}
+.fit_sidepanel .whiteout{background: $white_fade;}
 
 
 .fit_sidepanel{top:-9999rem;}
-.fit_sidepanel .panel{position: fixed; background: #fff; top:0; bottom: 0; height: 100%; padding: 3.5rem 2rem 2rem; overflow-y: scroll;}
+.fit_sidepanel .panel{position: fixed; background: #fff; top:0; bottom: 0; height: 100%; padding: $header_height 2rem 2rem; overflow-y: scroll;}
 
-.fit_sidepanel .panel .head{height: 3.5rem; background: #fff; position: fixed; top:0; right: 0;}
+.fit_sidepanel .panel .head{height: $header_height; background: #fff; position: fixed; top:0; right: 0; display: flex;}
 
 // widths
 .fit_sidepanel .panel,
@@ -891,7 +1036,8 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // the hide
 .fit_sidepanel{}
 .fit_sidepanel .whiteout{opacity: 0;}
-.fit_sidepanel .panel{opacity:0; right:-50%;}
+.fit_sidepanel .panel,
+.fit_sidepanel .panel .head{opacity:0; right:-80%;}
 
 // the reveal
 html.fit_revealuserpanel {overflow: hidden; height: 100%;}
@@ -899,31 +1045,87 @@ html.fit_revealuserpanel .fit_sidepanel{top:0;}
 
 html.fit_revealuserpanel .fit_sidepanel,
 html.fit_revealuserpanel .fit_sidepanel .whiteout{opacity: 1; top:0;}
-html.fit_revealuserpanel .fit_sidepanel .panel{opacity: 1; right:0;}
+html.fit_revealuserpanel .fit_sidepanel .panel,
+html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0;}
 
 
 
 @media (max-width: 575px) {
-	.fit_sidepanel .panel{right: -100%; width: 100%;}
+	.fit_sidepanel .panel{right: -100%; width: 100%; min-width: 100%}
 }
 
 
 
 
 
+// ----------------------------------------------------------------------------------------------------------------
+// heroic introductio big texty friend
+
+.hero{padding: 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
+
+.hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
+.hero strong{color:$blue; position: relative; display: inline-block;}
+.hero strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
+
+.hero p{font-size: 1.5rem; color: $text_light;}
+.hero p a{color:inherit; border-bottom: 0.15rem solid $border_light;}
+.hero p a:hover{color: $blue; text-decoration: none; border-color: $border_medium;}
+
+.fit_heartplay{position: relative; height: 10rem; width: 10rem; margin: 0 auto; display: block; text-decoration: none;}
+.fit_heartplay i{ height: 10rem; position: absolute; top:0; left: 0; width: 100%;}
+
+.fit_heartplay .fa-heart{color:$blue; font-size: 10rem; transition: all .45s ease-in-out;}
+.fit_heartplay .fa-play{color:#fff; font-size: 2.75rem; padding: 3.25rem 0 0 .5rem; transition: all .15s ease-in-out;}
+
+
+// hover
+.fit_heartplay.hover .fa-heart{ transform: scale(1.04); }
+.fit_heartplay.hover .fa-play{transform: scale(1.07); }
+// .hero strong.hover{color:$pink;}
+// .hero strong.hover:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
+
+
+@media (max-width: 767px) {
+	.hero h1{font-size: 2.5rem;}
+	.hero p{font-size: 1.3rem;}
+}
 
 
 
+.fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
+.fit_window:after{padding-top: 56.25%; display: block; content: '';}
+
+.fit_window img{width: 100%; position: absolute; top:0; left: 0;}
+
+.fit_window .butts{position: absolute; top:0; left: 0; padding: 1.2rem;}
+.fit_window .butts a{border-radius: $border_rad_r; width: .8rem; height: .8rem; margin-right: .7rem; float: left; background: #ffbf3d;}
+.fit_window .butts a:first-child{background: #ff6259;}
+.fit_window .butts a:last-child{background: #1eca4d;}
+
+.fit_window .play{position: absolute; top:0; left: 0; width: 100%; height: 100%; display: flex; align-items:center; justify-content: center; font-size: 4rem; color: #fff; text-decoration: none;
+transition: all .1s ease-in-out;}
+.fit_window .play i{opacity: 0; transition: all .15s ease-in-out;}
+
+.fit_window .play:hover{transform: scale(1.2); background: rgba(0,0,0,0.05);}
+.fit_window .play:hover i{opacity: 1;}
 
 
+.fit_course_sell{padding: 0 0 2rem;}
+.fit_course_sell h3 {padding: 1rem 0 0;}
+.fit_course_sell h3 a{color: inherit;}
+.fit_course_sell h3 a:hover{color: $blue;}
 
+p.tagline{color: $text_light; margin-bottom: 2rem;}
+p.tagline .tag{display: block; position: relative; font-size: 1rem; padding-bottom: 0.25rem; padding-left: 1.5rem; max-width: 400px;}
+p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
-
-
-
-
-
-
+@media (min-width: 768px) {
+	// featured is a bit weird
+	.fit_course_sell.featured {max-width: 900px; margin:0 auto 2rem;}
+	.fit_course_sell.featured h3{font-size: 2.5rem; padding: 1.5rem 0 .5rem;}
+	.fit_course_sell.featured p.tagline .tag{display: inline-block; font-size: 1.1rem; margin-right: 1rem; max-width: none;}
+	.fit_course_sell.featured p.tagline .tag:first-child{display: block;padding-bottom: 0.5rem;}
+}
 
 
 
