@@ -2,7 +2,6 @@
 
 Simple staging ground for our UX templates.
 
-
 # Structure and language!
 
 Here's the nomenclature and structure for lessons, in hopefully plain English, from top to bottom:
@@ -28,7 +27,9 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Name
 * Slug
 * Order
-* One or many Lessons
+* Year: So we're not naming courses "My course 2020" and "my course 2021".
+* ID code, for courses with school codes like `SCI2502`
+* One or many `Lessons`
 * Students enrolled
 * One or many Teachers (admins)
 * One 16:9 Cover image
@@ -41,7 +42,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Parent Institute
 * Enrolled students
 
-### On access codes:
+### Access codes:
 
 These can be set by the admin, and control access via a code.
 
@@ -52,7 +53,7 @@ These can be set by the admin, and control access via a code.
 
 * UID
 * Title (short text)
-* Image (forced to 16:9 ratio)
+* Image (16:9 ratio)
 * Total time (from video segments)
 * Order
 * Strapline (slightly longer text)
@@ -131,18 +132,45 @@ Each questionnaire part is either "mandatory" or "optional".
 
 ---
 
-# User permissions
+# Users and permissions
 
-In order, admin user permissions are:
+## Users have:
 
-1) Super (i.e. devs)
-2) Institute
-3) Program
-4) Teacher
-5) Registered
-6) Guest
+* UID
+* First name
+* Last name
+* Email (optional)
+* Phone number
+* Display pic
 
-Plus the weird, wonderful extra user: `Researcher`
+## Extra log in options:
+
+* Attach Google account
+* Attach Facebook account
+
+We're going to encourage users to log in via Google / FB, and this will attach to whatever email we can snag from that login.
+
+**NB:** We need to figure out some clever way of allowing users to auth without email, especially in SEA on phones. Eek.
+
+### Anon use case:
+
+For kids (i.e. <16), less technical users and public courses, it's likely they will never make an account with an email. At this point, we need a very simple way to auth them. Could we rember their device fingerprint perhaps?
+
+We also want anon users to 'upgrade' to a registered user easily, and keep whatever watch / progress they've completed in a course.
+
+
+## Permissions
+
+In order, user permissions are:
+
+1) `Super` Dev team / FA staff
+2) `Institute` e.g. Melbourne University, or Tondo Foundation
+3) `Program` e.g. Leave No-one Behind, or SCI2502
+4) `Teacher` e.g. 2021 Summer socent course
+5) `Registered` student
+6) `Guest` student
+
+Plus the weird, wonderful extra user: `Researcher`!
 
 All admins have full view and edit access to everthing *below*.
 
