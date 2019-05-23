@@ -90,6 +90,7 @@ Segments are of different types to indicate to the user their utility, i.e. a "p
 	* Standard
 	* Practical
 	* Story
+	* Interview
 	* Case study
 	* Bonus
 * Text
@@ -102,7 +103,7 @@ Segments are of different types to indicate to the user their utility, i.e. a "p
 
 * `Locked` segments can only be watched after all previous segments are *complete*.
 * `Barrier` segments are used for disclaimers, etc, and must be completed before any subsequent segments can be accessed.
-* `Hidden` segments are accessible via the backend, but hidden to the student (i.e. so a teacher can hide segments without deleting them, and reveal them later)
+* `Hidden` segments are accessible via the backend, but completely hidden to the student (i.e. so a teacher can hide segments without deleting them, and reveal them later)
 
 
 ### Segment statuses

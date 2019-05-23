@@ -412,7 +412,8 @@ aside .fit_btn {
 .fit_btn > .fit_sub {
   flex: 0 0 4rem;
   justify-content: center;
-  text-align: center;
+  text-align: right;
+  padding-right: 1.5rem;
   color: #b0b4b7;
   font-size: 0.8rem;
 }
@@ -466,6 +467,63 @@ aside .fit_btn {
 
 .fit_btn > .fit_txt:last-child {
   padding-right: 1.5rem;
+}
+
+.fit_btn.intro > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.video > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.practical > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.html > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.interview > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.video > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.story > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.case > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.bonus > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.locked > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.complete > [class*=fa-]:before {
+  content: "";
+}
+
+.fit_btn.active > i {
+  color: #0f7ff4;
+}
+
+.fit_btn.complete > i {
+  color: #b0b4b7;
+}
+
+.fit_btn.locked > .fit_txt,
+.fit_btn.locked > i {
+  color: #b0b4b7;
 }
 
 .fit_lesson > .fit_btn {

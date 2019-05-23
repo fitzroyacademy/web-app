@@ -332,7 +332,7 @@ aside .fit_btn{color: $text;}
 .fit_btn > [class*="fa-"]{flex: 0 0 $nav_left_width_collapsed; justify-content: center; text-align: center;}
 
 // wee bits of text on the right
-.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: center; color: $text_lighter; font-size: 0.8rem;}
+.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
 // videos are weird
 .fit_btn > .fit_pic{padding: 0; height:2rem; flex: 0 0 2rem; margin: 0.5rem 1rem; overflow: hidden; border-radius: $border_rad_sm; position: relative;}
@@ -347,7 +347,40 @@ aside .fit_btn{color: $text;}
 .fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
 .fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
 
+
+// Okay. This is the 'segment types' bit, where we use freaky stuff to display certain icons:
 .fit_btn > .fit_circle{}
+
+// the standard stuff of 'types', most are just circles.
+.fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
+.fit_btn.video > [class*="fa-"]:before{content: "\f04b";}
+.fit_btn.practical > [class*="fa-"]:before{content: "\f04b";}
+
+// less common, but different:
+.fit_btn.html > [class*="fa-"]:before{content: "\f15b";}
+.fit_btn.interview > [class*="fa-"]:before{content: "\f086";}
+.fit_btn.video > [class*="fa-"]:before{content: "\f111";}
+.fit_btn.story > [class*="fa-"]:before{content: "\f4b0";}
+.fit_btn.case > [class*="fa-"]:before{content: "\f0b1";}
+.fit_btn.bonus > [class*="fa-"]:before{content: "\f005";}
+
+// but then there's 'state':
+.fit_btn.locked > [class*="fa-"]:before{content: "\f023";}
+.fit_btn.complete > [class*="fa-"]:before{content: "\f00c";}
+
+
+// and some colours and things:
+
+.fit_btn.active > i{color: $blue;}
+.fit_btn.complete > i{color: $text_lighter;}
+.fit_btn.locked > .fit_txt,
+.fit_btn.locked > i{color: $text_lighter;}
+
+
+
+
+
+
 
 // underlines for showing things
 .fit_lesson > .fit_btn{border-top:1px solid $border_light;}
