@@ -63,18 +63,6 @@
 
         <div class="collapse show" id="fit_lesson_2">
           <div class="fit_body fit_segments">
-            
-            <a class="fit_btn video complete" href="#">
-              <span class="fas fa-"></span>
-              <span class="fit_txt">Introduction</span>
-              <span class="fit_sub">1:01</span>
-            </a>
-
-            <a class="fit_btn html locked" href="#">
-              <span class="fas fa-iconhere"></span>
-              <span class="fit_txt">Introduction</span>
-              <span class="fit_sub">1:01</span>
-            </a>
 
             <a class="fit_btn complete" href="#">
               <span class="fas fa-check"></span>
@@ -116,13 +104,20 @@
       </div>
 
       <div class="fit_lesson_manage">
+        <a class="fit_btn subtitle">
+          <span class="fit_txt">Settings</span>
+        </a>
         <a class="fit_btn" href="#">
           <i class="fas fa-edit"></i>
-          <span class="fit_txt">Edit this lesson</span>
+          <span class="fit_txt">Edit course</span>
         </a>
         <a class="fit_btn" href="#">
           <i class="fas fa-user-plus"></i>
           <span class="fit_txt">Manage students</span>
+        </a>
+        <a class="fit_btn" href="#">
+          <i class="fas fa-chart-bar"></i>
+          <span class="fit_txt">Course stats</span>
         </a>        
       </div>
 
@@ -349,7 +344,8 @@
               </div>
             </form>
 
-            <!-- put student lists here! -->
+            {% include 'partials/_student_list_active.html' %}
+            {% include 'partials/_student_list.html' %}
           </div>
         </div>
       </div>      
@@ -357,9 +353,6 @@
     </div>
   </aside>
 </main>
-
-
-{% include 'partials/_footer.twig' %}
 
 
 {% endblock %}

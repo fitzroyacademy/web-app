@@ -393,17 +393,15 @@ html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
 
 
 // weird in the header
-header{justify-content:space-around;}
+header{}
 header .fit_btn > .fit_txt{white-space:nowrap;}
 .fit_btn.left{margin-right: auto;}
 .fit_btn.right{margin-left: auto;}
 
-// weird in the sidebar within a content thingo
+// margins in the sidebar within a content thingo
 .fit_body_content > .fit_btn{margin: 0 -1.5rem 0;}
 .fit_body_content > .fit_btn:first-child{margin-top: -.5rem;}
 .fit_body_content > .fit_btn:last-child{margin-bottom: -.5rem;}
-
-
 
 
 
@@ -477,6 +475,8 @@ header .fit_btn > .fit_txt{white-space:nowrap;}
 .fit_lesson_manage .fit_btn{margin:0 -0.5rem;}
 .fit_lesson_manage .fit_btn:hover{background: #fff;}
 
+.fit_btn.subtitle > .fit_txt{font-size: 0.7rem; text-transform: uppercase; color:$text_light; font-weight: 900; padding-top:.5rem;  padding-bottom:.5rem; }
+.fit_lesson_manage .fit_btn.subtitle:hover{background: none;}
 
 // -----------------------------------------------------------------------------------------
 /* video */

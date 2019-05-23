@@ -575,10 +575,6 @@ html.fit_minleft [data-fit-minleft] i {
   color: #ccd;
 }
 
-header {
-  justify-content: space-around;
-}
-
 header .fit_btn > .fit_txt {
   white-space: nowrap;
 }
@@ -747,6 +743,19 @@ header .fit_btn > .fit_txt {
 
 .fit_lesson_manage .fit_btn:hover {
   background: #fff;
+}
+
+.fit_btn.subtitle > .fit_txt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #717b81;
+  font-weight: 900;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.fit_lesson_manage .fit_btn.subtitle:hover {
+  background: none;
 }
 
 /* video */
