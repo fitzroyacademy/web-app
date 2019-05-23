@@ -42,7 +42,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Parent Institute
 * Enrolled students
 
-### Access codes:
+### Access codes
 
 These can be set by the admin, and control access via a code.
 
@@ -61,7 +61,7 @@ These can be set by the admin, and control access via a code.
 
 ## Segment
 
-Segments are the chunks of video or text, which students watch / complete. Each has:
+Segments are the chunks of video or text, which students watch / complete within lessons. Each has:
 
 * UID
 * Title
@@ -134,29 +134,40 @@ Each questionnaire part is either "mandatory" or "optional".
 
 # Users and permissions
 
-## Users have:
+## Users
 
 * UID
 * First name
 * Last name
-* Email (optional)
+* Email
 * Phone number
+* Date of birth
 * Display pic
 
-## Extra log in options:
+Everything but UID is optional (woah! really? I think so! Wow.)
+
+## Registered users
+
+* First name
+* Email
+* Password
+
+## Extra log in options
 
 * Attach Google account
 * Attach Facebook account
 
 We're going to encourage users to log in via Google / FB, and this will attach to whatever email we can snag from that login.
 
+This creates a weird flow: If a user does a Google auth, then later tries to sign in via that email *without* Google, they'll have to a) sign in via Google, or b) do a password reset, as they don't have a password yet.
+
 **NB:** We need to figure out some clever way of allowing users to auth without email, especially in SEA on phones. Eek.
 
 ### Anon use case:
 
-For kids (i.e. <16), less technical users and public courses, it's likely they will never make an account with an email. At this point, we need a very simple way to auth them. Could we rember their device fingerprint perhaps?
+For kids (i.e. <16), less technical users, and public courses, it's likely users will *never* make an account with an email. At this point, we need a very simple way to auth them. Could we rember their device fingerprint perhaps? Or let them log back in with their first name and date of birth? Super simple?
 
-We also want anon users to 'upgrade' to a registered user easily, and keep whatever watch / progress they've completed in a course.
+We also want anon users to be able to very easily 'upgrade' to a registered user, and keep whatever watch / progress they've completed in a course.
 
 
 ## Permissions
@@ -172,19 +183,18 @@ In order, user permissions are:
 
 Plus the weird, wonderful extra user: `Researcher`!
 
-All admins have full view and edit access to everthing *below*.
+All admins have full view and edit access to everthing *below* their perm level.
 
-### Use cases:
+### Use cases
 
-* Both `Guest` and `Registered` users can access locked courses with a `course code`, the guests appear as "anon" in admin panels
+* Both `Guest` and `Registered` users can access locked courses with a `course code`, and the guests appear as "anon" in admin panels
 * If a course has the "guest access" flag set to 'no', only registered users can access.
 * A `program` admin can create lessons, see all users activity within their program, but not other programs within that institute.
 * An `institute` level user can create programs and invite program admins, as well as dive into programs, lessons, etc, with full edit permissions
 
-### The weird and wonderful `Researcher` 
+### The weird and wonderful `Researcher` (TBC)
 
-We'll implement this later. Researchers exist outside of the typical 'school' structure, and can access anonymised, aggregate data at various levels.
+**We'll implement this later coz is tricksy.** Researchers exist outside of the typical 'school' structure, and can access anonymised, aggregate data at various levels.
 
-This will be a super careful feature, because it might expose lots of scary private data if we do it badly. 
+This will be a delicately released feature, because it might expose lots of scary private data if we do it badly. There will probably be huge amounts of logging and tracking on who's seeing which data sets, and what they're doing with it.
 
-There will probably be huge amounts of logging and tracking on who's seeing which data sets, and what they're doing with it.

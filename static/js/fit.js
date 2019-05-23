@@ -151,7 +151,7 @@ $( document ).ready(function() {
     legend: {
       show: false
     },
-    colors: ['#e809db', '#666'],
+    colors: ['#e809db', '#0f7ff4', '#666'],
     fill: {
       gradient: {
         opacityFrom: 0.01,
@@ -164,13 +164,20 @@ $( document ).ready(function() {
     stroke: {
         curve: 'smooth'
     },
-    series: [{
-        name: 'Jenny',
-        data: [100, 100, 100, 92, 54]
-    }, {
-        name: 'Class average',
-        data: [100, 100, 45, 0, 0]
-    }],
+    series: [
+      {
+          name: 'Jenny',
+          data: [100, 100, 100, 92, 54]
+      }, 
+      {
+          name: 'Muhammad',
+          data: [85, 72, 100, 5, 0]
+      },       
+      {
+          name: 'Class average',
+          data: [100, 100, 45, 0, 0]
+      }
+    ],
     xaxis: {
       labels: {
         show: false

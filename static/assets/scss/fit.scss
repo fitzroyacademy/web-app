@@ -779,13 +779,13 @@ h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
   -webkit-filter: grayscale(0.9); /* Google Chrome, Safari 6+ & Opera 15+ */
   filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
 }
-.fit_body.person_active .fit_link:not(.active) .progress-bar,
-.fit_body.person_active .fit_link:not(.active) .badge{background: $text_lighter !important;}
+.fit_body.person_active .fit_btn:not(.active) .progress-bar,
+.fit_body.person_active .fit_btn:not(.active) .badge{background: $text_lighter !important;}
 
 // active user
-.fit_body.person_active .fit_link.active{color: $pink;}
-.fit_body.person_active .fit_link.active .progress-bar{background: $pink;}
-.fit_body.person_active .fit_link.active .fit_avatar img{opacity: 1; -webkit-filter: grayscale(0); filter: none;}
+.fit_body.person_active .fit_btn.active{color: $pink;}
+.fit_body.person_active .fit_btn.active .progress-bar{background: $pink;}
+.fit_body.person_active .fit_btn.active .fit_avatar img{opacity: 1; -webkit-filter: grayscale(0); filter: none;}
 
 
 // a pane with students in it
