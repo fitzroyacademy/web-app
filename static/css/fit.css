@@ -522,7 +522,7 @@ aside .fit_btn {
 }
 
 .fit_btn.locked > .fit_txt,
-.fit_btn.locked > i {
+.fit_btn.locked {
   color: #b0b4b7;
 }
 

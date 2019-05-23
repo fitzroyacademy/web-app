@@ -374,7 +374,7 @@ aside .fit_btn{color: $text;}
 .fit_btn.active > i{color: $blue;}
 .fit_btn.complete > i{color: $text_lighter;}
 .fit_btn.locked > .fit_txt,
-.fit_btn.locked > i{color: $text_lighter;}
+.fit_btn.locked{color: $text_lighter;}
 
 
 
