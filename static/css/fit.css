@@ -459,7 +459,7 @@ aside .fit_btn {
   line-height: 1.2rem;
 }
 
-/* wtf is happening here?! */
+/* wtf is happening here with white space and height aRRGHGHgh?! */
 .fit_btn > .fit_txt:first-child {
   padding-left: 1.5rem;
 }
@@ -737,14 +737,6 @@ header .fit_btn > .fit_txt {
   border: 0.15rem solid #f5f7f8;
 }
 
-.fit_lesson_manage .fit_btn {
-  margin: 0 -0.5rem;
-}
-
-.fit_lesson_manage .fit_btn:hover {
-  background: #fff;
-}
-
 .fit_btn.subtitle > .fit_txt {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -752,6 +744,24 @@ header .fit_btn > .fit_txt {
   font-weight: 900;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.fit_lesson_manage .fit_btn {
+  margin: 0 -0.5rem;
+}
+
+.fit_lesson_manage .fit_btn > .fit_txt {
+  margin: 0 -0.5rem;
+  font-size: 0.8rem;
+  padding-top: 0.85rem;
+}
+
+.fit_lesson_manage .fit_btn > i {
+  font-size: 0.9rem;
+}
+
+.fit_lesson_manage .fit_btn:hover {
+  background: #fff;
 }
 
 .fit_lesson_manage .fit_btn.subtitle:hover {
@@ -1423,7 +1433,7 @@ h2.fit_avatared .fit_avatar img {
 }
 
 .fit_body.person_active .fit_link .fit_avatar img {
-  opacity: 0.4;
+  opacity: 0.3;
   filter: gray;
   /* IE6-9 */
   -webkit-filter: grayscale(0.9);

@@ -343,7 +343,7 @@ aside .fit_btn{color: $text;}
 // close the circle
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
 
-.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;} /* wtf is happening here?! */
+.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;} /* wtf is happening here with white space and height aRRGHGHgh?! */
 .fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
 .fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
 
@@ -472,10 +472,14 @@ header .fit_btn > .fit_txt{white-space:nowrap;}
 
 
 .fit_lesson_manage{box-sizing:border-box;margin:0.5rem; border-radius: $border_rad_sm; background: $bg; overflow: hidden; border:0.15rem solid $bg; }
-.fit_lesson_manage .fit_btn{margin:0 -0.5rem;}
-.fit_lesson_manage .fit_btn:hover{background: #fff;}
 
 .fit_btn.subtitle > .fit_txt{font-size: 0.7rem; text-transform: uppercase; color:$text_light; font-weight: 900; padding-top:.5rem;  padding-bottom:.5rem; }
+
+.fit_lesson_manage .fit_btn{margin:0 -0.5rem;}
+.fit_lesson_manage .fit_btn > .fit_txt{margin:0 -0.5rem; font-size: 0.8rem; padding-top: 0.85rem;}
+.fit_lesson_manage .fit_btn > i{font-size: 0.9rem;}
+.fit_lesson_manage .fit_btn:hover{background: #fff;}
+
 .fit_lesson_manage .fit_btn.subtitle:hover{background: none;}
 
 // -----------------------------------------------------------------------------------------
@@ -774,7 +778,7 @@ h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
 // mess with the sidebar thingo
 .fit_body.person_active .fit_link{color: $text_lighter;}
 .fit_body.person_active .fit_link .fit_avatar img{
-  opacity: 0.4;
+  opacity: 0.3;
   filter: gray; /* IE6-9 */
   -webkit-filter: grayscale(0.9); /* Google Chrome, Safari 6+ & Opera 15+ */
   filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
