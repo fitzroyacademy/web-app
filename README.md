@@ -58,6 +58,9 @@ These can be set by the admin, and control access via a code.
 * Order
 * Strapline (slightly longer text)
 * One or many Segments
+* Resources
+
+## Lessons resources:
 
 ## Segment
 
@@ -79,25 +82,23 @@ Segments can be one of the following types:
 * Video (wistia)
 * Video (YouTube)
 * HTML (i.e. WYSIWYG page)
-* Questionnaire
+* Survey
 
 ### Segment types
 
 Segments are of different types to indicate to the user their utility, i.e. a "practical video" is a screengrab of someone using a spreadsheet, wheras a "bonus" video is a nice extra and not needed to complete the course.
 
 * Video
-	* Introduction
+	* Intro
+	* Resource
 	* Standard
 	* Practical
 	* Story
 	* Interview
-	* Case study
+	* Case
 	* Bonus
-* Text
-* Questionnaire
-* Barrier
-* Locked
-* Hidden
+* HTML
+* Survey
 
 **Functionality for segment types:** Type is mostly used just to set the correct icon type, however some functionality will be attached to type.
 
