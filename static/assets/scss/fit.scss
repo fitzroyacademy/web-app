@@ -7,6 +7,8 @@ change .fas to [class^='fa'] or <i> ?
 
 */
 
+$fff: #fff; /* LOL I liteally keep screwing this up so whatever. */
+
 $bg: #f5f7f8;
 
 $brand: #464749;
@@ -34,9 +36,10 @@ $border_light: #e1e4e5;
 $border_medium: #d5d8d9;
 $border_dark: #c6cbcc;
 
-
 $white_fade: rgba(255,255,255,0.95);
 
+$box_shadow: rgba(82,63,105,0.1);
+$box_shadow_blue: rgba(8,53,99,0.4);
 
 // -----------------------------------------------------------------------------------------
 
@@ -76,13 +79,15 @@ $nav_right_width_max: 25rem;
 
 $header_height: 3.2rem;
 
+
+$ratio_169: 56.25%;
+
 // borders
 $border_rad_xs: .1rem;
 $border_rad_sm: .2rem;
 $border_rad_md: .3rem;
 $border_rad_lg: .4rem;
 $border_rad_r: 9999em;
-
 
 // -----------------------------------------------------------------------------------------
 /* header */
@@ -102,7 +107,7 @@ header,
 nav, 
 aside,
 .modal-content,
-.fit_sidepanel .panel{box-shadow: 0 0 1.5rem rgba(82,63,105,0.1);}
+.fit_sidepanel .panel{box-shadow: 0 0 1.5rem $box_shadow;}
 
 main{display:flex; height:100%; padding-top: $header_height; align-items:stretch;}
 
@@ -519,7 +524,7 @@ header .fit_btn > .fit_txt{white-space:nowrap;}
 /* video */
 
 .fit_vidya{position: relative;}
-.fit_vidya:after{padding-top: 56.25%; display: block; content: '';}
+.fit_vidya:after{padding-top: $ratio_169; display: block; content: '';}
 .fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0;}
 
 .fit_subvidya{padding:1rem; position: relative;}
@@ -530,12 +535,15 @@ header .fit_btn > .fit_txt{white-space:nowrap;}
 // for the close button if he's there
 .fit_subvidya h2{margin-right: 4rem;}
 
-.fit_closepanel{font-size: 2rem; position: absolute; top:.75rem; right: .75rem; width: 3rem; height: 3rem;  display: flex; align-items: center; justify-content: center; color: $text_lighter;}
+.fit_closepanel{font-size: 2rem; position: absolute; top:.75rem; right: .75rem; width: 3rem; height: 3rem;  display: flex; align-items: center; justify-content: center; color: $text_lighter; border-radius: $border_rad_sm;}
 .fit_closepanel:hover{background: $bg; text-decoration: none; color:$blue;}
 
 @media (min-width: 768px) {
   .fit_closepanel{top: 1.5rem; right: 1.5rem;}
 }
+
+.fit_closepanel.reverse{color: #fff;}
+.fit_closepanel.reverse:hover{background: $box_shadow_blue;}
 
 .fit_vidya_play{position: absolute;top:0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;}
 .fit_vidya_play i{font-size: 4rem; color: #fff; transition: all .2s ease-in-out;}
@@ -1166,3 +1174,33 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 
 
+// ----------------------------------------------------------------------------------------------------------------
+// Keep watching, bucko! Get back on that horse, get on track, get it done ya hear.
+
+.fit_keep_watching{background: $blue; padding: 4rem 0 2rem;} /* remember the header is included here */
+
+.fit_keep_watching .vid{display:block; position: relative; border-radius: $border_rad_sm; background: #fff;}
+.fit_keep_watching .vid:after{display: block; padding-top: $ratio_169; content: '';}
+
+.fit_keep_watching .vid img{position: absolute; top:0; left: 0; width: 100%; border-radius: $border_rad_sm; }
+
+.fit_keep_watching .vid .bar,
+.fit_keep_watching .vid .bar .far{height: 0.5rem; position: absolute; bottom: 0; left: 0; width: 100%; background: $blue_dark; border-radius: 0 0 $border_rad_sm $border_rad_sm}
+.fit_keep_watching .vid .bar .far{width: auto; background: #fff;}
+.fit_keep_watching .vid .bar .far:after{content: ''; display: block; position: absolute; top:-0.25rem; right: -0.4rem; height: 1rem; width: 1rem; border-radius: $border_rad_r; background: #fff;}
+
+.fit_keep_watching h3{color: #fff; padding:1.5rem 0 1rem;}
+
+.fit_keep_watching .vid:hover{box-shadow: 0 .5rem 1.5rem $box_shadow_blue;}
+
+.fit_keep_watching .fit_closepanel{top: ($header_height+1.5rem);}
+
+@media (max-width: 768px) {
+	.fit_keep_watching{padding:2rem 0 0.5rem;}
+}
+
+// large stuff padding
+@media (min-width: 992px) {
+	.fit_keep_watching h3,
+	.fit_keep_watching .btn{margin-left: 1rem;}
+}

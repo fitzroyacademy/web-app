@@ -6,6 +6,7 @@ TODO
 change .fas to [class^='fa'] or <i> ?
 
 */
+/* LOL I liteally keep screwing this up so whatever. */
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,600,900");
 body {
   font-family: "Lato", Arial, san-serif;
@@ -869,6 +870,7 @@ header .fit_btn > .fit_txt {
   align-items: center;
   justify-content: center;
   color: #b0b4b7;
+  border-radius: 0.2rem;
 }
 
 .fit_closepanel:hover {
@@ -883,6 +885,14 @@ header .fit_btn > .fit_txt {
     right: 1.5rem;
   }
 }
+.fit_closepanel.reverse {
+  color: #fff;
+}
+
+.fit_closepanel.reverse:hover {
+  background: rgba(8, 53, 99, 0.4);
+}
+
 .fit_vidya_play {
   position: absolute;
   top: 0;
@@ -2215,6 +2225,85 @@ p.tagline .tag i {
   .fit_course_sell.featured p.tagline .tag:first-child {
     display: block;
     padding-bottom: 0.5rem;
+  }
+}
+.fit_keep_watching {
+  background: #0f7ff4;
+  padding: 4rem 0 2rem;
+}
+
+/* remember the header is included here */
+.fit_keep_watching .vid {
+  display: block;
+  position: relative;
+  border-radius: 0.2rem;
+  background: #fff;
+}
+
+.fit_keep_watching .vid:after {
+  display: block;
+  padding-top: 56.25%;
+  content: "";
+}
+
+.fit_keep_watching .vid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0.2rem;
+}
+
+.fit_keep_watching .vid .bar,
+.fit_keep_watching .vid .bar .far {
+  height: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #0a6da2;
+  border-radius: 0 0 0.2rem 0.2rem;
+}
+
+.fit_keep_watching .vid .bar .far {
+  width: auto;
+  background: #fff;
+}
+
+.fit_keep_watching .vid .bar .far:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -0.25rem;
+  right: -0.4rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 9999em;
+  background: #fff;
+}
+
+.fit_keep_watching h3 {
+  color: #fff;
+  padding: 1.5rem 0 1rem;
+}
+
+.fit_keep_watching .vid:hover {
+  box-shadow: 0 0.5rem 1.5rem rgba(8, 53, 99, 0.4);
+}
+
+.fit_keep_watching .fit_closepanel {
+  top: 4.7rem;
+}
+
+@media (max-width: 768px) {
+  .fit_keep_watching {
+    padding: 2rem 0 0.5rem;
+  }
+}
+@media (min-width: 992px) {
+  .fit_keep_watching h3,
+.fit_keep_watching .btn {
+    margin-left: 1rem;
   }
 }
 
