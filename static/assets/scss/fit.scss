@@ -673,6 +673,7 @@ a.card.rating h5{color: #f4b115;}
 
 
 .fit_pane{background: $bg; padding: 1rem; border-radius: 0.3rem; margin: 1rem 0;}
+.fit_pane.fat{padding:2rem;}
 .fit_pane.slim{padding: 0.1rem;}
 .fit_pane h3{padding-top: 0.5rem;}
 
@@ -686,6 +687,8 @@ a.card.rating h5{color: #f4b115;}
 .fit_pane .fit_link:hover{background: #fff;}
 .fit_pane .fit_link:hover .fit_video,
 .fit_pane .fit_link:hover .fit_avatar{background: $bg;}
+
+.fit_pane.fat h3:first-child{padding-top: 0;}
 
 /* summary icons */
 .fit_summary_icons{}
@@ -707,6 +710,7 @@ Bleh:;
 .fit_summary_icons dd{padding: 0 0 0.5rem 2.8rem; margin-top: -0.4rem;}
 .fit_summary_icons dd .badge{font-size: 0.9rem;}
 
+.fit_pane .fit_summary_icons{margin-bottom: -1rem;}
 
 // move it around if we're 2 deep
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
@@ -914,6 +918,7 @@ table.fit_colhover td:hover{cursor: default;}
 .btn .flag,
 .nav-link .flag{width: 1.2rem; height: 0.9rem; margin-right: 0.25rem; display: inline-block;}
 
+.nav-link i{margin-right: .5rem;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // All the hiding and mobile and crap
@@ -1106,33 +1111,35 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0;}
 // ----------------------------------------------------------------------------------------------------------------
 // heroic introductio big texty friend
 
-.hero{padding: 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
+.fit_hero{padding: 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
 
-.hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
-.hero strong{color:$blue; position: relative; display: inline-block;}
-.hero strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
+.fit_hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
+.fit_hero h1 strong{color:$blue; position: relative; display: inline-block;}
+.fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
 
-.hero p{font-size: 1.5rem; color: $text_light;}
-.hero p a{color:inherit; border-bottom: 0.15rem solid $border_light;}
-.hero p a:hover{color: $blue; text-decoration: none; border-color: $border_medium;}
+.fit_hero p{font-size: 1.5rem; color: $text_light;}
+.fit_hero p a{color:inherit; border-bottom: 0.15rem solid $border_light;}
+.fit_hero p a:hover{color: $blue; text-decoration: none; border-color: $border_medium;}
 
 .fit_heartplay{position: relative; height: 10rem; width: 10rem; margin: 0 auto; display: block; text-decoration: none;}
 .fit_heartplay i{ height: 10rem; position: absolute; top:0; left: 0; width: 100%;}
 
-.fit_heartplay .fa-heart{color:$blue; font-size: 10rem; transition: all .45s ease-in-out;}
-.fit_heartplay .fa-play{color:#fff; font-size: 2.75rem; padding: 3.25rem 0 0 .5rem; transition: all .15s ease-in-out;}
+.fit_heartplay .bigboy{color:$blue; font-size: 10rem; transition: all .45s ease-in-out;}
+.fit_heartplay .smallboy{color:#fff; font-size: 2.75rem; padding: 3.25rem 0 0 .5rem; transition: all .15s ease-in-out;}
 
 
 // hover
 .fit_heartplay.hover .fa-heart{ transform: scale(1.04); }
 .fit_heartplay.hover .fa-play{transform: scale(1.07); }
-// .hero strong.hover{color:$pink;}
-// .hero strong.hover:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
+
+.fit_hero.pink .bigboy,
+.fit_hero.pink h1 strong{color:$pink;}
+.fit_hero.pink h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
 
 
 @media (max-width: 767px) {
-	.hero h1{font-size: 2.5rem;}
-	.hero p{font-size: 1.3rem;}
+	.fit_hero h1{font-size: 2.5rem;}
+	.fit_hero p{font-size: 1.3rem;}
 }
 
 
@@ -1204,3 +1211,40 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_keep_watching h3,
 	.fit_keep_watching .btn{margin-left: 1rem;}
 }
+
+
+
+
+
+
+// ----------------------------------------------------------------------------------------------------------------
+// This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
+
+.fit_medium{max-width: 740px; margin: 0 auto; padding:0 14px;}
+.fit_medium .fit_window,
+.fit_medium img{margin-bottom: 2rem;}
+
+.fit_medium img{max-width: 100%; border-radius: $border_rad_sm;}
+
+.fit_medium h4{font-weight: 900;}
+
+.fit_medium p{font-size: 1.2rem; line-height: 1.7rem;}
+
+.fit_medium hr{margin: 3.5rem 0; height: 0; background: transparent; border-color: transparent;}
+.fit_medium hr.dots:after{display: block; content: '...'; letter-spacing: 2rem; font-size: 2rem; color: $text_light; text-align: center; position: relative; top: -2rem;}
+
+.fit_medium hr.blunt{border-bottom:0.25rem solid $border_light; max-width: 12rem; margin-left: auto; margin-right: auto; }
+.fit_medium hr.spacer{margin: 1.5rem 0;}
+
+.fit_medium dd,
+.fit_medium dd p{font-size: 1.05rem;}
+
+.fit_medium .breakbig{margin: 4rem 0 2rem;}
+
+@media (min-width: 992px) {
+	.fit_medium .breakbig{width: 970px; margin-left: -140px;}
+}
+
+.fit_spicy{color:$red; font-size: 2rem;}
+.fit_spicy .fal{color: $text_light;}
+
