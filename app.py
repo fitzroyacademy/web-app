@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import sass
+import stubs
 
 app = Flask('FitzroyFrontend', static_url_path='')
 sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -11,6 +12,13 @@ def index():
 @app.route('/playground')
 def playground():
     return render_template('playground.html')
+
+@app.route('/course')
+def course():
+	data = {
+		'students': stubs.students
+	}
+	return render_template('course.html', **data)
 
 @app.route('/lessons')
 def lessons():

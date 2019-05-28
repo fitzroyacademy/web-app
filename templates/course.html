@@ -1,0 +1,186 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+  <nav>
+    <div class="fits">
+
+      <div class="fit fit_hider">
+         <a class="fit_btn subtle" href="#" data-fit-minleft>
+          <i class="fas fa-chevron-left"></i>
+          <span class="fit_txt">Hide</span> 
+        </a>
+      </div>
+
+
+      <div class="fit_lesson">
+        <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_1" role="button" aria-expanded="fit_lesson_1" aria-controls="fit_lesson_1">
+          <div class="fit_pic vid">
+            <img src="./assets/images/lessons/agile-project-management.jpg" alt="course">
+            <span class="fas fa-check"></span>
+          </div>
+          <span class="fit_txt">Agile project management</span>
+          <span class="fit_sub">23:51</span>
+          <i class="fit_hovermin fas fa-chevron-up"></i>
+        </a>
+
+        <div class="collapse" id="fit_lesson_1">
+          <div class="fit_body fit_segments">
+            <a class="fit_btn complete" href="#">
+              <span class="fas fa-check"></span>
+              <span class="fit_txt">Introduction</span> 
+              <span class="fit_sub">1:01</span>
+            </a>
+            <a class="fit_btn complete" href="#">
+              <span class="fas fa-check"></span>
+              <span class="fit_txt">The interviewee</span> 
+              <span class="fit_sub">3:22</span>
+            </a>
+            <a class="fit_btn complete" href="#">
+              <span class="fas fa-check"></span>
+              <span class="fit_txt">The questionairre</span> 
+              <span class="fit_sub">4:52</span>
+            </a>
+            <a class="fit_btn complete" href="#">
+              <span class="fas fa-check"></span>
+              <span class="fit_txt">Getting started</span> 
+              <span class="fit_sub">1:30</span>
+            </a>
+          </div>
+        </div>
+      </div>          
+      
+      <div class="fit_lesson">
+        <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_2" role="button" aria-expanded="fit_lesson_2" aria-controls="fit_lesson_2">
+          <div class="fit_pic vid">
+            <img src="./assets/images/lessons/community-integration.jpg" alt="course">
+            <i class="fas fa-play"></i>
+          </div>
+          <span class="fit_txt">Community integration</span>
+          <span class="fit_sub">43:51</span>
+          <i class="fit_hovermin fas fa-chevron-up"></i>
+        </a>
+
+        <div class="collapse show" id="fit_lesson_2">
+          <div class="fit_body fit_segments">
+
+            <a class="fit_btn video complete" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">The interviewee</span> 
+              <span class="fit_sub">3:22</span>
+            </a>
+
+
+            <a class="fit_btn active video practical" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">Doing the template</span>
+              <span class="fit_sub">6:11</span>
+            </a>
+
+            <a class="fit_btn video  case" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">Inyenyeri's first model</span>
+              <span class="fit_sub"></span>
+            </a>
+
+            <a class="fit_btn video story" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">A story about butts</span>
+              <span class="fit_sub">2:17</span>
+            </a>
+
+            <a class="fit_btn html" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">Reviewing the content</span>
+            </a>
+
+            <a class="fit_btn video interview" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">Interview with John</span>
+              <span class="fit_sub">15:16</span>
+            </a>
+            
+            <a class="fit_btn html" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">A full deck, in situ with a really long title</span>
+              <span class="fit_sub">5:10</span>
+            </a>
+
+            <a class="fit_btn video locked" href="#">
+              <i class="fas fa-circle"></i>
+              <span class="fit_txt">Finishing up</span> 
+              <span class="fit_sub">1:30</span>
+            </a>
+
+          </div>
+        </div>          
+      </div>
+
+      <div class="fit_lesson">
+        <a class="fit_btn collapsed" href="#">
+          <div class="fit_pic vid"><img src="./assets/images/lessons/empathy-mapping.jpg" alt="course"></div>
+          <span class="fit_txt">Empathy mapping</span>
+          <span class="fit_sub">3:51</span>
+        </a>
+      </div>
+
+      <div class="fit_lesson">
+        <a class="fit_btn collapsed" href="#">
+          <div class="fit_pic vid"><img src="./assets/images/lessons/crowdfunding.jpg" alt="course"></div>
+          <span class="fit_txt">Crowdfunding</span>
+          <span class="fit_sub">3:51</span>
+        </a>
+      </div>
+
+      <div class="fit_lesson_manage">
+        <a class="fit_btn" href="#">
+          <i class="fas fa-edit"></i>
+          <span class="fit_txt">Edit this lesson</span>
+        </a>
+        <a class="fit_btn" href="#">
+          <i class="fas fa-user-plus"></i>
+          <span class="fit_txt">Manage students</span>
+        </a>
+        <a class="fit_btn" href="#">
+          <i class="fas fa-chart-bar"></i>
+          <span class="fit_txt">Course stats</span>
+        </a>        
+      </div>
+
+    </div>
+  </nav>
+
+
+  <article>
+  <div class="fit_vidya">
+  {% include 'partials/_wistia_player.html' %}
+  </div>
+  <div class="fit_subvidya fit_completion">
+    <a href="#" class="fit_closepanel"><i class="fas fa-times"></i></a>
+    {% include 'partials/_completion_chart.html' %}
+  </div>
+  </article>
+
+  <aside>
+    <div class="fits">
+
+      <div class="fit fit_hider">
+        <a class="fit_btn subtle " data-fit-minright href="#">
+          <span class="fit_txt">Hide</span>
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </div>
+
+      <div class="fit">
+        <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
+          <i class="fal fa-books"></i>
+          <span class="fit_txt">Resources</span> 
+          <span class="fas fa-chevron-down"></span>
+        </a>
+        {% include 'partials/_lesson_resources.html' %}
+      </div>      
+
+    </div>
+  </aside>
+</main>
+
+{% endblock %}
