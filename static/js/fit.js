@@ -149,10 +149,10 @@ $( document ).ready(function() {
     var students = document.querySelectorAll(student_selector);
 
     for (let s of students) {
-      colors.push(s.dataset.chartColor);
+      colors.push(s.dataset.fitChartColor);
       series.push({
-        name: s.dataset.studentName,
-        data: s.dataset.studentCompletion.split(';').map((s) => parseInt(s))
+        name: s.dataset.fitStudentName,
+        data: s.dataset.fitStudentCompletion.split(';').map((s) => parseInt(s))
       });
     }
 
@@ -168,7 +168,7 @@ $( document ).ready(function() {
       legend: {
         show: false
       },
-      colors: colors,
+      colors: [],
       fill: {
         gradient: {
           opacityFrom: 0.01,
@@ -181,7 +181,7 @@ $( document ).ready(function() {
       stroke: {
           curve: 'smooth'
       },
-      series: series,
+      series: [],
       xaxis: {
         labels: {
           show: false
@@ -212,10 +212,10 @@ $( document ).ready(function() {
       if (!chart) {
         chart = new ApexCharts(document.querySelector("#fit_chart"), options);
         chart.render();
-      } else {
-        chart.updateSeries(series);
-        chart.updateOptions({colors: colors});
       }
+      chart.updateOptions({colors: colors});
+      chart.updateSeries(series);
+      for (let s of series) console.log(s, s.data);
     }
 
   };
@@ -261,14 +261,14 @@ $( document ).ready(function() {
     xhr.send();
   }
 
-  // Adds a data-panel property to links which will take a CSS selector
+  // Adds a data-fit-panel property to links which will take a CSS selector
   // and load the content from the link's href into all elements matching
   // that selector.
   //
   // Example:
   //
   //    <div id="changeMe">This will cahnge to the content at /foo</div>
-  //    <a href="/foo" data-panel="#changeMe">foo</a>
+  //    <a href="/foo" data-fit-panel="#changeMe">foo</a>
   //
   delegate('a[data-fit-panel]', 'click', (e, t) => {
     e.preventDefault();

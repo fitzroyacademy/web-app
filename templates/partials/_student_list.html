@@ -1,5 +1,5 @@
 {% for student in students %}
-  <a class="fit_btn active js_student fit_student_completion" style="color:{{student.color}};" data-chart-color="{{student.color}}" data-student-name="{{ student.name }}" data-student-completion="{{ student.completion }}">
+  <a class="fit_btn active js_student fit_student_completion" style="color:{{student.color}};" data-fit-chart-color="{{student.color}}" data-fit-student-name="{{ student.name }}" data-fit-student-completion="{{ student.completion }}">
     <div class="fit_pic">
       <img src="https://randomuser.me/api/portraits/lego/{{ student.id }}.jpg" alt="image">
     </div>
