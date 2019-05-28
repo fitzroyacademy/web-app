@@ -2,7 +2,7 @@
 
 Simple staging ground for our UX templates.
 
-# Structure and language!
+# Structure and taxonomy:
 
 Here's the nomenclature and structure for lessons, in hopefully plain English, from top to bottom:
 
@@ -200,3 +200,80 @@ All admins have full view and edit access to everthing *below* their perm level.
 
 This will be a delicately released feature, because it might expose lots of scary private data if we do it badly. There will probably be huge amounts of logging and tracking on who's seeing which data sets, and what they're doing with it.
 
+
+---
+
+# Things to remember
+
+For each user, the app should remember certain variables:
+
+### Last viewed/watched:
+
+* Left side menu:
+	* Overall hiding
+	* Last segment viewed, within a lesson
+	* Last course viewed (inherited by the lesson, above)
+* Main viewing pane, under the video
+	* Resources
+	* FAQs
+	* Transcript
+	* Teacher
+	* Analytics (admins only)
+* Sidebar on the course view (collapsed or not):
+	* Overall hiding
+	* Resources
+	* FAQs
+	* Transcript
+	* Teacher
+	* Analytics (admins only)
+
+Other user preferences:
+
+* Selected `app` language (buttons etc)
+* Display subtitles or not
+* Preferred `video` language
+* Preferred `subtitle` language
+* Preferred `transcript` language
+
+The above means that the app will attempt to find the preferred video and transcript language, and display that, or fall back to English.
+
+This means a Cambodia user could choose an `app language` of `KH`, while watching videos in `EN`, with subtitles displayed in `KH`, and just for fun, `transcripts` in `EN`.
+
+The above example has Khmer buttons, English spoken in the videos with Khmer subtitles, while reading transcripts happens in English. ARGH!
+
+---
+
+# Translation
+
+We translate the app at these levels:
+
+* Overall chrome, i.e. app buttons / labels / etc
+* Lesson level
+	* Resources
+	* FAQs
+	* Teacher
+	* Segment
+		* Video
+		* Transcript
+		* Survey
+
+This means some parts of a lesson may _or may not_ be transcribed, e.g:
+
+**KH** means Khmer, **EN** means English, **PH** means Tagolog:
+
+* Overall chrome: KH / EN / PH
+* Lesson level
+	* Resources: EN
+	* FAQs: EN / KH
+	* Teacher: EN / KH
+	* Segment 1
+		* Video: EN
+		* Transcript
+	* Segment 2
+		* Video: EN
+		* Transcript: EN / KH
+	* Segment 3
+		* Video: EN
+		* Transcript: EN / KH
+
+NB: English is our fallback language. If a 'preferred' language is unvailable, fall back to English.
