@@ -3,7 +3,11 @@
     <div class="fit_pic">
       <img src="https://randomuser.me/api/portraits/lego/{{ student.id }}.jpg" alt="image">
     </div>
-    <span class="fit_txt">{{ student.name }}</span>
+    <span class="fit_txt">{{ student.name }}
+    {% if student.admin %}
+      <span class="badge badge-pill badge-primary">admin</span>
+    {% endif %}
+    </span>
     <span class="fit_time">
       <span class="progress"><div class="progress-bar" role="progressbar" style="width: {{ student.progress }}%" aria-valuemin="0" aria-valuemax="100"></div></span>
     </span>                
