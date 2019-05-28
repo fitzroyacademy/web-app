@@ -270,10 +270,10 @@ $( document ).ready(function() {
   //    <div id="changeMe">This will cahnge to the content at /foo</div>
   //    <a href="/foo" data-panel="#changeMe">foo</a>
   //
-  delegate('a[data-panel]', 'click', (e, t) => {
+  delegate('a[data-fit-panel]', 'click', (e, t) => {
     e.preventDefault();
     let p   = t.href;
-    let sel = t.getAttribute('data-panel');
+    let sel = t.getAttribute('data-fit-panel');
     let matches = document.querySelectorAll(sel);
     if (matches.length == 0) {
       return console.warn('No matching data panels for', sel);
@@ -284,8 +284,8 @@ $( document ).ready(function() {
     });
   });
 
-  let studentSel = '[data-student-completion].active';
-  delegate('[data-student-completion]', 'click', (e, t) => {
+  let studentSel = '[data-fit-student-completion].active';
+  delegate('[data-fit-student-completion]', 'click', (e, t) => {
     t.classList.toggle('active');
     e.preventDefault();
     render_student_chart(studentSel);
