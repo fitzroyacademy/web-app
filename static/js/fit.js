@@ -137,79 +137,160 @@ $( document ).ready(function() {
   });
 
 
-  // ------------------------------------------------------------
-  // chart time!
-  var options = {
-    chart: {
-        height: 350,
-        width: '100%',
-        type: 'area',
-        toolbar: {
+
+  let chart = null;
+  function render_student_chart(student_selector) {
+
+    let colors = ['#333'];
+    let series = [
+      {name: 'Class Average', data: [50, 50, 10, 50, 0]}
+    ];
+
+    var students = document.querySelectorAll(student_selector);
+
+    for (let s of students) {
+      colors.push(s.dataset.chartColor);
+      series.push({
+        name: s.dataset.studentName,
+        data: s.dataset.studentCompletion.split(';').map((s) => parseInt(s))
+      });
+    }
+
+    var options = {
+      chart: {
+          height: 350,
+          width: '100%',
+          type: 'area',
+          toolbar: {
+            show: false
+          }
+      },
+      legend: {
+        show: false
+      },
+      colors: colors,
+      fill: {
+        gradient: {
+          opacityFrom: 0.01,
+          opacityTo: 0.3
+        }
+      },
+      dataLabels: {
+          enabled: false
+      },
+      stroke: {
+          curve: 'smooth'
+      },
+      series: series,
+      xaxis: {
+        labels: {
+          show: false
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
           show: false
         }
-    },
-    legend: {
-      show: false
-    },
-    colors: ['#e809db', '#0f7ff4', '#666'],
-    fill: {
-      gradient: {
-        opacityFrom: 0.01,
-        opacityTo: 0.3
-      }
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        curve: 'smooth'
-    },
-    series: [
-      {
-          name: 'Jenny',
-          data: [100, 100, 100, 92, 54]
-      }, 
-      {
-          name: 'Muhammad',
-          data: [85, 72, 100, 5, 0]
-      },       
-      {
-          name: 'Class average',
-          data: [100, 100, 45, 0, 0]
-      }
-    ],
-    xaxis: {
-      labels: {
-        show: false
       },
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
+      yaxis: {
+        labels: {
+          show: false
+        },
+        axisBorder: {
+          show: false
+        }
+      },    
+      tooltip: {
+        x: {
+          followCursor: true
+        },
       }
-    },
-    yaxis: {
-      labels: {
-        show: false
-      },
-      axisBorder: {
-        show: false
-      }
-    },    
-    tooltip: {
-      x: {
-        followCursor: true
-      },
     }
+
+    if ($('#fit_chart').length > 0) {
+      if (!chart) {
+        chart = new ApexCharts(document.querySelector("#fit_chart"), options);
+        chart.render();
+      } else {
+        chart.updateSeries(series);
+        chart.updateOptions({colors: colors});
+      }
+    }
+
+  };
+
+  // event delgation magic but it's chill; just don't touch it
+  (function() {
+    let _root = document.body;
+    let delegates = {};  // {[eventType]:{[selector]:[...fns]}}
+    function _handler(event) {
+      let selectors = delegates[event.type];
+      if (!selectors) return;
+      for (let selector in selectors) {
+        let closest = event.target.closest(selector);
+        if (!closest) continue;
+        for (let listener of selectors[selector]) {
+          listener(event, closest);
+        }
+      }
+    }
+    function delegate(selector, eventType, handler) {
+      let type = delegates[eventType];
+      if (!delegates[eventType] || !handler) {
+        type = delegates[eventType] = {};
+        _root.addEventListener(eventType, _handler);
+      }
+      let handlers = type[selector];
+      if (!handlers) handlers = type[selector] = [];
+      handlers.push(handler);
+    }
+    window.delegate = delegate;
+  })();
+
+  function get(url, cb) {
+    let xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        cb(null, xhr, xhr.responseText);
+      } else {
+        cb(xhr.responseText, xhr);
+      }
+    };
+    xhr.open('GET', url);
+    xhr.send();
   }
 
-  if ($('#fit_chart').length > 0)
-  {
-    var chart = new ApexCharts(document.querySelector("#fit_chart"), options);
-    chart.render();
-  }
+  // Adds a data-panel property to links which will take a CSS selector
+  // and load the content from the link's href into all elements matching
+  // that selector.
+  //
+  // Example:
+  //
+  //    <div id="changeMe">This will cahnge to the content at /foo</div>
+  //    <a href="/foo" data-panel="#changeMe">foo</a>
+  //
+  delegate('a[data-panel]', 'click', (e, t) => {
+    e.preventDefault();
+    let p   = t.href;
+    let sel = t.getAttribute('data-panel');
+    let matches = document.querySelectorAll(sel);
+    if (matches.length == 0) {
+      return console.warn('No matching data panels for', sel);
+    } 
+    get(p, (e, xhr, data) => {
+      if (e) console.error(e);
+      for (let el of matches) el.innerHTML = data;
+    });
+  });
 
+  let studentSel = '.js_student[data-student-completion].active';
+  delegate('.js_student', 'click', (e, t) => {
+    t.classList.toggle('active');
+    e.preventDefault();
+    render_student_chart(studentSel);
+  });
 
+  render_student_chart(studentSel);
 
 });
