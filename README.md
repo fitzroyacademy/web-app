@@ -209,17 +209,19 @@ For each user, the app should remember certain variables:
 
 ### Last viewed/watched:
 
-* Left side menu:
+* Course level (left side menu):
 	* Overall hiding
+	* Which segments are completed or not
+	* Current, active segment
 	* Last segment viewed, within a lesson
 	* Last course viewed (inherited by the lesson, above)
-* Main viewing pane, under the video
+* Main viewing pane (segment level):
 	* Resources
 	* FAQs
 	* Transcript
 	* Teacher
 	* Analytics (admins only)
-* Sidebar on the course view (collapsed or not):
+* Lesson level (sidebar on the right):
 	* Overall hiding
 	* Resources
 	* FAQs
