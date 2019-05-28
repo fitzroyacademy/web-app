@@ -284,8 +284,8 @@ $( document ).ready(function() {
     });
   });
 
-  let studentSel = '.js_student[data-student-completion].active';
-  delegate('.js_student', 'click', (e, t) => {
+  let studentSel = '[data-student-completion].active';
+  delegate('[data-student-completion]', 'click', (e, t) => {
     t.classList.toggle('active');
     e.preventDefault();
     render_student_chart(studentSel);
