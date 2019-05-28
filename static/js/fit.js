@@ -215,7 +215,6 @@ $( document ).ready(function() {
       }
       chart.updateOptions({colors: colors});
       chart.updateSeries(series);
-      for (let s of series) console.log(s, s.data);
     }
 
   };
