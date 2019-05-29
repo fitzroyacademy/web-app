@@ -27,7 +27,8 @@ students =  [
 	}
 ];
 
-segments = [
+segments = [];
+segments.append([
     {
         "title": "Introduction",
         "duration": "1:12",
@@ -145,12 +146,152 @@ segments = [
         "type": "locked",
         "id": "seg_m"
     }
-];
+]);
 
-course = {
+segments.append([
+  {
+    "title": "Introduction",
+    "duration": "1:30",
+    "external_id": "xmgvld0tjy",
+    "url": "https://fitzroyacademy.wistia.com/medias/xmgvld0tjy",
+    "template": "video_wistia",
+    "id": "seg_n"
+  },
+  {
+    "title": "Lesson resources",
+    "duration": "0:36",
+    "external_id": "nrd9n1i0th",
+    "url": "https://fitzroyacademy.wistia.com/medias/nrd9n1i0th",
+    "template": "video_wistia",
+    "id": "seg_o"
+  },
+  {
+    "title": "Prepwork",
+    "duration": "3:34",
+    "external_id": "ik28rwd8xh",
+    "url": "https://fitzroyacademy.wistia.com/medias/ik28rwd8xh",
+    "template": "video_wistia",
+    "id": "seg_p"
+  },
+  {
+    "title": "The Pipeline",
+    "duration": "7:31",
+    "external_id": "5qr1imh89q",
+    "url": "https://fitzroyacademy.wistia.com/medias/5qr1imh89q",
+    "template": "video_wistia",
+    "id": "seg_q"
+  },
+  {
+    "title": "Making Contact",
+    "duration": "10:23",
+    "external_id": "i4fv1tzbke",
+    "url": "https://fitzroyacademy.wistia.com/medias/i4fv1tzbke",
+    "template": "video_wistia",
+    "id": "seg_r"
+  },
+  {
+    "title": "Meeting in person",
+    "duration": "5:56",
+    "external_id": "8r42r8wd4e",
+    "url": "https://fitzroyacademy.wistia.com/medias/8r42r8wd4e",
+    "template": "video_wistia",
+    "id": "seg_s"
+  },
+  {
+    "title": "Follow up and Routines",
+    "duration": "5:23",
+    "external_id": "kolppnbfaj",
+    "url": "https://fitzroyacademy.wistia.com/medias/kolppnbfaj",
+    "template": "video_wistia",
+        "id": "seg_t"
+  }
+]);
+
+segments.append([
+  {
+    "title": "Introduction",
+    "duration": "1:22",
+    "external_id": "nxdknxgjg4",
+    "url": "https://fitzroyacademy.wistia.com/medias/nxdknxgjg4",
+    "template": "video_wistia",
+    "id": "598pejq0ahbmr92hdjgcx"
+  },
+  {
+    "title": "Lesson Resources",
+    "duration": "0:42",
+    "external_id": "bftwqod4cr",
+    "url": "https://fitzroyacademy.wistia.com/medias/bftwqod4cr",
+    "template": "video_wistia",
+    "id": "bpp1dfgexztukgyhdrqvk"
+  },
+  {
+    "title": "The Big numbers",
+    "duration": "6:12",
+    "external_id": "tsni6veh6m",
+    "url": "https://fitzroyacademy.wistia.com/medias/tsni6veh6m",
+    "template": "video_wistia",
+    "id": "2plze9cgsb2ifhwb0ai9da"
+  },
+  {
+    "title": "Adding detail",
+    "duration": "8:17",
+    "external_id": "nleir20ny1",
+    "url": "https://fitzroyacademy.wistia.com/medias/nleir20ny1",
+    "template": "video_wistia",
+    "id": "sj93fnzjlef0mvhaoiolb1s"
+  },
+  {
+    "title": "Do some maths",
+    "duration": "12:24",
+    "external_id": "jgqhh7dogk",
+    "url": "https://fitzroyacademy.wistia.com/medias/jgqhh7dogk",
+    "template": "video_wistia",
+    "id": "nu9dmhwz7gsr4edpsrac1"
+  },
+  {
+    "title": "Formatting",
+    "duration": "3:57",
+    "external_id": "13juax70dj",
+    "url": "https://fitzroyacademy.wistia.com/medias/13juax70dj",
+    "template": "video_wistia",
+    "id": "ouvwnfb2zz89vzag7l6jv"
+  },
+  {
+    "title": "Benchmark the results",
+    "duration": "5:21",
+    "external_id": "z32ayrtmdo",
+    "url": "https://fitzroyacademy.wistia.com/medias/z32ayrtmdo",
+    "template": "video_wistia",
+    "id": "ptrrx6iowybe0ppxwv0wmq"
+  },
+  {
+    "title": "Growth levers",
+    "duration": "5:15",
+    "external_id": "ee8f50jiig",
+    "url": "https://fitzroyacademy.wistia.com/medias/ee8f50jiig",
+    "template": "video_wistia",
+    "id": "0zg5s4y4g3ynyrk05e1qpfk"
+  },
+  {
+    "title": "Communicate",
+    "duration": "6:26",
+    "external_id": "2jlicc2t0e",
+    "url": "https://fitzroyacademy.wistia.com/medias/2jlicc2t0e",
+    "template": "video_wistia",
+    "id": "i6it0ta9sf7s90p8lu3z"
+  }
+]);
+
+def get_segment(sid):
+    for l in segments:
+        for s in l:
+            if s['id'] == sid:
+                return s
+
+courses = [{
 	'lessons': [
-		{'id': 'les_a', 'title': 'Lesson 1', 'duration': '45:15', 'segments': segments, 'active': False},
-		{'id': 'les_b', 'title': 'Lesson 2', 'duration': '45:15', 'segments': segments, 'active': True},
-		{'id': 'les_c', 'title': 'Lesson 3', 'duration': '45:15', 'segments': segments, 'active': False}
+		{'id': 'les_a', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
+		{'id': 'les_b', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
+		{'id': 'les_c', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
 	]
-}
+}]

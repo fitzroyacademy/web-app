@@ -19,8 +19,8 @@ def playground():
 def course():
 	data = {
 		'students': stubs.students,
-		'active_segment': stubs.segments[1],
-		'course': stubs.course
+		'active_segment': stubs.segments[1][0],
+		'course': stubs.courses[0]
 	}
 	return render_template('course.html', **data)
 
@@ -30,12 +30,8 @@ def partial_segment(sid):
 	if sid.endswith('.json'):
 		ext = "json"
 		sid = sid.split('.')[0]
-	active_segment = None
-	for s in stubs.segments:
-		if s['id'] == sid:
-			active_segment = s
-			break
-	if s is None:
+	active_segment = stubs.get_segment(sid)
+	if active_segment is None:
 		raise "Segment not found: %s".format(sid)
 	data = {
 		'active_segment': active_segment
@@ -76,11 +72,7 @@ def completion(sid):
 		'students': students
 	}
 	active = None
-	for s in stubs.segments:
-		# We'll need this later.
-		if s['id'] == sid:
-			active = s
-			break
+	s = stubs.get_segment(sid)
 	if s is None:
 		return {"error": "Segment not found"}
 	return render_template('partials/_student_list.html', **data)
