@@ -17,11 +17,14 @@ def playground():
 
 @app.route('/course/<cid>/<lid>/<sid>')
 def course(cid, lid="01", sid="seg_a"):
+	course = stubs.get_course(cid)
+	lesson = course.lessons.find(id=lid)
+	segment = lesson.segments.find(id=sid)
 	data = {
 		'students': stubs.students,
-		'active_lesson': stubs.get_lesson(lid),
-		'active_segment': stubs.get_segment(sid),
-		'course': stubs.courses[0]
+		'active_lesson': lesson,
+		'active_segment': segment,
+		'course': course
 	}
 	return render_template('course.html', **data)
 
@@ -38,6 +41,7 @@ def partial_segment(sid):
 		'active_segment': active_segment
 	}
 	if ext is 'json':
+		data['active_segment'] = data['active_segment'].dump()
 		return json.dumps(data)
 	return render_template('partials/_active_segment.html', **data)
 

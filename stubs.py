@@ -1,4 +1,5 @@
 import random
+import models
 
 students =  [
 	{
@@ -164,7 +165,8 @@ segments.append([
     "external_id": "xmgvld0tjy",
     "url": "https://fitzroyacademy.wistia.com/medias/xmgvld0tjy",
     "template": "video_wistia",
-    "id": "seg_n"
+    "id": "seg_n",
+    "type": "locked"
   },
   {
     "title": "Lesson resources",
@@ -172,7 +174,8 @@ segments.append([
     "external_id": "nrd9n1i0th",
     "url": "https://fitzroyacademy.wistia.com/medias/nrd9n1i0th",
     "template": "video_wistia",
-    "id": "seg_o"
+    "id": "seg_o",
+    "type": "locked"
   },
   {
     "title": "Prepwork",
@@ -180,7 +183,8 @@ segments.append([
     "external_id": "ik28rwd8xh",
     "url": "https://fitzroyacademy.wistia.com/medias/ik28rwd8xh",
     "template": "video_wistia",
-    "id": "seg_p"
+    "id": "seg_p",
+    "type": "locked"
   },
   {
     "title": "The Pipeline",
@@ -188,7 +192,8 @@ segments.append([
     "external_id": "5qr1imh89q",
     "url": "https://fitzroyacademy.wistia.com/medias/5qr1imh89q",
     "template": "video_wistia",
-    "id": "seg_q"
+    "id": "seg_q",
+    "type": "locked"
   },
   {
     "title": "Making Contact",
@@ -196,7 +201,8 @@ segments.append([
     "external_id": "i4fv1tzbke",
     "url": "https://fitzroyacademy.wistia.com/medias/i4fv1tzbke",
     "template": "video_wistia",
-    "id": "seg_r"
+    "id": "seg_r",
+    "type": "locked"
   },
   {
     "title": "Meeting in person",
@@ -204,7 +210,8 @@ segments.append([
     "external_id": "8r42r8wd4e",
     "url": "https://fitzroyacademy.wistia.com/medias/8r42r8wd4e",
     "template": "video_wistia",
-    "id": "seg_s"
+    "id": "seg_s",
+    "type": "locked"
   },
   {
     "title": "Follow up and Routines",
@@ -212,7 +219,8 @@ segments.append([
     "external_id": "kolppnbfaj",
     "url": "https://fitzroyacademy.wistia.com/medias/kolppnbfaj",
     "template": "video_wistia",
-        "id": "seg_t"
+        "id": "seg_t",
+    "type": "locked"
   }
 ]);
 
@@ -223,7 +231,8 @@ segments.append([
     "external_id": "nxdknxgjg4",
     "url": "https://fitzroyacademy.wistia.com/medias/nxdknxgjg4",
     "template": "video_wistia",
-    "id": "598pejq0ahbmr92hdjgcx"
+    "id": "598pejq0ahbmr92hdjgcx",
+    "type": "locked"
   },
   {
     "title": "Lesson Resources",
@@ -231,7 +240,8 @@ segments.append([
     "external_id": "bftwqod4cr",
     "url": "https://fitzroyacademy.wistia.com/medias/bftwqod4cr",
     "template": "video_wistia",
-    "id": "bpp1dfgexztukgyhdrqvk"
+    "id": "bpp1dfgexztukgyhdrqvk",
+    "type": "locked"
   },
   {
     "title": "The Big numbers",
@@ -239,7 +249,8 @@ segments.append([
     "external_id": "tsni6veh6m",
     "url": "https://fitzroyacademy.wistia.com/medias/tsni6veh6m",
     "template": "video_wistia",
-    "id": "2plze9cgsb2ifhwb0ai9da"
+    "id": "2plze9cgsb2ifhwb0ai9da",
+    "type": "locked"
   },
   {
     "title": "Adding detail",
@@ -247,7 +258,8 @@ segments.append([
     "external_id": "nleir20ny1",
     "url": "https://fitzroyacademy.wistia.com/medias/nleir20ny1",
     "template": "video_wistia",
-    "id": "sj93fnzjlef0mvhaoiolb1s"
+    "id": "sj93fnzjlef0mvhaoiolb1s",
+    "type": "locked"
   },
   {
     "title": "Do some maths",
@@ -255,7 +267,8 @@ segments.append([
     "external_id": "jgqhh7dogk",
     "url": "https://fitzroyacademy.wistia.com/medias/jgqhh7dogk",
     "template": "video_wistia",
-    "id": "nu9dmhwz7gsr4edpsrac1"
+    "id": "nu9dmhwz7gsr4edpsrac1",
+    "type": "locked"
   },
   {
     "title": "Formatting",
@@ -263,7 +276,8 @@ segments.append([
     "external_id": "13juax70dj",
     "url": "https://fitzroyacademy.wistia.com/medias/13juax70dj",
     "template": "video_wistia",
-    "id": "ouvwnfb2zz89vzag7l6jv"
+    "id": "ouvwnfb2zz89vzag7l6jv",
+    "type": "locked"
   },
   {
     "title": "Benchmark the results",
@@ -271,7 +285,8 @@ segments.append([
     "external_id": "z32ayrtmdo",
     "url": "https://fitzroyacademy.wistia.com/medias/z32ayrtmdo",
     "template": "video_wistia",
-    "id": "ptrrx6iowybe0ppxwv0wmq"
+    "id": "ptrrx6iowybe0ppxwv0wmq",
+    "type": "locked"
   },
   {
     "title": "Growth levers",
@@ -279,7 +294,8 @@ segments.append([
     "external_id": "ee8f50jiig",
     "url": "https://fitzroyacademy.wistia.com/medias/ee8f50jiig",
     "template": "video_wistia",
-    "id": "0zg5s4y4g3ynyrk05e1qpfk"
+    "id": "0zg5s4y4g3ynyrk05e1qpfk",
+    "type": "locked"
   },
   {
     "title": "Communicate",
@@ -287,15 +303,16 @@ segments.append([
     "external_id": "2jlicc2t0e",
     "url": "https://fitzroyacademy.wistia.com/medias/2jlicc2t0e",
     "template": "video_wistia",
-    "id": "i6it0ta9sf7s90p8lu3z"
+    "id": "i6it0ta9sf7s90p8lu3z",
+    "type": "locked"
   }
 ]);
 
 courses = [{
     'lessons': [
-        {'id': 'les_a', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
-        {'id': 'les_b', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
-        {'id': 'les_c', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
+        {'id': '0', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
+        {'id': '1', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
+        {'id': '2', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
     ]
 }]
 
@@ -303,7 +320,10 @@ def get_segment(sid):
     for l in segments:
         for s in l:
             if s['id'] == sid:
-                return s
+                return models.Segment(sid, s)
 
 def get_lesson(lid):
-    return courses[0]['lessons'][int(lid)]
+    return models.Lesson(lid, courses[0]['lessons'][int(lid)])
+
+def get_course(cid):
+    return models.Course(cid, courses[int(cid)])
