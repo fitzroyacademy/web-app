@@ -289,7 +289,33 @@ $( document ).ready(function() {
     e.preventDefault();
     render_student_chart(studentSel);
   });
-
   render_student_chart(studentSel);
+
+  function loadSegment(sid) {
+    get('/_segment/'+sid+'.json', (e, xhr, data) => {
+      if (e) console.error(e);
+      data = JSON.parse(data);
+      _fitz_video.replaceWith(data.active_segment.external_id);
+      _fitz_video.play();
+    });
+    let studentCharts = document.querySelector('#fit_student_list');
+    if (studentCharts) {
+      get('/_completion/<sid>', (e, xhr, data) => {
+        if (e) return console.error(e);
+        studentCharts.innerHTML = data;
+        render_student_chart(studentSel);
+      });
+    }
+  }
+
+  // Load the next segment and video.
+  delegate('[data-fit-segment]', 'click', (e, t) => {
+    for (let l of document.querySelectorAll('[data-fit-segment].active')) {
+      l.classList.remove('active');
+    }
+    t.classList.add('active');
+    loadSegment(t.dataset.fitSegment);
+    e.preventDefault();
+  })
 
 });

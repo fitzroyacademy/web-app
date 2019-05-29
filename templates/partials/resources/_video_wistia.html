@@ -1,0 +1,23 @@
+
+<script src="https://fast.wistia.com/embed/medias/{{ segment.external_id }}.jsonp" async></script>
+<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+
+<div class="wistia_embed wistia_async_{{ segment.external_id }} videoFoam=true">
+  <div class="wistia_swatch">
+    <img src="https://fast.wistia.com/embed/medias/{{ segment.external_id }}/swatch" alt="vid" onload="this.parentNode.style.opacity=1;" />
+  </div>
+</div>
+
+<script>
+window._wq = window._wq || [];
+_wq.push({ id: "{{ segment.external_id }}", onReady: function(video) {
+  _fitz_video = video;
+}});
+</script>
+
+{# 
+<div class="fit_vidya_controls">
+  <button type="button" class="btn btn-light" data-fit-ctrl><i class="far fa-expand-wide"></i></button>
+</div>
+#}
+</div>
