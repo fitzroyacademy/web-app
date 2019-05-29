@@ -57,6 +57,15 @@ segments.append([
         "id": "seg_c"
     },
     {
+        "title": "Guest lecture: very large boxes",
+        "duration": "1:53",
+        "external_id": "xdhLQCYQ-nQ",
+        "url": "https://www.youtube.com/watch?v=xdhLQCYQ-nQ",
+        "template": "video_youtube",
+        "type": "practical",
+        "id": "seg_maru"
+    },   
+    {
         "title": "Five designers in a box",
         "duration": "1:36",
         "external_id": "rxty4preej",
@@ -282,16 +291,19 @@ segments.append([
   }
 ]);
 
+courses = [{
+    'lessons': [
+        {'id': 'les_a', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
+        {'id': 'les_b', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
+        {'id': 'les_c', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
+    ]
+}]
+
 def get_segment(sid):
     for l in segments:
         for s in l:
             if s['id'] == sid:
                 return s
 
-courses = [{
-	'lessons': [
-		{'id': 'les_a', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
-		{'id': 'les_b', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
-		{'id': 'les_c', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
-	]
-}]
+def get_lesson(lid):
+    return courses[0]['lessons'][int(lid)]

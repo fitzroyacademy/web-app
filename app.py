@@ -15,11 +15,12 @@ def index():
 def playground():
     return render_template('playground.html')
 
-@app.route('/course')
-def course():
+@app.route('/course/<cid>/<lid>/<sid>')
+def course(cid, lid="01", sid="seg_a"):
 	data = {
 		'students': stubs.students,
-		'active_segment': stubs.segments[1][0],
+		'active_lesson': stubs.get_lesson(lid),
+		'active_segment': stubs.get_segment(sid),
 		'course': stubs.courses[0]
 	}
 	return render_template('course.html', **data)
