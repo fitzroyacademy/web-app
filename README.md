@@ -214,6 +214,7 @@ For each user, the app should remember certain variables:
 	* Which segments are completed or not
 	* Current, active segment
 	* Last segment viewed, within a lesson
+	* Last MM:SS viewed of the last viewed lesson
 	* Last course viewed (inherited by the lesson, above)
 * Main viewing pane (segment level):
 	* Resources
@@ -259,9 +260,26 @@ We translate the app at these levels:
 		* Transcript
 		* Survey
 
-This means some parts of a lesson may _or may not_ be transcribed, e.g:
+English is our fallback language. If a 'preferred' language is unvailable, fall back to English. This means some parts of a lesson may _or may not_ be transcribed.
+
+## Example: Partially translated lesson.
 
 **KH** means Khmer, **EN** means English, **PH** means Tagolog:
+
+
+### Example user preferences:
+
+* Selected `app` language: **KH**
+* Display subtitles or not **Yes**
+* Preferred `video` language **KH**
+* Preferred `subtitle` language **EN**
+* Preferred `transcript` language **EN**
+
+The above might read as _"I speak Khmer as a first language, but want to see subtitles and read transcripts in English, to improve my English."_
+
+Let's mash this against an example lesson with it's translations:
+
+### Example translations available:
 
 * Overall chrome: KH / EN / PH
 * Lesson level
@@ -273,9 +291,40 @@ This means some parts of a lesson may _or may not_ be transcribed, e.g:
 		* Transcript
 	* Segment 2
 		* Video: EN
-		* Transcript: EN / KH
+		* Transcript: EN
 	* Segment 3
 		* Video: EN
 		* Transcript: EN / KH
 
-NB: English is our fallback language. If a 'preferred' language is unvailable, fall back to English.
+
+In the above case, for som
+
+---
+
+# Lesson resources
+
+Resources are links, text and other stuff the student uses while completing lessons. They're at the `lesson` level within courses.
+
+## Structure:
+
+* Resource links:
+	* Title
+	* Url
+	* Type:
+		* google_spreadsheet
+		* google_doc
+		* google_slide
+		* google_picture
+		* medium_article
+		* pdf
+	* Language (EN | KH | PH | etc)
+	* Featured (boolean)
+* WYSIWYG resource chunk (just a big slab of HTML)
+
+Links are added by pasting a url in the `lesson editor`, the app scrapes the title, figures out the type, and guesses the language. The user can then modify from there.
+
+The `featured` flag means that link will show up in the right hand nav for easy access, while any non-`featured` links and the HTML appear in the main resources pane.
+
+## Uploads?
+
+No controls for uploading file at the moment. We'll let teachers manage that via dropbox, their own hosting, etc. Just links! :)
