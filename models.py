@@ -74,16 +74,22 @@ class DataCollection:
 class Segment(DataModel):
 
 	def get_permalink(self):
-		return "/c123/{}/{}".format(self.lesson.id, self.id)
+		return "/course/{}/{}/{}".format(self.course.id, self.lesson.id, self.id)
 
 	def get_lesson(self):
-		return Lesson('01', {'segments': []})
+		return Lesson(self.lesson_id, {'segments': []})
+
+	def get_course(self):
+		return Course(self.course_id, {})
 
 
 class Lesson(DataModel):
 	
 	def get_segments(self):
 		return DataCollection(Segment, self._data['segments'])
+
+	def get_completion(self):
+		return DataCollection(StudentCompletion)
 
 
 class Course(DataModel):
