@@ -38,10 +38,13 @@ class DataCollection:
 
 	def find(self, **kwargs):
 		for i in self._items:
+			match = True
 			for k,v in kwargs.items():
 				if i[k] != v:
-					continue
-			return self._base(i['id'], i)
+					match = False
+					break
+			if match:
+				return self._base(i['id'], i)
 
 	def __getitem__(self, i):
 		item = self._items[i]
