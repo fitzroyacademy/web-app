@@ -62,6 +62,32 @@ These can be set by the admin, and control access via a code.
 
 ## Lessons resources:
 
+Resources are links, text and other stuff the student uses while completing lessons. They're at the `lesson` level within courses.
+
+### Resources structure:
+
+* Resource links:
+	* Title
+	* Url
+	* Type:
+		* google_spreadsheet
+		* google_doc
+		* google_slide
+		* google_picture
+		* medium_article
+		* pdf
+	* Language (EN | KH | PH | etc)
+	* Featured (boolean)
+* WYSIWYG resource chunk (just a big slab of HTML)
+
+Links are added by pasting a url in the `lesson editor`, the app scrapes the title, figures out the type, and guesses the language. The user can then modify from there.
+
+The `featured` flag means that link will show up in the right hand nav for easy access, while any non-`featured` links and the HTML appear in the main resources pane.
+
+### Uploads?
+
+No controls for uploading file at the moment. We'll let teachers manage that via dropbox, their own hosting, etc. Just links! :)
+
 ## Segment
 
 Segments are the chunks of video or text, which students watch / complete within lessons. Each has:
@@ -131,6 +157,27 @@ The options for surveys / questionnaires are:
 * Free text
 
 Each questionnaire part is either "mandatory" or "optional".
+
+---
+
+# Course permissions
+
+### Managed through escalating "security" levels:
+
+* Publicly accessible
+* Locked with `course code`
+* Locked with `registered user`
+* Locked with `course code` AND `registered user`
+
+And in the future, we will implement:
+
+* Locked to `registered user whitelist` (requires invite codes, argh)
+* Locked to `domain` (i.e. only @institute.edu emails, or only @company.com emails)
+
+This is expressed in the course edit with:
+
+* Requires `course code` Y/N
+* Requires `registered user` Y/N
 
 ---
 
@@ -297,34 +344,6 @@ Let's mash this against an example lesson with it's translations:
 		* Transcript: EN / KH
 
 
-In the above case, for som
+
 
 ---
-
-# Lesson resources
-
-Resources are links, text and other stuff the student uses while completing lessons. They're at the `lesson` level within courses.
-
-## Structure:
-
-* Resource links:
-	* Title
-	* Url
-	* Type:
-		* google_spreadsheet
-		* google_doc
-		* google_slide
-		* google_picture
-		* medium_article
-		* pdf
-	* Language (EN | KH | PH | etc)
-	* Featured (boolean)
-* WYSIWYG resource chunk (just a big slab of HTML)
-
-Links are added by pasting a url in the `lesson editor`, the app scrapes the title, figures out the type, and guesses the language. The user can then modify from there.
-
-The `featured` flag means that link will show up in the right hand nav for easy access, while any non-`featured` links and the HTML appear in the main resources pane.
-
-## Uploads?
-
-No controls for uploading file at the moment. We'll let teachers manage that via dropbox, their own hosting, etc. Just links! :)
