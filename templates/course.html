@@ -21,10 +21,10 @@
           <span class="fit_sub">{{ lesson.duration }}</span>
           <i class="fit_hovermin fas fa-chevron-up"></i>
         </a>
-        <div class="collapse {{'show' if lesson.active }}" id="fit_lesson_{{ lesson.id }}">
+        <div class="collapse {{'show' if lesson.id == active_lesson.id }}" id="fit_lesson_{{ lesson.id }}">
           <div class="fit_body fit_segments">
             {% for segment in lesson.segments %}
-              <a class="fit_btn video {{ segment.type }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}">
+              <a class="fit_btn video {{ segment.type }} {{'active' if segment.id == active_segment.id }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}">
                 <i class="fas fa-circle"></i>
                 <span class="fit_txt">{{ segment.title }}</span> 
                 <span class="fit_sub">{{ segment.duration }}</span>
