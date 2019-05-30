@@ -230,44 +230,11 @@
 
         </div><!-- col -->
       </div>
-      
-      <hr>
-      <div class="row">
-        
-        <div class="col-md-4">
-          <a href="#" class="card resources">
-            <span class="fas cardtop fa-file-alt"></span>
-            <div class="card-body">
-              <h5>Resources</h5>
-              <p class="card-text">Templates, links and further reading.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-4">
-          <a href="#" class="card transcripts">
-            <span class="fas cardtop fa-comment-alt-lines"></span>
-            <div class="card-body">
-              <h5>Transcripts</h5>
-              <p class="card-text">Written version of the video lesson.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-4">
-          <a href="#" class="card faqs">
-            <span class="fas cardtop fa-question-square"></span>
-            <div class="card-body">
-              <h5>FAQs</h5>
-              <p class="card-text">Questions and answers.</p>
-            </div>
-          </a>
-        </div>     
-
-      </div>
 
     </div>  
 
+
+    <!-- DEV: this version is for a free-access course with no code/etc -->
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
@@ -275,6 +242,24 @@
         <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
       </div>
     </div>
+
+    <!-- DEV: wheras, this version is for courses locked by a code -->
+    <div class="fit_cta">
+      <div class="fit_course">
+        <h3>Ready to begin?</h3>
+        <!-- <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course</a> -->
+        <form>
+          <div class="form-group fit_form_code">
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Course code" required>
+            <label for="exampleFormControlInput1">Course code</label>
+            <button type="submit" class="btn btn-text"><i class="fas fa-rocket"></i></button>
+          </div>
+        </form>
+        <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+      </div>
+    </div>
+
+
   </article>
 
 </main>
