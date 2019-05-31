@@ -1,6 +1,6 @@
 <div class="fit_active_segment" data-fit-active-segment="{{ active_segment.id }}">
 {% with segment = active_segment %}
-  {% set segment_template = 'partials/resources/_' + active_segment.template + '.html' %}
+  {% set segment_template = 'partials/segments/_' + active_segment.template + '.html' %}
   {% include segment_template %}
 {% endwith %}
 </div>
