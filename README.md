@@ -25,6 +25,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 
 * UID
 * Name
+* Picture (forced to 16:9, user-uploadable)
 * Slug
 * Order
 * Year: So we're not naming courses "My course 2020" and "my course 2021".

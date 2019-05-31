@@ -12,7 +12,7 @@ def index():
     return render_template('welcome.html')
 
 
-# Some static urls for Will to play with:
+# Some 'static' non-functional urls for Will to play with:
 
 @app.route('/mistakes')
 def mistakes():
@@ -23,11 +23,18 @@ def playground():
     return render_template('playground.html')
 
 
-# Real app things:
+# Templates that are nearly ready for app-ification:
 
 @app.route('/course_intro')
 def course_intro():
     return render_template('course_intro.html')
+
+@app.route('/course_edit')
+def course_edit():
+    return render_template('course_edit.html')
+
+
+# actually within the app now:
 
 @app.route('/course/<cid>/<lid>/<sid>')
 def course(cid, lid="01", sid="seg_a"):
