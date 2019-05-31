@@ -368,11 +368,88 @@ segments.append([
   }
 ]);
 
+lessons = [
+    {
+        'id': 'l00',
+        'course_id': '00',
+        'title': 'How to have good ideas',
+        'duration': '45:15',
+        'segments': segments[0],
+        'active': False,
+        'resources': [
+            {
+                'title': 'Good ideas reference sheet',
+                'type': 'google_doc',
+                'lang': 'en',
+                'url':'https://docs.google.com/document/d/1rQkOtFhmFFHzEizFJXpdvU4M1YGez5jIsXUHWpKyif4/edit#heading=h.i32sbgppwg0k'
+            }
+        ]
+    },
+    {
+        'id': 'l01',
+        'course_id': '00',
+        'title': 'How to sell when you hate selling',
+        'duration': '45:15',
+        'segments': segments[1],
+        'active': True,
+        'resources': [
+            {
+                'title': 'Sales template',
+                'type': 'google_doc',
+                'lang': 'en',
+                'url':'https://docs.google.com/document/d/1damO0yDb7nOR9QpGf1a9l1jkukPVwrS7I6LvQgUQI-c/edit#'
+            },
+            {
+                'title': 'Pipeline template',
+                'type': 'google_sheet',
+                'lang': 'en',
+                'url':'https://docs.google.com/spreadsheets/d/17SPW-Cicm8bA5-646HgRGLBUJ0yYX_pZO9l3UrY2imA/edit#gid=0'
+            }
+        ]
+    },
+    {
+        'id': 'l02',
+        'course_id': '00',
+        'title': 'Growth forecasting',
+        'duration': '45:15',
+        'segments': segments[2],
+        'active': False,
+        'resources': [
+            {
+                'title': 'Profit share example',
+                'type': 'google_sheet',
+                'lang': 'en',
+                'url':'https://docs.google.com/spreadsheets/d/1Bi0XAfmM8bJqAamdEPqqtuwLDPDbKYsCDrG9GCnlU2w/copy'
+            },
+            {
+                'title': 'Profit share with scenarios',
+                'type': 'google_sheet',
+                'lang': 'en',
+                'url':'https://docs.google.com/spreadsheets/d/1N1qUDM1jprc1nAol1AYyQd67QZMurkrCeDn7S7uc9PU/copy'
+            },
+            {
+                'title': 'Service business model',
+                'type': 'google_sheet',
+                'lang': 'en',
+                'url': 'https://docs.google.com/spreadsheets/d/1-UVn_wYQVMvFFMOuy0Rnq63DKVrLwn3Y7gnhlui48-M/copy'
+            },
+            {
+                'title': 'SaaS business model',
+                'type': 'google_sheet',
+                'lang': 'en',
+                'url': 'https://docs.google.com/spreadsheets/d/1jrVQ32p_Qq3zG_Phg6MLysIbqotmxefto92zgz_RdgE/copy'
+            }
+        ]
+    }
+]
+
+
+
 courses = [{
     'lessons': [
-        {'id': 'l00', 'course_id': '00', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
-        {'id': 'l01', 'course_id': '00', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
-        {'id': 'l02', 'course_id': '00', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
+        lessons[0],
+        lessons[1],
+        lessons[2]
     ]
 }]
 
