@@ -77,7 +77,7 @@ class Segment(DataModel):
 		return "/course/{}/{}/{}".format(self.course.id, self.lesson.id, self.id)
 
 	def get_lesson(self):
-		return Lesson(self.lesson_id, {'segments': []})
+		return Lesson(self.lesson_id, {'segments': [], 'course_id':self.course_id})
 
 	def get_course(self):
 		return Course(self.course_id, {'lessons': []})
@@ -92,7 +92,7 @@ class Lesson(DataModel):
 		return Course(self.course_id, {'lessons': []})
 
 	def get_permalink(self):
-		return "/course/{}/{}".format(self.course.id, self.id)
+		return "/course/{}/{}".format(self.course_id, self.id)
 
 
 class Course(DataModel):
