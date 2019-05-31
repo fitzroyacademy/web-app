@@ -292,30 +292,47 @@ $( document ).ready(function() {
   render_student_chart(studentSel);
 
   function loadSegment(sid) {
+    // Load the video.
     get('/_segment/'+sid+'.json', (e, xhr, data) => {
       if (e) console.error(e);
       data = JSON.parse(data);
       _fitz_video.replaceWith(data.active_segment.external_id);
       _fitz_video.play();
     });
+
+    // Load the student completion charts.
     let studentCharts = document.querySelector('#fit_student_list');
     if (studentCharts) {
-      get('/_completion/<sid>', (e, xhr, data) => {
+      get('/_completion/'+sid, (e, xhr, data) => {
         if (e) return console.error(e);
         studentCharts.innerHTML = data;
         render_student_chart(studentSel);
       });
     }
+
+    // Change the active state of the right DOM elements on the
+    // left lesson links panel.
+    let t = document.querySelector(`[data-fit-segment="${sid}"]`;
+    if (!t) return;
+    for (let l of document.querySelectorAll('[data-fit-segment].active')) {
+      l.classList.remove('active');
+    } t.classList.add('active');
   }
 
   // Load the next segment and video.
   delegate('[data-fit-segment]', 'click', (e, t) => {
-    for (let l of document.querySelectorAll('[data-fit-segment].active')) {
-      l.classList.remove('active');
-    }
-    t.classList.add('active');
     loadSegment(t.dataset.fitSegment);
+    // Push to browser history so back/forward works.
+    window.history.pushState({"segment_id":t.dataset.fitSegment},"", t.href);
     e.preventDefault();
-  })
+  });
+
+  // Load the video dynamically when people hit back so the URLs in their
+  // URL bar match up with what they're looking at.
+  window.addEventListener('popstate', (event) => {
+    if (document.location.pathname.match(/^\/course\/\w+/)) {
+      loadSegment(event.state.segment_id);
+    }
+  });
 
 });
