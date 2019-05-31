@@ -370,9 +370,9 @@ segments.append([
 
 courses = [{
     'lessons': [
-        {'id': 'l00', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
-        {'id': 'l01', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
-        {'id': 'l02', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
+        {'id': 'l00', 'course_id': '00', 'title': 'How to have good ideas', 'duration': '45:15', 'segments': segments[0], 'active': False},
+        {'id': 'l01', 'course_id': '00', 'title': 'How to sell when you hate selling', 'duration': '45:15', 'segments': segments[1], 'active': True},
+        {'id': 'l02', 'course_id': '00', 'title': 'Growth forecasting', 'duration': '45:15', 'segments': segments[2], 'active': False}
     ]
 }]
 
