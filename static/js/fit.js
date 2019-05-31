@@ -319,6 +319,17 @@ $( document ).ready(function() {
     } t.classList.add('active');
   }
 
+  function nextSegment() {
+    let current = document.querySelector('[data-fit-segment].active');
+    let next = current.nextElementSibling;
+    if (!next) {
+      let next_lesson = current.closest('[data-fit-lesson]').nextElementSibling;
+      if (!next_lesson) return; // No next lesson, no next.
+      next = next_lesson.querySelector('[data-fit-segment]');
+    }
+    if (next) loadSegment(next.dataset.fitSegment);
+  }
+
   // Load the next segment and video.
   delegate('[data-fit-segment]', 'click', (e, t) => {
     loadSegment(t.dataset.fitSegment);
