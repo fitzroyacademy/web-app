@@ -312,7 +312,7 @@ $( document ).ready(function() {
 
     // Change the active state of the right DOM elements on the
     // left lesson links panel.
-    let t = document.querySelector(`[data-fit-segment="${sid}"]`;
+    let t = document.querySelector(`[data-fit-segment="${sid}"]`);
     if (!t) return;
     for (let l of document.querySelectorAll('[data-fit-segment].active')) {
       l.classList.remove('active');
