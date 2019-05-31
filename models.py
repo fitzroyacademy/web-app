@@ -80,16 +80,13 @@ class Segment(DataModel):
 		return Lesson(self.lesson_id, {'segments': []})
 
 	def get_course(self):
-		return Course(self.course_id, {})
+		return Course(self.course_id, {'lessons': []})
 
 
 class Lesson(DataModel):
 	
 	def get_segments(self):
 		return DataCollection(Segment, self._data['segments'])
-
-	def get_completion(self):
-		return DataCollection(StudentCompletion)
 
 
 class Course(DataModel):
