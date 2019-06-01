@@ -3,6 +3,7 @@ import random
 from flask import Flask, render_template
 import sass
 import stubs
+import models
 
 app = Flask('FitzroyFrontend', static_url_path='')
 sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -37,8 +38,8 @@ def course_edit():
 # actually within the app now:
 
 @app.route('/course/<cid>/<lid>/<sid>')
-def course(cid, lid="01", sid="seg_a"):
-	course = stubs.get_course(cid)
+def course(cid, lid="l01", sid="seg_a"):
+	course = models.get_course(cid)
 	lesson = course.lessons.find(id=lid)
 	segment = lesson.segments.find(id=sid)
 	data = {
@@ -55,7 +56,7 @@ def partial_segment(sid):
 	if sid.endswith('.json'):
 		ext = "json"
 		sid = sid.split('.')[0]
-	active_segment = stubs.get_segment(sid)
+	active_segment = models.get_segment(sid)
 	if active_segment is None:
 		raise "Segment not found: %s".format(sid)
 	data = {
@@ -66,8 +67,8 @@ def partial_segment(sid):
 		return json.dumps(data)
 	return render_template('partials/_active_segment.html', **data)
 
-@app.route('/_completion/<sid>')
-def completion(sid):
+@app.route('/_resources/<lid>')
+def completion(lid):
 	students =  [
 		{
 			'id':'1',
@@ -94,14 +95,15 @@ def completion(sid):
 			'admin': True
 		}
 	]
-	data = {
-		'students': students
-	}
 	active = None
-	s = stubs.get_segment(sid)
-	if s is None:
-		return {"error": "Segment not found"}
-	return render_template('partials/_student_list.html', **data)
+	lesson = models.get_lesson(lid)
+	if lesson is None:
+		return {"error": "Lesson not found"}
+	data = {
+		'students': students,
+		'lesson': lesson
+	}
+	return render_template('partials/_lesson_resources.html', **data)
 
 @app.route('/lessons')
 def lessons():

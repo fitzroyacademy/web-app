@@ -1,4 +1,5 @@
 import copy
+import stubs
 
 class DataModel:
 	def __init__(self, sid, data):
@@ -74,19 +75,16 @@ class DataCollection:
 class Segment(DataModel):
 
 	def get_permalink(self):
-		return "/course/{}/{}/{}".format(self.course.id, self.lesson.id, self.id)
-
-	def get_lesson(self):
-		return Lesson(self.lesson_id, {'segments': [], 'course_id':self.course_id})
-
-	def get_course(self):
-		return Course(self.course_id, {'lessons': []})
+		return "/course/{}/{}/{}".format(self.course_id, self.lesson_id, self.id)
 
 
 class Lesson(DataModel):
 	
 	def get_segments(self):
 		return DataCollection(Segment, self._data['segments'])
+
+	def get_resources(self):
+		return DataCollection(Resource, self._data['resources'])
 
 	def get_course(self):
 		return Course(self.course_id, {'lessons': []})
@@ -99,3 +97,39 @@ class Course(DataModel):
 
 	def get_lessons(self):
 		return DataCollection(Lesson, self._data['lessons'])
+
+
+class Resource(DataModel):
+
+	def get_icon(self):
+		stubs = {
+			'google_doc': 'fa-file-alt',
+			'google_sheet': 'fa-file-spreadsheet',
+			'google_slides': 'fa-file-image'
+		}
+		if self.type in stubs:
+			return stubs[self.type]
+		return 'fa-file'
+
+	def get_description(self):
+		stubs = {
+			'google_doc': 'Google document',
+			'google_sheet': 'Google spreadsheet',
+			'google_slides': 'Google slides'
+		}
+		if self.type in stubs:
+			return stubs[self.type]
+		return 'External file'
+
+
+def get_segment(sid):
+    for l in stubs.segments:
+        for s in l:
+            if s['id'] == sid:
+                return Segment(sid, s)
+
+def get_lesson(lid):
+    return Lesson(int(lid), stubs.courses[0]['lessons'][int(lid)])
+
+def get_course(cid):
+    return Course(cid, stubs.courses[int(cid)])
