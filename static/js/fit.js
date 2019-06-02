@@ -291,7 +291,7 @@ $( document ).ready(function() {
   });
   render_student_chart(studentSel);
 
-  function loadSegment(sid) {
+  function loadSegment(sid, lid) {
     // Load the video.
     get('/_segment/'+sid+'.json', (e, xhr, data) => {
       if (e) console.error(e);
@@ -300,18 +300,21 @@ $( document ).ready(function() {
       _fitz_video.play();
     });
 
-    // Load the student completion charts.
-    let studentCharts = document.querySelector('#fit_student_list');
-    if (studentCharts) {
-      get('/_completion/'+sid, (e, xhr, data) => {
-        if (e) return console.error(e);
-        studentCharts.innerHTML = data;
-        render_student_chart(studentSel);
-      });
+    // Reload the lesson resources, if the lesson has changed.
+    let resourcePanel = document.querySelector("#fit_resources_panel[data-fit-active-lesson]");
+    if (resourcePanel) {
+      let activeLesson = resourcePanel.dataset.fitActiveLesson;
+      if (activeLesson != lid) {
+        get('/_lesson_resources/'+lid, (e, xhr, data) => {
+          if (e) return console.error(e);
+          document.querySelector('#fit_resources_panel').innerHTML = data;
+          render_student_chart(studentSel);
+        });
+      }
     }
 
-    // Change the active state of the right DOM elements on the
-    // left lesson links panel.
+    // Change the active state of segment link on the left lesson
+    // links panel.
     let t = document.querySelector(`[data-fit-segment="${sid}"]`);
     if (!t) return;
     for (let l of document.querySelectorAll('[data-fit-segment].active')) {
@@ -320,19 +323,19 @@ $( document ).ready(function() {
   }
 
   function nextSegment() {
-    let current = document.querySelector('[data-fit-segment].active');
+    let current = document.querySelector('a[data-fit-segment].active');
     let next = current.nextElementSibling;
     if (!next) {
       let next_lesson = current.closest('[data-fit-lesson]').nextElementSibling;
       if (!next_lesson) return; // No next lesson, no next.
       next = next_lesson.querySelector('[data-fit-segment]');
     }
-    if (next) loadSegment(next.dataset.fitSegment);
+    if (next) loadSegment(next.dataset.fitSegment, next.dataset.fitParent);
   }
 
   // Load the next segment and video.
   delegate('[data-fit-segment]', 'click', (e, t) => {
-    loadSegment(t.dataset.fitSegment);
+    loadSegment(t.dataset.fitSegment, t.dataset.fitParent);
     // Push to browser history so back/forward works.
     window.history.pushState({"segment_id":t.dataset.fitSegment},"", t.href);
     e.preventDefault();

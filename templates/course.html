@@ -24,7 +24,7 @@
         <div class="collapse {{'show' if lesson.id == active_lesson.id }}" id="fit_lesson_{{ lesson.id }}">
           <div class="fit_body fit_segments">
             {% for segment in lesson.segments %}
-              <a class="fit_btn video {{ segment.type }} {{'active' if segment.id == active_segment.id }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}">
+              <a class="fit_btn video {{ segment.type }} {{'active' if segment.id == active_segment.id }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}" data-fit-parent="{{ segment.lesson_id }}">
                 <i class="fas fa-circle"></i>
                 <span class="fit_txt">{{ segment.title }}</span> 
                 <span class="fit_sub">{{ segment.duration }}</span>
@@ -74,14 +74,11 @@
         </a>
       </div>
 
-      <div class="fit">
-        <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
-          <i class="fal fa-books"></i>
-          <span class="fit_txt">Resources</span> 
-          <span class="fas fa-chevron-down"></span>
-        </a>
-        {% include 'partials/_lesson_resources.html' %}
-      </div>      
+      <div class="fit" id="fit_resources_panel" data-fit-active-lesson="{{ active_lesson.id }}">
+          {% with lesson = active_lesson %}
+            {% include 'partials/_lesson_resources.html' %}
+          {% endwith %}
+      </div>
 
     </div>
   </aside>
