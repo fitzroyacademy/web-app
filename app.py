@@ -67,8 +67,9 @@ def partial_segment(sid):
 		return json.dumps(data)
 	return render_template('partials/_active_segment.html', **data)
 
-@app.route('/_resources/<lid>')
-def completion(lid):
+
+@app.route('/_lesson_resources/<lid>')
+def _lesson_resources(lid):
 	students =  [
 		{
 			'id':'1',
