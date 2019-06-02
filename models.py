@@ -129,7 +129,7 @@ def get_segment(sid):
                 return Segment(sid, s)
 
 def get_lesson(lid):
-    return Lesson(int(lid), stubs.courses[0]['lessons'][int(lid)])
+    return Lesson(int(lid), stubs.lessons[int(lid)])
 
 def get_course(cid):
     return Course(cid, stubs.courses[int(cid)])
