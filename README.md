@@ -24,7 +24,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 ## Course
 
 * UID
-* Name (w/ translations?)
+* Name w/ translations?
 * Picture (forced to 16:9, user-uploadable)
 * Slug
 * Order
@@ -172,7 +172,7 @@ The options for surveys / questionnaires are:
 * boolean "stuck" (stuck or fine), with free text on stuck
 * Free text
 
-Each questionnaire part is either "mandatory" or "optional"; 
+Each questionnaire part is either "mandatory" or "optional".
 
 ---
 
