@@ -10,7 +10,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 
 * UID
 * Name
-* Logo
+* Logo (upload)
 * Colour choice
 * One or many *Programs*
 * *Administrator* user
@@ -24,7 +24,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 ## Course
 
 * UID
-* Name
+* Name (w/ translations?)
 * Picture (forced to 16:9, user-uploadable)
 * Slug
 * Order
@@ -34,9 +34,9 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Students enrolled
 * One or many Teachers (admins)
 * One 16:9 Cover image
-* 'Who it's for' (plain text / simple markdown)
-* 'Length and workload' (plain text / simple markdown)
-* 'What you'll learn (plain text / simple markdown)
+* 'Who it's for' (plain text / simple markdown) w/ translations?
+* 'Length and workload' (plain text / simple markdown) w/ translations?
+* 'What you'll learn (plain text / simple markdown) w/ translations?
 * Paid or free (beta = everything is free)
 * Access code (optional)
 * Guest access? (i.e. can anonymous users access this course?)
@@ -53,11 +53,11 @@ These can be set by the admin, and control access via a code.
 ## Lesson
 
 * UID
-* Title (short text)
+* Title (short text) w/ translations?
 * Image (16:9 ratio)
 * Total time (from video segments)
 * Order
-* Strapline (slightly longer text)
+* Strapline (slightly longer text) w/ translations?
 * One or many Segments
 * Resources
 
@@ -94,12 +94,14 @@ No controls for uploading file at the moment. We'll let teachers manage that via
 Segments are the chunks of video or text, which students watch / complete within lessons. Each has:
 
 * UID
-* Title
-* Source
+* Title w/ translations?
+* Source (may be multiple if there are different audio languages available)
 * Type
 * Time (if source = video)
 * Order
 * Status
+* Language (EN | KH | PH | etc)
+* Subtitle languages availabile (EN | KH | PH | etc) (if source = video)
 * ???
 
 ### Segment source
@@ -147,8 +149,21 @@ The untouched and touched states are not shown to the student, but are used by t
 
 *Completeness* is set by a % watched on a segment by segment basis.
 
+### Segment languages
 
-### Questionnaires
+#### Video
+
+Lesson creators will have to upload separate videos if they want differently-languaged audio. Each video within a segment may have one or more subtitle languages.
+
+#### Subtitles
+
+For YouTube, the subtitle language can be set in the embed, which should integrate with our preferred `subtitle` language preference; for Wistia, it's based upon the user's browser, with a fallback to the [first availabile language](https://wistia.com/support/player/captions) for the video.
+
+#### HTML/Survey
+
+The text and their translations will be stored in the database.
+
+### Surveys
 
 The options for surveys / questionnaires are:
 
@@ -157,7 +172,7 @@ The options for surveys / questionnaires are:
 * boolean "stuck" (stuck or fine), with free text on stuck
 * Free text
 
-Each questionnaire part is either "mandatory" or "optional".
+Each questionnaire part is either "mandatory" or "optional"; 
 
 ---
 
@@ -325,7 +340,7 @@ English is our fallback language. If a 'preferred' language is unvailable, fall 
 
 The above might read as _"I speak Khmer as a first language, but want to see subtitles and read transcripts in English, to improve my English."_
 
-Let's mash this against an example lesson with it's translations:
+Let's mash this against an example lesson with its translations:
 
 ### Example translations available:
 
