@@ -111,5 +111,5 @@ def lessons():
     return render_template('lesson_chart.html')
 
 if __name__ == "__main__":
-	if os_environ['APP_ENV'] == 'dev':
+	if os_environ['APP_ENV'] == 'local':
 		app.debug = True
