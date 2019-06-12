@@ -122,6 +122,6 @@ class Resource(Base):
 	def __repr__(self):
 		return ":D"
 
-
-engine = sa.create_engine('sqlite:///dev_db.sqlite')
+db_endpoint = os_environ['DB_ENDPOINT']
+engine = sa.create_engine(db_endpoint)
 Base.metadata.create_all(engine)
