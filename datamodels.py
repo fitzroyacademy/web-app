@@ -145,6 +145,7 @@ class Course(Base):
 	access_code = sa.Column(sa.String(16))
 	paid = sa.Column(sa.Boolean)
 	guest_access = sa.Column(sa.Boolean)
+	language = sa.Column(sa.String(2))
 
 	program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
 	program = orm.relationship("Program", back_populates="courses")
@@ -152,12 +153,28 @@ class Course(Base):
 	lessons = orm.relationship("Lesson", back_populates="course")
 
 	users = orm.relationship("CourseEnrollment", back_populates="course")
+	translations = orm.relationship("CourseTranslation", back_populates="course")
 
 	def add_user(self, user, access_level=0):
 		association = CourseEnrollment(access_level=access_level)
 		association.institute = self
 		association.user = user
 		self.users.append(a)
+
+	def to_json(self):
+		return json.dumps(dump(self))
+
+
+class CourseTranslation(Base):
+
+	__tablename__ = 'courses_translated'
+
+	id = sa.Column(sa.Integer, primary_key=True)
+	course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
+	title = sa.Column(sa.String)
+	language = sa.Column(sa.String(2))
+
+	course = orm.relationship("Course", back_populates="translations")
 
 	def to_json(self):
 		return json.dumps(dump(self))
@@ -183,12 +200,32 @@ class Lesson(Base):
 	title = sa.Column(sa.String)
 	duration_seconds = sa.Column(sa.Integer) # derivable through children
 	active = sa.Column(sa.Boolean)
+	language = sa.Column(sa.String(2))
 
 	course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
 	course = orm.relationship("Course", back_populates="lessons")
 
 	segments = orm.relationship("Segment", back_populates="lesson")
 	resources = orm.relationship("Resource", back_populates="lesson")
+
+	translations = orm.relationship("LessonTranslation", back_populates="lesson")
+
+	def to_json(self):
+		return json.dumps(dump(self))
+
+
+class LessonTranslation(Base):
+
+	__tablename__ = 'lessons_translated'
+
+	id = sa.Column(sa.Integer, primary_key=True)
+	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
+	title = sa.Column(sa.String)
+	duration_seconds = sa.Column(sa.Integer)
+	url = sa.Column(sa.String)
+	language = sa.Column(sa.String(2))
+
+	lesson = orm.relationship("Lesson", back_populates="translations")
 
 	def to_json(self):
 		return json.dumps(dump(self))
@@ -208,6 +245,25 @@ class Segment(Base):
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="segments")
 
+	translations = orm.relationship("SegmentTranslation", back_populates="segment")
+
+	def to_json(self):
+		return json.dumps(dump(self))
+
+
+class SegmentTranslation(Base):
+
+	__tablename__ = 'lesson_segments_translated'
+
+	id = sa.Column(sa.Integer, primary_key=True)
+	segment_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_segments.id'))
+	title = sa.Column(sa.String)
+	duration_seconds = sa.Column(sa.Integer)
+	url = sa.Column(sa.String)
+	language = sa.Column(sa.String(2))
+
+	segment = orm.relationship("Segment", back_populates="translations")
+
 	def to_json(self):
 		return json.dumps(dump(self))
 
@@ -220,15 +276,37 @@ class Resource(Base):
 	title = sa.Column(sa.String)
 	url = sa.Column(sa.String)
 	type = sa.Column(sa.String)
-	language = sa.Column(sa.String(2))
 	featured = sa.Column(sa.Boolean)
 
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="resources")
 
+	translations = orm.relationship("ResourceTranslation", back_populates="resource")
+
 	def to_json(self):
 		return json.dumps(dump(self))
 
 
-engine = sa.create_engine('sqlite:///dev_db.sqlite')
-Base.metadata.create_all(engine)
+class ResourceTranslation(Base):
+
+	__tablename__ = 'lesson_resources_translated'
+
+	id = sa.Column(sa.Integer, primary_key=True)
+	resource_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_resources.id'))
+	title = sa.Column(sa.String)
+	url = sa.Column(sa.String)
+	language = sa.Column(sa.String(2))
+
+	resource = orm.relationship("Resource", back_populates="translations")
+
+
+_session = None
+def get_session():
+	global _session
+	if _session is None:
+		engine = sa.create_engine('sqlite:///dev_db.sqlite')
+		Base.metadata.create_all(engine)
+		Session = orm.sessionmaker(bind=engine)
+		_session = Session()
+	return _session
+
