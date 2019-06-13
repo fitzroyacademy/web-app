@@ -2,9 +2,40 @@ from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy.orm as orm
 import sqlalchemy as sa
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 
 Base = declarative_base()
+
+def dump(obj, seen=None):
+	if not isinstance(obj, Base):
+		return obj
+	seen = seen or []  # Recursion trap.
+	seen.append(id(obj))
+	ignored = ["metadata"]
+	fields = {}
+	for f in [x for x in dir(obj) if x.startswith('_') is False and x not in ignored]:
+		data = getattr(obj, f)
+		try:
+			json.dumps(data)
+			fields[f] = data
+		except TypeError:
+			if isinstance(data, Base):
+				if id(data) in seen:
+					fields[f] = None
+				else:
+					fields[f] = dump(data, seen)
+			elif callable(data) and f.startswith('get_'):
+					fields[f[4:]] = dump(data(), seen)
+			elif isinstance(data, list):
+				fields[f] = []
+				for o in data:
+					if id(o) in seen:
+						fields[f].append(None)
+					else:
+						fields[f].append(dump(o, seen))
+	return fields
+
 
 class User(Base):
 
@@ -30,7 +61,7 @@ class User(Base):
 		return check_password_hash(self.password_hash, password)
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 class Institute(Base):
@@ -50,7 +81,7 @@ class Institute(Base):
 		self.users.append(a)
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 class InstituteEnrollment(Base):
@@ -85,7 +116,7 @@ class Program(Base):
 		self.users.append(a)
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 class ProgramEnrollment(Base):
@@ -129,7 +160,7 @@ class Course(Base):
 		self.users.append(a)
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 class CourseEnrollment(Base):
@@ -160,7 +191,7 @@ class Lesson(Base):
 	resources = orm.relationship("Resource", back_populates="lesson")
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 class Segment(Base):
@@ -178,7 +209,7 @@ class Segment(Base):
 	lesson = orm.relationship("Lesson", back_populates="segments")
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 class Resource(Base):
@@ -196,7 +227,7 @@ class Resource(Base):
 	lesson = orm.relationship("Lesson", back_populates="resources")
 
 	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
+		return json.dumps(dump(self))
 
 
 engine = sa.create_engine('sqlite:///dev_db.sqlite')
