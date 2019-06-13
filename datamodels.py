@@ -60,9 +60,6 @@ class User(Base):
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
 
-	def to_json(self):
-		return json.dumps(dump(self))
-
 
 class Institute(Base):
 
@@ -80,9 +77,6 @@ class Institute(Base):
 		association.user = user
 		self.users.append(a)
 
-	def to_json(self):
-		return json.dumps(dump(self))
-
 
 class InstituteEnrollment(Base):
 	__tablename__ = 'users_institutes'
@@ -94,9 +88,6 @@ class InstituteEnrollment(Base):
 
 	user = orm.relationship("User", back_populates="institutes")
 	institute = orm.relationship("Institute", back_populates="users")
-
-	def to_json(self):
-		return json.dumps(self, cls=AlchemyEncoder)
 
 
 class Program(Base):
@@ -114,9 +105,6 @@ class Program(Base):
 		association.program = self
 		association.user = user
 		self.users.append(a)
-
-	def to_json(self):
-		return json.dumps(dump(self))
 
 
 class ProgramEnrollment(Base):
@@ -161,9 +149,6 @@ class Course(Base):
 		association.user = user
 		self.users.append(a)
 
-	def to_json(self):
-		return json.dumps(dump(self))
-
 
 class CourseTranslation(Base):
 
@@ -175,9 +160,6 @@ class CourseTranslation(Base):
 	language = sa.Column(sa.String(2))
 
 	course = orm.relationship("Course", back_populates="translations")
-
-	def to_json(self):
-		return json.dumps(dump(self))
 
 
 class CourseEnrollment(Base):
@@ -210,9 +192,6 @@ class Lesson(Base):
 
 	translations = orm.relationship("LessonTranslation", back_populates="lesson")
 
-	def to_json(self):
-		return json.dumps(dump(self))
-
 
 class LessonTranslation(Base):
 
@@ -226,9 +205,6 @@ class LessonTranslation(Base):
 	language = sa.Column(sa.String(2))
 
 	lesson = orm.relationship("Lesson", back_populates="translations")
-
-	def to_json(self):
-		return json.dumps(dump(self))
 
 
 class Segment(Base):
@@ -247,9 +223,6 @@ class Segment(Base):
 
 	translations = orm.relationship("SegmentTranslation", back_populates="segment")
 
-	def to_json(self):
-		return json.dumps(dump(self))
-
 
 class SegmentTranslation(Base):
 
@@ -263,9 +236,6 @@ class SegmentTranslation(Base):
 	language = sa.Column(sa.String(2))
 
 	segment = orm.relationship("Segment", back_populates="translations")
-
-	def to_json(self):
-		return json.dumps(dump(self))
 
 
 class Resource(Base):
@@ -282,9 +252,6 @@ class Resource(Base):
 	lesson = orm.relationship("Lesson", back_populates="resources")
 
 	translations = orm.relationship("ResourceTranslation", back_populates="resource")
-
-	def to_json(self):
-		return json.dumps(dump(self))
 
 
 class ResourceTranslation(Base):
