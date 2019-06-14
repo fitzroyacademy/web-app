@@ -68,6 +68,7 @@ class Institute(Base):
 	id = sa.Column(sa.Integer, primary_key=True)
 	name = sa.Column(sa.String)
 	logo = sa.Column(sa.String)  # URL to picture resource
+	slug = sa.Column(sa.String(50), unique=True)
 
 	users = orm.relationship("InstituteEnrollment", back_populates="institute")
 
@@ -96,6 +97,7 @@ class Program(Base):
 
 	id = sa.Column(sa.Integer, primary_key=True)
 	name = sa.Column(sa.String)
+	slug = sa.Column(sa.String(50), unique=True)
 
 	users = orm.relationship("ProgramEnrollment", back_populates="program")
 	courses = orm.relationship("Course", back_populates="program")
@@ -126,7 +128,6 @@ class Course(Base):
 	title = sa.Column(sa.String)
 	picture = sa.Column(sa.String)  # URL to picture resource
 	cover_image = sa.Column(sa.String)
-	slug = sa.Column(sa.String(50), unique=True)
 	order = sa.Column(sa.Integer)
 	year = sa.Column(sa.Date)
 	course_code = sa.Column(sa.String(50))
@@ -134,6 +135,7 @@ class Course(Base):
 	paid = sa.Column(sa.Boolean)
 	guest_access = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
+	slug = sa.Column(sa.String(50), unique=True)
 
 	program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
 	program = orm.relationship("Program", back_populates="courses")
@@ -183,6 +185,8 @@ class Lesson(Base):
 	duration_seconds = sa.Column(sa.Integer) # derivable through children
 	active = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
+	slug = sa.Column(sa.String(50))  # Unique in relation to parent
+	order = sa.Column(sa.Integer)
 
 	course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
 	course = orm.relationship("Course", back_populates="lessons")
@@ -191,6 +195,11 @@ class Lesson(Base):
 	resources = orm.relationship("Resource", back_populates="lesson")
 
 	translations = orm.relationship("LessonTranslation", back_populates="lesson")
+
+	@orm.validates('slug')
+	def validate_slug(self, key, value):
+		""" Check the parent course for any duplicate lesson slugs """
+		pass
 
 
 class LessonTranslation(Base):
@@ -212,16 +221,24 @@ class Segment(Base):
 	__tablename__ = 'lesson_segments'
 
 	id = sa.Column(sa.Integer, primary_key=True)
+	type = sa.Column(sa.String)
 	title = sa.Column(sa.String)
 	duration_seconds = sa.Column(sa.Integer)
 	external_id = sa.Column(sa.String)
 	url = sa.Column(sa.String)
 	language = sa.Column(sa.String(2))
+	slug = sa.Column(sa.String(50))  # Unique in relation to parent
+	order = sa.Column(sa.Integer)
 
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="segments")
 
 	translations = orm.relationship("SegmentTranslation", back_populates="segment")
+
+	@orm.validates('slug')
+	def validate_slug(self, key, value):
+		""" Check the parent lesson for any duplicate segment slugs """
+		pass
 
 
 class SegmentTranslation(Base):
@@ -246,6 +263,7 @@ class Resource(Base):
 	title = sa.Column(sa.String)
 	url = sa.Column(sa.String)
 	type = sa.Column(sa.String)
+	order = sa.Column(sa.Integer)
 	featured = sa.Column(sa.Boolean)
 
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
@@ -277,3 +295,31 @@ def get_session():
 		_session = Session()
 	return _session
 
+
+def get_course_by_slug(slug):
+	session = get_session()
+	return session.query(Course).filter(Course.slug == slug).one()
+
+def get_lesson_by_slug(course_slug, lesson_slug):
+	session = get_session()
+	q = session.query(Lesson).\
+		join(Lesson.course).\
+		filter(Course.slug == course_slug).\
+		filter(Lesson.slug == lesson_slug)
+	try:
+		return q.one()
+	except:
+		return None
+
+def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
+	session = get_session()
+	q = session.query(Segment).\
+		join(Lesson.segments).\
+		join(Lesson.course).\
+		filter(Course.slug == course_slug).\
+		filter(Lesson.slug == lesson_slug).\
+		filter(Segment.slug == segment_slug)
+	try:
+		return q.one()
+	except:
+		return None
