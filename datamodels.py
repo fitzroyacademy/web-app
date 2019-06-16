@@ -271,6 +271,28 @@ class Resource(Base):
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="resources")
 
+	@property
+	def icon(self):
+		stubs = {
+			'google_doc': 'fa-file-alt',
+			'google_sheet': 'fa-file-spreadsheet',
+			'google_slides': 'fa-file-image'
+		}
+		if self.type in stubs:
+			return stubs[self.type]
+		return 'fa-file'
+
+	@property
+	def description(self):
+		stubs = {
+			'google_doc': 'Google document',
+			'google_sheet': 'Google spreadsheet',
+			'google_slides': 'Google slides'
+		}
+		if self.type in stubs:
+			return stubs[self.type]
+		return 'External file'
+
 
 _session = None
 def get_session():
