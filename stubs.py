@@ -405,7 +405,7 @@ lessons = [
         'title': 'How to have good ideas',
         'duration': '45:15', # -> Dur seconds
         'segments': segments[0],
-        'active': False,
+        'active': True,
         'resources': [
             {
                 'id': 'res_a', # -> slug
@@ -451,7 +451,7 @@ lessons = [
         'title': 'Growth forecasting',
         'duration': '45:15',
         'segments': segments[2],
-        'active': False,
+        'active': True,
         'resources': [
             {
                 'id': 'res_d',
