@@ -198,8 +198,8 @@ class Lesson(Base):
 
 	@orm.validates('slug')
 	def validate_slug(self, key, value):
-		""" Check the parent course for any duplicate lesson slugs """
-		pass
+		""" TODO: Check the parent course for any duplicate lesson slugs """
+		return value
 
 
 class LessonTranslation(Base):
@@ -237,8 +237,8 @@ class Segment(Base):
 
 	@orm.validates('slug')
 	def validate_slug(self, key, value):
-		""" Check the parent lesson for any duplicate segment slugs """
-		pass
+		""" TODO: Check the parent lesson for any duplicate segment slugs """
+		return value
 
 
 class SegmentTranslation(Base):
@@ -265,24 +265,11 @@ class Resource(Base):
 	type = sa.Column(sa.String)
 	order = sa.Column(sa.Integer)
 	featured = sa.Column(sa.Boolean)
+	language = sa.Column(sa.String(2))
+	slug = sa.Column(sa.String(50))
 
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="resources")
-
-	translations = orm.relationship("ResourceTranslation", back_populates="resource")
-
-
-class ResourceTranslation(Base):
-
-	__tablename__ = 'lesson_resources_translated'
-
-	id = sa.Column(sa.Integer, primary_key=True)
-	resource_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_resources.id'))
-	title = sa.Column(sa.String)
-	url = sa.Column(sa.String)
-	language = sa.Column(sa.String(2))
-
-	resource = orm.relationship("Resource", back_populates="translations")
 
 
 _session = None
