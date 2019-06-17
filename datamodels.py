@@ -312,7 +312,7 @@ def get_session():
 	if _session is None:
 		engine = sa.create_engine('sqlite:///dev_db.sqlite')
 		Base.metadata.create_all(engine)
-		Session = orm.sessionmaker(bind=engine)
+		Session = orm.scoped_session(orm.sessionmaker(bind=engine))
 		_session = Session()
 	return _session
 
@@ -320,6 +320,10 @@ def get_session():
 def get_course_by_slug(slug):
 	session = get_session()
 	return session.query(Course).filter(Course.slug == slug).one()
+
+def get_lesson(lesson_id):
+	session = get_session()
+	return session.query(Lesson).filter(Lesson.id == lesson_id).one()
 
 def get_lesson_by_slug(course_slug, lesson_slug):
 	session = get_session()

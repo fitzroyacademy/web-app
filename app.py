@@ -106,7 +106,7 @@ def _lesson_resources(lid):
 		}
 	]
 	active = None
-	lesson = models.get_lesson(lid)
+	lesson = datamodels.get_lesson(lid)
 	if lesson is None:
 		return {"error": "Lesson not found"}
 	data = {
