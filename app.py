@@ -3,7 +3,7 @@ import random
 from flask import Flask, render_template
 import sass
 import stubs
-import models
+import datamodels
 
 app = Flask('FitzroyFrontend', static_url_path='')
 sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -38,13 +38,21 @@ def course_edit():
 # actually within the app now:
 
 @app.route('/course/<cid>/<lid>/<sid>')
-def course(cid, lid="l01", sid="seg_a"):
-	course = models.get_course(cid)
-	lesson = course.lessons.find(id=lid)
-	segment = lesson.segments.find(id=sid)
+def course(cid, lid=None, sid=None):
+	if lid is None:
+		course = datamodels.get_course_by_slug(cid)
+		lesson = course.lessons[0]
+		segment = lesson.segments[0]
+	elif sid is None:
+		lesson = datamodels.get_lesson_by_slug(cid, lid)
+		course = lesson.course
+	else:
+		segment = datamodels.get_segment_by_slug(cid, lid, sid)
+		lesson = segment.lesson
+		course = lesson.course
 	data = {
-		'students': stubs.students,
-		'active_lesson': lesson,
+		'students': stubs.student_completion,
+		'active_lesson': lesson,	
 		'active_segment': segment,
 		'course': course
 	}
@@ -56,14 +64,15 @@ def partial_segment(sid):
 	if sid.endswith('.json'):
 		ext = "json"
 		sid = sid.split('.')[0]
-	active_segment = models.get_segment(sid)
+	active_segment = datamodels.get_segment(sid)
 	if active_segment is None:
 		raise "Segment not found: %s".format(sid)
 	data = {
 		'active_segment': active_segment
 	}
 	if ext is 'json':
-		data['active_segment'] = data['active_segment'].dump()
+		dump = datamodels.dump(data['active_segment'])
+		data['active_segment'] = dump
 		return json.dumps(data)
 	return render_template('partials/_active_segment.html', **data)
 

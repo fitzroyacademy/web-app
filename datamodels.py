@@ -240,6 +240,18 @@ class Segment(Base):
 		""" TODO: Check the parent lesson for any duplicate segment slugs """
 		return value
 
+	@property
+	def template(self):
+		return "video_wistia"
+
+	@property
+	def permalink(self):
+		return "/course/{}/{}/{}".format(
+			self.lesson.course.slug,
+			self.lesson.slug,
+			self.slug
+		)
+
 
 class SegmentTranslation(Base):
 
@@ -319,6 +331,10 @@ def get_lesson_by_slug(course_slug, lesson_slug):
 		return q.one()
 	except:
 		return None
+
+def get_segment(segment_id):
+	session = get_session()
+	return session.query(Segment).filter(Segment.id == segment_id).one()
 
 def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	session = get_session()
