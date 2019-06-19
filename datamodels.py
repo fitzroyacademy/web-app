@@ -310,7 +310,7 @@ _session = None
 def get_session():
 	global _session
 	if _session is None:
-		engine = sa.create_engine('sqlite:///dev_db.sqlite')
+		engine = sa.create_engine('sqlite:///dev_db.sqlite?check_same_thread=False')
 		Base.metadata.create_all(engine)
 		Session = orm.scoped_session(orm.sessionmaker(bind=engine))
 		_session = Session()
