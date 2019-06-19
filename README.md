@@ -13,13 +13,14 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Logo (upload)
 * Colour choice
 * One or many *Programs*
-* *Administrator* user
+* One or many affiliated users with access levels including:
+	* Admin
 
 ## Program
 
 * UID
 * One or many *Courses*
-* *Program* administrator
+* One or many affiliated users with access levels including admin
 
 ## Course
 
@@ -31,8 +32,6 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Year: So we're not naming courses "My course 2020" and "my course 2021".
 * ID code, for courses with school codes like `SCI2502`
 * One or many `Lessons`
-* Students enrolled
-* One or many Teachers (admins)
 * One 16:9 Cover image
 * 'Who it's for' (plain text / simple markdown) w/ translations?
 * 'Length and workload' (plain text / simple markdown) w/ translations?
@@ -41,7 +40,9 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Access code (optional)
 * Guest access? (i.e. can anonymous users access this course?)
 * Parent Institute
-* Enrolled students
+* One or many affiliated users with access levels including:
+	* Enrolled students
+	* Teachers (admins)
 
 ### Access codes
 
@@ -64,6 +65,10 @@ These can be set by the admin, and control access via a code.
 ## Lessons resources:
 
 Resources are links, text and other stuff the student uses while completing lessons. They're at the `lesson` level within courses.
+
+### Resource Translations
+
+A secondary table for translations of default resources is available to provide localized override of all applicable resource data fields.
 
 ### Resources structure:
 
@@ -95,7 +100,7 @@ Segments are the chunks of video or text, which students watch / complete within
 
 * UID
 * Title w/ translations?
-* Source (may be multiple if there are different audio languages available)
+* Source
 * Type
 * Time (if source = video)
 * Order
@@ -103,6 +108,10 @@ Segments are the chunks of video or text, which students watch / complete within
 * Language (EN | KH | PH | etc)
 * Subtitle languages availabile (EN | KH | PH | etc) (if source = video)
 * ???
+
+### Segment Translations
+
+A secondary table for translations of default segments is available to provide localized override of all applicable segment data fields.
 
 ### Segment source
 

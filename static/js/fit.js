@@ -308,6 +308,7 @@ $( document ).ready(function() {
         get('/_lesson_resources/'+lid, (e, xhr, data) => {
           if (e) return console.error(e);
           document.querySelector('#fit_resources_panel').innerHTML = data;
+          document.querySelector('#fit_resources_panel').dataset.fitActiveLesson = lid;
           render_student_chart(studentSel);
         });
       }

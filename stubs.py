@@ -1,6 +1,6 @@
 import random
 
-students =  [
+student_completion =  [
 	{
 		'id':'1',
 		'name':'Alice',
@@ -27,18 +27,48 @@ students =  [
 	}
 ];
 
+students = [
+    {
+        'id': 1,
+        'first_name': 'Homer',
+        'last_name': 'Simpson'
+    },
+    {
+        'id': 2,
+        'first_name': 'Marge',
+        'last_name': 'Simpson'
+    },
+    {
+        'id': 3,
+        'first_name': 'Bart',
+        'last_name': 'Simpson'
+    },
+    {
+        'id': 4,
+        'first_name': 'Lisa',
+        'last_name': 'Simpson'
+    },
+    {
+        'id': 5,
+        'first_name': 'Maggie',
+        'last_name': 'Simpson'
+    },
+]
+
 segments = [];
 segments.append([
     {
+        "type": "html",
         "title": "Introduction",
-        "duration": "1:12",
+        "duration": "1:12",  # -> duration seconds
         "external_id": "4ub59urk8l",
         "url": "https://fitzroyacademy.wistia.com/medias/4ub59urk8l",
-        "template": "video_wistia",
-        "type": "html",
+        # language = en
         "id": "seg_a",
-        "lesson_id": '00',
-        "course_id": "00"
+        # "order", add
+        "template": "video_wistia", # pop
+        "lesson_id": '00',  # ignore (matches segment index)
+        "course_id": "00"  # ignore (matches segment index)
     },
     {
         "title": "Lesson Resources",
@@ -369,18 +399,19 @@ segments.append([
 
 lessons = [
     {
-        'id': '00',
-        'course_id': '00',
+        'id': '00', # pop
+        'course_id': '00', # pop
+        'slug': 'how-to-have-good-ideas',
         'title': 'How to have good ideas',
-        'duration': '45:15',
+        'duration': '45:15', # -> Dur seconds
         'segments': segments[0],
-        'active': False,
+        'active': True,
         'resources': [
             {
-                'id': 'res_a',
+                'id': 'res_a', # -> slug
                 'title': 'Good ideas reference sheet',
                 'type': 'google_doc',
-                'lang': 'en',
+                'lang': 'en', # -> language
                 'featured': True,
                 'url':'https://docs.google.com/document/d/1rQkOtFhmFFHzEizFJXpdvU4M1YGez5jIsXUHWpKyif4/edit#heading=h.i32sbgppwg0k'
             }
@@ -388,6 +419,7 @@ lessons = [
     },
     {
         'id': '01',
+        'slug': 'how-to-sell-when-you-hate-selling',
         'course_id': '00',
         'title': 'How to sell when you hate selling',
         'duration': '45:15',
@@ -414,11 +446,12 @@ lessons = [
     },
     {
         'id': '02',
+        'slug': 'growth-forecasting',
         'course_id': '00',
         'title': 'Growth forecasting',
         'duration': '45:15',
         'segments': segments[2],
-        'active': False,
+        'active': True,
         'resources': [
             {
                 'id': 'res_d',
