@@ -2,6 +2,14 @@
 
 Simple staging ground for our UX templates.
 
+# How to use (Will is a forgetful dum dum!)
+
+To make the codez go:
+`????` Michelle, halp!
+
+To make the CSS work:
+`sass --watch static/assets/scss/fit.scss static/css/fit.css`
+
 # Structure and taxonomy:
 
 Here's the nomenclature and structure for lessons, in hopefully plain English, from top to bottom:
