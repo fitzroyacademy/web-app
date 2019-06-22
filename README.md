@@ -2,13 +2,43 @@
 
 Simple staging ground for our UX templates.
 
-# How to use (Will is a forgetful dum dum!)
+# Local Installation
 
-To make the codez go:
-`????` Michelle, halp!
+This application requires Python 3 to work as well as the libraries listed in requirements.txt.
 
-To make the CSS work:
+## Manual Installation
+
+Assuming a Python 3 installation, typing this should work.
+
+```
+pip3 install -r ./requirements.txt 
+python3 app.py
+```
+
+Then hit [localhost:5000](http://localhost:5000).
+
+### To make the CSS work:
+
 `sass --watch static/assets/scss/fit.scss static/css/fit.css`
+
+## Docker Installation
+
+There's also a Dockerfile for your convenience which can be used instead.
+
+From the root repository directory, type:
+
+```
+docker build -t fitzroy-academy .
+docker run fitzroy-academy -p 5000:5000
+```
+
+The server will then be available at [localhost:5000](http://localhost:5000).
+
+# Reseeding the Local Development Database
+
+Stub data is provided for data-backed templates, which can be created using the `reseed.py` script.
+
+It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
 
 # Structure and taxonomy:
 
