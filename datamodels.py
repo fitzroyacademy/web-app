@@ -3,6 +3,7 @@ import sqlalchemy.orm as orm
 import sqlalchemy as sa
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
+from os import environ
 
 
 Base = declarative_base()
@@ -310,7 +311,8 @@ _session = None
 def get_session():
 	global _session
 	if _session is None:
-		engine = sa.create_engine('sqlite:///dev_db.sqlite?check_same_thread=False')
+		db_endpoint = environ['DB_CONNECTION_STRING']
+		engine = sa.create_engine(db_endpoint)
 		Base.metadata.create_all(engine)
 		Session = orm.scoped_session(orm.sessionmaker(bind=engine))
 		_session = Session()

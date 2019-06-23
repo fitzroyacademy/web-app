@@ -11,6 +11,7 @@ def get_seconds(dur):
 
 for student in stubs.students:
 	u = datamodels.User(**student)
+	print(u)
 	session.add(u)
 
 for i, lesson in enumerate(stubs.lessons):

@@ -56,7 +56,7 @@ custom:
     app: app.app
   app_env: ${opt:stage,'dev'}
   db_connection_string:
-    local: sqlite:///dev_db.sqlite
+    local: sqlite:///dev_db.sqlite?check_same_thread=False
     dev: postgresql+psycopg2://psqluser@fitzroy-academy-app-db.cck3lz5l88rt.us-east-2.rds.amazonaws.com:5432/postgres
     # stage:
     # prod:

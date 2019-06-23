@@ -4,9 +4,16 @@ from flask import Flask, render_template
 import sass
 import stubs
 import datamodels
+from os import environ
+from os import path
 
 app = Flask('FitzroyFrontend', static_url_path='')
 sass.compile(dirname=("static/assets/scss", 'static/css'))
+
+if environ['APP_ENV'] == 'local':
+	if not path.isfile('dev_db.sqlite'):
+		import reseed
+	app.debug = True
 
 @app.route('/')
 def index():
@@ -118,7 +125,3 @@ def _lesson_resources(lid):
 @app.route('/lessons')
 def lessons():
     return render_template('lesson_chart.html')
-
-if __name__ == "__main__":
-	if os_environ['APP_ENV'] == 'local':
-		app.debug = True
