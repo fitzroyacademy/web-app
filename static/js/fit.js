@@ -22,6 +22,21 @@ $( document ).ready(function() {
   });
 
 
+  // do fancy placeholders for inputs:
+  $("[data-fit-fancyplace]").on({
+    'focus': function() {
+      $(this).parents('.fit_fancyplace').addClass('labelled');
+      $(this).parents('.fit_fancyplace').addClass('active');
+    },
+    'blur': function() {
+      if (this.value.trim() == this.defaultValue) {
+        $(this).parents('.fit_fancyplace').removeClass('labelled');
+      }
+      $(this).parents('.fit_fancyplace').removeClass('active');
+    }
+  });
+
+
   // ------------------------------------------------------------
   // colour the progress bars
   $('.progress-bar').each(function(index, el) {
