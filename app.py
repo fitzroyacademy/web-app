@@ -120,7 +120,6 @@ def lessons():
     return render_template('lesson_chart.html')
 
 if __name__ == "__main__":
-    app.debug = True
     if app.debug:
     	from livereload import Server, shell
     	import sass
@@ -131,4 +130,4 @@ if __name__ == "__main__":
     	server.watch('./')
     	server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
     else:
-    	app.run(host='0.0.0.0', port=5000)
+    	app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
