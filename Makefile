@@ -7,3 +7,6 @@ build: install-requirements ./*
 
 run: build
 	docker run -p 5000:5000 fitzroy-academy
+
+watch: build
+	docker run --mount type=bind,source=`pwd`,target=/app -p 5000:5000 fitzroy-academy:latest

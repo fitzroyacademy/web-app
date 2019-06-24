@@ -35,7 +35,7 @@ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where m
 ### Running the app
 
 ```
-docker-compose up
+make watch
 ```
 
 ### To make the CSS work:
