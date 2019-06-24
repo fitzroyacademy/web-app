@@ -1,15 +1,12 @@
 import json
 import random
 from flask import Flask, render_template
-import sass
 import stubs
 import datamodels
 from os import environ
 from os import path
-from livereload import Server, shell
 
 app = Flask('FitzroyFrontend', static_url_path='')
-
 
 @app.route('/')
 def index():
@@ -124,7 +121,14 @@ def lessons():
 
 if __name__ == "__main__":
     app.debug = True
-    server = Server(app.wsgi_app)
-    server.watch('./')
-    server.serve(open_url=False,port=5000,debug=True)
-    # app.run(host='0.0.0.0', port=5000)
+    if app.debug:
+    	from livereload import Server, shell
+    	import sass
+    	def compile_sass():
+    	    sass.compile(dirname=("./static/assets/scss", './static/css/'), output_style='compressed')
+    	server = Server(app.wsgi_app)
+    	server.watch('./static/assets/scss/*', compile_sass)
+    	server.watch('./')
+    	server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
+    else:
+    	app.run(host='0.0.0.0', port=5000)

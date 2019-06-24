@@ -36,14 +36,18 @@ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where m
 ### Running the app
 
 ```
-make watch
+make watch # this mounts the local directory directly into the running docker container
+```
+This should enable live reloading of the app, html, and sass. This will run a Docker container so it is practically identical to what will exist in production.
+
+Docker introduces a bit of a delay, so for a quicker live reload, just run the app directly:
+```
+make fast-watch # basically python app.py
 ```
 
-### To make the CSS work:
-
+To see the closest thing to production locally:
 ```
-# In conjunction with the above:
-sass --watch static/assets/scss/fit.scss static/css/fit.css
+make run # basically docker run
 ```
 
 ## Reseeding the Local Development Database

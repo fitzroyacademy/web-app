@@ -5,7 +5,6 @@ verify_ssl = true
 
 [packages]
 flask = "*"
-libsass = "*"
 sqlalchemy = "*"
 
 [requires]
@@ -13,3 +12,4 @@ python_version = "3.7.3"
 
 [dev-packages]
 livereload = "==2.5.1"
+libsass = "*"
