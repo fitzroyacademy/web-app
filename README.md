@@ -18,9 +18,10 @@ Get working version of pip3/python3.6 and pipenv:
 ```
 brew install python3
 brew install pipenv
+npm install -g sass # if this doesn't work, see the link about Sass↓.
 brew install pyenv # optional - makes it easier to install multiple Python versions
 ```
-Also go get [Docker](https://docs.docker.com/install/).
+Make surue to also get [Docker](https://docs.docker.com/install/) and [Sass](https://sass-lang.com/install).
 
 ### Installing
 
@@ -41,6 +42,7 @@ make watch
 ### To make the CSS work:
 
 ```
+# In conjunction with the above:
 sass --watch static/assets/scss/fit.scss static/css/fit.css
 ```
 

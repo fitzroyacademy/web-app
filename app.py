@@ -6,9 +6,10 @@ import stubs
 import datamodels
 from os import environ
 from os import path
+from livereload import Server, shell
 
 app = Flask('FitzroyFrontend', static_url_path='')
-sass.compile(dirname=("static/assets/scss", 'static/css'))
+
 
 @app.route('/')
 def index():
@@ -123,4 +124,7 @@ def lessons():
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    server = Server(app.wsgi_app)
+    server.watch('./')
+    server.serve(open_url=False,port=5000,debug=True)
+    # app.run(host='0.0.0.0', port=5000)

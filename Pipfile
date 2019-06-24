@@ -3,9 +3,6 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-[dev-packages]
-psycopg2-binary = "*"
-
 [packages]
 flask = "*"
 libsass = "*"
@@ -13,3 +10,6 @@ sqlalchemy = "*"
 
 [requires]
 python_version = "3.7.3"
+
+[dev-packages]
+livereload = "==2.5.1"
