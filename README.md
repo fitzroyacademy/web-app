@@ -2,39 +2,49 @@
 
 Simple staging ground for our UX templates.
 
-# Local Installation
+### Dependencies
+- Python 3, pipenv
+- Flask, wsgi, psycopg2
+- Docker
 
-This application requires Python 3 to work as well as the libraries listed in requirements.txt.
+## Getting Started
 
-## Manual Installation
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Assuming a Python 3 installation, typing this should work.
+### Prerequisites
+Examples given for OS X.
+
+Get working version of pip3/python3.6 and pipenv:
+```
+brew install python3
+brew install pipenv
+brew install pyenv # optional - makes it easier to install multiple Python versions
+```
+Also go get [Docker](https://docs.docker.com/install/).
+
+### Installing
+
+Set up your development environment:
+```
+pyenv install 3.7.0
+pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where mine is. Pyenv makes it pretty easy.
+```
+
+## Local development
+
+### Running the app
 
 ```
-pip3 install -r ./requirements.txt 
-python3 app.py
+docker-compose up
 ```
-
-Then hit [localhost:5000](http://localhost:5000).
 
 ### To make the CSS work:
 
-`sass --watch static/assets/scss/fit.scss static/css/fit.css`
-
-## Docker Installation
-
-There's also a Dockerfile for your convenience which can be used instead.
-
-From the root repository directory, type:
-
 ```
-docker build -t fitzroy-academy .
-docker run fitzroy-academy -p 5000:5000
+sass --watch static/assets/scss/fit.scss static/css/fit.css
 ```
 
-The server will then be available at [localhost:5000](http://localhost:5000).
-
-# Reseeding the Local Development Database
+## Reseeding the Local Development Database
 
 Stub data is provided for data-backed templates, which can be created using the `reseed.py` script.
 
