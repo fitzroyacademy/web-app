@@ -10,11 +10,6 @@ from os import path
 app = Flask('FitzroyFrontend', static_url_path='')
 sass.compile(dirname=("static/assets/scss", 'static/css'))
 
-if environ['APP_ENV'] == 'local':
-	if not path.isfile('dev_db.sqlite'):
-		import reseed
-	app.debug = True
-
 @app.route('/')
 def index():
     return render_template('welcome.html')
@@ -128,4 +123,4 @@ def lessons():
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)%
+    app.run(host='0.0.0.0', port=5000)
