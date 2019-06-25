@@ -2462,6 +2462,7 @@ p.tagline .tag i {
   left: 0;
   padding: 0.75rem 0.75rem;
   color: #d2d7da;
+  cursor: default;
 }
 
 .fit_fancyplace .form-control {
