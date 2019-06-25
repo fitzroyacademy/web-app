@@ -3,8 +3,6 @@ import random
 from flask import Flask, render_template
 import stubs
 import datamodels
-from os import environ
-from os import path
 
 app = Flask('FitzroyFrontend', static_url_path='')
 
