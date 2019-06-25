@@ -5,8 +5,7 @@
     <div class="head">
       <a href="user.html" class="fit_btn right" data-fit-userpanel>
         <span class="fit_txt">
-          <span class="d-none d-sm-inline-block">Clare</span>
-          <span class="d-none d-md-inline-block">Carmody</span>
+          Log in
         </span>
         <span class="fit_pic circle">
           <img src="./assets/images/defaults/face.jpg" alt="user">
@@ -16,108 +15,38 @@
     </div>
     
     <div class="content">
-      
-      <div class="fit_pane">
-        <dl class="fit_summary_icons">
-          <dt><i class="far fa-user"></i> Your personal details</dt>
-          <dd>
-            <ul>
-              <li><a href="mailto:clare@fitzroyacademy.com">clare@fitzroyacademy.com</a></li>
-              <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li>
-              <li>Interested in <a href="#">high impact philanthropy</a>, <a href="#">coaching</a>, <a href="#">wine</a> and <a href="#">friends</a>.</li>
-            </ul>
-            <a href="user.html" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit"></i> Edit your details</a>
-          </dd>
-        </dl>
-      </div>        
         
       <div class="fit_course">
         <h3>
-          <span class="txt">Your courses.</span>
+          <span class="txt">Sign up.</span>
           <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small>
         </h3>
 
-        <div class="fit_body fit_lessons">
-
-          <div class="fit_lesson">
-            <a class="fit_btn collapsed i-l i-t" href="#">
-              <div class="fit_pic vid">
-                <img src="./assets/images/lessons/agile-project-management.jpg" alt="course">
-                <span class="fas fa-check"></span>
-              </div>
-              <span class="fit_txt">Agile project management</span>
-              <span class="fit_txt secondary">Clare Carmody, Salesforce</span>
-              <span class="fit_time">43:51</span>
-            </a>
+        <form class="fit_auth">
+          <div class="form-label-group">
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputEmail">Email address</label>
           </div>
 
-          <div class="fit_lesson">
-            <a class="fit_btn collapsed i-l i-t" href="#">
-              <div class="fit_pic vid">
-                <img src="./assets/images/lessons/guerilla-usability-testing.jpg" alt="course">
-                <span class="fas fa-check"></span>
-              </div>
-              <span class="fit_txt">Feeling good about eating cake</span>
-              
-              <span class="fit_txt secondary">Melissa Ng, Melewi</span>
-              <span class="fit_time">53:51</span>
-            </a>        
-          </div>            
-
-
-          <div class="fit_lesson">
-            <a class="fit_btn collapsed i-l i-t" href="#">
-              <div class="fit_pic vid">
-                <img src="./assets/images/lessons/crowdfunding.jpg" alt="course">
-                <span class="fas fa-play"></span>
-              </div>
-              <span class="fit_txt">Crowdfunding</span>
-              
-              <span class="fit_txt secondary">Prashan Paramanathan, Chuffed</span>            
-              <span class="fit_time">3:51</span>
-            </a>
+          <div class="form-label-group">
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <label for="inputPassword">Password</label>
           </div>
+
+          <div class="custom-control custom-checkbox mb-3">
+            <input type="checkbox" class="custom-control-input" id="customCheck1">
+            <label class="custom-control-label" for="customCheck1">Remember password</label>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <hr class="my-4">
+          <button class="btn btn-lg btn-google btn-block" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button>
+          <button class="btn btn-lg btn-facebook btn-block" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>
+        </form>
+        
         </div>
       </div><!-- fit_course -->
       <!-- end vid stack -->
 
-
-      <h3>
-        <span class="txt">Your privacy.</span>
-      </h3>
-      <p></p>
-      <dl class="fit_summary_icons">
-        <dt><i class="far fa-lock"></i> Your personal details.</dt>
-        <dd>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">Receieve email updates about your courses</label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">I'm pumped about life.</label>
-          </div>
-        </dd>
-        <dt><i class="far fa-lock"></i> Some other details.</dt>
-        <dd>     
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">Get up, get up and get down.</label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">Go team power hungry lover, keep that good feel happening</label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">We running out of things to toggle</label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">But you bet we gon tog.</label>
-          </div>   
-        </dd>          
-      </dl>
     </div>
 
   </div>

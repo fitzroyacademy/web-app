@@ -56,6 +56,9 @@ Stub data is provided for data-backed templates, which can be created using the 
 
 It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
 
+
+---
+
 # Structure and taxonomy:
 
 Here's the nomenclature and structure for lessons, in hopefully plain English, from top to bottom:
@@ -79,7 +82,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 ## Course
 
 * UID
-* Name w/ translations?
+* Name
 * Picture (forced to 16:9, user-uploadable)
 * Slug
 * Order
@@ -93,6 +96,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Paid or free (beta = everything is free)
 * Access code (optional)
 * Guest access? (i.e. can anonymous users access this course?)
+* On the home page (i.e. does this show up on the home page?) **NB: This option is only for super admins**
 * Parent Institute
 * One or many affiliated users with access levels including:
 	* Enrolled students
@@ -100,10 +104,13 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 
 ### Access codes
 
-These can be set by the admin, and control access via a code.
+These can be set by the admin, and control access via a short code.
 
-* 6+ characters
+* 8+ characters, letters and numbers
 * Controls student access
+* Most be unique
+
+Codes are central to user login: They are UIDs for courses. If a teacher wishes to constrain access to a course, they can add a code AND demand that only logged in users can access.
 
 ## Lesson
 
@@ -271,6 +278,7 @@ This is expressed in the course edit with:
 * Phone number
 * Date of birth
 * Display pic
+* Color (randomly chosen from a list)
 
 Everything but UID is optional (woah! really? I think so! Wow.)
 
