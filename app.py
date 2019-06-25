@@ -126,7 +126,7 @@ if __name__ == "__main__":
     	from livereload import Server, shell
     	import sass
     	def compile_sass():
-    	    sass.compile(dirname=("./static/assets/scss", './static/css/'), output_style='compressed')
+    	    sass.compile(dirname=("./static/assets/scss", './static/css/'))
     	server = Server(app.wsgi_app)
     	server.watch('./static/assets/scss/*', compile_sass)
     	server.watch('./')

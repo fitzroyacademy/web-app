@@ -17,8 +17,8 @@ build: install-requirements install-dev-requirements ./*
 run: build
 	FLASK_ENV='development' docker run -p 5000:5000 fitzroy-academy
 
-watch: build
+docker-watch: build
 	FLASK_ENV='development' docker run --mount type=bind,source=`pwd`,target=/app -p 5000:5000 fitzroy-academy:latest
 
-fast-watch: build-static install-requirements install-dev-requirements ./*
+watch: build-static install-requirements install-dev-requirements ./*
 	FLASK_ENV='development' pipenv run python app.py
