@@ -13,32 +13,36 @@ def index():
     return render_template('welcome.html')
 
 
+# --------------------------------------------------------------------------------
 # Some 'static' non-functional urls for Will to play with:
+# Not yet ready for backend consumption
 
 @app.route('/mistakes')
 def mistakes():
     return render_template('mistakes.html')
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
 @app.route('/playground')
 def playground():
     return render_template('playground.html')
-
-
-# Templates that are nearly ready for app-ification:
-
-@app.route('/course_intro')
-def course_intro():
-    return render_template('course_intro.html')
 
 @app.route('/course_edit')
 def course_edit():
     return render_template('course_edit.html')
 
 
+# --------------------------------------------------------------------------------
+# Templates that are nearly ready for app-ification:
+
+@app.route('/course_intro')
+def course_intro():
+    return render_template('course_intro.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+# --------------------------------------------------------------------------------
 # actually within the app now:
 
 @app.route('/course/<cid>/<lid>/<sid>')

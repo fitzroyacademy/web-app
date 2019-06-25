@@ -15,7 +15,12 @@ pip3 install -r ./requirements.txt
 python3 app.py
 ```
 
-Then hit [localhost:5000](http://localhost:5000).
+To reseed the DB - this takes everything from `stubs.py` and puts it in the database `dev_db.sqlite`, which is our local databse:
+
+* `python3 reseed.py`
+* To change the database, edit `stubs.py`, and delete `dev_db.sqlite`
+* Then reset the app via `python3 app.py`
+* Then hit [localhost:5000](http://localhost:5000).
 
 ### To make the CSS work:
 
