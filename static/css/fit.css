@@ -486,8 +486,9 @@ aside .fit_btn {
   color: #0f7ff4;
 }
 
+.fit_btn > i,
 .fit_btn > [class*=fa-] {
-  flex: 0 0 4rem;
+  width: 4rem;
   justify-content: center;
   text-align: center;
 }
@@ -504,7 +505,7 @@ aside .fit_btn {
 .fit_btn > .fit_pic {
   padding: 0;
   height: 2rem;
-  flex: 0 0 2rem;
+  width: 2rem;
   margin: 0.5rem 1rem;
   overflow: hidden;
   border-radius: 0.2rem;
@@ -541,6 +542,7 @@ aside .fit_btn {
   flex: 1;
   font-size: 0.95rem;
   line-height: 1.2rem;
+  white-space: nowrap;
 }
 
 /* wtf is happening here with white space and height aRRGHGHgh?! */

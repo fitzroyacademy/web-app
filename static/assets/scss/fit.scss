@@ -357,13 +357,14 @@ aside .fit_btn{color: $text;}
 .fit_btn:hover{color:$blue;}
 
 // icons, fixed width
-.fit_btn > [class*="fa-"]{flex: 0 0 $nav_left_width_collapsed; justify-content: center; text-align: center;}
+.fit_btn > i,
+.fit_btn > [class*="fa-"]{width: $nav_left_width_collapsed; justify-content: center; text-align: center;}
 
 // wee bits of text on the right
 .fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
 // videos are weird
-.fit_btn > .fit_pic{padding: 0; height:2rem; flex: 0 0 2rem; margin: 0.5rem 1rem; overflow: hidden; border-radius: $border_rad_sm; position: relative;}
+.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; overflow: hidden; border-radius: $border_rad_sm; position: relative;}
 .fit_btn > .fit_pic img{height: 100%;}
 .fit_btn > .fit_pic.vid img{margin-left: -25%;}
 .fit_btn > .fit_pic.circle{border-radius: $border_rad_r;}
@@ -371,7 +372,7 @@ aside .fit_btn{color: $text;}
 // close the circle
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
 
-.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;} /* wtf is happening here with white space and height aRRGHGHgh?! */
+.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem; white-space: nowrap;} /* wtf is happening here with white space and height aRRGHGHgh?! */
 .fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
 .fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
 
