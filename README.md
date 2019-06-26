@@ -5,43 +5,54 @@ Simple staging ground for our UX templates.
 ### Dependencies
 - Python 3, pipenv
 - Flask, wsgi, psycopg2
-- Docker, docker-compose
+- Docker, docker-compose (optional for local development)
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-Examples given for OS X.
+Examples given for OS X. This assumes you have a working version of Python/pip already installed.
 
-Get working version of pip3/python3.6 and pipenv:
+Get a working version of pipenv:
 ```
-brew install python3
-brew install pipenv
+brew install pipenv # or if you're fancy, pip install --user pipenv
 npm install -g sass # if this doesn't work, see the link about Sass↓.
 brew install pyenv # optional - makes it easier to install multiple Python versions
 ```
-Make sure to also get [Docker](https://docs.docker.com/install/) and [Sass](https://sass-lang.com/install).
+[Sass installation instructions](https://sass-lang.com/install) (required), and [Docker installation instructions](https://docs.docker.com/install/) (optional).
 
 
 ### Installing
 
-Set up your development environment:
+Set up your development environment.
+
+#### Using Pyenv
 ```
-pyenv install 3.7.0
+$ cat Pipfile | grep python_version
+python_version = "3.7.3"
+pyenv install 3.7.3
 pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where mine is. Pyenv makes it pretty easy.
+```
+
+#### Without Pyenv
+```
+$ cat Pipfile | grep python_version
+python_version = "3.7.3"
+# Download and install from https://www.python.org/downloads/, yum, macports, etc
+pipenv install --python /path/to/python/executable
 ```
 
 ## Local development
 
 ### Running the app
 
+#### With Docker and docker-compose
+
 ```
-make run
+make run # starts a DB container and an app container that live-reloads the code
 # or directly:
-docker-compose run
-# or without Docker and just local with sqlite:
-DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
+docker-compose build && docker-compose run
 ```
 
 You can then visit http://localhost:5000 to see the app running. Live reload should work for all files including any Sass.
@@ -54,26 +65,20 @@ make connect-db
 ### Killing the app
 To make sure that the app is completely down and not running locally, do:
 ```
-make kill # stops and deletes all app containers
+make kill # stops and removes all containers
+# or directly:
+docker-compose down
 ```
 
-## Cleansing the db
-```
-make purge-db # deletes the postgres container's data dir
-```
+#### Without Docker
 
-## Running the app without Docker
-
-You'll need to run something like the following:
 ```
-export DB_CONNECTION_STRING="sqlite/postgres://..."
-export FLASK_ENV="development"
-pyenv run python app.py
+DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
 ```
 
 ## Reseeding the Local Development Database
 
-When running locally, visit http://localhost:5000/reseed. The DB data is in a persistent Docker volume, so it will survive runs. To completely clear out the database and seed again,...
+When running locally, visit http://localhost:5000/reseed. The DB data is in a persistent Docker volume, so it will survive runs. To completely clear out the database and seed again, run `make purge-db` to kill the data volume in Docker or just remove the `dev_db.sqlite` file.
 
 ---
 

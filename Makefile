@@ -19,3 +19,6 @@ purge-db:
 
 connect-db:
 	docker exec -it $$(docker ps -f name="postgres" -q) psql -U postgres
+
+connect-app:
+	docker exec -it $$(docker ps -f name="fitzroy-academy-app" -q) /bin/bash
