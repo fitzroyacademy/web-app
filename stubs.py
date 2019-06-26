@@ -492,6 +492,7 @@ lessons = [
 
 
 courses = [{
+    'id': 00,
     'lessons': [
         lessons[0],
         lessons[1],

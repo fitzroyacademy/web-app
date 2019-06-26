@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.7'
 services:
   fitzroy-academy-app:
     build: .
@@ -8,5 +8,22 @@ services:
       - .:/app:cached
     environment:
       FLASK_ENV: development
-  # postgres:
-    # image: "postgres:12-alpine"
+      DB_CONNECTION_STRING: postgresql://postgres@local-postgres:5432
+    depends_on:
+      - local-postgres
+    networks: ['fitzroy-network']
+  local-postgres:
+    image: "postgres:12-alpine"
+    restart: always
+    # build:
+        # context: ./postgresql
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5001:5432"
+    networks: ['fitzroy-network']
+networks:
+  fitzroy-network:
+
+volumes:
+  dbdata:

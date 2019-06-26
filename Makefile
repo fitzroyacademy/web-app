@@ -14,3 +14,7 @@ run: build
 watch: build-static
 	pipenv install
 	FLASK_ENV='development' pipenv run python app.py
+
+kill:
+	docker-compose down
+	docker kill `docker ps -q`

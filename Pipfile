@@ -6,6 +6,7 @@ verify_ssl = true
 [packages]
 flask = "*"
 sqlalchemy = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7.3"

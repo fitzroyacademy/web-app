@@ -2,6 +2,7 @@ import datamodels
 import copy
 
 session = datamodels.get_session()
+session.rollback()
 
 import stubs
 
@@ -13,6 +14,11 @@ for student in stubs.students:
 	u = datamodels.User(**student)
 	print(u)
 	session.add(u)
+
+for course in stubs.courses:
+	c = datamodels.Course(**course)
+	print(c)
+	session.add(c)
 
 for i, lesson in enumerate(stubs.lessons):
 	lesson = copy.deepcopy(lesson)
