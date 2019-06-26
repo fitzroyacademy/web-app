@@ -9,7 +9,7 @@
     <div class="fit_course">
 
       <h1><span class="txt">Introduction to social enterprise.</span></h1> <!-- DEV: name of course-->
-      <p>Curated by <a href="#">Will Dayble</a>. <!-- DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
+      <p>Curated by <strong>Teacher Name Here</strong>. <!-- DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
 
       <div class="fit_vidya">
         <img class="placeholder" src="./assets/images/defaults/vid.jpg" alt="video"> <!-- DEV: 16:9 image uploaded in edit view -->
@@ -24,13 +24,15 @@
           <div class="fit_pane">
             <dl class="fit_summary_icons">
               <dt><i class="far fa-users"></i> Who's it for?</dt>
-              <dd>Super early stage social enterprise founders, starting your first business or a new project from scratch.</dd>
+              <dd>Super early stage social enterprise founders, starting your first business or a new project from scratch.</dd> <!-- DEV: plain text, from course edit -->
               <dt><i class="far fa-clock"></i> Course length &amp; workload:</dt>
-              <dd>About 3-4 hours per week, for 12 weeks.</dd>
+              <dd>About 3-4 hours per week, for 12 weeks.</dd> <!-- DEV: plain text, from course edit -->
             </dl>
           </div>
           
           <h3>What you'll learn.</h3>
+
+          <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
           <p><strong>Go from zero to one:</strong> From a basic idea to early customers, business models and getting the numbers right.</p>
           <p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
           <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
@@ -66,6 +68,16 @@
         <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
       </div>
     </div>
+
+
+    <!-- DEV: this version is for a course that requires login, but user isn't logged in -->
+    <div class="fit_cta">
+      <div class="fit_course">
+        <h3>Ready to begin?</h3>
+        <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-lock"></i> Create an account</a>
+        <p class="fit_cta_tnc">You need to make a free account to continue.</p>
+      </div>
+    </div>    
 
     <!-- DEV: wheras, this version is for courses locked by a code -->
     <div class="fit_cta">
