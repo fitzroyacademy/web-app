@@ -68,9 +68,10 @@ $ make kill # stops and removes all containers
 $ docker-compose down
 ```
 
-#### Without Docker
+### Running the app without Docker
 
 ```
+pipenv install
 $ DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
 ```
 
