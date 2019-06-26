@@ -17,17 +17,21 @@ def index():
 # Some 'static' non-functional urls for Will to play with:
 # Not yet ready for backend consumption
 
-@app.route('/mistakes')
-def mistakes():
-    return render_template('mistakes.html')
-
 @app.route('/playground')
 def playground():
     return render_template('playground.html')
 
+@app.route('/mistakes')
+def mistakes():
+    return render_template('mistakes.html')
+
 @app.route('/course_edit')
 def course_edit():
     return render_template('course_edit.html')
+
+@app.route('/code')
+def code():
+    return render_template('code.html')
 
 
 # --------------------------------------------------------------------------------
