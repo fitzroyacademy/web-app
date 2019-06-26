@@ -55,29 +55,29 @@ docker-compose build && docker-compose run
 
 You can then visit http://localhost:5000 to see the app running. Live reload should work for all files including any Sass.
 
-To log in to the DB as it's running:
+To log in to the containers as they're running:
 ```
-$ make connect-db
+$ make connect-db # opens psql shell
+$ make connect-app
 ```
 
-### Killing the app
-To make sure that the app is completely down and not running locally, do:
+To make sure the app is killed and containers aren't cluttering your system:
+
 ```
-$ make kill # stops and removes all containers
-# or directly:
 $ docker-compose down
 ```
 
 ### Running the app without Docker
 
 ```
-pipenv install
+$ pipenv install
 $ DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
 ```
 
-## Reseeding the Local Development Database
+## Seeding the Local Development Database
 
-When running locally, visit http://localhost:5000/reseed. The DB data is in a persistent Docker volume, so it will survive runs. To completely clear out the database and seed again, run `make purge-db` to kill the data volume in Docker or just remove the `dev_db.sqlite` file.
+When running locally, visit http://localhost:5000/reseed - this will place dummy data in the DB.
+The DB data is in a persistent Docker volume, so it will survive runs. To completely clear out the database and seed again, run `make purge-db` to kill the data volume if using Docker; if using sqlite, delete the `dev_db.sqlite` file.
 
 ---
 
