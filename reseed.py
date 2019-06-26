@@ -15,15 +15,21 @@ for student in stubs.students:
 	print(u)
 	session.add(u)
 
+c = datamodels.Course(slug="fitzroy-academy")
+session.add(c)
+
 for i, lesson in enumerate(stubs.lessons):
 	lesson = copy.deepcopy(lesson)
 	resources = lesson.pop('resources')
 	segments = lesson.pop('segments')
 	lesson.pop('id')
+	lesson.pop('course_id')
 	lesson['duration_seconds'] = get_seconds(lesson.pop('duration'))
 	lesson["order"] = i
 	lesson["language"] = "en"
 	l = datamodels.Lesson(**lesson)
+	l.course = c
+	c.lessons.append(l)
 	session.add(l)
 	session.commit()
 	for j, segment in enumerate(segments):
