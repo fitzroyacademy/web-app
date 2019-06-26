@@ -58,6 +58,15 @@ make kill # stops and deletes all app containers
 make purge-db # deletes the postgres container's data dir
 ```
 
+## Running the app without Docker
+
+You'll need to run something like the following:
+```
+export DB_CONNECTION_STRING="sqlite/postgres://..."
+export FLASK_ENV="development"
+pyenv run python app.py
+```
+
 ## Reseeding the Local Development Database
 
 When running locally, visit http://localhost:5000/reseed. The DB data is in a persistent Docker volume, so it will survive runs. To completely clear out the database and seed again,...
