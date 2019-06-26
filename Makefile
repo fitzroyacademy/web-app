@@ -10,6 +10,7 @@ build: ./Pipfile ./static/assets/scss/fit.scss build-static
 run: build
 	docker-compose build
 	docker-compose up
+	bash -c "trap 'docker-compose down' EXIT; docker-compose up"
 
 kill:
 	docker-compose down

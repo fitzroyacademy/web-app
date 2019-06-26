@@ -61,8 +61,7 @@ $ make connect-db # opens psql shell
 $ make connect-app
 ```
 
-To make sure the app is killed and containers aren't cluttering your system:
-
+Delete the containers and network interfaces (only relevant if you use docker frequently or want to fully clean up):
 ```
 $ docker-compose down
 ```
