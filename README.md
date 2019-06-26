@@ -1,4 +1,4 @@
-# flask-frontend
+# web-app
 
 Simple staging ground for our UX templates.
 
