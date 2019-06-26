@@ -38,6 +38,10 @@ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where m
 
 ```
 make run
+# or directly:
+docker-compose run
+# or without Docker and just local:
+DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
 ```
 
 You can then visit http://localhost:5000 to see the app running. Live reload should work for all files including any Sass.

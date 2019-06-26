@@ -133,7 +133,7 @@ if __name__ == "__main__":
     if app.debug:
         @app.route('/reseed')
         def reseed():
-            import reseed.py
+            import reseed
             return 'Reseed successful'
         from livereload import Server, shell
         import sass
