@@ -5,7 +5,7 @@ Simple staging ground for our UX templates.
 ### Dependencies
 - Python 3, pipenv
 - Flask, wsgi, psycopg2
-- Docker
+- Docker, docker-compose
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ brew install pipenv
 npm install -g sass # if this doesn't work, see the link about Sass↓.
 brew install pyenv # optional - makes it easier to install multiple Python versions
 ```
-Make surue to also get [Docker](https://docs.docker.com/install/) and [Sass](https://sass-lang.com/install).
+Make sure to also get [Docker](https://docs.docker.com/install/) and [Sass](https://sass-lang.com/install).
 
 
 ### Installing
@@ -37,26 +37,20 @@ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where m
 ### Running the app
 
 ```
-make watch # this mounts the local directory directly into the running docker container
-```
-This should enable live reloading of the app, html, and Sass locally.
-
-If you would like to be closer to production, you can use live-reload through Docker:
-```
-make docker-watch # basically python app.py
+make run
 ```
 
-To see the closest thing to production locally:
+You can then visit http://localhost:5000 to see the app running.
+
+### Killing the app
+To make sure that the app is completely down and not running local, do:
 ```
-make run # builds and runs the docker container
+make kill
 ```
 
 ## Reseeding the Local Development Database
 
-Stub data is provided for data-backed templates, which can be created using the `reseed.py` script.
-
-It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
-
+When running locally, visit http://localhost:5000/reseed. The DB data is in a persistent Docker volume, so it will survive runs. To completely clear out the database and seed again,...
 
 ---
 
