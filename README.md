@@ -14,11 +14,11 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 Examples given for OS X. This assumes you have a working version of Python/pip already installed.
 
-Get a working version of pipenv:
+Get a working version of pipenv and Sass:
 ```
-brew install pipenv # or if you're fancy, pip install --user pipenv
-npm install -g sass # if this doesn't work, see the link about Sass↓.
-brew install pyenv # optional - makes it easier to install multiple Python versions
+$ brew install pipenv # or if you're fancy, pip install --user pipenv
+$ npm install -g sass # if this doesn't work, see the link about Sass↓.
+$ brew install pyenv # optional - makes it easier to install multiple Python versions
 ```
 [Sass installation instructions](https://sass-lang.com/install) (required), and [Docker installation instructions](https://docs.docker.com/install/) (optional).
 
@@ -29,25 +29,25 @@ Set up your development environment.
 
 #### Using Pyenv
 ```
-$ cat Pipfile | grep python_version
-python_version = "3.7.3"
-pyenv install 3.7.3
-pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where mine is. Pyenv makes it pretty easy.
+$ pyenv install # reads from .python_version
+# If pipenv doesn't work automatically, you may need to:
+$ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where mine is. Pyenv makes it pretty easy.
 ```
 
 #### Without Pyenv
 ```
-$ cat Pipfile | grep python_version
-python_version = "3.7.3"
+$ cat .python_version
+3.7.3
 # Download and install from https://www.python.org/downloads/, yum, macports, etc
-pipenv install --python /path/to/python/executable
+# If pipenv doesn't work automatically, you may need to:
+$ pipenv install --python /path/to/python/executable
 ```
 
 ## Local development
 
 ### Running the app
 
-#### With Docker and docker-compose
+#### With Docker and docker-compose (recommended)
 
 ```
 make run # starts a DB container and an app container that live-reloads the code
@@ -59,21 +59,21 @@ You can then visit http://localhost:5000 to see the app running. Live reload sho
 
 To log in to the DB as it's running:
 ```
-make connect-db
+$ make connect-db
 ```
 
 ### Killing the app
 To make sure that the app is completely down and not running locally, do:
 ```
-make kill # stops and removes all containers
+$ make kill # stops and removes all containers
 # or directly:
-docker-compose down
+$ docker-compose down
 ```
 
 #### Without Docker
 
 ```
-DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
+$ DB_CONNECTION_STRING='sqlite:///dev_db.sqlite' FLASK_ENV=development pipenv run python ./app.py
 ```
 
 ## Reseeding the Local Development Database
