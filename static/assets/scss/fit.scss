@@ -162,28 +162,6 @@ aside{border-right: 1px solid #e1e4e5;}
 html.fit_minleft{}
 
 
-
-/*trigger*/
-/*[data-fit_minleft]:hover .fas{transform: rotate(-270deg);}*/
-
-// html.fit_minleft main{margin-left: 4rem;}
-// html.fit_minleft nav {width: 4rem;}
-// html.fit_minleft nav .fit_txt,
-// html.fit_minleft nav .fit_body{display: none;}
-// html.fit_minleft nav .fit_link{padding: 0;}
-// html.fit_minleft nav .fit_hider i{transform: rotate(180deg); background: #0f0}
-// html.fit_minleft nav .fit_hider:hover i{transform: rotate(0deg);}
-
-
-
-// html.fit_minright aside {max-width: 4rem; min-width: 0}
-// html.fit_minright aside .fit,
-// html.fit_minright aside .fit_txt{display: none;}
-// html.fit_minright aside .fit_link{padding: 0;}
-// html.fit_minright aside .fit_hider{display: block;}
-// html.fit_minright aside .fit_hider .fit_link .fas{transform: rotate(180deg);}
-// html.fit_minright aside .fit_hider .fit_link:hover .fas{transform: rotate(0deg);}
-
 // -----------------------------------------------------------------------------------------
 
 
@@ -224,9 +202,18 @@ html.fit_minleft{}
 .fit_head_code .btn:hover{cursor: pointer;}
 
 .fit_head_code .form-control:focus,
-.fit_head_code .form-control:active{background: $watermelon_dark; box-shadow: none; outline: none !important;}
+.fit_head_code .form-control:active{background: $watermelon_dark; box-shadow: none; outline: none !important; border-radius: $border_rad_sm !important;}
 
 .fit_head_code .form-control::placeholder{color: #fff;}
+
+
+// the brand device up the top left
+
+.fit_device{display: block;}
+.fit_device_svg{height: 2rem; margin: 0.5rem 0.35rem 0.5rem 0.65rem;}
+.fit_device_svg > path{fill-rule: evenodd; fill: $brand;}
+
+.fit_device:hover .fit_device_svg > path{fill:$blue;}
 
 // -----------------------------------------------------------------------------------------
 /* fablocks */

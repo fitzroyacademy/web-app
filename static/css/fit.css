@@ -125,8 +125,6 @@ nav{border-right: 1px solid #e1e4e5;}
 aside{border-right: 1px solid #e1e4e5;}
 */
 /* minimise the left bar */
-/*trigger*/
-/*[data-fit_minleft]:hover .fas{transform: rotate(-270deg);}*/
 /* mess with bootstrap standards */
 .btn [class^=fa] {
   margin: 0 0.3rem;
@@ -206,10 +204,29 @@ aside{border-right: 1px solid #e1e4e5;}
   background: #cc073a;
   box-shadow: none;
   outline: none !important;
+  border-radius: 0.2rem !important;
 }
 
 .fit_head_code .form-control::placeholder {
   color: #fff;
+}
+
+.fit_device {
+  display: block;
+}
+
+.fit_device_svg {
+  height: 2rem;
+  margin: 0.5rem 0.35rem 0.5rem 0.65rem;
+}
+
+.fit_device_svg > path {
+  fill-rule: evenodd;
+  fill: #464749;
+}
+
+.fit_device:hover .fit_device_svg > path {
+  fill: #0f7ff4;
 }
 
 /* fablocks */
