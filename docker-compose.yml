@@ -1,0 +1,12 @@
+version: '3.2'
+services:
+  fitzroy-academy-app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app:cached
+    environment:
+      FLASK_ENV: development
+  # postgres:
+    # image: "postgres:12-alpine"
