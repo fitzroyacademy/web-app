@@ -2,78 +2,8 @@
 {% block body %}
 
 
+{% include 'partials/_login_form.html' %}
 
-<div class="fit_auth">
-
-  <ul class="nav nav-tabs mb-3" id="tab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="login-tab" data-toggle="pill" href="#login" role="tab" aria-controls="home" aria-selected="true">Log in</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="register-tab" data-toggle="pill" href="#register" role="tab" aria-controls="profile" aria-selected="false">Create account</a>
-    </li>
-  </ul>
-  <div class="tab-content" id="tabContent">
-    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-      <form class="form">
-        <div class="fit_fancyplace">
-          <label for="inputEmail">Email address</label>
-          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus data-fit-fancyplace>
-        </div>
-
-        <div class="fit_fancyplace">
-          <label for="inputPassword">Password</label>
-          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required data-fit-fancyplace>
-        </div>
-
-        <div class="custom-control custom-checkbox mb-3">
-          <input type="checkbox" class="custom-control-input" id="customCheck1">
-          <label class="custom-control-label" for="customCheck1">Remember password</label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-    </div><!-- login -->
-
-    <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-      <form class="form">
-
-        <div class="row">
-          <div class="col">
-            <div class="fit_fancyplace">
-              <label for="firstname">Given name</label>
-              <input type="text" id="firstname" class="form-control" placeholder="Given name" required autofocus data-fit-fancyplace>
-            </div>
-          </div>
-          <div class="col">
-            <div class="fit_fancyplace">
-              <label for="lastname">Last name</label>
-              <input type="text" id="lastname" class="form-control" placeholder="Last name" required autofocus data-fit-fancyplace>
-            </div>
-          </div>
-        </div>
-
-        <div class="fit_fancyplace">
-          <label for="register_email">Email address</label>
-          <input type="email" id="register_email" class="form-control" placeholder="Email address" required autofocus data-fit-fancyplace>
-        </div>
-
-        <div class="fit_fancyplace">
-          <label for="register_pass">Password</label>
-          <input type="password" id="register_pass" class="form-control" placeholder="Password" required data-fit-fancyplace>
-        </div>
-
-        <div class="custom-control custom-checkbox mb-3">
-          <input type="checkbox" class="custom-control-input" id="customCheck2">
-          <label class="custom-control-label" for="customCheck2">Remember password</label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
-      </form>      
-    </div><!-- register -->
-    <hr class="my-4">
-    <button class="btn btn-lg btn-google btn-block" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button>
-    <button class="btn btn-lg btn-facebook btn-block" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>
-  </div>
-</div>
 
 {% endblock %}
 

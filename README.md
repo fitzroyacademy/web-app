@@ -23,6 +23,7 @@ brew install pyenv # optional - makes it easier to install multiple Python versi
 ```
 Make surue to also get [Docker](https://docs.docker.com/install/) and [Sass](https://sass-lang.com/install).
 
+
 ### Installing
 
 Set up your development environment:

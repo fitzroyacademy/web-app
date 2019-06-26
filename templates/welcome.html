@@ -2,23 +2,25 @@
 {% block body %}
 
 
-<div class="fit_keep_watching">
+
+<!-- DEV: This fit_keep_watching chunk shows when the user has started a course, repeat this chunk for as many courses as the user has joined -->
+<div class="alert fit_keep_watching alert-dismissible fade show" role="alert">
 	<div class="fit_course">
 
-		<a href="#" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
+		<a href="#" data-dismiss="alert" aria-label="Close" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
 
 		<div class="row">
 			<div class="col-sm-4">
 				<a href="lessons" class="vid">
-					<img src="./assets/images/lessons/sales.jpg" alt="image">
+					<img src="./assets/images/lessons/sales.jpg" alt="image"> <!-- DEV: Lesson picture (not course) -->
 					<div class="bar">
-						<div class="far" style="width: 65%"></div>
+						<div class="far" style="width: 65% "></div> <!-- DEV: Width here is % through the whole course for the student -->
 					</div>
 				</a>
 			</div>
 			<div class="col-sm-8">
-				<h3>Sales for people who hate selling.</h3>
-				<p>From <a href="#">Super awesome social enterprise</a>.</p>
+				<h3>Sales for people who hate selling.</h3> <!-- DEV: Title of the segment the student is up to (not the lesson or the course) -->
+				<p>From <a href="#"><!-- DEV: Course name -->Super awesome social enterprise</a>.</p>
 				<a href="#" class="btn btn btn-outline-light"><i class="fal fa-play"></i> Keep watching</a>
 			</div>
 		</div>
@@ -31,13 +33,28 @@
   <article>
 
 		<div class="fit_hero">
-			<a class="fit_heartplay" data-fit-heartplay>
+			<!-- <a class="fit_heartplay" data-fit-heartplay>
         <i class="bigboy fas fa-heart"></i>
         <i class="smallboy fas fa-play"></i>
-      </a>
+      </a> -->
   		<h1>The <strong data-fit-heartplay>real-world</strong> social <br>enterprise school.</h1>
-  		<p>Learn real <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills from the world&rsquo;s best.</p>
+  		<p>Learn <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills, online.</p>
+
+  		<div class="fit_code">
+			  <form class="fit_form_code">
+			    <div class="form-group">
+			      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Course code" required>
+			      <label for="exampleFormControlInput1">Course code</label>
+			      <button type="submit" class="btn btn-text"><i class="fas fa-rocket"></i></button>
+			    </div>
+			    <div class="fit_cta_tnc">No code? Check the <a href="/#public">public courses!</a></div>
+			  </form>
+			</div>
   	</div>
+
+		<div id="public" class="fit_tabbydiv">
+			<div class="fit_tabby">Public courses</div>
+		</div>
 
 		<div class="fit_course">
 			<div class="fit_course_sell featured">
@@ -48,9 +65,9 @@
 		  			<a></a>
 		  			<a></a>
 		  		</div>
-		  		<a href="lesson_text.html" class="play"><i class="fas fa-play-circle"></i></a>
+		  		<a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
 		  	</div>
-		  	<h3><a href="lesson_text.html">Intro to social enterprise.</a></h3>
+		  	<h3><a href="course_intro">Intro to social enterprise.</a></h3>
 		  	<p class="tagline">
 		  		<span class="tag"><i class="fal fa-info-square"></i> Start here! Basic business models and customer discovery, to pitching for investment. ❤️ 🚀</span>
 		  		<span class="tag"><i class="fal fa-calendar"></i> 12 lessons over 12 weeks.</span>
@@ -69,9 +86,9 @@
 				  			<a></a>
 				  			<a></a>
 				  		</div>			
-				  		<a href="lesson_text.html" class="play"><i class="fas fa-play-circle"></i></a>
+				  		<a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
 				  	</div>
-				  	<h3><a href="lesson_text.html">Int dev starter pack.</a></h3>
+				  	<h3><a href="course_intro">International development.</a></h3>
 				  	<p class="tagline">
 				  		<span class="tag"><i class="fal fa-info-square"></i> Designing for lasting impact at scale, direct from the best minds in the sector.</span>
 				  		<span class="tag"><i class="fal fa-calendar"></i> 8 lessons, at your own pace.</span>
@@ -89,9 +106,9 @@
 				  			<a></a>
 				  			<a></a>
 				  		</div>			
-				  		<a href="lesson_text.html" class="play"><i class="fas fa-play-circle"></i></a>
+				  		<a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
 				  	</div>
-				  	<h3><a href="lesson_text.html">Social sector digital.</a></h3>
+				  	<h3><a href="course_intro">Social sector digital.</a></h3>
 				  	<p class="tagline">
 				  		<span class="tag"><i class="fal fa-info-square"></i> Do the internet better. Help more people, in more places by doing digital the right way: human-first.</span>
 				  		<span class="tag"><i class="fal fa-calendar"></i> 9 lessons, at your own pace.</span>
@@ -102,32 +119,6 @@
 	  		</div>	  		
 	  	</div>
 		</div>
-
-    <div class="fit_course">
-      <div class="fit_pane">
-      	<h3>Lessons:</h3>
-	      <p><a href="lesson.html">Lesson</a></p>
-	      <p><a href="lesson_chart.html">Lesson with chart.</a></p>
-	      <p><a href="lesson_text.html">Lesson with plain text. <strong>New!</strong></a></p>
-	      <p><a href="khmer.html">Khmer language lesson</a></p>
-	      <p><a href="course.html">Course</a></p>
-	      <p><a href="course_two.html">Course, alt style</a></p>
-	      <p><a href="user.html">User / me</a></p>
-	      <h3>Feedback / forms:</h3>
-	     	<p><a href="lesson_stuck.html">Lesson with stuck or not stuck. <strong>New!</strong></a></p>
-	      <p><a href="lesson_happy.html">Lesson with happiness. <strong>New!</strong></a></p>
-	      <p><a href="lesson_nps.html">Lesson with NPS. <strong>New!</strong></a></p>
-	      <p><a href="lesson_free.html">Lesson with free text. <strong>New!</strong></a></p>
-	      <h3>Teacher / admin views:</h3>
-				<p><a href="course_stats.html">Course with stats. <strong>New!</strong></a></p>
-				<p><a href="course_edit.html">Course edit mode. <strong>New!</strong></a></p>
-				<p><a href="class.html">Class / course</a></p>
-				<p><a href="analytics.html">Course analytics, big mode</a></p>
-	      <p><a href="student.html">Student</a></p>
-	      <p><a href="school.html">School</a></p>
-	      <p><a href="user_stats.html">User / student</a></p>
-    	</div>
-    </div>
   </article>
 
 </main>
