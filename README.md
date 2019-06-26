@@ -40,12 +40,22 @@ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where m
 make run
 ```
 
-You can then visit http://localhost:5000 to see the app running.
+You can then visit http://localhost:5000 to see the app running. Live reload should work for all files including any Sass.
+
+To log in to the DB as it's running:
+```
+make connect-db
+```
 
 ### Killing the app
-To make sure that the app is completely down and not running local, do:
+To make sure that the app is completely down and not running locally, do:
 ```
-make kill
+make kill # stops and deletes all app containers
+```
+
+## Cleansing the db
+```
+make purge-db # deletes the postgres container's data dir
 ```
 
 ## Reseeding the Local Development Database

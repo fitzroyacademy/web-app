@@ -13,3 +13,9 @@ run: build
 
 kill:
 	docker-compose down
+
+purge-db:
+	docker-compose down -v
+
+connect-db:
+	docker exec -it $$(docker ps -f name="postgres" -q) psql -U postgres

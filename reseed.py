@@ -15,11 +15,6 @@ for student in stubs.students:
 	print(u)
 	session.add(u)
 
-for course in stubs.courses:
-	c = datamodels.Course(**course)
-	print(c)
-	session.add(c)
-
 for i, lesson in enumerate(stubs.lessons):
 	lesson = copy.deepcopy(lesson)
 	resources = lesson.pop('resources')
