@@ -1,0 +1,40 @@
+{
+  "version": "2.0.10",
+  "replacements": [
+    {
+      "repA": "inspiration",
+      "repB": "wankery",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "prosperity",
+      "repB": "wankery",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "goodness",
+      "repB": "wanking",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "empowerment",
+      "repB": "wankery",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "sustainability",
+      "repB": "wankfulness",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    }
+  ]
+}
