@@ -30,8 +30,6 @@ Set up your development environment.
 #### Using Pyenv
 ```
 $ pyenv install # reads from .python_version
-# If pipenv doesn't work automatically, you may need to:
-$ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where mine is. Pyenv makes it pretty easy.
 ```
 
 #### Without Pyenv
@@ -39,7 +37,7 @@ $ pipenv install --python ~/.pyenv/versions/3.7.0/bin/python # That's just where
 $ cat .python_version
 3.7.3
 # Download and install from https://www.python.org/downloads/, yum, macports, etc
-# If pipenv doesn't work automatically, you may need to:
+# If it's not in your path for some reason, you may need to point pipenv at it:
 $ pipenv install --python /path/to/python/executable
 ```
 
