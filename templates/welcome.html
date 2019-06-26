@@ -4,10 +4,10 @@
 
 
 <!-- DEV: This fit_keep_watching chunk shows when the user has started a course, repeat this chunk for as many courses as the user has joined -->
-<div class="fit_keep_watching">
+<div class="alert fit_keep_watching alert-dismissible fade show" role="alert">
 	<div class="fit_course">
 
-		<a href="#" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
+		<a href="#" data-dismiss="alert" aria-label="Close" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
 
 		<div class="row">
 			<div class="col-sm-4">
@@ -33,12 +33,23 @@
   <article>
 
 		<div class="fit_hero">
-			<a class="fit_heartplay" data-fit-heartplay>
+			<!-- <a class="fit_heartplay" data-fit-heartplay>
         <i class="bigboy fas fa-heart"></i>
         <i class="smallboy fas fa-play"></i>
-      </a>
+      </a> -->
   		<h1>The <strong data-fit-heartplay>real-world</strong> social <br>enterprise school.</h1>
-  		<p>Learn real <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills.</p>
+  		<p>Learn <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills, online.</p>
+
+  		<div class="fit_code">
+			  <form class="fit_form_code">
+			    <div class="form-group">
+			      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Course code" required>
+			      <label for="exampleFormControlInput1">Course code</label>
+			      <button type="submit" class="btn btn-text"><i class="fas fa-rocket"></i></button>
+			    </div>
+			    <p class="fit_cta_tnc">No code? Check the <a href="#">public courses!</a></p>
+			  </form>
+			</div>
   	</div>
 
 		<div class="fit_course">

@@ -167,9 +167,49 @@ aside{border-right: 1px solid #e1e4e5;}
 
 /* fit header code */
 .fit_head_code {
-  max-width: 10rem;
+  max-width: 12rem;
   float: left;
-  padding: 0.75rem;
+  padding: 0.5rem;
+}
+
+.fit_head_code .form-control,
+.fit_head_code .btn,
+.fit_head_code .btn.disabled,
+.fit_head_code .btn:disabled {
+  background: #f82a5f;
+  border-color: #f82a5f;
+  color: #fff;
+  opacity: 1;
+  font-size: 1rem;
+  position: relative;
+  border: 3px solid #f82a5f;
+}
+
+.fit_head_code .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.2rem;
+  padding: 0.15rem !important;
+}
+
+.fit_head_code .btn i {
+  font-size: 1.2rem;
+}
+
+.fit_head_code .btn:hover {
+  cursor: pointer;
+}
+
+.fit_head_code .form-control:focus,
+.fit_head_code .form-control:active {
+  background: #cc073a;
+  box-shadow: none;
+  outline: none !important;
+}
+
+.fit_head_code .form-control::placeholder {
+  color: #fff;
 }
 
 /* fablocks */
@@ -1419,11 +1459,17 @@ body > .fit_code {
 
 .fit_form_code .fit_cta_tnc a {
   color: inherit;
-  text-decoration: underline;
+  text-decoration: none;
+  border-bottom-color: #fa7497;
 }
 
 .fit_form_code .fit_cta_tnc a:hover {
   text-decoration: none;
+  border-bottom-color: #fff;
+}
+
+.fit_hero .fit_code {
+  margin: 5rem auto;
 }
 
 .fit_avatared {
