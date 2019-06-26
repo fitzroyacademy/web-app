@@ -104,8 +104,6 @@ nav{border-right: 1px solid #e1e4e5;}
 aside{border-right: 1px solid #e1e4e5;}
 */
 /* minimise the left bar */
-/*trigger*/
-/*[data-fit_minleft]:hover .fas{transform: rotate(-270deg);}*/
 /* mess with bootstrap standards */
 .btn [class^='fa'] {
   margin: 0 0.3rem; }
@@ -115,6 +113,10 @@ aside{border-right: 1px solid #e1e4e5;}
 
 .btn-lg [class^='fa']:first-child {
   margin: 0 0.5rem; }
+
+.alert > i {
+  font-size: 1.6rem;
+  margin-right: 0.5rem; }
 
 .btn-google,
 .btn-google:hover {
@@ -134,9 +136,58 @@ aside{border-right: 1px solid #e1e4e5;}
 
 /* fit header code */
 .fit_head_code {
-  max-width: 10rem;
+  max-width: 12rem;
   float: left;
-  padding: 0.75rem; }
+  padding: 0.5rem; }
+
+.fit_head_code .form-control,
+.fit_head_code .btn,
+.fit_head_code .btn.disabled,
+.fit_head_code .btn:disabled {
+  background: #f82a5f;
+  border-color: #f82a5f;
+  color: #fff;
+  opacity: 1;
+  font-size: 1.0rem;
+  position: relative;
+  border: 3px solid #f82a5f; }
+
+.fit_head_code .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.2rem;
+  padding: 0.15rem !important; }
+
+.fit_head_code .btn i {
+  font-size: 1.2rem; }
+
+.fit_head_code .btn:hover {
+  cursor: pointer; }
+
+.fit_head_code .form-control:focus,
+.fit_head_code .form-control:active {
+  background: #cc073a;
+  box-shadow: none;
+  outline: none !important;
+  border-radius: 0.2rem !important; }
+
+.fit_head_code .form-control::placeholder {
+  color: #fff; }
+
+.fit_device {
+  display: block; }
+
+.fit_device_svg {
+  height: 2rem;
+  margin: 0.5rem 0.35rem 0.5rem 0.65rem; }
+
+.fit_device_svg > path {
+  fill-rule: evenodd;
+  fill: #464749; }
+
+.fit_device:hover .fit_device_svg > path {
+  fill: #0f7ff4; }
 
 /* fablocks */
 .fit {
@@ -351,8 +402,9 @@ aside .fit_btn {
 .fit_btn:hover {
   color: #0f7ff4; }
 
+.fit_btn > i,
 .fit_btn > [class*="fa-"] {
-  flex: 0 0 4rem;
+  width: 4rem;
   justify-content: center;
   text-align: center; }
 
@@ -367,7 +419,7 @@ aside .fit_btn {
 .fit_btn > .fit_pic {
   padding: 0;
   height: 2rem;
-  flex: 0 0 2rem;
+  width: 2rem;
   margin: 0.5rem 1rem;
   overflow: hidden;
   border-radius: 0.2rem;
@@ -398,7 +450,8 @@ aside .fit_btn {
 .fit_btn > .fit_txt {
   flex: 1;
   font-size: 0.95rem;
-  line-height: 1.2rem; }
+  line-height: 1.2rem;
+  white-space: nowrap; }
 
 /* wtf is happening here with white space and height aRRGHGHgh?! */
 .fit_btn > .fit_txt:first-child {
@@ -1067,24 +1120,12 @@ Bleh:;
   padding-left: 4rem; }
 
 .fit_cta {
-  background: #139ddd;
+  background: #f82a5f;
   padding: 2rem 0 5rem;
   border-radius: 0.3rem; }
 
 .fit_cta .fit_course h3 {
   color: #fff; }
-
-.fit_cta .fit_course .fit_cta_tnc {
-  color: #fff;
-  font-size: 0.85rem;
-  padding-top: 1.5rem; }
-
-.fit_cta .fit_course .fit_cta_tnc a {
-  color: inherit;
-  text-decoration: underline; }
-
-.fit_cta .fit_course .fit_cta_tnc a:hover {
-  text-decoration: none; }
 
 .btn-hg {
   font-size: 2rem;
@@ -1092,7 +1133,7 @@ Bleh:;
   font-weight: 900; }
 
 .btn-hg:hover {
-  color: #0a6da2; }
+  color: #464749; }
 
 .btn-hg i:first-child {
   margin-right: 0.5rem; }
@@ -1105,44 +1146,87 @@ Bleh:;
   background: #fff; }
 
 .fit_cta .btn-hg {
-  margin-top: 1rem; }
+  margin: 1rem 0 2rem; }
 
 /*the thing that makes big course code entry thing */
+.fit_code {
+  max-width: 25rem;
+  margin: 0 auto; }
+
+body > .fit_code {
+  margin-top: 10rem; }
+
 .fit_form_code {
   position: relative;
-  max-width: 20rem;
-  padding-top: 2rem; }
+  max-width: 25rem;
+  background: #f82a5f;
+  padding: 1.75rem;
+  border-radius: 0.6rem; }
+
+.fit_form_code .form-group {
+  position: relative; }
 
 .fit_form_code input,
 .fit_form_code input:focus {
   font-size: 2rem;
   color: #fff;
-  background: #0a6da2;
-  border-color: #0a6da2;
+  background: #cc073a;
+  border-color: #cc073a;
   color: #fff;
   padding: 0.5rem 1rem; }
 
 .fit_form_code input::placeholder {
-  color: #2d86b8; }
+  color: #fff; }
+
+.fit_form_code input:focus::placeholder {
+  opacity: 0.1; }
 
 .fit_form_code label {
   opacity: 0;
   position: absolute;
-  top: 0;
-  left: 0;
-  color: #0a6da2; }
+  top: -0.75rem;
+  left: 0.65rem;
+  color: #fff;
+  background: #cc073a;
+  padding: 0 0.5rem;
+  font-size: 0.85rem;
+  border-radius: 0.3rem; }
 
 .fit_form_code input:focus + label {
   opacity: 1; }
 
 .fit_form_code .btn {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   height: 4rem;
   width: 4rem;
   color: #fff;
   font-size: 1.5rem; }
+
+.fit_cta_tnc {
+  color: #fff;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0; }
+
+.fit_cta_tnc a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom-color: #fa7497; }
+
+.fit_cta_tnc a:hover {
+  text-decoration: none;
+  border-bottom-color: #fff; }
+
+.fit_hero .fit_code {
+  margin: 5rem auto; }
+
+.fit_cta .fit_form_code {
+  padding-left: 0; }
+
+.fit_cta .fit_cta_tnc {
+  text-align: left; }
 
 .fit_avatared {
   position: relative;
@@ -2046,6 +2130,30 @@ p.tagline .tag i {
 
 /* IE 10+ */
 body > .fit_auth {
-  margin-top: 6rem;
-  border: 0.1rem solid #e1e4e5;
-  border-radius: 0.6rem; }
+  padding-top: 8rem;
+  /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */ }
+
+.fit_tabbydiv {
+  border-bottom: 0.15rem solid #eff1f1;
+  height: 3.3rem;
+  position: relative;
+  margin-bottom: 6rem; }
+
+.fit_tabby {
+  border-radius: 0 0 0.3rem 0.3rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.7rem;
+  display: block;
+  width: 10rem;
+  color: #b0b4b7;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-weight: 900;
+  margin: 0 auto;
+  background: #eff1f1;
+  text-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5rem; }

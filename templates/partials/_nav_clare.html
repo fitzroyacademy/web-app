@@ -1,22 +1,3 @@
-<header>
-  
-  <a href="/" class="fit_btn left">
-    <i class="fas fa-arrow-left"></i>
-    <span class="fit_txt">Back</span>
-  </a>
-
-  <a href="user.html" class="fit_btn right" data-fit-userpanel>
-    <span class="fit_txt">
-      <span class="d-none d-sm-inline-block">Clare</span>
-      <span class="d-none d-md-inline-block">Carmody</span>
-    </span>
-    <span class="fit_pic circle"><img src="./assets/images/defaults/face.jpg" alt="user"></span>
-  </a>
-
-</header>
-
-
-
 <div class="fit_sidepanel userpanel">
   <div class="whiteout" data-fit-userpanel></div>
   <div class="panel">
@@ -24,7 +5,7 @@
     <div class="head">
       <a href="user.html" class="fit_btn right" data-fit-userpanel>
         <span class="fit_txt">
-          Clare Carmody
+          Clare Carmody <!-- DEV: first + last name -->
         </span>
         <i class="fas fa-times"></i>
       </a>
@@ -37,11 +18,10 @@
           <dt><i class="far fa-user"></i> Your personal details</dt>
           <dd>
             <ul>
-              <li><a href="mailto:clare@fitzroyacademy.com">clare@fitzroyacademy.com</a></li>
-              <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li>
-              <li>Interested in <a href="#">high impact philanthropy</a>, <a href="#">coaching</a>, <a href="#">wine</a> and <a href="#">friends</a>.</li>
+              <li><a href="mailto:clare@fitzroyacademy.com">clare@fitzroyacademy.com</a></li> <!-- DEV: from the user DB -->
+              <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li> <!-- DEV: from the user DB -->
             </ul>
-            <a href="user.html" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit"></i> Edit your details</a>
+            <a href="user_edit" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit"></i> Edit your details</a>
           </dd>
         </dl>
       </div>        
@@ -49,10 +29,12 @@
       <div class="fit_course">
         <h3>
           <span class="txt">Your courses.</span>
-          <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small>
+          <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
         </h3>
 
         <div class="fit_body fit_lessons">
+
+          <!-- DEV: this is links (without the accordion!) direct to the courses user is enrolled in -->
 
           <div class="fit_lesson">
             <a class="fit_btn collapsed i-l i-t" href="#">
@@ -96,43 +78,39 @@
       </div><!-- fit_course -->
       <!-- end vid stack -->
 
-
       <h3>
         <span class="txt">Your privacy.</span>
       </h3>
       <p></p>
       <dl class="fit_summary_icons">
-        <dt><i class="far fa-lock"></i> Your personal details.</dt>
+        <dt><i class="far fa-lock"></i> Notifications.</dt>
         <dd>
           <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">Receieve email updates about your courses</label>
+            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+            <label for="permissions_1">Receieve emails and notifications from your teachers.</label>
           </div>
           <div class="form-group">
-            <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">I'm pumped about life.</label>
+            <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+            <label for="permissions_1">Receieve emails and notifications from <a href="/">Fitzroy Academy</a>.</label>
           </div>
         </dd>
-        <dt><i class="far fa-lock"></i> Some other details.</dt>
+        <dt><i class="far fa-lock"></i> Your details and data.</dt>
         <dd>     
           <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">Get up, get up and get down.</label>
+            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+            <label for="permissions_1">Let us use your learning data for research. <a href="/faq#research">What&rsquo;s this?</a></label>
           </div>
           <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">Go team power hungry lover, keep that good feel happening</label>
+            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+            <label for="permissions_1">Allow other students to see my name</label>
           </div>
           <div class="form-group">
-            <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">We running out of things to toggle</label>
+            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">  <!-- DEV: user privacy permissions. Let's talk this through -->
+            <label for="permissions_1">Allow other registered users to see my email address</label>
           </div>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
-            <label for="permissions_1">But you bet we gon tog.</label>
-          </div>   
         </dd>          
       </dl>
+      <p>Not sure about privacy or data? <a href="/faq#privacy">Read the FAQs</a> about our data and research.</p>
     </div>
 
   </div>
