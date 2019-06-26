@@ -1371,7 +1371,7 @@ Bleh:;
 }
 
 .fit_cta {
-  background: #139ddd;
+  background: #f82a5f;
   padding: 2rem 0 5rem;
   border-radius: 0.3rem;
 }
@@ -1387,7 +1387,7 @@ Bleh:;
 }
 
 .btn-hg:hover {
-  color: #0a6da2;
+  color: #464749;
 }
 
 .btn-hg i:first-child {
@@ -1404,7 +1404,7 @@ Bleh:;
 }
 
 .fit_cta .btn-hg {
-  margin-top: 1rem;
+  margin: 1rem 0 2rem;
 }
 
 /*the thing that makes big course code entry thing */
@@ -1443,6 +1443,10 @@ body > .fit_code {
   color: #fff;
 }
 
+.fit_form_code input:focus::placeholder {
+  opacity: 0.1;
+}
+
 .fit_form_code label {
   opacity: 0;
   position: absolute;
@@ -1469,26 +1473,34 @@ body > .fit_code {
   font-size: 1.5rem;
 }
 
-.fit_form_code .fit_cta_tnc {
+.fit_cta_tnc {
   color: #fff;
   font-size: 0.85rem;
   text-align: center;
   padding: 0;
 }
 
-.fit_form_code .fit_cta_tnc a {
+.fit_cta_tnc a {
   color: inherit;
   text-decoration: none;
   border-bottom-color: #fa7497;
 }
 
-.fit_form_code .fit_cta_tnc a:hover {
+.fit_cta_tnc a:hover {
   text-decoration: none;
   border-bottom-color: #fff;
 }
 
 .fit_hero .fit_code {
   margin: 5rem auto;
+}
+
+.fit_cta .fit_form_code {
+  padding-left: 0;
+}
+
+.fit_cta .fit_cta_tnc {
+  text-align: left;
 }
 
 .fit_avatared {
@@ -2604,9 +2616,8 @@ p.tagline .tag i {
 
 /* IE 10+ */
 body > .fit_auth {
-  margin-top: 6rem;
-  border: 0.1rem solid #e1e4e5;
-  border-radius: 0.6rem;
+  padding-top: 8rem;
+  /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */
 }
 
 /*# sourceMappingURL=fit.css.map */

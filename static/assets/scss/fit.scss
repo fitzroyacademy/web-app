@@ -740,17 +740,17 @@ Bleh:;
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
 
 
-.fit_cta{background: #139ddd; padding: 2rem 0 5rem; border-radius: 0.3rem;}
+.fit_cta{background: $watermelon; padding: 2rem 0 5rem; border-radius: 0.3rem;}
 .fit_cta .fit_course h3{color: #fff;}
 
 .btn-hg{font-size: 2rem; padding: 1rem 1.5rem; font-weight: 900;}
-.btn-hg:hover{color: #0a6da2;}
+.btn-hg:hover{color: $brand;}
 .btn-hg i:first-child{margin-right: 0.5rem;}
 
 .btn-drop{box-shadow: 0 0.3rem 0 rgba(0,0,0,0.15);}
 .btn-drop:hover{box-shadow: 0 0.25rem 0 rgba(0,0,0,0.4); background: #fff;}
 
-.fit_cta .btn-hg{margin-top: 1rem;}
+.fit_cta .btn-hg{margin: 1rem 0 2rem;}
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -769,6 +769,7 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code input,
 .fit_form_code input:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; border-color: $watermelon_dark; color: #fff; padding: 0.5rem 1rem;}
 .fit_form_code input::placeholder{color: #fff;}
+.fit_form_code input:focus::placeholder{opacity: 0.1;}
 
 .fit_form_code label{opacity: 0; position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
 
@@ -778,14 +779,17 @@ body > .fit_code {margin-top:10rem;}
 
 .fit_form_code .btn{position: absolute; top:0; right: 0; height: 4rem; width: 4rem; color: #fff; font-size: 1.5rem;}
 
-.fit_form_code .fit_cta_tnc{color: #fff; font-size: 0.85rem; text-align: center; padding: 0;}
-.fit_form_code .fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom-color: lighten($watermelon, 15%);}
-.fit_form_code .fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
+.fit_cta_tnc{color: #fff; font-size: 0.85rem; text-align: center; padding: 0;}
+.fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom-color: lighten($watermelon, 15%);}
+.fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
 
 
 // in the hero block
 .fit_hero .fit_code{margin: 5rem auto;}
 
+// in the bottom of a cousre page:
+.fit_cta .fit_form_code {padding-left: 0;}
+.fit_cta .fit_cta_tnc{text-align: left;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // user stuff, defaulting for h1
@@ -1323,7 +1327,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 
 // login on its own
-body > .fit_auth{margin-top: 6rem; border:0.1rem solid $border_light; border-radius: $border_rad_xl;}
+body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
 
 
 
