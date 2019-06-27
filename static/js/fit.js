@@ -29,7 +29,7 @@ $( document ).ready(function() {
       $(this).parents('.fit_fancyplace').addClass('active');
     },
     'blur': function() {
-      if (this.value.trim() == this.defaultValue) {
+      if (this.value.trim() == '') {
         $(this).parents('.fit_fancyplace').removeClass('labelled');
       }
       $(this).parents('.fit_fancyplace').removeClass('active');
