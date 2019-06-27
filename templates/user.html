@@ -1,0 +1,83 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+    <div class="fit_course">
+
+    	<h1 class="fit_avatared">
+    		<a href="./assets/images/defaults/face.jpg" target="_blank" class="fit_avatar">
+    			<img src="./assets/images/defaults/face.jpg" alt="user">
+    		</a>
+    		<span class="fit_txt">Clare Carmody.</span>
+    	</h1> <!-- DEV: name of user -->
+
+			<div class="fit_pane">
+			  <dl class="fit_summary_icons">
+			    <dt><i class="far fa-user"></i> About Clare.</dt>
+			    <dd>
+			      <ul>
+			        <li><a href="mailto:clare@fitzroyacademy.com">clare@fitzroyacademy.com</a></li> <!-- DEV: email only visible if user has set "show my email" in preferences, and to super admins -->
+			        <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li> <!-- DEV: from the user DB -->
+			      </ul>
+			    </dd>
+			  </dl>
+			</div>        
+			  
+			<div class="fit_course">
+			  <h3>
+			    <span class="txt">Clare&rsquo;s courses.</span>
+			    <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
+			  </h3>
+
+			  <div class="fit_body fit_lessons">
+
+			    <!-- DEV: this is links (without the accordion!) direct to the courses user is enrolled in -->
+
+			    <div class="fit_lesson">
+			      <a class="fit_btn collapsed i-l i-t" href="#">
+			        <div class="fit_pic vid">
+			          <img src="./assets/images/lessons/agile-project-management.jpg" alt="course">
+			          <span class="fas fa-check"></span>
+			        </div>
+			        <span class="fit_txt">Agile project management</span>
+			        <span class="fit_txt secondary">Clare Carmody, Salesforce</span>
+			        <span class="fit_time">43:51</span>
+			      </a>
+			    </div>
+
+			    <div class="fit_lesson">
+			      <a class="fit_btn collapsed i-l i-t" href="#">
+			        <div class="fit_pic vid">
+			          <img src="./assets/images/lessons/guerilla-usability-testing.jpg" alt="course">
+			          <span class="fas fa-check"></span>
+			        </div>
+			        <span class="fit_txt">Feeling good about eating cake</span>
+			        
+			        <span class="fit_txt secondary">Melissa Ng, Melewi</span>
+			        <span class="fit_time">53:51</span>
+			      </a>        
+			    </div>            
+
+
+			    <div class="fit_lesson">
+			      <a class="fit_btn collapsed i-l i-t" href="#">
+			        <div class="fit_pic vid">
+			          <img src="./assets/images/lessons/crowdfunding.jpg" alt="course">
+			          <span class="fas fa-play"></span>
+			        </div>
+			        <span class="fit_txt">Crowdfunding</span>
+			        
+			        <span class="fit_txt secondary">Prashan Paramanathan, Chuffed</span>            
+			        <span class="fit_time">3:51</span>
+			      </a>
+			    </div>
+			  </div>
+			</div><!-- fit_course -->
+
+		</div>
+	</article>
+</main>
+{% endblock %}

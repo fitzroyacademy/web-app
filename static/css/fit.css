@@ -927,6 +927,7 @@ header .fit_btn > .fit_txt {
   position: absolute;
   top: 0;
   left: 0;
+  border-radius: 0.6rem;
 }
 
 .fit_subvidya {
@@ -1526,6 +1527,14 @@ h2.fit_avatared {
 h2.fit_avatared .fit_avatar img {
   width: 2.5rem;
   height: 2.5rem;
+}
+
+form.fit_user_edit {
+  max-width: 25rem;
+}
+
+dd form.fit_user_edit {
+  margin-top: 1rem;
 }
 
 .fit_summary_icons dd .form-group:first-child {

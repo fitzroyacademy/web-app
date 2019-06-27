@@ -27,13 +27,32 @@ def mistakes():
 def course_edit():
     return render_template('course_edit.html')
 
-@app.route('/code')
-def code():
-    return render_template('code.html')
+@app.route('/password')
+def password():
+    return render_template('password.html')
 
+@app.route('/user')
+def user():
+    return render_template('user.html')
+
+@app.route('/user_edit')
+def user_edit():
+    return render_template('user_edit.html')    
+
+@app.route('/404')
+def fourohfour():
+    return render_template('404.html')
+
+@app.route('/502')
+def fiveohtwo():
+    return render_template('502.html')    
 
 # --------------------------------------------------------------------------------
 # Templates that are nearly ready for app-ification:
+
+@app.route('/code')
+def code():
+    return render_template('code.html')
 
 @app.route('/course_intro')
 def course_intro():
