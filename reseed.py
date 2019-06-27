@@ -2,7 +2,6 @@ import datamodels
 import copy
 
 session = datamodels.get_session()
-session.rollback()
 
 import stubs
 
@@ -12,7 +11,6 @@ def get_seconds(dur):
 
 for student in stubs.students:
 	u = datamodels.User(**student)
-	print(u)
 	session.add(u)
 
 c = datamodels.Course(slug="fitzroy-academy")
