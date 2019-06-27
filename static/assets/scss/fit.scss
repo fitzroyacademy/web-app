@@ -549,7 +549,7 @@ header .fit_btn > .fit_txt{white-space:nowrap;}
 
 .fit_vidya{position: relative;}
 .fit_vidya:after{padding-top: $ratio_169; display: block; content: '';}
-.fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0;}
+.fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0; border-radius: $border_rad_xl;}
 
 .fit_subvidya{padding:1rem; position: relative;}
 @media (min-width: 768px) {
@@ -1158,6 +1158,8 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0;}
 .fit_hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
 .fit_hero h1 strong{color:$blue; position: relative; display: inline-block;}
 .fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
+
+// .fit_hero h1 small{display: block; font-size: 1.5rem; color:$text_light;}
 
 .fit_hero p{font-size: 1.5rem; color: $text_light;}
 .fit_hero p a{color:inherit; border-bottom: 0.15rem solid $border_light;}
