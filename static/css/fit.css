@@ -1529,6 +1529,14 @@ h2.fit_avatared .fit_avatar img {
   height: 2.5rem;
 }
 
+form.fit_user_edit {
+  max-width: 25rem;
+}
+
+dd form.fit_user_edit {
+  margin-top: 1rem;
+}
+
 .fit_summary_icons dd .form-group:first-child {
   margin-top: 1rem;
 }

@@ -36,6 +36,13 @@ $( document ).ready(function() {
     }
   });
 
+  // and on load
+  $("[data-fit-fancyplace]").each(function(index, el) {
+    if (this.value.trim() != ''){
+      $(this).parents('.fit_fancyplace').addClass('labelled');
+    }
+  });
+
 
   // ------------------------------------------------------------
   // colour the progress bars

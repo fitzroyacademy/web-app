@@ -802,6 +802,12 @@ h2.fit_avatared{padding-left: 3.5rem;}
 h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
 
 
+// edit form
+form.fit_user_edit{max-width: 25rem;}
+
+// within the edit panel
+dd form.fit_user_edit{margin-top: 1rem;}
+
 // mess with styles for the toggle thingos
 // ----------------------------------------------------------------------------------------------------------------
 .fit_summary_icons dd .form-group:first-child{margin-top: 1rem;}
