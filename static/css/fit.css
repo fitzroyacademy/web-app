@@ -1530,11 +1530,11 @@ h2.fit_avatared .fit_avatar img {
 }
 
 form.fit_user_edit {
-  max-width: 25rem;
+  max-width: 30rem;
 }
 
 dd form.fit_user_edit {
-  margin-top: 1rem;
+  margin: 2rem 0 1rem;
 }
 
 .fit_summary_icons dd .form-group:first-child {

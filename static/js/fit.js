@@ -44,6 +44,15 @@ $( document ).ready(function() {
   });
 
 
+  // changing user URL
+  $("[data-fit-userslug_set]").on({
+    'change': function() {
+      $('[data-fit-userslug]').text('wefaewf');
+    }
+  });      
+  
+
+
   // ------------------------------------------------------------
   // colour the progress bars
   $('.progress-bar').each(function(index, el) {
