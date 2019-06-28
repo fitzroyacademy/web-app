@@ -79,9 +79,18 @@ def fiveohtwo():
 # --------------------------------------------------------------------------------
 # Templates that are nearly ready for app-ification:
 
-@app.route('/code')
+@app.route('/code', methods=["GET", "POST"])
 def code():
-    return render_template('code.html')
+    error = None
+    if request.method == "POST":
+        c = datamodels.get_course_by_code(request.form['course_code'])
+        if c is None:
+            error = "Course not found."
+        else:
+            return redirect(c.permalink)
+    if request.method == "GET" or error:
+        data = {'errors': [error]}
+        return render_template('code.html', **data)
 
 @app.route('/course_intro')
 def course_intro():
@@ -116,6 +125,10 @@ def post_register():
 
 # --------------------------------------------------------------------------------
 # actually within the app now:
+
+@app.route('/course/<cid>')
+def course_preview(cid):
+    return render_template('course_intro.html')
 
 @app.route('/course/<cid>/<lid>/<sid>')
 def course(cid, lid=None, sid=None):

@@ -136,8 +136,7 @@ class Course(Base):
 	cover_image = sa.Column(sa.String)
 	order = sa.Column(sa.Integer)
 	year = sa.Column(sa.Date)
-	course_code = sa.Column(sa.String(50))
-	access_code = sa.Column(sa.String(16))
+	course_code = sa.Column(sa.String(16), unique=True)
 	paid = sa.Column(sa.Boolean)
 	guest_access = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
@@ -156,6 +155,10 @@ class Course(Base):
 		association.institute = self
 		association.user = user
 		self.users.append(a)
+
+	@property
+	def permalink(self):
+		return "/course/{}".format(self.slug)
 
 
 class CourseTranslation(Base):
@@ -326,6 +329,10 @@ def get_session():
 def get_course_by_slug(slug):
 	session = get_session()
 	return session.query(Course).filter(Course.slug == slug).first()
+
+def get_course_by_code(code):
+	session = get_session()
+	return session.query(Course).filter(Course.course_code == code).first()
 
 def get_lesson(lesson_id):
 	session = get_session()
