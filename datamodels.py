@@ -43,6 +43,7 @@ class User(Base):
 
 
 	id = sa.Column(sa.Integer, primary_key=True)
+	username = sa.Column(sa.String(50), unique=True)
 	first_name = sa.Column(sa.String)
 	last_name = sa.Column(sa.String)
 	email = sa.Column(sa.String, unique=True)

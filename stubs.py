@@ -32,6 +32,7 @@ students = [
         'first_name': 'Homer',
         'last_name': 'Simpson',
         'password': 'homer',
+        'username': 'homer',
         'email': 'homer@simpsons.com',
         'profile_picture': '/assets/stub/homer.png'
     },
@@ -39,6 +40,7 @@ students = [
         'first_name': 'Marge',
         'last_name': 'Simpson',
         'password': 'marge',
+        'username': 'marge',
         'email': 'marge@simpsons.com',
         'profile_picture': '/assets/stub/marge.png'
     },
@@ -46,6 +48,7 @@ students = [
         'first_name': 'Bart',
         'last_name': 'Simpson',
         'password': 'bart',
+        'username': 'bart',
         'email': 'bart@simpsons.com',
         'profile_picture': '/assets/stub/bart.png'
     },
@@ -53,6 +56,7 @@ students = [
         'first_name': 'Lisa',
         'last_name': 'Simpson',
         'password': 'lisa',
+        'username': 'lisa',
         'email': 'lisa@simpsons.com',
         'profile_picture': '/assets/stub/lisa.png'
     },
@@ -60,6 +64,7 @@ students = [
         'first_name': 'Maggie',
         'last_name': 'Simpson',
         'password': 'maggie',
+        'username': 'maggie',
         'email': 'maggie@simpsons.com',
         'profile_picture': '/assets/stub/maggie.png'
     },
