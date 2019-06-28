@@ -1,0 +1,164 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+    <div class="fit_course">
+
+    	<h1 class="fit_avatared">
+    		<a href="./assets/images/defaults/face.jpg" target="_blank" class="fit_avatar">
+    			<img src="./assets/images/defaults/face.jpg" alt="user">
+    		</a>
+    		<span class="fit_txt">Clare Carmody.</span>
+    	</h1> <!-- DEV: name of user -->
+
+			<div class="fit_pane">
+			  <dl class="fit_summary_icons">
+			    <dt><i class="far fa-user"></i> About you.</dt>
+			    <dd>
+			      <form class="fit_user_edit">
+							<div class="row">
+			          <div class="col">
+			            <div class="fit_fancyplace">
+			              <label for="firstname">Given name</label>
+			              <input type="text" id="firstname" class="form-control" value="Clare" placeholder="Given name" required data-fit-fancyplace>
+			            </div>
+			          </div>
+			          <div class="col">
+			            <div class="fit_fancyplace">
+			              <label for="lastname">Last name</label>
+			              <input type="text" id="lastname" class="form-control" value="Carmody" placeholder="Last name" required data-fit-fancyplace>
+			            </div>
+			          </div>
+			        </div>
+
+			        <div class="fit_fancyplace">
+			          <label for="register_email">Email address</label>
+			          <input type="email" id="register_email" class="form-control" value="support@fitzroyacademy.com" placeholder="Email address" required data-fit-fancyplace>
+			        </div>
+
+			        <div class="fit_fancyplace">
+			          <label for="register_pass">Change password</label>
+			          <input type="password" id="register_pass" class="form-control" placeholder="Change password" required data-fit-fancyplace>
+			        </div>
+
+			        <div class="form-group">
+								<div class="input-group">
+								  <div class="input-group-prepend">
+								    <span class="input-group-text">Picture</span>
+								  </div>
+								  <div class="custom-file">
+								    <input type="file" class="custom-file-input" id="inputGroupFile01">
+								    <label class="custom-file-label" for="inputGroupFile01">Choose file to change</label>
+								  </div>
+								</div>		
+							</div>	        
+							
+							<div class="form-group">
+								<div class="input-group fit_fancyplace">
+								  <div class="input-group-prepend">
+								    <span class="input-group-text" id="basic-addon1">@</span>
+								  </div>
+								  <input type="text" id="username" class="form-control" maxlength="20" value="clarecarmody" placeholder="username" aria-label="username" aria-describedby="basic-addon1" data-fit-userslug_set>
+								</div>
+								<small id="emailHelp" class="form-text text-muted">Your personal link will be: <a href="/user/clarecarmody">fitzroyacademy.com/user/<strong data-fit-userslug>clarecarmody</strong></a></small>
+								<input type="hidden" value="clarecarmody" id="secretslug" name="secretslug" data-fit-userslug_secret>
+							</div>
+
+						  <button type="submit" class="btn btn-primary">Save changes</button>
+			      </form>
+			    </dd>
+			  </dl>
+			</div>        
+			  
+			<div class="fit_course">
+			  <h3>
+			    <span class="txt">Your courses.</span>
+			    <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
+			  </h3>
+
+			  <div class="fit_body fit_lessons">
+
+			    <!-- DEV: this is just links (without the accordion!) direct to the courses user is enrolled in -->
+
+			    <div class="fit_lesson">
+			      <a class="fit_btn collapsed i-l i-t" href="#">
+			        <div class="fit_pic vid">
+			          <img src="./assets/images/lessons/agile-project-management.jpg" alt="course">
+			          <span class="fas fa-check"></span>
+			        </div>
+			        <span class="fit_txt">Agile project management</span>
+			        <span class="fit_txt secondary">Clare Carmody, John Smith</span>
+			        <span class="fit_time">43:51</span>
+			      </a>
+			    </div>
+
+			    <div class="fit_lesson">
+			      <a class="fit_btn collapsed i-l i-t" href="#">
+			        <div class="fit_pic vid">
+			          <img src="./assets/images/lessons/guerilla-usability-testing.jpg" alt="course">
+			          <span class="fas fa-check"></span>
+			        </div>
+			        <span class="fit_txt">Feeling good about eating cake</span>
+			        
+			        <span class="fit_txt secondary">Melissa Ng</span>
+			        <span class="fit_time">53:51</span>
+			      </a>        
+			    </div>            
+
+
+			    <div class="fit_lesson">
+			      <a class="fit_btn collapsed i-l i-t" href="#">
+			        <div class="fit_pic vid">
+			          <img src="./assets/images/lessons/crowdfunding.jpg" alt="course">
+			          <span class="fas fa-play"></span>
+			        </div>
+			        <span class="fit_txt">Crowdfunding</span>
+			        
+			        <span class="fit_txt secondary">Prashan Paramanathan</span>            
+			        <span class="fit_time">3:51</span>
+			      </a>
+			    </div>
+			  </div>
+			</div><!-- fit_course -->
+			<!-- end vid stack -->
+
+			<h3>
+			  <span class="txt">Your privacy.</span>
+			</h3>
+			<p></p>
+			<dl class="fit_summary_icons">
+			  <dt><i class="far fa-lock"></i> Notifications.</dt>
+			  <dd>
+			    <div class="form-group">
+			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+			      <label for="permissions_1">Receieve emails and notifications from your teachers.</label>
+			    </div>
+			    <div class="form-group">
+			      <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+			      <label for="permissions_1">Receieve emails and notifications from <a href="/">Fitzroy Academy</a>.</label>
+			    </div>
+			  </dd>
+			  <dt><i class="far fa-lock"></i> Your details and data.</dt>
+			  <dd>     
+			    <div class="form-group">
+			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+			      <label for="permissions_1">Let us use your learning data for research. <a href="/faq#research">What&rsquo;s this?</a></label>
+			    </div>
+			    <div class="form-group">
+			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
+			      <label for="permissions_1">Allow other students to see my name</label>
+			    </div>
+			    <div class="form-group">
+			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">  <!-- DEV: user privacy permissions. Let's talk this through -->
+			      <label for="permissions_1">Allow other registered users to see my email address</label>
+			    </div>
+			  </dd>          
+			</dl>
+			<p>Not sure about privacy or data? <a href="/faq#privacy">Read the FAQs</a> about our data and research.</p>
+		</div>
+	</article>
+</main>
+{% endblock %}

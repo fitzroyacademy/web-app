@@ -29,10 +29,48 @@ $( document ).ready(function() {
       $(this).parents('.fit_fancyplace').addClass('active');
     },
     'blur': function() {
-      if (this.value.trim() == this.defaultValue) {
+      if (this.value.trim() == '') {
         $(this).parents('.fit_fancyplace').removeClass('labelled');
       }
       $(this).parents('.fit_fancyplace').removeClass('active');
+    }
+  });
+
+  // and on load
+  $("[data-fit-fancyplace]").each(function(index, el) {
+    if (this.value.trim() != ''){
+      $(this).parents('.fit_fancyplace').addClass('labelled');
+    }
+  });
+
+
+  // changing user URL
+
+  // slugification
+  function slugify(string) {
+  const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;'
+  const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------'
+  const p = new RegExp(a.split('').join('|'), 'g')
+
+  return string.toString().toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(/&/g, '-and-') // Replace & with 'and'
+    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '') // Trim - from end of text
+  }
+  
+  // change the actual url
+  $("[data-fit-userslug_set]").on({
+    'change, keyup': function() {
+      var slug = slugify($(this).val());
+      $('[data-fit-userslug]').text(slug);
+      $('[data-fit-userslug_secret]').val(slug);
+
+      // optionally mess with user input?
+      // $(this).val(slug);
     }
   });
 

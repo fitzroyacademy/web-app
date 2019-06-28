@@ -549,7 +549,7 @@ header .fit_btn > .fit_txt{white-space:nowrap;}
 
 .fit_vidya{position: relative;}
 .fit_vidya:after{padding-top: $ratio_169; display: block; content: '';}
-.fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0;}
+.fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0; border-radius: $border_rad_xl;}
 
 .fit_subvidya{padding:1rem; position: relative;}
 @media (min-width: 768px) {
@@ -769,7 +769,9 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code input,
 .fit_form_code input:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; border-color: $watermelon_dark; color: #fff; padding: 0.5rem 1rem;}
 .fit_form_code input::placeholder{color: #fff;}
-.fit_form_code input:focus::placeholder{opacity: 0.1;}
+.fit_form_code input:focus::placeholder{opacity: 0.2; text-transform: none;}
+
+.fit_form_code input:focus{text-transform: uppercase;}
 
 .fit_form_code label{opacity: 0; position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
 
@@ -780,7 +782,7 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code .btn{position: absolute; top:0; right: 0; height: 4rem; width: 4rem; color: #fff; font-size: 1.5rem;}
 
 .fit_cta_tnc{color: #fff; font-size: 0.85rem; text-align: center; padding: 0;}
-.fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom-color: lighten($watermelon, 15%);}
+.fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom: 3px solid lighten($watermelon, 20%);}
 .fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
 
 
@@ -801,6 +803,12 @@ body > .fit_code {margin-top:10rem;}
 h2.fit_avatared{padding-left: 3.5rem;}
 h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
 
+
+// edit form
+form.fit_user_edit{max-width: 30rem;}
+
+// within the edit panel
+dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 // mess with styles for the toggle thingos
 // ----------------------------------------------------------------------------------------------------------------
@@ -1158,6 +1166,8 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0;}
 .fit_hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
 .fit_hero h1 strong{color:$blue; position: relative; display: inline-block;}
 .fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
+
+// .fit_hero h1 small{display: block; font-size: 1.5rem; color:$text_light;}
 
 .fit_hero p{font-size: 1.5rem; color: $text_light;}
 .fit_hero p a{color:inherit; border-bottom: 0.15rem solid $border_light;}
