@@ -51,9 +51,22 @@ def user(user_id):
     data = {'user': user}
     return render_template('user.html', **data)
 
-@app.route('/user_edit')
+@app.route('/user_edit', methods=["GET", "POST"])
 def user_edit():
-    return render_template('user_edit.html')    
+    if 'user_id' in session and session['user_id'] is not None:
+        current_user = datamodels.get_user(session['user_id'])
+    else:
+        return 'Request denied.'
+    if request.method == "POST":
+        if 'email' in request.form:
+            current_user.email = request.form['email']
+        if 'first_name' in request.form:
+            current_user.first_name = request.form['first_name']
+        if 'last_name' in request.form:
+            current_user.last_name = request.form['last_name']
+        if 'username' in request.form:
+            current_user.username = request.form['username']
+    return render_template('user_edit.html')
 
 @app.route('/404')
 def fourohfour():
