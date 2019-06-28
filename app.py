@@ -1,12 +1,24 @@
 import json
 import random
-from flask import Flask, render_template
+from flask import Flask, render_template, session, request, url_for, redirect
 import sass
 import stubs
 import datamodels
 
+import logging
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
 app = Flask('FitzroyFrontend', static_url_path='')
 sass.compile(dirname=("static/assets/scss", 'static/css'))
+
+@app.context_processor
+def inject_current_user():
+    if 'user_id' in session:
+        current_user = datamodels.get_user(session['user_id'])
+    else:
+        current_user = None
+    return dict(current_user=current_user)
 
 @app.route('/')
 def index():
@@ -33,9 +45,11 @@ def course_edit():
 def password():
     return render_template('password.html')
 
-@app.route('/user')
-def user():
-    return render_template('user.html')
+@app.route('/user/<int:user_id>', methods=["GET"])
+def user(user_id):
+    user = datamodels.get_user(user_id)
+    data = {'user': user}
+    return render_template('user.html', **data)
 
 @app.route('/user_edit')
 def user_edit():
@@ -60,8 +74,30 @@ def code():
 def course_intro():
     return render_template('course_intro.html')
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
+    data = {'errors': []}
+    if request.method == "POST":
+        user = datamodels.get_user_by_email(request.form.get('email'))
+        if user is None:
+            data['errors'].append("Username and password combo bad")
+        else:
+            valid = user.check_password(request.form.get('password'))
+            if not valid:
+                data['errors'].append("Username and password combo bad")
+            else:
+                session['user_id'] = user.id
+                return redirect(url_for('index'))
+    if len(data['errors']) > 0 or request.method == "GET":
+        return render_template('login.html', **data)
+
+@app.route('/logout', methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+@app.route('/user/register', methods=["POST"])
+def post_register():
     return render_template('login.html')
 
 
@@ -152,4 +188,5 @@ def lessons():
 
 if __name__ == "__main__":
     app.debug = True
+    app.secret_key = "super sedcret"
     app.run(host='0.0.0.0', port=5000)

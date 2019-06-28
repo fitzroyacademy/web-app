@@ -49,6 +49,7 @@ class User(Base):
 	phone_number = sa.Column(sa.String(15))
 	dob = sa.Column(sa.Date)
 	password_hash = sa.Column(sa.String(128))
+	profile_picture = sa.Column(sa.String)
 
 	institutes = orm.relationship("InstituteEnrollment", back_populates="user")
 	programs = orm.relationship("ProgramEnrollment", back_populates="user")
@@ -59,6 +60,10 @@ class User(Base):
 
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
+
+	@property
+	def full_name(self):
+		return " ".join([self.first_name, self.last_name])
 
 
 class Institute(Base):
@@ -319,11 +324,11 @@ def get_session():
 
 def get_course_by_slug(slug):
 	session = get_session()
-	return session.query(Course).filter(Course.slug == slug).one()
+	return session.query(Course).filter(Course.slug == slug).first()
 
 def get_lesson(lesson_id):
 	session = get_session()
-	return session.query(Lesson).filter(Lesson.id == lesson_id).one()
+	return session.query(Lesson).filter(Lesson.id == lesson_id).first()
 
 def get_lesson_by_slug(course_slug, lesson_slug):
 	session = get_session()
@@ -332,13 +337,13 @@ def get_lesson_by_slug(course_slug, lesson_slug):
 		filter(Course.slug == course_slug).\
 		filter(Lesson.slug == lesson_slug)
 	try:
-		return q.one()
+		return q.first()
 	except:
 		return None
 
 def get_segment(segment_id):
 	session = get_session()
-	return session.query(Segment).filter(Segment.id == segment_id).one()
+	return session.query(Segment).filter(Segment.id == segment_id).first()
 
 def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	session = get_session()
@@ -349,6 +354,14 @@ def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 		filter(Lesson.slug == lesson_slug).\
 		filter(Segment.slug == segment_slug)
 	try:
-		return q.one()
+		return q.first()
 	except:
 		return None
+
+def get_user(user_id):
+	session = get_session()
+	return session.query(User).filter(User.id == user_id).first()
+
+def get_user_by_email(email):
+	session = get_session()
+	return session.query(User).filter(User.email == email).first()

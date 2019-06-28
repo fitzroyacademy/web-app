@@ -8,19 +8,19 @@
     <div class="fit_course">
 
     	<h1 class="fit_avatared">
-    		<a href="./assets/images/defaults/face.jpg" target="_blank" class="fit_avatar">
-    			<img src="./assets/images/defaults/face.jpg" alt="user">
+    		<a href="{{ user.profile_picture }}" target="_blank" class="fit_avatar">
+    			<img src="{{ user.profile_picture }}" alt="user">
     		</a>
-    		<span class="fit_txt">Clare Carmody.</span>
-    	</h1> <!-- DEV: name of user -->
+    		<span class="fit_txt">{{ user.full_name }}</span>
+    	</h1> 
 
 			<div class="fit_pane">
 			  <dl class="fit_summary_icons">
-			    <dt><i class="far fa-user"></i> About Clare.</dt>
+			    <dt><i class="far fa-user"></i> About {{ user.first_name }}.</dt>
 			    <dd>
 			      <ul>
-			        <li><a href="mailto:clare@fitzroyacademy.com">clare@fitzroyacademy.com</a></li> <!-- DEV: email only visible if user has set "show my email" in preferences, and to super admins -->
-			        <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li> <!-- DEV: from the user DB -->
+			        <li><a href="mailto:{{ user.email }}">{{ user.email }}</a></li> <!-- DEV: email only visible if user has set "show my email" in preferences, and to super admins 
+			        <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li> <!DEV: from the user DB -->
 			      </ul>
 			    </dd>
 			  </dl>
@@ -28,7 +28,7 @@
 			  
 			<div class="fit_course">
 			  <h3>
-			    <span class="txt">Clare&rsquo;s courses.</span>
+			    <span class="txt">{{ user.first_name }}&rsquo;s courses.</span>
 			    <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
 			  </h3>
 

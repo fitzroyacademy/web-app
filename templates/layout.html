@@ -25,10 +25,11 @@
 </head>
 <body>
 
-{% include 'partials/_nav_loggedin.html' %}
-
-{% include 'partials/_nav_clare.html' %}
-
+{% if current_user %}
+  {% include 'partials/_nav_user_loggedin.html' %}
+{% else %}
+  {% include 'partials/_nav_user_login.html' %}
+{% endif %}
 
 {% block body %}{% endblock %}
 
