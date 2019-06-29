@@ -68,8 +68,11 @@
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
-        <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course</a>
-        <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+        <form method="post" action="/enroll/{{ course.slug }}">
+          <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course
+          </button>
+          <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+        </form>
       </div>
     </div>
 

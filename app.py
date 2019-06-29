@@ -14,11 +14,13 @@ sass.compile(dirname=("static/assets/scss", 'static/css'))
 
 @app.context_processor
 def inject_current_user():
+    return dict(current_user=get_current_user())
+
+def get_current_user():
     if 'user_id' in session:
-        current_user = datamodels.get_user(session['user_id'])
+        return datamodels.get_user(session['user_id'])
     else:
-        current_user = None
-    return dict(current_user=current_user)
+        return None
 
 @app.route('/')
 def index():
@@ -92,9 +94,24 @@ def code():
         data = {'errors': [error]}
         return render_template('code.html', **data)
 
+@app.route('/enroll/<course_slug>', methods=["POST"])
+def enroll(course_slug):
+    course = datamodels.get_course_by_slug(course_slug)
+    if course is None:
+        return redirect('/404')
+    user = get_current_user()
+    if user and datamodels.get_enrollment(course.id, user.id) is None:
+        enrollment = datamodels.CourseEnrollment(
+            course_id=course.id, user_id=user.id, access_level=1
+        )
+        s = datamodels.get_session()
+        s.add(enrollment)
+        s.commit()
+    return redirect(course.lessons[0].permalink)
+
 @app.route('/course_intro')
 def course_intro():
-    return render_template('course_intro.html')
+    return render_template('course_intro.html', **kwargs)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -126,19 +143,34 @@ def post_register():
 # --------------------------------------------------------------------------------
 # actually within the app now:
 
-@app.route('/course/<cid>')
-def course_preview(cid):
-    return render_template('course_intro.html')
+@app.route('/course/<slug>')
+def course_preview(slug):
+    course = datamodels.get_course_by_slug(slug)
+    if course is None:
+        return redirect('/404')
+    return render_template('course_intro.html', course=course)
+
+@app.route('/course/<cid>/<lid>')
+def lesson_view(cid, lid):
+    lesson = datamodels.get_lesson_by_slug(cid, lid)
+    course = lesson.course
+    segment = lesson.segments[0]
+    data = {
+        'students': stubs.student_completion,
+        'active_lesson': lesson,    
+        'active_segment': segment,
+        'course': course
+    }
+    if course is None:
+        return redirect('/404')
+    return render_template('course.html', **data)
 
 @app.route('/course/<cid>/<lid>/<sid>')
-def course(cid, lid=None, sid=None):
+def lesson_segment(cid, lid=None, sid=None):
 	if lid is None:
 		course = datamodels.get_course_by_slug(cid)
 		lesson = course.lessons[0]
 		segment = lesson.segments[0]
-	elif sid is None:
-		lesson = datamodels.get_lesson_by_slug(cid, lid)
-		course = lesson.course
 	else:
 		segment = datamodels.get_segment_by_slug(cid, lid, sid)
 		lesson = segment.lesson

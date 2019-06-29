@@ -151,8 +151,9 @@ class Course(Base):
 	translations = orm.relationship("CourseTranslation", back_populates="course")
 
 	def add_user(self, user, access_level=0):
+
 		association = CourseEnrollment(access_level=access_level)
-		association.institute = self
+		association.course = self
 		association.user = user
 		self.users.append(a)
 
@@ -175,6 +176,7 @@ class CourseTranslation(Base):
 
 class CourseEnrollment(Base):
 	__tablename__ = 'users_courses'
+	__table_args__ = (sa.UniqueConstraint('course_id', 'user_id', name='_course_user_enrollment'),)
 
 	id = sa.Column(sa.Integer, primary_key=True)
 	user_id = sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id'))
@@ -209,6 +211,10 @@ class Lesson(Base):
 	def validate_slug(self, key, value):
 		""" TODO: Check the parent course for any duplicate lesson slugs """
 		return value
+
+	@property
+	def permalink(self):
+		return "/course/{}/{}".format(self.course.slug, self.slug)
 
 
 class LessonTranslation(Base):
@@ -373,3 +379,10 @@ def get_user(user_id):
 def get_user_by_email(email):
 	session = get_session()
 	return session.query(User).filter(User.email == email).first()
+
+def get_enrollment(course_id, student_id):
+	session = get_session()
+	return session.query(CourseEnrollment).filter(
+		CourseEnrollment.course_id == course_id and
+		CourseEnrollment.student_id == student_id
+	).first()
