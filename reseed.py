@@ -10,10 +10,15 @@ def get_seconds(dur):
 	return int(mmss[0]) * 60 + int(mmss[1])
 
 for student in stubs.students:
-	u = datamodels.User(**student)
+	user = copy.deepcopy(student)
+	password = user.pop('password')
+	u = datamodels.User(**user)
+	u.set_password(password)
 	session.add(u)
 
-c = datamodels.Course(slug="fitzroy-academy")
+session.commit()
+
+c = datamodels.Course(slug="fitzroy-academy", course_code="abc123")
 session.add(c)
 
 for i, lesson in enumerate(stubs.lessons):

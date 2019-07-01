@@ -43,12 +43,14 @@ class User(Base):
 
 
 	id = sa.Column(sa.Integer, primary_key=True)
+	username = sa.Column(sa.String(50), unique=True)
 	first_name = sa.Column(sa.String)
 	last_name = sa.Column(sa.String)
 	email = sa.Column(sa.String, unique=True)
 	phone_number = sa.Column(sa.String(15))
 	dob = sa.Column(sa.Date)
 	password_hash = sa.Column(sa.String(128))
+	profile_picture = sa.Column(sa.String)
 
 	institutes = orm.relationship("InstituteEnrollment", back_populates="user")
 	programs = orm.relationship("ProgramEnrollment", back_populates="user")
@@ -59,6 +61,10 @@ class User(Base):
 
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
+
+	@property
+	def full_name(self):
+		return " ".join([self.first_name, self.last_name])
 
 
 class Institute(Base):
@@ -130,8 +136,7 @@ class Course(Base):
 	cover_image = sa.Column(sa.String)
 	order = sa.Column(sa.Integer)
 	year = sa.Column(sa.Date)
-	course_code = sa.Column(sa.String(50))
-	access_code = sa.Column(sa.String(16))
+	course_code = sa.Column(sa.String(16), unique=True)
 	paid = sa.Column(sa.Boolean)
 	guest_access = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
@@ -146,10 +151,15 @@ class Course(Base):
 	translations = orm.relationship("CourseTranslation", back_populates="course")
 
 	def add_user(self, user, access_level=0):
+
 		association = CourseEnrollment(access_level=access_level)
-		association.institute = self
+		association.course = self
 		association.user = user
 		self.users.append(a)
+
+	@property
+	def permalink(self):
+		return "/course/{}".format(self.slug)
 
 
 class CourseTranslation(Base):
@@ -166,6 +176,7 @@ class CourseTranslation(Base):
 
 class CourseEnrollment(Base):
 	__tablename__ = 'users_courses'
+	__table_args__ = (sa.UniqueConstraint('course_id', 'user_id', name='_course_user_enrollment'),)
 
 	id = sa.Column(sa.Integer, primary_key=True)
 	user_id = sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id'))
@@ -200,6 +211,10 @@ class Lesson(Base):
 	def validate_slug(self, key, value):
 		""" TODO: Check the parent course for any duplicate lesson slugs """
 		return value
+
+	@property
+	def permalink(self):
+		return "/course/{}/{}".format(self.course.slug, self.slug)
 
 
 class LessonTranslation(Base):
@@ -319,11 +334,15 @@ def get_session():
 
 def get_course_by_slug(slug):
 	session = get_session()
-	return session.query(Course).filter(Course.slug == slug).one()
+	return session.query(Course).filter(Course.slug == slug).first()
+
+def get_course_by_code(code):
+	session = get_session()
+	return session.query(Course).filter(Course.course_code == code).first()
 
 def get_lesson(lesson_id):
 	session = get_session()
-	return session.query(Lesson).filter(Lesson.id == lesson_id).one()
+	return session.query(Lesson).filter(Lesson.id == lesson_id).first()
 
 def get_lesson_by_slug(course_slug, lesson_slug):
 	session = get_session()
@@ -332,13 +351,13 @@ def get_lesson_by_slug(course_slug, lesson_slug):
 		filter(Course.slug == course_slug).\
 		filter(Lesson.slug == lesson_slug)
 	try:
-		return q.one()
+		return q.first()
 	except:
 		return None
 
 def get_segment(segment_id):
 	session = get_session()
-	return session.query(Segment).filter(Segment.id == segment_id).one()
+	return session.query(Segment).filter(Segment.id == segment_id).first()
 
 def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	session = get_session()
@@ -349,6 +368,21 @@ def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 		filter(Lesson.slug == lesson_slug).\
 		filter(Segment.slug == segment_slug)
 	try:
-		return q.one()
+		return q.first()
 	except:
 		return None
+
+def get_user(user_id):
+	session = get_session()
+	return session.query(User).filter(User.id == user_id).first()
+
+def get_user_by_email(email):
+	session = get_session()
+	return session.query(User).filter(User.email == email).first()
+
+def get_enrollment(course_id, student_id):
+	session = get_session()
+	return session.query(CourseEnrollment).filter(
+		CourseEnrollment.course_id == course_id and
+		CourseEnrollment.student_id == student_id
+	).first()

@@ -10,15 +10,16 @@
   </ul>
   <div class="tab-content" id="tabContent">
     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-      <form class="form">
+      {% include 'partials/_form_errors.html' %}
+      <form class="form" action="/login" method="post">
         <div class="fit_fancyplace">
           <label for="inputEmail">Email address</label>
-          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus  data-fit-fancyplace>
+          <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus  data-fit-fancyplace>
         </div>
 
         <div class="fit_fancyplace">
           <label for="inputPassword">Password</label>
-          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required data-fit-fancyplace>
+          <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
 
         <div class="custom-control custom-checkbox mb-3">
@@ -30,8 +31,7 @@
     </div><!-- login -->
 
     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-      <form class="form">
-
+      <form class="form" action="/register" method="post">
         <div class="row">
           <div class="col">
             <div class="fit_fancyplace">
@@ -55,6 +55,17 @@
         <div class="fit_fancyplace">
           <label for="register_pass">Password</label>
           <input type="password" id="register_pass" class="form-control" placeholder="Password" required data-fit-fancyplace>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group fit_fancyplace">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="text" id="username" class="form-control" maxlength="20" name="username" value="" placeholder="username" aria-label="username" aria-describedby="basic-addon1" required data-fit-userslug_set>
+          </div>
+          <small id="emailHelp" class="form-text text-muted">Your personal link will be: <a href="/user/clarecarmody">fitzroyacademy.com/user/<strong data-fit-userslug></strong></a></small>
+          <input type="hidden" value="clarecarmody" id="secretslug" name="secretslug" data-fit-userslug_secret>
         </div>
 
         <div class="custom-control custom-checkbox mb-3">

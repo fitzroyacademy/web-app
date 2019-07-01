@@ -29,29 +29,44 @@ student_completion =  [
 
 students = [
     {
-        'id': 1,
         'first_name': 'Homer',
-        'last_name': 'Simpson'
+        'last_name': 'Simpson',
+        'password': 'homer',
+        'username': 'homer',
+        'email': 'homer@simpsons.com',
+        'profile_picture': '/assets/stub/homer.png'
     },
     {
-        'id': 2,
         'first_name': 'Marge',
-        'last_name': 'Simpson'
+        'last_name': 'Simpson',
+        'password': 'marge',
+        'username': 'marge',
+        'email': 'marge@simpsons.com',
+        'profile_picture': '/assets/stub/marge.png'
     },
     {
-        'id': 3,
         'first_name': 'Bart',
-        'last_name': 'Simpson'
+        'last_name': 'Simpson',
+        'password': 'bart',
+        'username': 'bart',
+        'email': 'bart@simpsons.com',
+        'profile_picture': '/assets/stub/bart.png'
     },
     {
-        'id': 4,
         'first_name': 'Lisa',
-        'last_name': 'Simpson'
+        'last_name': 'Simpson',
+        'password': 'lisa',
+        'username': 'lisa',
+        'email': 'lisa@simpsons.com',
+        'profile_picture': '/assets/stub/lisa.png'
     },
     {
-        'id': 5,
         'first_name': 'Maggie',
-        'last_name': 'Simpson'
+        'last_name': 'Simpson',
+        'password': 'maggie',
+        'username': 'maggie',
+        'email': 'maggie@simpsons.com',
+        'profile_picture': '/assets/stub/maggie.png'
     },
 ]
 
