@@ -44,7 +44,13 @@ $( document ).ready(function() {
   });
 
 
+
+  // ------------------------------------------------------------
   // changing user URL
+
+  var slug_ugly = '';
+  var slug_pretty = '';
+  var slug_userset = false;
 
   // slugification
   function slugify(string) {
@@ -63,14 +69,43 @@ $( document ).ready(function() {
   }
   
   // change the actual url
+
+  function userslug_set(){
+    slug_pretty = slugify(slug_ugly);
+    $('[data-fit-userslug]').text(slug_pretty);
+    $('[data-fit-userslug_secret]').val(slug_pretty);
+
+    if (slug_userset == false)
+    {
+      $('[data-fit-userslug_set]').val(slug_pretty);
+    }
+  }
+
   $("[data-fit-userslug_set]").on({
     'change, keyup': function() {
-      var slug = slugify($(this).val());
-      $('[data-fit-userslug]').text(slug);
-      $('[data-fit-userslug_secret]').val(slug);
+     slug_ugly = $(this).val();
+     slug_userset = true;
+     userslug_set();
+    }
+  });  
 
-      // optionally mess with user input?
-      // $(this).val(slug);
+  // and set it automatically from the user id:
+
+  $("[data-fit-userslug_name]").on({
+    'change, keyup': function() {
+      
+      // if it's empty, unset user input
+      if (slug_ugly == ''){
+        slug_userset = false;
+      }
+
+      // user hasn't set it manually:
+      if (slug_userset == false)
+      {
+        slug_ugly = ($('[data-fit-userslug_firstname]').val() + $('[data-fit-userslug_lastname]').val());
+      }
+      
+      userslug_set();
     }
   });
 
