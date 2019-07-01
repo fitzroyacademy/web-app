@@ -119,11 +119,11 @@ def login():
     if request.method == "POST":
         user = datamodels.get_user_by_email(request.form.get('email'))
         if user is None:
-            data['errors'].append("Username and password combo bad")
+            data['errors'].append("Bad username or password, try again?")
         else:
             valid = user.check_password(request.form.get('password'))
             if not valid:
-                data['errors'].append("Username and password combo bad")
+                data['errors'].append("Bad username or password, try again?")
             else:
                 session['user_id'] = user.id
                 return redirect(url_for('index'))

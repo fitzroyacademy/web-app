@@ -41,9 +41,10 @@ The server will then be available at [localhost:5000](http://localhost:5000).
 
 # Reseeding the Local Development Database
 
-Stub data is provided for data-backed templates, which can be created using the `reseed.py` script.
+1. It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
+2. Stub data is provided for data-backed templates, which can be created using the `python3 reseed.py` script.
 
-It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
+
 
 
 ---
