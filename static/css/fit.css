@@ -30,19 +30,19 @@ nav, main, aside {
 }
 
 header {
-  z-index: 300;
+  z-index: 3000;
 }
 
 .fit_sidepanel {
-  z-index: 400;
+  z-index: 4000;
 }
 
 .fit_sidepanel .panel .content {
-  z-index: 410;
+  z-index: 4010;
 }
 
 .fit_sidepanel .panel .head {
-  z-index: 420;
+  z-index: 4020;
 }
 
 /* header */
@@ -62,6 +62,22 @@ header .fit_link:hover,
   background: none;
 }
 
+.fit_subhead {
+  background: #fff;
+  padding: 1rem;
+  margin: 0 -1rem;
+  border-bottom: 1px solid #e1e4e5;
+}
+
+.fit_subhead.sticky-top {
+  top: 3.2rem;
+}
+
+@media (max-width: 575px) {
+  .fit_subhead.sticky-top {
+    position: relative;
+  }
+}
 /* overall box */
 html {
   height: 100%;
@@ -552,6 +568,32 @@ aside .fit_btn {
 
 .fit_btn > .fit_txt:last-child {
   padding-right: 1.5rem;
+}
+
+.fit_btn_lg {
+  font-size: 1.5rem;
+}
+
+.fit_btn_lg > .fit_txt {
+  font-size: 1.4rem;
+}
+
+.fit_pane.fat .fit_btn_lg {
+  margin: -1.5rem;
+}
+
+.fit_pane .fit_btn[data-toggle=collapse].collapsed {
+  background: transparent;
+  color: #0f7ff4;
+}
+
+.fit_pane .fit_btn[data-toggle=collapse] {
+  background: #fff;
+  color: #464749;
+}
+
+.fit_pane .fit_btn[data-toggle=collapse]:hover {
+  color: #0f7ff4;
 }
 
 .fit_btn.intro > [class*=fa-]:before {
@@ -1294,10 +1336,6 @@ a.card.rating h5 {
   padding: 0.1rem;
 }
 
-.fit_pane h3 {
-  padding-top: 0.5rem;
-}
-
 .fit_course .fit_lessons .fit_link,
 .fit_pane .fit_link {
   border-radius: 0.3rem;
@@ -1317,8 +1355,12 @@ a.card.rating h5 {
   background: #f5f7f8;
 }
 
-.fit_pane.fat h3:first-child {
-  padding-top: 0;
+.fit_pane .fit_summary_icons {
+  margin-top: 0.5rem;
+}
+
+.fit_pane .fit_summary_icons {
+  margin-top: 0.5rem;
 }
 
 /* summary icons */
@@ -1349,7 +1391,7 @@ Bleh:;
 .fit_summary_icons dt i {
   position: absolute;
   top: 0.2rem;
-  left: 0.1rem;
+  left: -0.2rem;
   font-size: 1.5rem;
   color: #b0b4b7;
 }
