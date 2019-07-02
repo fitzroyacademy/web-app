@@ -51,6 +51,7 @@ $( document ).ready(function() {
   var slug_ugly = '';
   var slug_pretty = '';
   var slug_userset = false;
+  var slug_maxlength = 20;
 
   // slugification
   function slugify(string) {
@@ -72,6 +73,8 @@ $( document ).ready(function() {
 
   function userslug_set(){
     slug_pretty = slugify(slug_ugly);
+    slug_pretty = slug_pretty.substring(0,slug_maxlength);
+    
     $('[data-fit-userslug]').text(slug_pretty);
     $('[data-fit-userslug_secret]').val(slug_pretty);
 
