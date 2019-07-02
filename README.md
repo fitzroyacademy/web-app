@@ -75,9 +75,9 @@ export FLASK_ENV='development'
 python3 ./reseed.py
 ```
 
-If you're using the docker-compose file and Postgres, you will need to run the script on the application container:
+The previous method will work for both Docker and non-Docker local development with sqlite. If you're using docker-compose, you will need to run the script on the application container:
 ```
-docker exec -it $(docker ps -f name="fitzroy-academy-app" -q) python /app/reseed.py
+docker exec -it $(docker ps -f name="fitzroy-academy" -q) python /app/reseed.py
 ```
 
 ## Cleaning out the docker-compose Postgres db (to start fresh):
