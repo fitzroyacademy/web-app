@@ -255,6 +255,6 @@ if __name__ == "__main__":
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./')
-        server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
+        server.serve(open_url=False,port=5000,debug=True)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
