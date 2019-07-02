@@ -1,4 +1,4 @@
-# flask-frontend
+# web-app
 
 Simple staging ground for our UX templates.
 
@@ -40,6 +40,28 @@ docker run fitzroy-academy -p 5000:5000
 Server will then be available here: [localhost:5000](http://localhost:5000)
 Example lesson will be available here: [localhost:5000/course_intro/01](localhost:5000/course_intro/01)
 
+## Docker-compose
+
+There is also a docker-compose.yml file which launches an instance of the app and a Postgres database; any code (including Sass) will be live-reloaded.
+
+### Building and running docker-compose
+When you change requirements.txt, you will need to rebuild the containers before running like so:
+```
+docker-compose build
+docker-compose up # add -d to detach
+```
+
+### Stopping docker-compose
+```
+docker-compose down
+```
+
+### Connecting to the db locally
+You can open a [psql](https://www.postgresql.org/docs/8.3/tutorial-accessdb.html) shell like the following:
+```
+docker exec -it $$(docker ps -f name="postgres" -q) psql -U postgres
+```
+If docker-compose is running, it will also be available via localhost on port 5001.
 
 # Reseeding the Local Development Database
 
