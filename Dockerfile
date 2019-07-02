@@ -1,14 +1,8 @@
 FROM python:3.7.3
-
-WORKDIR /usr/local/src/
-
-COPY ./ ./
-
-RUN pip install -r ./requirements.txt 
-
-RUN python reseed.py
-
-RUN ls -al *.sqlite
-
+RUN mkdir /app/
+ADD requirements.txt /app/
+WORKDIR /app/
+RUN pip install -r requirements.txt
+COPY ./ /app/
 EXPOSE 5000
-CMD python app.py
+CMD ["python3", "/app/app.py"]

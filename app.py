@@ -10,7 +10,10 @@ logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 app = Flask('FitzroyFrontend', static_url_path='')
-sass.compile(dirname=("static/assets/scss", 'static/css'))
+
+def compile_sass():
+    sass.compile(dirname=("static/assets/scss", 'static/css'))
+
 
 @app.context_processor
 def inject_current_user():
@@ -71,8 +74,9 @@ def user_edit():
     return render_template('user_edit.html')
 
 @app.route('/404')
-def fourohfour():
-    return render_template('404.html')
+@app.errorhandler(404)
+def fourohfour(arg):
+    return render_template('404.html'), 404
 
 @app.route('/502')
 def fiveohtwo():
@@ -245,6 +249,13 @@ def lessons():
     return render_template('lesson_chart.html')
 
 if __name__ == "__main__":
-    app.debug = True
     app.secret_key = "super sedcret"
-    app.run(host='0.0.0.0', port=5000)
+    compile_sass()
+    if app.debug:
+        from livereload import Server, shell
+        server = Server(app.wsgi_app)
+        server.watch('./static/assets/scss/*', compile_sass)
+        server.watch('./')
+        server.serve(open_url=False,port=5000,debug=True)
+    else:
+        app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
