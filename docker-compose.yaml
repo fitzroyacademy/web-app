@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  fitzroy-academy-app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app:cached
+    environment:
+      FLASK_ENV: development
+      DB_ENDPOINT: postgres-container:5432
+      DB_USER: postgres
+    depends_on:
+      - postgres-container
+    networks: ['fitzroy-network']
+  postgres-container:
+    image: "postgres:12-alpine"
+    restart: always
+    # build:
+        # context: ./postgresql
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5001:5432"
+    networks: ['fitzroy-network']
+networks:
+  fitzroy-network:
+
+volumes:
+  dbdata:
