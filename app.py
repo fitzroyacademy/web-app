@@ -74,8 +74,9 @@ def user_edit():
     return render_template('user_edit.html')
 
 @app.route('/404')
-def fourohfour():
-    return render_template('404.html')
+@app.errorhandler(404)
+def fourohfour(arg):
+    return render_template('404.html'), 404
 
 @app.route('/502')
 def fiveohtwo():
