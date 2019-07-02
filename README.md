@@ -29,7 +29,7 @@ To reseed the DB - this takes everything from `stubs.py` and puts it in the data
 
 ## Docker Installation
 
-There's also a Dockerfile for your convenience which can be used instead. All of the application code, including Sass, will be live-reloaded if you edit any files locally.
+There's also a Dockerfile for your convenience which can be used instead. All of the application code, including Sass, will be live-reloaded if you edit any files locally with the Docker container running.
 
 From the root repository directory, type:
 
@@ -69,13 +69,20 @@ If docker-compose is running, it will also be available via localhost on port 50
 1. It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
 2. Stub data is provided for data-backed templates, which can be created using the `python3 reseed.py` script.
 
+```
+rm dev_db.sqlite
+export FLASK_ENV='development'
+python3 ./reseed.py
+```
+
 If you're using the docker-compose file and Postgres, you will need to run the script on the application container:
 ```
 docker exec -it $(docker ps -f name="fitzroy-academy-app" -q) python /app/reseed.py
 ```
 
 ## Cleaning out the docker-compose Postgres db (to start fresh):
-1. Run `docker volume list`, and find the postgres-container volume (should be `web_app_dbdata`)
+1. Ensure the containers aren't running (`docker-compose down` and `docker ps`)
+1. Run `docker volume list`, and find the postgres-container volume (should be like `web_app_dbdata`)
 2. Run `docker volume rm [volume name]`
 
 ---

@@ -326,9 +326,9 @@ _session = None
 def get_session():
 	global _session
 	if _session is None:
-		if environ['DB_USER'] and environ['DB_ENDPOINT']:
+		if 'DB_USER' in environ and 'DB_ENDPOINT' in environ:
 			db_connect_string = 'postgres://' + environ['DB_USER'] + '@' + environ['DB_ENDPOINT']
-		elif app.debug:
+		elif environ['FLASK_ENV'] == 'development':
 			db_connect_string = 'sqlite:///dev_db.sqlite?check_same_thread=False'
 		else:
 			raise Exception('DB_USER and DB_ENDPOINT environment variables not provided, and app.debug is false.')
