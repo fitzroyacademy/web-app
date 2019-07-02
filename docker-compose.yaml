@@ -8,11 +8,12 @@ services:
       - .:/app:cached
     environment:
       FLASK_ENV: development
-      DB_CONNECTION_STRING: postgresql://postgres@postgres:5432
+      DB_ENDPOINT: postgres-container:5432
+      DB_USER: postgres
     depends_on:
-      - postgres
+      - postgres-container
     networks: ['fitzroy-network']
-  postgres:
+  postgres-container:
     image: "postgres:12-alpine"
     restart: always
     # build:

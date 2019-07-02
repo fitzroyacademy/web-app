@@ -3,6 +3,7 @@ import sqlalchemy.orm as orm
 import sqlalchemy as sa
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
+from os import environ
 
 
 Base = declarative_base()
@@ -325,7 +326,13 @@ _session = None
 def get_session():
 	global _session
 	if _session is None:
-		engine = sa.create_engine('sqlite:///dev_db.sqlite?check_same_thread=False')
+		if environ['DB_USER'] and environ['DB_ENDPOINT']:
+			db_connect_string = 'postgres://' + environ['DB_USER'] + '@' + environ['DB_ENDPOINT']
+		elif app.debug:
+			db_connect_string = 'sqlite:///dev_db.sqlite?check_same_thread=False'
+		else:
+			raise Exception('DB_USER and DB_ENDPOINT environment variables not provided, and app.debug is false.')
+		engine = sa.create_engine(db_connect_string)
 		Base.metadata.create_all(engine)
 		Session = orm.scoped_session(orm.sessionmaker(bind=engine))
 		_session = Session()
