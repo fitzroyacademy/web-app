@@ -47,6 +47,11 @@ header {
 
 /* header */
 /* header */
+@media (min-width: 576px) {
+  body {
+    padding-top: 3.2rem;
+  }
+}
 header {
   height: 3.2rem;
   background: #fff;
@@ -78,6 +83,17 @@ header .fit_link:hover,
     position: relative;
   }
 }
+.fit_alerts {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.fit_alerts > div:first-child {
+  margin-top: 1rem;
+}
+
 /* overall box */
 html {
   height: 100%;
@@ -98,7 +114,6 @@ aside,
 main {
   display: flex;
   height: 100%;
-  padding-top: 3.2rem;
   align-items: stretch;
 }
 
@@ -558,10 +573,13 @@ aside .fit_btn {
   flex: 1;
   font-size: 0.95rem;
   line-height: 1.2rem;
+}
+
+header .fit_btn > .fit_txt,
+.head .fit_btn > .fit_txt {
   white-space: nowrap;
 }
 
-/* wtf is happening here with white space and height aRRGHGHgh?! */
 .fit_btn > .fit_txt:first-child {
   padding-left: 1.5rem;
 }
@@ -580,6 +598,10 @@ aside .fit_btn {
 
 .fit_pane.fat .fit_btn_lg {
   margin: -1.5rem;
+}
+
+.fit_pane.fat .fit_btn_lg + .fit_body {
+  padding-top: 2rem;
 }
 
 .fit_pane .fit_btn[data-toggle=collapse].collapsed {
@@ -605,7 +627,7 @@ aside .fit_btn {
 }
 
 .fit_btn.practical > [class*=fa-]:before {
-  content: "";
+  content: "";
 }
 
 .fit_btn.html > [class*=fa-]:before {
@@ -614,10 +636,6 @@ aside .fit_btn {
 
 .fit_btn.interview > [class*=fa-]:before {
   content: "";
-}
-
-.fit_btn.video > [class*=fa-]:before {
-  content: "";
 }
 
 .fit_btn.story > [class*=fa-]:before {
@@ -649,6 +667,7 @@ aside .fit_btn {
 }
 
 .fit_btn.locked > .fit_txt,
+.fit_btn.locked > i,
 .fit_btn.locked {
   color: #b0b4b7;
 }
@@ -751,7 +770,7 @@ html.fit_minleft [data-fit-minleft] i {
   color: #b0b4b7;
 }
 
-.fit_btn.resource [class*=fa-] {
+.fit_btn.resource_link [class*=fa-] {
   font-size: 2rem;
 }
 
@@ -1383,7 +1402,7 @@ Bleh:;
 }
 
 .fit_summary_icons dt {
-  padding: 0.1rem 0 0.5rem 2.8rem;
+  padding: 0.1rem 0 1rem 2.8rem;
   position: relative;
   font-size: 1.2rem;
 }
@@ -1491,8 +1510,10 @@ body > .fit_code {
   text-transform: none;
 }
 
-.fit_form_code input:focus {
+.fit_form_code input:focus,
+.fit_form_code input:active {
   text-transform: uppercase;
+  outline-color: #9b052c;
 }
 
 .fit_form_code label {
@@ -2436,10 +2457,14 @@ p.tagline .tag i {
 }
 .fit_keep_watching {
   background: #0f7ff4;
-  padding: 4rem 0 2rem;
+  padding: 2rem 0;
+  border-radius: 0 !important;
 }
 
-/* remember the header is included here */
+.fit_keep_watching .fit_course {
+  margin: 0 auto;
+}
+
 .fit_keep_watching .vid {
   display: block;
   position: relative;
@@ -2514,21 +2539,16 @@ p.tagline .tag i {
 }
 
 .fit_keep_watching .fit_closepanel {
-  top: 4.7rem;
+  top: 1.5rem;
 }
 
-@media (max-width: 768px) {
-  .fit_keep_watching {
-    padding: 2rem 0 0.5rem;
-  }
-}
 @media (max-width: 567px) {
   .fit_keep_watching {
-    padding: 1rem 0 0.5rem;
+    padding: 1rem 4rem 2rem 0;
   }
 
   .fit_keep_watching .fit_closepanel {
-    top: 0.5rem;
+    top: 1rem;
   }
 }
 @media (min-width: 992px) {
@@ -2719,6 +2739,70 @@ body > .fit_auth {
   top: 100%;
   left: 50%;
   margin-left: -5rem;
+}
+
+.fit_wiggle_daddy:hover .fit_wiggle,
+.fit_wiggle:hover {
+  -webkit-animation-name: wiggle;
+  -ms-animation-name: wiggle;
+  -ms-animation-duration: 1000ms;
+  -webkit-animation-duration: 1000ms;
+  -webkit-animation-iteration-count: 1;
+  -ms-animation-iteration-count: 1;
+  -webkit-animation-timing-function: ease-in-out;
+  -ms-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes wiggle {
+  0% {
+    -webkit-transform: rotate(10deg);
+  }
+  25% {
+    -webkit-transform: rotate(-10deg);
+  }
+  50% {
+    -webkit-transform: rotate(20deg);
+  }
+  75% {
+    -webkit-transform: rotate(-5deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+@-ms-keyframes wiggle {
+  0% {
+    -ms-transform: rotate(1deg);
+  }
+  25% {
+    -ms-transform: rotate(-1deg);
+  }
+  50% {
+    -ms-transform: rotate(1.5deg);
+  }
+  75% {
+    -ms-transform: rotate(-5deg);
+  }
+  100% {
+    -ms-transform: rotate(0deg);
+  }
+}
+@keyframes wiggle {
+  0% {
+    transform: rotate(10deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 /*# sourceMappingURL=fit.css.map */
