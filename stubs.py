@@ -91,7 +91,7 @@ segments.append([
         "external_id": "o3lv8dulfk",
         "url": "https://fitzroyacademy.wistia.com/medias/o3lv8dulfk",
         "template": "video_wistia",
-        "type": "story",
+        "type": "resource",
         "id": "seg_b",
         "lesson_id": '00',
         "course_id": "00"
@@ -113,7 +113,7 @@ segments.append([
         "external_id": "xdhLQCYQ-nQ",
         "url": "https://www.youtube.com/watch?v=xdhLQCYQ-nQ",
         "template": "video_youtube",
-        "type": "practical",
+        "type": "video",
         "id": "seg_maru",
         "lesson_id": '00',
         "course_id": "00"
@@ -135,7 +135,7 @@ segments.append([
         "external_id": "1aqbgjr5ex",
         "url": "https://fitzroyacademy.wistia.com/medias/1aqbgjr5ex",
         "template": "video_wistia",
-        "type": "survey",
+        "type": "video",
         "id": "seg_e",
         "lesson_id": '00',
         "course_id": "00"
@@ -146,7 +146,7 @@ segments.append([
         "external_id": "7an2f2hf16",
         "url": "https://fitzroyacademy.wistia.com/medias/7an2f2hf16",
         "template": "video_wistia",
-        "type": "case",
+        "type": "story",
         "id": "seg_f",
         "lesson_id": '00',
         "course_id": "00"
@@ -157,7 +157,7 @@ segments.append([
         "external_id": "te5p2h5muw",
         "url": "https://fitzroyacademy.wistia.com/medias/te5p2h5muw",
         "template": "video_wistia",
-        "type": "survey",
+        "type": "video",
         "id": "seg_g",
         "lesson_id": '00',
         "course_id": "00"

@@ -18,14 +18,19 @@ python3 app.py
 
 To reseed the DB - this takes everything from `stubs.py` and puts it in the database `dev_db.sqlite`, which is our local databse:
 
-* `python3 reseed.py`
 * To change the database, edit `stubs.py`, and delete `dev_db.sqlite`
+* `python3 reseed.py` to reseed from stubs
 * Then reset the app via `python3 app.py`
 * Then hit [localhost:5000](http://localhost:5000).
+* For a lesson: [http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a](http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a)
 
 ### To make the CSS work:
 
 `sass --watch static/assets/scss/fit.scss static/css/fit.css`
+
+### To add issues to Github:
+
+[https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
 
 ## Docker Installation
 
@@ -165,13 +170,17 @@ A secondary table for translations of default resources is available to provide 
 	* Title
 	* Url
 	* Type:
-		* google_spreadsheet
 		* google_doc
+		* google_spreadsheet
 		* google_slide
-		* google_picture
+		* google_drawing
+		* youtube_video
+		* file_pdf
+		* file_image (for jpg/gif/etc)
+		* file_doc (.doc and .docx etc)		
 		* medium_article
-		* pdf
-	* Language (EN | KH | PH | etc)
+		* url
+	* Language (EN | KH | PH | etc) - can be blank for unset.
 	* Featured (boolean)
 * WYSIWYG resource chunk (just a big slab of HTML)
 
@@ -218,7 +227,7 @@ Segments are of different types to indicate to the user their utility, i.e. a "p
 * Video
 	* Intro
 	* Resource
-	* Standard
+	* Video
 	* Practical
 	* Story
 	* Interview

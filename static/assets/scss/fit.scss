@@ -85,6 +85,8 @@ $nav_left_width_collapsed: 4rem;
 $nav_right_width_flex: 30%;
 $nav_right_width_max: 25rem;
 
+$sensible_width: 1100px;
+
 $header_height: 3.2rem;
 
 
@@ -105,6 +107,10 @@ $border_rad_r: 9999em;
 // -----------------------------------------------------------------------------------------
 /* header */
 
+@media (min-width: 576px) {
+	body{padding-top: $header_height}
+}
+
 header{height: $header_height; background: #fff; position: fixed; top:0; left: 0; right: 0; display: flex;}
 
 header .fit_link:hover,
@@ -119,6 +125,13 @@ header .fit_link:hover,
 	.fit_subhead.sticky-top{position: relative;}
 }
 
+// alerts 
+.fit_alerts{max-width: $sensible_width; margin: 0 auto; padding: 0 1rem; box-sizing:border-box;}
+.fit_alerts > div:first-child{margin-top: 1rem;}
+
+// border roundndess
+
+
 // -----------------------------------------------------------------------------------------
 /* overall box */
 
@@ -131,7 +144,8 @@ aside,
 .modal-content,
 .fit_sidepanel .panel{box-shadow: 0 0 1.5rem $box_shadow;}
 
-main{display:flex; height:100%; padding-top: $header_height; align-items:stretch;}
+// this is the main bit that holds the other bits, wowee
+main{display:flex; height:100%; align-items:stretch;}
 
 nav, aside{ overflow-y: scroll;}
 article{position: static;}
@@ -383,7 +397,13 @@ aside .fit_btn{color: $text;}
 // close the circle
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
 
-.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem; white-space: nowrap;} /* wtf is happening here with white space and height aRRGHGHgh?! */
+.fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;}
+
+// wtf is happening here with white space and height aRRGHGHgh?!
+// okay so we need nowrap for the headers, but not elsewhere.
+header .fit_btn > .fit_txt,
+.head .fit_btn > .fit_txt{ white-space: nowrap;}
+
 .fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
 .fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
 
@@ -393,6 +413,7 @@ aside .fit_btn{color: $text;}
 
 // weird one in the panes
 .fit_pane.fat .fit_btn_lg{margin: -1.5rem;}
+.fit_pane.fat .fit_btn_lg + .fit_body{padding-top: 2rem;}
 
 // weirdo collapsey boies
 .fit_pane .fit_btn[data-toggle="collapse"].collapsed{background: transparent; color:$blue}
@@ -405,12 +426,11 @@ aside .fit_btn{color: $text;}
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
 .fit_btn.video > [class*="fa-"]:before{content: "\f04b";}
-.fit_btn.practical > [class*="fa-"]:before{content: "\f04b";}
+.fit_btn.practical > [class*="fa-"]:before{content: "\f15b";}
 
 // less common, but different:
 .fit_btn.html > [class*="fa-"]:before{content: "\f15b";}
 .fit_btn.interview > [class*="fa-"]:before{content: "\f086";}
-.fit_btn.video > [class*="fa-"]:before{content: "\f111";}
 .fit_btn.story > [class*="fa-"]:before{content: "\f4b0";}
 .fit_btn.case > [class*="fa-"]:before{content: "\f0b1";}
 .fit_btn.bonus > [class*="fa-"]:before{content: "\f005";}
@@ -420,11 +440,11 @@ aside .fit_btn{color: $text;}
 .fit_btn.complete > [class*="fa-"]:before{content: "\f00c";}
 
 
-// and some colours and things:
-
+// and some colours and things for status:
 .fit_btn.active > i{color: $blue;}
 .fit_btn.complete > i{color: $text_lighter;}
 .fit_btn.locked > .fit_txt,
+.fit_btn.locked > i,
 .fit_btn.locked{color: $text_lighter;}
 
 
@@ -472,7 +492,7 @@ html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
 
 
 // resources (i.e. docs and other links)
-.fit_btn.resource [class*="fa-"]{font-size: 2rem;}
+.fit_btn.resource_link [class*="fa-"]{font-size: 2rem;}
 .fit_txt small{display: block; color:#ccd}
 
 
@@ -687,7 +707,7 @@ a.card.rating h5{color: #f4b115;}
 
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
-.fit_course{max-width: 1100px; margin: 3rem auto; border-radius: 0.3rem; padding: 0 1rem;}
+.fit_course{max-width: $sensible_width; margin: 3rem auto; border-radius: 0.3rem; padding: 0 1rem;}
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 
@@ -758,7 +778,7 @@ Bleh:;
 
 .fit_summary_icons{padding: 0.5rem 0 0 ;}
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
-.fit_summary_icons dt{padding:0.1rem 0 0.5rem 2.8rem; position: relative; font-size: 1.2rem;}
+.fit_summary_icons dt{padding:0.1rem 0 1rem 2.8rem; position: relative; font-size: 1.2rem;}
 .fit_summary_icons dt i{position: absolute; top:0.2rem; left: -0.2rem; font-size: 1.5rem; color: #b0b4b7;}
 .fit_summary_icons dd{padding: 0 0 0.5rem 2.8rem; margin-top: -0.4rem;}
 .fit_summary_icons dd .badge{font-size: 0.9rem;}
@@ -801,7 +821,8 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code input:focus::placeholder{opacity: 0.2; text-transform: none;}
 
 // TODO: make this work better so that values in this box are only uppercase
-.fit_form_code input:focus{text-transform: uppercase;}
+.fit_form_code input:focus,
+.fit_form_code input:active{text-transform: uppercase; outline-color: darken($watermelon_dark, 10%);}
 
 .fit_form_code label{opacity: 0; position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
 
@@ -1267,7 +1288,9 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // ----------------------------------------------------------------------------------------------------------------
 // Keep watching, bucko! Get back on that horse, get on track, get it done ya hear.
 
-.fit_keep_watching{background: $blue; padding: 4rem 0 2rem;} /* remember the header is included here */
+.fit_keep_watching{background: $blue; padding: 2rem 0; border-radius: 0 !important;}
+
+.fit_keep_watching .fit_course{margin: 0 auto;}
 
 .fit_keep_watching .vid{display:block; position: relative; border-radius: $border_rad_sm; background: #fff;}
 .fit_keep_watching .vid:after{display: block; padding-top: $ratio_169; content: '';}
@@ -1286,15 +1309,11 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 .fit_keep_watching .vid:hover{box-shadow: 0 .5rem 1.5rem $box_shadow_blue;}
 
-.fit_keep_watching .fit_closepanel{top: ($header_height+1.5rem);}
-
-@media (max-width: 768px) {
-	.fit_keep_watching{padding:2rem 0 0.5rem;}
-}
+.fit_keep_watching .fit_closepanel{top: 1.5rem;}
 
 @media (max-width: 567px) {
-	.fit_keep_watching{padding:1rem 0 0.5rem;}
-	.fit_keep_watching .fit_closepanel{top:.5rem;}
+	.fit_keep_watching{padding:1rem 4rem 2rem 0;}
+	.fit_keep_watching .fit_closepanel{top: 1rem;}
 }
 
 // large stuff padding
@@ -1380,12 +1399,46 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
 
 
-
-
-
-
-
-
-
 .fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: 3.3rem; position: relative; margin-bottom: 6rem;}
 .fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto; background: $border_lighter; text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem;}
+
+
+// ----------------------------------------------------------------------------------------------------------------
+// get yo wiggle on!
+
+.fit_wiggle_daddy:hover .fit_wiggle,
+.fit_wiggle:hover {
+  -webkit-animation-name: wiggle;
+  -ms-animation-name: wiggle;
+  -ms-animation-duration: 1000ms;
+  -webkit-animation-duration: 1000ms;
+  -webkit-animation-iteration-count: 1;
+  -ms-animation-iteration-count: 1;
+  -webkit-animation-timing-function: ease-in-out;
+  -ms-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes wiggle {
+  0% {-webkit-transform: rotate(10deg);}
+  25% {-webkit-transform: rotate(-10deg);}
+  50% {-webkit-transform: rotate(20deg);}
+  75% {-webkit-transform: rotate(-5deg);}
+  100% {-webkit-transform: rotate(0deg);}
+}
+
+@-ms-keyframes wiggle {
+  0% {-ms-transform: rotate(1deg);}
+  25% {-ms-transform: rotate(-1deg);}
+  50% {-ms-transform: rotate(1.5deg);}
+  75% {-ms-transform: rotate(-5deg);}
+  100% {-ms-transform: rotate(0deg);}
+}
+
+@keyframes wiggle {
+  0% {transform: rotate(10deg);}
+  25% {transform: rotate(-10deg);}
+  50% {transform: rotate(20deg);}
+  75% {transform: rotate(-5deg);}
+  100% {transform: rotate(0deg);}
+}
+
