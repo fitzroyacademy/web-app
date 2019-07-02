@@ -37,13 +37,14 @@ docker build -t fitzroy-academy .
 docker run fitzroy-academy -p 5000:5000
 ```
 
-The server will then be available at [localhost:5000](http://localhost:5000).
+Server will then be available here: [localhost:5000](http://localhost:5000)
+Example lesson will be available here: [localhost:5000/course_intro/01](localhost:5000/course_intro/01)
+
 
 # Reseeding the Local Development Database
 
 1. It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
 2. Stub data is provided for data-backed templates, which can be created using the `python3 reseed.py` script.
-
 
 
 
