@@ -24,7 +24,7 @@
 
           We may add more types to this list as we find people using them, but the above is a good start.
         -->
-        <a class="fit_btn resource_link" href="#">
+        <a class="fit_btn resource_link {{ resource.type }} {{ 'featured' if resource.featured }}" href="{{ resource.url }}">
           <span class="fas {{ resource.icon }} lg"></span>
           <span class="fit_txt">
             {{ resource.title }}
