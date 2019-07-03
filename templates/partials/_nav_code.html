@@ -16,10 +16,12 @@
 		</div>	
   </form>
 
-  <a href="/login" class="fit_btn right" data-fit-userpanel>
-    <span class="fit_txt">Sign up</span>
-    <i class="fal fa-user"></i>
-  </a>
+  {% if current_section != 'login' %}
+    <a href="/login" class="fit_btn right" data-fit-userpanel>
+      <span class="fit_txt">Sign up</span>
+      <i class="fal fa-user"></i>
+    </a>
+  {% endif %}
 
 </header>
 
@@ -40,7 +42,9 @@
     
     <div class="content">
       
-      {% include 'partials/_login_form.html' %}
+      {% if current_section != 'login' %}
+        {% include 'partials/_login_form.html' %}
+      {% endif %}
 
     </div>
 
