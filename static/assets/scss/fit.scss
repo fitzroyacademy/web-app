@@ -214,7 +214,7 @@ html.fit_minleft{}
 // -----------------------------------------------------------------------------------------
 /* fit header code */
 
-.fit_head_code{max-width: 12rem; float: left; padding: 0.5rem;}
+.fit_head_code{float: left; padding: 0.5rem;}
 .fit_head_code .form-control,
 .fit_head_code .btn,
 .fit_head_code .btn.disabled, 
@@ -231,7 +231,16 @@ html.fit_minleft{}
 
 .fit_head_code .form-control::placeholder{color: #fff;}
 
+// .fit_head_code .form-control::placeholder:before{content: 'ABC'; display: inline-block;}
 
+// mess with widths using fancyplace
+.fit_head_code .input-group .form-control{width: 4rem;}
+.fit_head_code .input-group .input-group-append{ width: 2.5rem;}
+
+.fit_head_code .input-group label{padding: 0 0.75rem; color: #0f0;}
+
+
+// -----------------------------------------------------------------------------------------
 // the brand device up the top left
 
 .fit_device{display: block;}

@@ -144,8 +144,9 @@ $( document ).ready(function() {
   
   // ------------------------------------------------------------
   // make the head code thing work
-  $('[data-fit-head-code]').on("keyup change", function(e) {
-    // do stuff!
+
+  // keyup stuff
+  $('[data-fit_head_code]').on("keyup change", function(e) {
     console.log($(this).val());
   });
 
