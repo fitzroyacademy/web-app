@@ -212,35 +212,6 @@ html.fit_minleft{}
 
 
 // -----------------------------------------------------------------------------------------
-/* fit header code */
-
-.fit_head_code{float: left; padding: 0.5rem;}
-.fit_head_code .form-control,
-.fit_head_code .btn,
-.fit_head_code .btn.disabled, 
-.fit_head_code .btn:disabled{background: $watermelon; border-color: $watermelon; color:#fff; opacity: 1; font-size: 1.0rem; position: relative; border:3px solid $watermelon;}
-
-// weird button
-.fit_head_code .btn{display: flex; align-items:center; justify-content: center; border-radius: $border_rad_sm;  padding: 0.15rem !important;}
-.fit_head_code .btn i{font-size: 1.2rem;}
-
-.fit_head_code .btn:hover{cursor: pointer;}
-
-.fit_head_code .form-control:focus,
-.fit_head_code .form-control:active{background: $watermelon_dark; box-shadow: none; outline: none !important; border-radius: $border_rad_sm !important;}
-
-.fit_head_code .form-control::placeholder{color: #fff;}
-
-// .fit_head_code .form-control::placeholder:before{content: 'ABC'; display: inline-block;}
-
-// mess with widths using fancyplace
-.fit_head_code .input-group .form-control{width: 4rem;}
-.fit_head_code .input-group .input-group-append{ width: 2.5rem;}
-
-.fit_head_code .input-group label{padding: 0 0.75rem; color: #0f0;}
-
-
-// -----------------------------------------------------------------------------------------
 // the brand device up the top left
 
 .fit_device{display: block;}
@@ -1394,8 +1365,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 
 // when it's active
-.fit_fancyplace.active .form-control{border-color: $blue;}
-.fit_fancyplace.active.labelled label{color:$blue}
+.fit_fancyplace.active .form-control{border-color: $watermelon;}
+.fit_fancyplace.active.labelled label{color:$watermelon_dark}
 
 // transparent the placeholder on focus
 .fit_fancyplace .form-control::-webkit-input-placeholder { color:transparent; }
@@ -1410,6 +1381,48 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 
 .fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: 3.3rem; position: relative; margin-bottom: 6rem;}
 .fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto; background: $border_lighter; text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem;}
+
+
+// -----------------------------------------------------------------------------------------
+/* fit header code */
+
+.fit_form_code_head{float: left; padding: 0.5rem;}
+.fit_form_code_head .form-control,
+.fit_form_code_head .btn,
+.fit_form_code_head .btn.disabled, 
+.fit_form_code_head .btn:disabled{background: $watermelon; border-color: $watermelon; color:#fff; opacity: 1; font-size: 1.0rem; position: relative; border:3px solid $watermelon;}
+
+// weird button
+.fit_form_code_head .btn{display: flex; align-items:center; justify-content: center; border-radius: $border_rad_sm;  padding: 0.15rem !important;}
+.fit_form_code_head .btn i{font-size: 1.2rem;}
+
+.fit_form_code_head .btn:hover{cursor: pointer;}
+
+.fit_form_code_head .form-control::placeholder{color:transparent;}
+
+// .fit_form_code_head .form-control::placeholder:before{content: 'ABC'; display: inline-block;}
+
+// mess with widths using fancyplace
+.fit_form_code_head .input-group .form-control{width: 4rem;}
+.fit_form_code_head .input-group .input-group-append{ width: 2.5rem;}
+
+.fit_form_code_head label,
+.fit_form_code_head.active label,
+.fit_form_code_head.labelled label{padding: 0.25rem 0.75rem; color: #fff; width: 100%; overflow: hidden; white-space: nowrap; background: transparent;}
+.fit_form_code_head label .course{display: none;}
+
+// active
+.fit_form_code_head .form-control:focus,
+.fit_form_code_head .form-control:active{background: $watermelon_dark; box-shadow: none; outline: none !important; border-radius: $border_rad_sm !important;}
+
+.fit_form_code_head.active label{display: none;}
+.fit_form_code_head.active .form_control{border-color: $watermelon;}
+.fit_form_code_head.active .form_control::placeholder,
+.fit_form_code_head.active .form_control::placeholder{opacity: 0.6; color:#fff; display: block;}
+.fit_form_code_head.active .form_control:focus,
+.fit_form_code_head.active .form_control:active{outline: none;}
+.fit_form_code_head.active .form-control{width: 10rem;}
+.fit_form_code_head.active .form-control{}
 
 
 // ----------------------------------------------------------------------------------------------------------------
