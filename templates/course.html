@@ -1,7 +1,15 @@
 {% extends "/layout.html" %}
 {% block body %}
-<main>
+<main class="fit_player">
   <nav>
+
+    <div class="fit_mobilenav" fit-course_mobilenav_trigger>
+      <a class="fit_btn" data-toggle="collapse">
+        <span class="fit_txt"><!-- DEV: Course name goes here --> Intro to social enterprise</span>
+        <i class=" fas fa-chevron-down"></i>
+      </a>
+    </div>
+
     <div class="fits">
 
       <div class="fit fit_hider">
@@ -55,13 +63,16 @@
 
 
   <article>
-  <div class="fit_vidya">
-    {% include 'partials/_active_segment.html' %}
-  </div>
-  <div class="fit_subvidya fit_completion">
-    <a href="#" class="fit_closepanel"><i class="fas fa-times"></i></a>
-    {% include 'partials/_completion_chart.html' %}
-  </div>
+    <div class="fit_vidya">
+      {% include 'partials/_active_segment.html' %}
+    </div>
+    <div class="fit_subvidya fit_completion">
+      <a href="#" class="fit_closepanel"><i class="fas fa-times"></i></a>
+      {% include 'partials/_completion_chart.html' %}
+
+
+      <!-- DEV: WD testing scrolling, do not remove --><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+    </div>
   </article>
 
   <aside>
@@ -75,9 +86,9 @@
       </div>
 
       <div class="fit" id="fit_resources_panel" data-fit-active-lesson="{{ active_lesson.id }}">
-          {% with lesson = active_lesson %}
-            {% include 'partials/_lesson_resources.html' %}
-          {% endwith %}
+        {% with lesson = active_lesson %}
+          {% include 'partials/_lesson_resources.html' %}
+        {% endwith %}
       </div>
 
     </div>

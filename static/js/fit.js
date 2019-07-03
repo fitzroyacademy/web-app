@@ -21,6 +21,13 @@ $( document ).ready(function() {
     $('html').toggleClass('fit_minright');
   });
 
+  $('[fit-course_mobilenav_trigger]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_mobilenav');
+  });  
+
+  
+
 
   // do fancy placeholders for inputs:
   $("[data-fit-fancyplace]").on({

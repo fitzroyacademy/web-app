@@ -69,6 +69,9 @@ nav, main, aside{z-index: 100;}
 
 header{z-index: 3000;}
 
+header .fit_form_code_head{z-index: 3100;}
+
+
 .fit_sidepanel{z-index: 4000;}
 .fit_sidepanel .panel .content{z-index: 4010;}
 .fit_sidepanel .panel .head{z-index: 4020;}
@@ -147,7 +150,7 @@ aside,
 // this is the main bit that holds the other bits, wowee
 main{display:flex; height:100%; align-items:stretch;}
 
-nav, aside{ overflow-y: scroll;}
+
 article{position: static;}
 
 nav, aside{flex: 0 0 $nav_left_width_flex; min-width: $nav_left_width_min; max-width: $nav_left_width_max;}
@@ -156,31 +159,24 @@ aside{flex: 0 0 $nav_right_width_flex; max-width: $nav_right_width_max;}
 article{flex: 3;}
 
 
-/*alt mode*/
-/*
-nav{max-width: 4rem; min-width: 0;}
-aside{max-width: 4rem; min-width: 0;}
-*/
 
+// messing with scrollbars coz ugh
+// only happens on the player screen
+// not sure about this :/
 
+@media (min-width: 576px){
+	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto;}
 
+	main.fit_player nav,
+	main.fit_player article,
+	main.fit_player aside{overscroll-behavior: contain; overflow: hidden; overflow-y: scroll;}
 
+	main.fit_player nav::-webkit-scrollbar,
+	main.fit_player article::-webkit-scrollbar,
+	main.fit_player aside::-webkit-scrollbar{background: transparent; width: 0px;}
 
-/*
-nav{background: #0f0;}
-article{background: #00f;}
-aside{background: #f0f;}*/
-
-/* borders */
-/*
-header{border-bottom: 1px solid #e1e4e5;}
-nav{border-right: 1px solid #e1e4e5;}
-aside{border-right: 1px solid #e1e4e5;}
-*/
-
-
-
-
+	main.fit_player article::-webkit-scrollbar-thumb {border-radius: $border_rad_r;}
+}
 
 // -----------------------------------------------------------------------------------------
 /* minimise the left bar */
@@ -796,13 +792,13 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code .form-group{position: relative;}
 
 .fit_form_code input,
-.fit_form_code input:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; border-color: $watermelon_dark; color: #fff; padding: 0.5rem 1rem;}
+.fit_form_code input:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; border-color: $watermelon_dark; color: #fff; padding: 0.5rem 1rem; box-shadow: none;}
 .fit_form_code input::placeholder{color: #fff;}
 .fit_form_code input:focus::placeholder{opacity: 0.2; text-transform: none;}
 
 // TODO: make this work better so that values in this box are only uppercase
 .fit_form_code input:focus,
-.fit_form_code input:active{text-transform: uppercase; outline-color: darken($watermelon_dark, 10%);}
+.fit_form_code input:active{text-transform: uppercase; }
 
 .fit_form_code label{opacity: 0; position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
 
@@ -811,6 +807,7 @@ body > .fit_code {margin-top:10rem;}
 
 
 .fit_form_code .btn{position: absolute; top:0; right: 0; height: 4rem; width: 4rem; color: #fff; font-size: 1.5rem;}
+.fit_form_code .btn:focus{box-shadow: none;}
 
 .fit_cta_tnc{color: #fff; font-size: 0.85rem; text-align: center; padding: 0;}
 .fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom: 3px solid lighten($watermelon, 20%);}
@@ -1004,24 +1001,28 @@ table.fit_colhover td:hover{cursor: default;}
 // ----------------------------------------------------------------------------------------------------------------
 // All the hiding and mobile and crap
 
-/* medium boye */
-@media (min-width: 600px) and (max-width: 900px){
+/* medium boye small sidebar */
+@media (min-width: 576px) and (max-width: 900px){
   nav{max-width: $nav_left_width_collapsed; min-width: 0;}
   nav .fit_txt,
-  nav .fit_time,
+  nav .fit_sub,
   nav .fit_hider{display: none;}
   nav .fit_link{padding-left: 0;}
 }
 
 
 /*  small boye  */
-@media (max-width: 599px){
+@media (max-width: 575px){
   header{position: relative;}
   main{display: block; height: auto;padding-top: 0;}  
   nav, article, aside{width: 100%; flex: none; min-width: 0; max-width: none;}
   .fit_hider{display: none !important;}
-  nav .fits .fit{display: none;}
   .fit_vidya{position: -webkit-sticky !important; position: sticky !important; top:0;}
+
+	// fit player mobile nav
+  main.fit_player nav .fits{display: none;}
+  html.fit_mobilenav main.fit_player nav .fits{display: block;}
+  html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
 }
 
 
@@ -1390,10 +1391,10 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 .fit_form_code_head .form-control,
 .fit_form_code_head .btn,
 .fit_form_code_head .btn.disabled, 
-.fit_form_code_head .btn:disabled{background: $watermelon; border-color: $watermelon; color:#fff; opacity: 1; font-size: 1.0rem; position: relative; border:3px solid $watermelon;}
+.fit_form_code_head .btn:disabled{background: $watermelon; border-color: $watermelon; color:#fff; opacity: 1; font-size: 1.0rem; position: relative; border:3px solid $watermelon; border-radius: $border_rad_md;}
 
 // weird button
-.fit_form_code_head .btn{display: flex; align-items:center; justify-content: center; border-radius: $border_rad_sm;  padding: 0.15rem !important;}
+.fit_form_code_head .btn{display: flex; align-items:center; justify-content: center; border-radius: 0 $border_rad_md $border_rad_md 0 !important;  padding: 0.15rem !important;}
 .fit_form_code_head .btn i{font-size: 1.2rem;}
 
 .fit_form_code_head .btn:hover{cursor: pointer;}
@@ -1403,26 +1404,23 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 // .fit_form_code_head .form-control::placeholder:before{content: 'ABC'; display: inline-block;}
 
 // mess with widths using fancyplace
-.fit_form_code_head .input-group .form-control{width: 4rem;}
-.fit_form_code_head .input-group .input-group-append{ width: 2.5rem;}
+.fit_form_code_head .form-control{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out;}
+.fit_form_code_head .input-group-append{ width: 2.5rem;}
 
 .fit_form_code_head label,
 .fit_form_code_head.active label,
-.fit_form_code_head.labelled label{padding: 0.25rem 0.75rem; color: #fff; width: 100%; overflow: hidden; white-space: nowrap; background: transparent;}
+.fit_form_code_head.labelled label{padding: 0.35rem 0.75rem; color: #fff; width: 100%; overflow: hidden; white-space: nowrap; background: transparent;}
 .fit_form_code_head label .course{display: none;}
 
 // active
-.fit_form_code_head .form-control:focus,
-.fit_form_code_head .form-control:active{background: $watermelon_dark; box-shadow: none; outline: none !important; border-radius: $border_rad_sm !important;}
+.fit_form_code_head.active .form-control,
+.fit_form_code_head.labelled .form-control{border-color: $watermelon; box-shadow: none; width: 8rem;}
+.fit_form_code_head .form-control:focus{background: $watermelon_dark;}
+.fit_form_code_head.active .form-control::placeholder{opacity: 0.6; color:#fff;}
 
-.fit_form_code_head.active label{display: none;}
-.fit_form_code_head.active .form_control{border-color: $watermelon;}
-.fit_form_code_head.active .form_control::placeholder,
-.fit_form_code_head.active .form_control::placeholder{opacity: 0.6; color:#fff; display: block;}
-.fit_form_code_head.active .form_control:focus,
-.fit_form_code_head.active .form_control:active{outline: none;}
-.fit_form_code_head.active .form-control{width: 10rem;}
-.fit_form_code_head.active .form-control{}
+.fit_form_code_head.active label,
+.fit_form_code_head.labelled label{display: none;}
+
 
 
 // ----------------------------------------------------------------------------------------------------------------
