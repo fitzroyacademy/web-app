@@ -10,6 +10,7 @@ logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 app = Flask('FitzroyFrontend', static_url_path='')
+app.debug = True
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
