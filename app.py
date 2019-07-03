@@ -5,6 +5,7 @@ import sass
 import stubs
 import datamodels
 import time
+import re
 
 import logging
 logging.basicConfig()
@@ -18,6 +19,11 @@ def compile_sass():
 @app.context_processor
 def inject_current_user():
     return dict(current_user=get_current_user())
+
+@app.context_processor
+def inject_current_section():
+    print(request.path, request.path.split('/')[1])
+    return dict(current_section=request.path.split('/')[1])
 
 @app.context_processor
 def inject_cache_code():
