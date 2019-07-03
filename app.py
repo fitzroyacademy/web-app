@@ -84,11 +84,12 @@ def user_edit():
 
 @app.route('/404')
 @app.errorhandler(404)
-def fourohfour(arg):
+def fourohfour(e):
     return render_template('404.html'), 404
 
+@app.errorhandler(Exception)
 @app.route('/502')
-def fiveohtwo():
+def fiveohtwo(e):
     return render_template('502.html')    
 
 # --------------------------------------------------------------------------------
