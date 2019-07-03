@@ -4,6 +4,7 @@ from flask import Flask, render_template, session, request, url_for, redirect
 import sass
 import stubs
 import datamodels
+import time
 
 import logging
 logging.basicConfig()
@@ -15,10 +16,18 @@ app.debug = True
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
 
-
 @app.context_processor
 def inject_current_user():
     return dict(current_user=get_current_user())
+
+@app.context_processor
+def inject_cache_code():
+    return dict(cache_code=time.time())
+
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 def get_current_user():
     if 'user_id' in session:
