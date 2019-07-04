@@ -107,9 +107,9 @@ body {
   min-height: 100%;
 }
 
-header,
-nav,
-aside,
+body > header,
+body > nav,
+body > aside,
 .modal-content,
 .fit_sidepanel .panel {
   box-shadow: 0 0 1.5rem rgba(82, 63, 105, 0.1);
@@ -173,14 +173,6 @@ main.fit_player aside::-webkit-scrollbar {
 /* mess with bootstrap standards */
 .btn [class^=fa] {
   margin: 0 0.3rem;
-}
-
-.btn-sm [class^=fa]:first-child {
-  margin: 0 0.1rem;
-}
-
-.btn-lg [class^=fa]:first-child {
-  margin: 0 0.5rem;
 }
 
 .alert > i {
@@ -546,6 +538,32 @@ header .fit_btn > .fit_txt,
   white-space: nowrap;
 }
 
+header .fit_btn:hover,
+.head .fit_btn:hover {
+  background: transparent;
+}
+
+header .fit_btn > .fit_txt:after,
+.head .fit_btn > .fit_txt:after {
+  transition: all 0.2s ease-in-out;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 0.45rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 3px;
+  background: #0f7ff4;
+  border-radius: 0.6rem;
+  opacity: 0;
+}
+
+header .fit_btn:hover > .fit_txt:after,
+.head .fit_btn:hover > .fit_txt:after {
+  opacity: 0.4;
+  bottom: 0.6rem;
+}
+
 .fit_btn > .fit_txt:first-child {
   padding-left: 1.5rem;
 }
@@ -749,11 +767,20 @@ header .fit_btn > .fit_txt {
   white-space: nowrap;
 }
 
-.fit_btn.left {
+header .left,
+header .right,
+.head .left,
+.head .right {
+  display: flex;
+}
+
+header .left,
+.head .left {
   margin-right: auto;
 }
 
-.fit_btn.right {
+header .right,
+.head .right {
   margin-left: auto;
 }
 
@@ -1530,6 +1557,21 @@ body > .fit_code {
   border-bottom-color: #fff;
 }
 
+@media (max-width: 575px) {
+  .fit_form_code {
+    padding: 1rem;
+  }
+
+  .fit_form_code input,
+.fit_form_code input:focus {
+    font-size: 1.5rem;
+  }
+
+  .fit_form_code .btn {
+    height: 3rem;
+    width: 4rem;
+  }
+}
 .fit_hero .fit_code {
   margin: 5rem auto;
 }
@@ -2263,7 +2305,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 }
 
 .fit_heartplay .bigboy {
-  color: #0f7ff4;
+  color: #464749;
   font-size: 10rem;
   transition: all 0.45s ease-in-out;
 }
@@ -2316,9 +2358,10 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 
 .fit_window img {
   width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+}
+
+.fit_window img {
+  border-radius: 0.4rem;
 }
 
 .fit_window .butts {
@@ -2372,6 +2415,23 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 
 .fit_window .play:hover i {
   opacity: 1;
+}
+
+.fit_picture {
+  margin: 0 0 2rem;
+}
+
+.caption {
+  display: block;
+  padding: 0.5rem 1rem 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #717b81;
+}
+
+.caption a {
+  color: inherit;
+  text-decoration: underline;
 }
 
 .fit_course_sell {
@@ -2539,17 +2599,24 @@ p.tagline .tag i {
 .fit_medium {
   max-width: 740px;
   margin: 0 auto;
-  padding: 0 14px;
+  padding: 0 1rem;
 }
 
-.fit_medium .fit_window,
-.fit_medium img {
+.fit_medium .fit_window {
   margin-bottom: 2rem;
 }
 
 .fit_medium img {
   max-width: 100%;
   border-radius: 0.2rem;
+}
+
+.fit_medium h1,
+.fit_medium h2,
+.fit_medium h3,
+.fit_medium h4 {
+  margin-bottom: 1rem;
+  max-width: 600px;
 }
 
 .fit_medium h4 {
@@ -2559,6 +2626,11 @@ p.tagline .tag i {
 .fit_medium p {
   font-size: 1.2rem;
   line-height: 1.7rem;
+}
+
+.fit_medium p a:not(.btn) {
+  text-decoration: underline;
+  color: inherit;
 }
 
 .fit_medium hr {
@@ -2596,7 +2668,7 @@ p.tagline .tag i {
 }
 
 .fit_medium .breakbig {
-  margin: 4rem 0 2rem;
+  margin: 0 0 2rem;
 }
 
 @media (min-width: 992px) {
@@ -2612,6 +2684,55 @@ p.tagline .tag i {
 
 .fit_spicy .fal {
   color: #717b81;
+}
+
+.fit_medium_rare .fit_rare {
+  margin: 0 auto;
+  max-width: 740px;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 992px) {
+  .fit_medium_rare {
+    display: flex;
+    align-items: stretch;
+    max-width: 1000px;
+    position: relative;
+    padding: 0 1rem;
+    margin: 0 auto;
+  }
+
+  .fit_medium_rare .fit_medium {
+    margin: 0;
+    padding: 0;
+  }
+
+  .fit_medium_rare .fit_rare {
+    flex: 0 0 18rem;
+    top: 5.2rem;
+    margin: 0;
+    padding: 0 0 2rem 3rem;
+    position: sticky;
+    align-self: flex-start;
+  }
+}
+.fit_rare .nav a i {
+  display: none;
+}
+
+.fit_rare .nav a.active i {
+  display: inline-block;
+}
+
+.fit_medium_nav {
+  display: flex;
+  border-top: 0.25rem solid #e1e4e5;
+  margin-top: 4rem;
+  padding: 2rem 0;
+}
+
+.fit_medium_nav .btn:last-child {
+  margin-left: auto;
 }
 
 .fit_auth {

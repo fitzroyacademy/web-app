@@ -7,6 +7,23 @@ change .fas to [class^='fa'] or <i> ?
 
 */
 
+
+
+// New palette?
+
+$new_cyan: #16b7ff;
+$new_teal: #1dd4cc;
+$new_purple: #7f3eff;
+$new_pink: #ff0bba;
+$new_red: #f72555;
+$new_apricot: #fcab05;
+$new_green: #1ec22d;
+$new_blue: #2774f8;
+$new_watermelon: #f82a5f;
+
+
+
+
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever. */
 
 $bg: #f5f7f8;
@@ -141,9 +158,9 @@ header .fit_link:hover,
 html{height: 100%;}
 body{min-height: 100%;}
 
-header, 
-nav, 
-aside,
+body > header, 
+body > nav,
+body > aside,
 .modal-content,
 .fit_sidepanel .panel{box-shadow: 0 0 1.5rem $box_shadow;}
 
@@ -190,9 +207,10 @@ html.fit_minleft{}
 /* mess with bootstrap standards */
 
 // margin on button bits
+// how do we deal with this when it's on the right?
 .btn [class^='fa']{margin: 0 0.3rem;}
-.btn-sm [class^='fa']:first-child{margin: 0 0.1rem;}
-.btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
+// .btn-sm [class^='fa']:first-child{margin: 0 0.1rem;}
+// .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
 
 
@@ -379,6 +397,18 @@ aside .fit_btn{color: $text;}
 // okay so we need nowrap for the headers, but not elsewhere.
 header .fit_btn > .fit_txt,
 .head .fit_btn > .fit_txt{ white-space: nowrap;}
+header .fit_btn:hover,
+.head .fit_btn:hover{background: transparent;}
+
+// header underlines are weird
+
+header .fit_btn > .fit_txt:after,
+.head .fit_btn > .fit_txt:after{
+	transition: all .2s ease-in-out;
+	display:block; content:''; position: absolute; bottom:.45rem; left:1.25rem; right:1.25rem; height: 3px; background: $blue; border-radius: $border_rad_xl; opacity: 0;}
+
+header .fit_btn:hover > .fit_txt:after,
+.head .fit_btn:hover > .fit_txt:after{opacity: 0.4; bottom: .6rem;}
 
 .fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
 .fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
@@ -475,8 +505,15 @@ html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
 // weird in the header
 header{}
 header .fit_btn > .fit_txt{white-space:nowrap;}
-.fit_btn.left{margin-right: auto;}
-.fit_btn.right{margin-left: auto;}
+
+header .left,
+header .right,
+.head .left,
+.head .right{display: flex;}
+header .left,
+.head .left{margin-right: auto;}
+header .right,
+.head .right{margin-left: auto;}
 
 // margins in the sidebar within a content thingo
 .fit_body_content > .fit_btn{margin: 0 -1.5rem 0;}
@@ -813,6 +850,14 @@ body > .fit_code {margin-top:10rem;}
 .fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom: 3px solid lighten($watermelon, 20%);}
 .fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
 
+
+// smaller screens!
+@media (max-width: 575px){
+	.fit_form_code{padding: 1rem;}
+	.fit_form_code input,
+	.fit_form_code input:focus{font-size: 1.5rem;}
+	.fit_form_code .btn{height: 3rem; width: 4rem;}
+}
 
 // in the hero block
 .fit_hero .fit_code{margin: 5rem auto;}
@@ -1209,7 +1254,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_heartplay{position: relative; height: 10rem; width: 10rem; margin: 0 auto; display: block; text-decoration: none;}
 .fit_heartplay i{ height: 10rem; position: absolute; top:0; left: 0; width: 100%;}
 
-.fit_heartplay .bigboy{color:$blue; font-size: 10rem; transition: all .45s ease-in-out;}
+.fit_heartplay .bigboy{color:$brand; font-size: 10rem; transition: all .45s ease-in-out;}
 .fit_heartplay .smallboy{color:#fff; font-size: 2.75rem; padding: 3.25rem 0 0 .5rem; transition: all .15s ease-in-out;}
 
 
@@ -1230,9 +1275,10 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
-.fit_window:after{padding-top: 56.25%; display: block; content: '';}
+.fit_window:after{padding-top: $ratio_169; display: block; content: '';}
 
-.fit_window img{width: 100%; position: absolute; top:0; left: 0;}
+.fit_window img{width: 100%;}
+.fit_window img{border-radius: $border_rad_lg;}
 
 .fit_window .butts{position: absolute; top:0; left: 0; padding: 1.2rem;}
 .fit_window .butts a{border-radius: $border_rad_r; width: .8rem; height: .8rem; margin-right: .7rem; float: left; background: #ffbf3d;}
@@ -1246,6 +1292,10 @@ transition: all .1s ease-in-out;}
 .fit_window .play:hover{transform: scale(1.2); background: rgba(0,0,0,0.05);}
 .fit_window .play:hover i{opacity: 1;}
 
+// label the pic if that's a thing.
+.fit_picture{margin: 0 0 2rem;}
+.caption{display: block; padding: 0.5rem 1rem 1rem; text-align: center; font-size: 0.8rem; color: $text_light; }
+.caption a{color:inherit; text-decoration: underline;}
 
 .fit_course_sell{padding: 0 0 2rem;}
 .fit_course_sell h3 {padding: 1rem 0 0;}
@@ -1313,15 +1363,20 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
-.fit_medium{max-width: 740px; margin: 0 auto; padding:0 14px;}
-.fit_medium .fit_window,
-.fit_medium img{margin-bottom: 2rem;}
+.fit_medium{max-width: 740px; margin: 0 auto; padding:0 1rem;}
+.fit_medium .fit_window{margin-bottom: 2rem;}
 
 .fit_medium img{max-width: 100%; border-radius: $border_rad_sm;}
+
+.fit_medium h1,
+.fit_medium h2,
+.fit_medium h3,
+.fit_medium h4{margin-bottom: 1rem; max-width: 600px;}
 
 .fit_medium h4{font-weight: 900;}
 
 .fit_medium p{font-size: 1.2rem; line-height: 1.7rem;}
+.fit_medium p a:not(.btn){text-decoration: underline; color:inherit;}
 
 .fit_medium hr{margin: 3.5rem 0; height: 0; background: transparent; border-color: transparent;}
 .fit_medium hr.dots:after{display: block; content: '...'; letter-spacing: 2rem; font-size: 2rem; color: $text_light; text-align: center; position: relative; top: -2rem;}
@@ -1332,7 +1387,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium dd,
 .fit_medium dd p{font-size: 1.05rem;}
 
-.fit_medium .breakbig{margin: 4rem 0 2rem;}
+.fit_medium .breakbig{margin: 0 0 2rem;}
 
 @media (min-width: 992px) {
 	.fit_medium .breakbig{width: 970px; margin-left: -140px;}
@@ -1342,6 +1397,21 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_spicy .fal{color: $text_light;}
 
 
+// and now the two-bar thing with floaty menu
+
+.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding-bottom: 4rem}
+
+@media (min-width: 992px) {
+	.fit_medium_rare{display: flex; align-items:stretch; max-width: 1000px; position: relative; padding: 0 1rem; margin: 0 auto;}
+	.fit_medium_rare .fit_medium{margin: 0; padding: 0;}
+	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 0 2rem 3rem; position: sticky; align-self: flex-start;}
+}
+
+.fit_rare .nav a i{display: none;}
+.fit_rare .nav a.active i{display: inline-block;}
+
+.fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
+.fit_medium_nav .btn:last-child{margin-left: auto;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // Login and sign up and whatnot
@@ -1402,6 +1472,7 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 .fit_form_code_head .form-control::placeholder{color:transparent;}
 
 // .fit_form_code_head .form-control::placeholder:before{content: 'ABC'; display: inline-block;}
+
 
 // mess with widths using fancyplace
 .fit_form_code_head .form-control{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out;}

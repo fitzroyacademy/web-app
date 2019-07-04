@@ -16,12 +16,24 @@
 		</div>	
   </form>
 
-  {% if current_section != 'login' %}
-    <a href="/login" class="fit_btn right" data-fit-userpanel>
-      <span class="fit_txt">Sign up</span>
-      <i class="fal fa-user"></i>
+  <div class="right">
+    <a href="/about" class="fit_btn">
+      <!-- <i class="fal fa-heart"></i> -->
+      <span class="fit_txt">About</span>
     </a>
+
+    <a href="/support" class="fit_btn">
+      <!-- <i class="fal fa-question-circle"></i> -->
+      <span class="fit_txt">Support</span>
+    </a>
+
+    {% if current_section != 'login' %}
+      <a href="/login" class="fit_btn" data-fit-userpanel>
+        <span class="fit_txt">Sign up</span>
+        <i class="fal fa-user"></i>
+      </a>
   {% endif %}
+  </div><!-- right -->
 
 </header>
 
@@ -31,12 +43,8 @@
   
     <div class="head">
       <a href="/login" class="fit_btn right" data-fit-userpanel>
-        <span class="fit_txt">
-          Close
-        </span>
-        <span class="fit_pic circle">
-          <i class="far fa-times"></i>
-        </span>
+        <span class="fit_txt">Close</span>
+        <i class="far fa-times"></i>
       </a>
     </div>
     
