@@ -41,7 +41,9 @@ $pink: #e809db;
 $yellow: #f4b115;
 $aqua: #66b3b7;
 $watermelon: #f82a5f;
-$watermelon_dark: #cc073a;
+$watermelon_dark: #e71e52;
+$watermelon_darker: #cc073a;
+
 
 
 $text: #4f5153;
@@ -815,56 +817,7 @@ Bleh:;
 .fit_cta .btn-hg{margin: 1rem 0 2rem;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
-/*the thing that makes big course code entry thing */
 
-$fit_code_width: 25rem;
-
-.fit_code{max-width: $fit_code_width; margin: 0 auto;}
-
-// on its own
-body > .fit_code {margin-top:10rem;}
-
-.fit_form_code{position: relative; max-width: $fit_code_width; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
-.fit_form_code .form-group{position: relative;}
-
-.fit_form_code input,
-.fit_form_code input:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; border-color: $watermelon_dark; color: #fff; padding: 0.5rem 1rem; box-shadow: none;}
-.fit_form_code input::placeholder{color: #fff;}
-.fit_form_code input:focus::placeholder{opacity: 0.2; text-transform: none;}
-
-// TODO: make this work better so that values in this box are only uppercase
-.fit_form_code input:focus,
-.fit_form_code input:active{text-transform: uppercase; }
-
-.fit_form_code label{opacity: 0; position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
-
-.fit_form_code input:focus{}
-.fit_form_code input:focus + label{opacity: 1;}
-
-
-.fit_form_code .btn{position: absolute; top:0; right: 0; height: 4rem; width: 4rem; color: #fff; font-size: 1.5rem;}
-.fit_form_code .btn:focus{box-shadow: none;}
-
-.fit_cta_tnc{color: #fff; font-size: 0.85rem; text-align: center; padding: 0;}
-.fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom: 3px solid lighten($watermelon, 20%);}
-.fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
-
-
-// smaller screens!
-@media (max-width: 575px){
-	.fit_form_code{padding: 1rem;}
-	.fit_form_code input,
-	.fit_form_code input:focus{font-size: 1.5rem;}
-	.fit_form_code .btn{height: 3rem; width: 4rem;}
-}
-
-// in the hero block
-.fit_hero .fit_code{margin: 5rem auto;}
-
-// in the bottom of a cousre page:
-.fit_cta .fit_form_code {padding-left: 0;}
-.fit_cta .fit_cta_tnc{text-align: left;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // user stuff, defaulting for h1
@@ -1432,7 +1385,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_fancyplace label{transition: all .1s ease-in-out;}
 
 // when the label is shown:
-.fit_fancyplace.labelled label{opacity: 1; padding: .25rem; top:-.75rem; left: .65rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
+.fit_fancyplace.labelled label{opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .65rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
 
 
 // when it's active
@@ -1454,6 +1407,61 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 .fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto; background: $border_lighter; text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem;}
 
 
+// ----------------------------------------------------------------------------------------------------------------
+/* the thing that makes big course code entry thing */
+/* NB this builds upon fit_fancyplace */
+
+$fit_code_width: 25rem;
+
+.fit_code{max-width: $fit_code_width; margin: 0 auto;}
+
+// on its own
+body > .fit_code {margin-top:10rem;}
+
+.fit_form_code{position: relative; max-width: $fit_code_width; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
+.fit_form_code .form-group{position: relative;}
+
+.fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em;}
+.fit_form_code .form-control,
+.fit_form_code .form-control:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; color: #fff; box-shadow: none;text-transform: uppercase;}
+
+.fit_form_code.active .form-control,
+.fit_form_code.labelled .form-control{border:3px solid $watermelon_dark;}
+
+
+// weird label
+.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.3; padding-top: 0.5rem}
+
+.fit_form_code.active label,
+.fit_form_code.labelled label{position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
+
+.fit_form_code.active label,
+.fit_form_code.labelled label,
+.fit_form_code.active.labelled label{background: $watermelon_dark; color:#fff;}
+
+.fit_form_code .btn{position: absolute; top:0; right: 0; height: 4rem; width: 4rem; color: #fff; font-size: 1.5rem;}
+.fit_form_code .btn:focus{box-shadow: none;}
+
+.fit_cta_tnc{color: #fff; font-size: 0.85rem; text-align: center; padding: 0;}
+.fit_cta_tnc a{color: inherit; text-decoration: none; border-bottom: 3px solid lighten($watermelon, 20%);}
+.fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
+
+
+// smaller screens!
+@media (max-width: 575px){
+	.fit_form_code{padding: 1rem;}
+	.fit_form_code input,
+	.fit_form_code input:focus{font-size: 1.5rem;}
+	.fit_form_code .btn{height: 3rem; width: 4rem;}
+}
+
+// in the hero block
+.fit_hero .fit_code{margin: 5rem auto;}
+
+// in the bottom of a cousre page:
+.fit_cta .fit_form_code {padding-left: 0;}
+.fit_cta .fit_cta_tnc{text-align: left;}
+
 // -----------------------------------------------------------------------------------------
 /* fit header code */
 
@@ -1470,8 +1478,6 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 .fit_form_code_head .btn:hover{cursor: pointer;}
 
 .fit_form_code_head .form-control::placeholder{color:transparent;}
-
-// .fit_form_code_head .form-control::placeholder:before{content: 'ABC'; display: inline-block;}
 
 
 // mess with widths using fancyplace
@@ -1491,6 +1497,7 @@ body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border
 
 .fit_form_code_head.active label,
 .fit_form_code_head.labelled label{display: none;}
+
 
 
 
