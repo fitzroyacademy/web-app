@@ -5,7 +5,7 @@
 version: 2
 jobs:
   build:
-    macine: true
+    machine: true
     working_directory: ~/repo
     steps:
       - checkout
