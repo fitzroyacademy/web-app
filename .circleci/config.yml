@@ -1,21 +1,19 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
-version: 2
-jobs:
-  build:
-    machine: true
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: docker build -t fitzroyacademy/web-app:$CIRCLE_BRANCH .
-
+version: 2.1
 workflows:
-  version: 2
   build_and_deploy_test:
     jobs:
       - build:
           filters:
             branches:
               only: ci-deployment
+jobs:
+  build:
+    machine: ubuntu-1604:201903-01
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # - run tests
+      - run: docker build -t fitzroyacademy/web-app:$CIRCLE_BRANCH .
+      # push docker container to registry
+  # run tests on container
+  # deploy to AWS
