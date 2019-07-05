@@ -7,6 +7,7 @@ import datamodels
 import time
 import re
 import os
+import jinja2
 
 import logging
 logging.basicConfig()
@@ -86,15 +87,10 @@ def user_edit():
 @app.route('/404')
 @app.errorhandler(404)
 def fourohfour(e):
-    # Before dumping a 404, check to see whether we have a static
-    # template to load.
-    fallback = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        'templates/static'+request.path+'.html'
-    )
-    if os.path.exists(fallback):
+    try:
         return render_template('static'+request.path+'.html')
-    return render_template('404.html'), 404
+    except jinja2.exceptions.TemplateNotFound:
+        return render_template('404.html'), 404
 
 @app.errorhandler(Exception)
 @app.route('/502')
