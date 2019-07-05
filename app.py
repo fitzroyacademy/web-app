@@ -6,6 +6,7 @@ import stubs
 import datamodels
 import time
 import re
+import os
 
 import logging
 logging.basicConfig()
@@ -49,22 +50,7 @@ def index():
 # --------------------------------------------------------------------------------
 # Some 'static' non-functional urls for Will to play with:
 # Not yet ready for backend consumption
-
-@app.route('/playground')
-def playground():
-    return render_template('playground.html')
-
-@app.route('/mistakes')
-def mistakes():
-    return render_template('mistakes.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/resources')
-def resources():
-    return render_template('resources.html')    
+ 
 
 @app.route('/course_edit')
 def course_edit():
@@ -100,6 +86,14 @@ def user_edit():
 @app.route('/404')
 @app.errorhandler(404)
 def fourohfour(e):
+    # Before dumping a 404, check to see whether we have a static
+    # template to load.
+    fallback = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        'templates/static'+request.path+'.html'
+    )
+    if os.path.exists(fallback):
+        return render_template('static'+request.path+'.html')
     return render_template('404.html'), 404
 
 @app.errorhandler(Exception)
