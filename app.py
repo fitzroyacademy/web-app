@@ -1,6 +1,6 @@
 import json
 import random
-from flask import Flask, render_template, session, request, url_for, redirect
+from flask import Flask, render_template, session, request, url_for, redirect, flash
 import sass
 import stubs
 import datamodels
