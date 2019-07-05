@@ -90,7 +90,10 @@ def fourohfour(e):
     try:
         return render_template('static'+request.path+'.html')
     except jinja2.exceptions.TemplateNotFound:
-        return render_template('404.html'), 404
+        try:
+            return render_template('static'+request.path+'/index.html')
+        except jinja2.exceptions.TemplateNotFound:
+            return render_template('404.html'), 404
 
 @app.errorhandler(Exception)
 @app.route('/502')
