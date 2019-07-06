@@ -15,6 +15,12 @@ jobs:
       - checkout
       # - run tests
       - run: docker build -t fitzroyacademy/web-app:$CIRCLE_BRANCH .
+      - run:
+          context: fitzroy-circleci
+          name: Deploy application
+          command: |
+            chmod +x scripts/assume-role.sh
+            source scripts/assume-role.sh
       # push docker container to registry
   # run tests on container
   # deploy to AWS
