@@ -23,9 +23,9 @@ jobs:
             chmod +x scripts/assume-role.sh
             source scripts/assume-role.sh
             image_id=$(docker images fitzroyacademy/web-app -q)
-            $(aws ecr get-login --region us-east-1 --no-include-email)
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/web-app
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/web-app
+            $(aws ecr get-login --region us-east-2 --no-include-email)
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/sandbox-repo
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/sandbox-repo
 
       # push docker container to registry
   # run tests on container
