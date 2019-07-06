@@ -18,7 +18,7 @@ for student in stubs.students:
 
 session.commit()
 
-c = datamodels.Course(slug="fitzroy-academy", course_code="abc123")
+c = datamodels.Course(title="Social Enterprise", slug="fitzroy-academy", course_code="abc123")
 session.add(c)
 
 for i, lesson in enumerate(stubs.lessons):

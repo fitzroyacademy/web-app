@@ -1,27 +1,14 @@
 <div class="fit_alerts">
 
-	<!-- DEV: For each alert in the alert stack: -->
-
+{% with messages = get_flashed_messages() %}
+	{% for message in messages %}
 		<div class="alert alert-info alert-dismissible fade show" role="alert">
 		  <i class="fal fa-exclamation-circle"></i> 
-		  [[ alert goes here! ]]
+		  {{ message }}
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		    <span aria-hidden="true">&times;</span>
+			<span aria-hidden="true">&times;</span>
 		  </button>
 		</div>
-	 
-	<!-- endfor -->
-
-	<!-- DEV: For each error in the stack: -->
-
-		<div class="alert alert-danger alert-dismissible fade show" role="alert">
-		  <i class="fal fa-sad-cry"></i> 
-		  [[ error goes here! ]]
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		    <span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-	 
-	<!-- endfor -->
-
+	{% endfor %}
+{% endwith %}
 </div>

@@ -404,6 +404,12 @@ $( document ).ready(function() {
     if (resourcePanel) {
       let activeLesson = resourcePanel.dataset.fitActiveLesson;
       if (activeLesson != lid) {
+        //Change active lesson on nav bar.
+        for(let lesson in document.querySelectorAll('.fit_lesson')) {
+          lesson.classList.remove('active');
+        }
+        document.querySelector(`.fit_lesson[data-fit-lesson=${lid}`)
+          .classList.add('active');
         get('/_lesson_resources/'+lid, (e, xhr, data) => {
           if (e) return console.error(e);
           document.querySelector('#fit_resources_panel').innerHTML = data;

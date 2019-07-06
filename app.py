@@ -1,11 +1,13 @@
 import json
 import random
-from flask import Flask, render_template, session, request, url_for, redirect
+from flask import Flask, render_template, session, request, url_for, redirect, flash
 import sass
 import stubs
 import datamodels
 import time
 import re
+import os
+import jinja2
 
 import logging
 logging.basicConfig()
@@ -49,14 +51,7 @@ def index():
 # --------------------------------------------------------------------------------
 # Some 'static' non-functional urls for Will to play with:
 # Not yet ready for backend consumption
-
-@app.route('/playground')
-def playground():
-    return render_template('playground.html')
-
-@app.route('/mistakes')
-def mistakes():
-    return render_template('mistakes.html')
+ 
 
 @app.route('/course_edit')
 def course_edit():
@@ -92,7 +87,13 @@ def user_edit():
 @app.route('/404')
 @app.errorhandler(404)
 def fourohfour(e):
-    return render_template('404.html'), 404
+    try:
+        return render_template('static'+request.path+'.html')
+    except jinja2.exceptions.TemplateNotFound:
+        try:
+            return render_template('static'+request.path+'/index.html')
+        except jinja2.exceptions.TemplateNotFound:
+            return render_template('404.html'), 404
 
 @app.errorhandler(Exception)
 @app.route('/502')
