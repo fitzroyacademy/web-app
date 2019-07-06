@@ -4,6 +4,7 @@ import sqlalchemy as sa
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
 from os import environ
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 Base = declarative_base()
@@ -57,7 +58,12 @@ class User(Base):
 	programs = orm.relationship("ProgramEnrollment", back_populates="user")
 	courses = orm.relationship("CourseEnrollment", back_populates="user")
 
-	def set_password(self, password):
+	@hybrid_property
+	def password(self):
+		return ''
+
+	@password.setter
+	def password(self, password):
 		self.password_hash = generate_password_hash(password)
 
 	def check_password(self, password):
