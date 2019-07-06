@@ -1,8 +1,10 @@
 version: 2.1
 workflows:
+  version: 2
   build:
     jobs:
       - build:
+          context: fitzroy-circleci
           filters:
             branches:
               only: ci-deployment
@@ -16,7 +18,6 @@ jobs:
       # - run tests
       # - run: docker build -t fitzroyacademy/web-app:$CIRCLE_BRANCH .
       - run:
-          context: fitzroy-circleci
           name: Deploy application
           command: |
             chmod +x scripts/assume-role.sh
