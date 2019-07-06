@@ -12,7 +12,7 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/repo
     steps:
-      # - checkout
+      - checkout
       # - run tests
       # - run: docker build -t fitzroyacademy/web-app:$CIRCLE_BRANCH .
       - run:
