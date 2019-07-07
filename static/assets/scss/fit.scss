@@ -1008,6 +1008,7 @@ table.fit_colhover td:hover{cursor: default;}
   nav .fit_link{padding-left: 0;}
 }
 
+.fit_mobilenav{display: none;}
 
 /*  small boye  */
 @media (max-width: 575px){
@@ -1026,7 +1027,8 @@ table.fit_colhover td:hover{cursor: default;}
 
 // and again html
 html.fit_minleft nav{max-width: $nav_left_width_collapsed; min-width: 0;}
-html.fit_minleft nav .fit_txt{display: none;}
+html.fit_minleft nav .fit_txt,
+html.fit_minleft nav .fit_sub{display: none;}
 html.fit_minleft nav .fit_link{padding-left: 0;}
 html.fit_minleft nav .fit_time{display: none}
 
