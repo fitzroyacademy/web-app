@@ -359,6 +359,13 @@ $( document ).ready(function() {
     xhr.send();
   }
 
+  // Called from the wistia video embed template.
+  var _fitz_video = false;
+  function fitzVideoReady(video) {
+    _fitz_video = video;
+  }
+  window.fitzVideoReady = fitzVideoReady;
+
   // Adds a data-fit-panel property to links which will take a CSS selector
   // and load the content from the link's href into all elements matching
   // that selector.
