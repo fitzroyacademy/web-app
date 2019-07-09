@@ -8,10 +8,7 @@ import time
 import re
 import os
 import jinja2
-
-import logging
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+from uuid import uuid4
 
 app = Flask('FitzroyFrontend', static_url_path='')
 app.debug = True
@@ -42,6 +39,12 @@ def get_current_user():
         return datamodels.get_user(session['user_id'])
     else:
         return None
+
+def uuid():
+    return "{}".format(uuid4().hex)
+
+app.jinja_env.globals.update(uuid=uuid)
+
 
 @app.route('/')
 def index():
