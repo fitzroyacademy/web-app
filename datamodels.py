@@ -281,6 +281,17 @@ class Segment(Base):
 			self.slug
 		)
 
+	def user_progress(self, user):
+		if user is None:
+			return '0'
+		progress = get_segment_progress(self.id, user.id)
+		if progress:
+			return progress.progress
+		return 0
+
+	def save_user_progress(self, user, percent):
+		return save_segment_progress(self.id, user.id, percent)
+
 
 class SegmentTranslation(Base):
 
@@ -333,6 +344,15 @@ class Resource(Base):
 		if self.type in stubs:
 			return stubs[self.type]
 		return 'External file'
+
+
+class SegmentUserProgress(Base):
+	__tablename__ = "segment_user_progress"
+	id = sa.Column(sa.Integer, primary_key=True)
+	progress = sa.Column(sa.Integer)
+	# No complex join definition for now.
+	segment_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_segments.id'))
+	user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
 
 
 _session = None
@@ -390,6 +410,28 @@ def get_lesson_by_slug(course_slug, lesson_slug):
 def get_segment(segment_id):
 	session = get_session()
 	return session.query(Segment).filter(Segment.id == segment_id).first()
+
+def get_segment_progress(segment_id, user_id):
+	session = get_session()
+	q = session.query(SegmentUserProgress).\
+		filter(SegmentUserProgress.segment_id == segment_id).\
+		filter(SegmentUserProgress.user_id == user_id)
+	try:
+		return q.first()
+	except:
+		return None
+
+def save_segment_progress(segment_id, user_id, percent):
+	session = get_session()
+	sup = get_segment_progress(segment_id, user_id)
+	percent = int(percent)
+	if sup is None:
+		sup = SegmentUserProgress(segment_id=segment_id, user_id=user_id, progress=percent)
+	elif sup.progress < percent:
+		sup.progress = percent
+	session.add(sup)
+	session.commit()
+	return sup
 
 def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	session = get_session()

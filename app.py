@@ -287,6 +287,22 @@ def _lesson_resources(lid):
 def lessons():
     return render_template('lesson_chart.html')
 
+@app.route('/event/<event_type>', methods=["POST"])
+def log_event(event_type):
+    user = get_current_user()
+    if user is None:
+        # TODO: Log anonymous user progress.
+        return True
+    if event_type == 'progress':
+        segment_id = request.form['segment_id']
+        user_id = user.id
+        progress = request.form['percent']
+        seg = datamodels.get_segment(segment_id)
+        sup = seg.save_user_progress(user, progress)
+        return json.dumps(datamodels.dump(sup))
+    else:
+        return event_type
+
 if __name__ == "__main__":
     app.secret_key = "super sedcret"
     compile_sass()
