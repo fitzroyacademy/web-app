@@ -57,7 +57,11 @@
           <div class="fit_body fit_lessons">
 
             <!-- DEV: Dump the list of lessons for the course in here, just like in the LHS menu in the actual course -->
-            
+            <ul>
+              {% for lesson in course.lessons %}
+                <li>{{ lesson.title }}</li>
+              {% endfor %}
+            </ul>
           </div>
           <!-- end vid stack -->
 
