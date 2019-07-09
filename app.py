@@ -135,10 +135,6 @@ def enroll(course_slug):
         s.commit()
     return redirect(course.lessons[0].permalink)
 
-@app.route('/course_intro')
-def course_intro():
-    return render_template('course_intro.html', **kwargs)
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     data = {'errors': []}
