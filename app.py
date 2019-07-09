@@ -160,9 +160,30 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
-@app.route('/user/register', methods=["POST"])
+@app.route('/register', methods=["POST"])
 def post_register():
-    return render_template('login.html')
+    db = datamodels.get_session()
+    data = {'errors': []}
+    # We'll roll in better validation with form error integration in beta; this is
+    # to prevent mass assignment vulnerabilities.
+    kwargs = {}
+    valid = ['first_name', 'email', 'username', 'last_name', 'password']
+    for k in valid:
+        kwargs[k] = request.form.get(k)
+    user = datamodels.get_user_by_email(request.form.get('email'))
+    if user is not None:
+        data['errors'].append("Email address already in use.")
+        return render_template('login.html', **data)
+    try:
+        user = datamodels.User(**kwargs)
+    except Exception as e:
+        data['errors'].append("{}".format(e))
+        return render_template('login.html', **data)
+    db.add(user)
+    db.commit()
+    session['user_id'] = user.id
+    flash('Thanks for registering, '+user.full_name+"!")
+    return render_template('welcome.html')
 
 
 # --------------------------------------------------------------------------------
