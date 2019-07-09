@@ -48,7 +48,8 @@ app.jinja_env.globals.update(uuid=uuid)
 
 @app.route('/')
 def index():
-    return render_template('welcome.html')
+    data = {'public_courses': datamodels.get_public_courses()}
+    return render_template('welcome.html', **data)
 
 
 # --------------------------------------------------------------------------------

@@ -149,6 +149,12 @@ class Course(Base):
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50), unique=True)
 
+	target_audience = sa.Column(sa.String())
+	skill_level = sa.Column(sa.String())
+	info = sa.Column(sa.String)
+
+	summary_html = sa.Column(sa.String())
+
 	program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
 	program = orm.relationship("Program", back_populates="courses")
 
@@ -157,8 +163,9 @@ class Course(Base):
 	users = orm.relationship("CourseEnrollment", back_populates="course")
 	translations = orm.relationship("CourseTranslation", back_populates="course")
 
-	def add_user(self, user, access_level=0):
+	preview_thumbnail = sa.Column(sa.String)
 
+	def add_user(self, user, access_level=0):
 		association = CourseEnrollment(access_level=access_level)
 		association.course = self
 		association.user = user
@@ -360,6 +367,10 @@ def get_course_by_slug(slug):
 def get_course_by_code(code):
 	session = get_session()
 	return session.query(Course).filter(Course.course_code == code).first()
+
+def get_public_courses():
+	session = get_session()
+	return session.query(Course).filter(Course.guest_access == True)
 
 def get_lesson(lesson_id):
 	session = get_session()
