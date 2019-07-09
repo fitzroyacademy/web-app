@@ -51,16 +51,18 @@
     {% for course in public_courses %}
       <div class="fit_course">
         <div class="fit_course_sell featured">
-          <div class="fit_window">
-            <img src="/assets/images/lessons/customer-interviews.jpg" alt="image">
-            <div class="butts">
-              <a></a>
-              <a></a>
-              <a></a>
+          {% if course.preview_thumbnail %}
+            <div class="fit_window">
+              <img src="{{ course.preview_thumbnail }}" alt="image">
+              <div class="butts">
+                <a></a>
+                <a></a>
+                <a></a>
+              </div>
+              <a href="{{ course.permalink }}" class="play"><i class="fas fa-play-circle"></i></a>
             </div>
-            <a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
-          </div>
-          <h3><a href="course_intro">Intro to social enterprise.</a></h3>
+          {% endif %}
+          <h3><a href="{{ course.permalink }}">Intro to social enterprise.</a></h3>
           <p class="tagline">
             <span class="tag"><i class="fal fa-info-square"></i> {{ course.info }}</span>
             <span class="tag"><i class="fal fa-calendar"></i> {{ course.lessons|length }} lessons over 12 weeks.</span>
