@@ -35,6 +35,76 @@
       "type": "Simple",
       "case": "Maintain",
       "active": true
+    },
+    {
+      "repA": "design thinking",
+      "repB": "wank thinking",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "collaborative",
+      "repB": "wanky",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "participatory",
+      "repB": "wankish",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "sustainable",
+      "repB": "wankful",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "human-centered",
+      "repB": "wankered",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "empowering",
+      "repB": "wanking",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "dynamic",
+      "repB": "wanky",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "synergistic",
+      "repB": "wankish",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "innovative",
+      "repB": "wanky",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
+    },
+    {
+      "repA": "innovation",
+      "repB": "wanking",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
     }
   ]
 }
