@@ -1,0 +1,41 @@
+<!-- DEV: this version is for a free-access course with no code/etc -->
+
+<% if current_user and %>
+
+<% if current_user 
+<div class="fit_cta">
+  <div class="fit_course">
+    <h3>Ready to begin?</h3>
+    <form method="post" action="/enroll/{{ course.slug }}">
+      <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course
+      </button>
+      <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+    </form>
+  </div>
+</div>
+
+
+<!-- DEV: this version is for a course that requires login, but user isn't logged in -->
+<div class="fit_cta">
+  <div class="fit_course">
+    <h3>Ready to begin?</h3>
+    <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-lock"></i> Create an account</a>
+    <p class="fit_cta_tnc">You need to make a free account to continue.</p>
+  </div>
+</div>    
+
+<!-- DEV: wheras, this version is for courses locked by a code -->
+<div class="fit_cta">
+  <div class="fit_course">
+    <h3>Ready to begin?</h3>
+    <!-- <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course</a> -->
+    <form class="fit_form_code">
+      <div class="form-group">
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Course code" required>
+        <label for="exampleFormControlInput1">Course code</label>
+        <button type="submit" class="btn btn-text"><i class="fas fa-rocket"></i></button>
+      </div>
+    </form>
+    <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+  </div>
+</div>

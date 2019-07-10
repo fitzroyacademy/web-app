@@ -149,6 +149,12 @@ class Course(Base):
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50), unique=True)
 
+	target_audience = sa.Column(sa.String())
+	skill_level = sa.Column(sa.String())
+	info = sa.Column(sa.String)
+
+	summary_html = sa.Column(sa.String())
+
 	program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
 	program = orm.relationship("Program", back_populates="courses")
 
@@ -157,8 +163,9 @@ class Course(Base):
 	users = orm.relationship("CourseEnrollment", back_populates="course")
 	translations = orm.relationship("CourseTranslation", back_populates="course")
 
-	def add_user(self, user, access_level=0):
+	preview_thumbnail = sa.Column(sa.String)
 
+	def add_user(self, user, access_level=0):
 		association = CourseEnrollment(access_level=access_level)
 		association.course = self
 		association.user = user
@@ -274,6 +281,17 @@ class Segment(Base):
 			self.slug
 		)
 
+	def user_progress(self, user):
+		if user is None:
+			return '0'
+		progress = get_segment_progress(self.id, user.id)
+		if progress:
+			return progress.progress
+		return 0
+
+	def save_user_progress(self, user, percent):
+		return save_segment_progress(self.id, user.id, percent)
+
 
 class SegmentTranslation(Base):
 
@@ -328,6 +346,15 @@ class Resource(Base):
 		return 'External file'
 
 
+class SegmentUserProgress(Base):
+	__tablename__ = "segment_user_progress"
+	id = sa.Column(sa.Integer, primary_key=True)
+	progress = sa.Column(sa.Integer)
+	# No complex join definition for now.
+	segment_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_segments.id'))
+	user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
+
+
 _session = None
 def get_session():
 	global _session
@@ -361,6 +388,10 @@ def get_course_by_code(code):
 	session = get_session()
 	return session.query(Course).filter(Course.course_code == code).first()
 
+def get_public_courses():
+	session = get_session()
+	return session.query(Course).filter(Course.guest_access == True)
+
 def get_lesson(lesson_id):
 	session = get_session()
 	return session.query(Lesson).filter(Lesson.id == lesson_id).first()
@@ -379,6 +410,28 @@ def get_lesson_by_slug(course_slug, lesson_slug):
 def get_segment(segment_id):
 	session = get_session()
 	return session.query(Segment).filter(Segment.id == segment_id).first()
+
+def get_segment_progress(segment_id, user_id):
+	session = get_session()
+	q = session.query(SegmentUserProgress).\
+		filter(SegmentUserProgress.segment_id == segment_id).\
+		filter(SegmentUserProgress.user_id == user_id)
+	try:
+		return q.first()
+	except:
+		return None
+
+def save_segment_progress(segment_id, user_id, percent):
+	session = get_session()
+	sup = get_segment_progress(segment_id, user_id)
+	percent = int(percent)
+	if sup is None:
+		sup = SegmentUserProgress(segment_id=segment_id, user_id=user_id, progress=percent)
+	elif sup.progress < percent:
+		sup.progress = percent
+	session.add(sup)
+	session.commit()
+	return sup
 
 def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	session = get_session()

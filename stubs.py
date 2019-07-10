@@ -106,18 +106,7 @@ segments.append([
         "id": "seg_c",
         "lesson_id": '00',
         "course_id": "00"
-    },
-    {
-        "title": "Guest lecture: very large boxes",
-        "duration": "1:53",
-        "external_id": "xdhLQCYQ-nQ",
-        "url": "https://www.youtube.com/watch?v=xdhLQCYQ-nQ",
-        "template": "video_youtube",
-        "type": "video",
-        "id": "seg_maru",
-        "lesson_id": '00',
-        "course_id": "00"
-    },   
+    },  
     {
         "title": "Five designers in a box",
         "duration": "1:36",
