@@ -16,17 +16,25 @@ jobs:
     steps:
       - checkout
       # - run tests
-      - run: docker build -t fitzroyacademy/web-app:latest .
+      - run: docker build -t fitzroy-academy/web-app .
       - run:
           name: Deploy application
           command: |
             chmod +x scripts/assume-role.sh
             source scripts/assume-role.sh
-            image_id=$(docker images fitzroyacademy/web-app -q)
+            image_id=$(docker images fitzroy-academy/web-app -q)
+            # get commit hash
+            # error out if this is the master branch and there is no version found that's newer
             $(aws ecr get-login --region us-east-2 --no-include-email)
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/web-app
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/web-app
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app
+            # docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:v0.0.1
+            # docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
+            # docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:COMMIT HASH
 
-      # push docker container to registry
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app
+            # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:v0.0.1
+            # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
+            # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:COMMIT HASH
+
   # run tests on container
   # deploy to AWS
