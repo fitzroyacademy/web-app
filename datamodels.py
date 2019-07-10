@@ -360,14 +360,14 @@ def get_session():
 	global _session
 	if _session is None:
 		# TODO: Move this into a configuration file somewhere.
-		if 'DB_USER' in environ and 'DB_ENDPOINT' in environ:
-			db_connect_string = 'postgres://' + environ['DB_USER'] + '@' + environ['DB_ENDPOINT']
+		if 'DB_USER' in environ and 'DB_ENDPOINT' in environ and 'DB_PASSWORD' in environ :
+			db_connect_string = 'postgres://' + environ['DB_USER'] + ':' + environ['DB_PASSWORD'] +'@' + environ['DB_ENDPOINT']
 		elif environ['FLASK_ENV'] == 'development':
 			db_connect_string = 'sqlite:///dev_db.sqlite?check_same_thread=False'
 		elif environ['FLASK_ENV'] == 'test':
 			db_connect_string = 'sqlite:///:memory:'
 		else:
-			raise Exception('DB_USER and DB_ENDPOINT environment variables not provided, and app.debug is false.')
+			raise Exception('DB_USER, DB_ENDPOINT, and/or DB_PASSWORD environment variables not provided, and app.debug is false.')
 		engine = sa.create_engine(db_connect_string)
 		Base.metadata.create_all(engine)
 		Session = orm.scoped_session(orm.sessionmaker(bind=engine))
