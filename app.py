@@ -20,6 +20,9 @@ XRayMiddleware(app, xray_recorder)
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
 
+def log_error(error):
+    print(error)
+
 @app.context_processor
 def inject_current_user():
     return dict(current_user=get_current_user())
@@ -106,6 +109,7 @@ def fourohfour(e):
 @app.errorhandler(Exception)
 @app.route('/502')
 def fiveohtwo(e):
+    log_error(e)
     return render_template('502.html')    
 
 # --------------------------------------------------------------------------------
@@ -311,6 +315,7 @@ if __name__ == "__main__":
     app.secret_key = "super sedcret"
     compile_sass()
     if app.debug:
+        xray_recorder.configure(sampling=False)
         from livereload import Server, shell
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
