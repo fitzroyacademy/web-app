@@ -9,8 +9,12 @@ import re
 import os
 import jinja2
 from uuid import uuid4
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 app = Flask('FitzroyFrontend', static_url_path='')
+xray_recorder.configure(service='web-app')
+XRayMiddleware(app, xray_recorder)
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
