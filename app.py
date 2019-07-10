@@ -13,6 +13,7 @@ from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 app = Flask('FitzroyFrontend', static_url_path='')
+
 xray_recorder.configure(service='web-app')
 XRayMiddleware(app, xray_recorder)
 
@@ -314,6 +315,6 @@ if __name__ == "__main__":
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./')
-        server.serve(open_url=False,port=5000,debug=True)
+        server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
