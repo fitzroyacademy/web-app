@@ -36,7 +36,7 @@ jobs:
             # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:COMMIT HASH
 
-            aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment
+            aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
 
   # run tests on container
   # deploy to AWS
