@@ -9,6 +9,7 @@ workflows:
             branches:
               only:
                 - master
+                - circleci-tests
                 - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
 jobs:
   build:
@@ -20,7 +21,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            pip install nose
+            pip install -r requirements.txt
             nosetests
       - run:
           name: Build and tag Docker containers
