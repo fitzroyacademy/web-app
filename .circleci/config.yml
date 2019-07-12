@@ -21,6 +21,7 @@ jobs:
       - run:
           name: Run tests
           command: |
+            sudo apt-get install libpq-dev
             pip install -r requirements.txt
             nosetests
       - run:
