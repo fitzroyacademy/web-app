@@ -7,7 +7,9 @@ workflows:
           context: fitzroy-circleci
           filters:
             branches:
-              only: ci-deployment
+              only:
+                - master
+                - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
 jobs:
   build:
     machine:
@@ -15,28 +17,33 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # - run tests
-      - run: docker build -t fitzroy-academy/web-app .
+      - run:
+          name: Run tests
+          command: nosetests
+      - run:
+          name: Build and tag Docker containers
+          command: |
+            image_id=$(docker images fitzroy-academy/web-app -q)
+            docker build -t fitzroy-academy/web-app .
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Branch }}
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Revision }}
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Branch }}
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Revision }}
+
+            if [ "{{ .Branch }}" != "master" ]; then
+              docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
+            fi
+
       - run:
           name: Deploy application
           command: |
-            chmod +x scripts/assume-role.sh
-            source scripts/assume-role.sh
-            image_id=$(docker images fitzroy-academy/web-app -q)
-            # get commit hash
-            # error out if this is the master branch and there is no version found that's newer
             $(aws ecr get-login --region us-east-2 --no-include-email)
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-            # docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:v0.0.1
-            # docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-            # docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:COMMIT HASH
-
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-            # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:v0.0.1
-            # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-            # docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:COMMIT HASH
-
-            aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
-
-  # run tests on container
-  # deploy to AWS
+             if [ "{{ .Branch }}" != "master" ]; then
+              docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
+              docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
+            fi
+            if [ ! $CIRCLE_PULL_REQUEST ]; then
+              chmod +x scripts/assume-role.sh
+              source scripts/assume-role.sh
+              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
+            fi
