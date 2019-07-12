@@ -5,12 +5,7 @@ workflows:
     jobs:
       - build:
           context: fitzroy-circleci
-          filters:
-            branches:
-              only:
-                - master
-                - circleci-tests
-                - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
+          
 jobs:
   build:
     machine:
@@ -18,35 +13,41 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run: 
+          name: Install dependencies
+          command: |
+            sudo apt-get install libpq-dev
+            chmod +x scripts/assume-role.sh
+            pip install -r requirements.txt
       - run:
           name: Run tests
-          command: |
-            pip install -r requirements.txt
-            nosetests
+          command: nosetests
       - run:
           name: Build and tag Docker containers
           command: |
-            image_id=$(docker images fitzroy-academy/web-app -q)
+            source scripts/assume-role.sh
             docker build -t fitzroy-academy/web-app .
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Branch }}
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Revision }}
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Branch }}
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Revision }}
+            image_id=$(docker images fitzroy-academy/web-app -q)
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_SHA1}
 
-            if [ "{{ .Branch }}" != "master" ]; then
+            $(aws ecr get-login --region us-east-2 --no-include-email)
+
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_SHA1}
+
+            if [ "$CIRCLE_BRANCH" != "master" ]
+            then
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
+              docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
 
       - run:
           name: Deploy application
           command: |
-            $(aws ecr get-login --region us-east-2 --no-include-email)
-             if [ "{{ .Branch }}" != "master" ]; then
-              docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-              docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-            fi
-            if [ ! $CIRCLE_PULL_REQUEST  && "{{ .Branch }}" != "master" ]; then
-              chmod +x scripts/assume-role.sh
+            BRANCH_REGEX="(v[0-9]{1,2}\..*)"
+            if [[ $CIRCLE_BRANCH =~ $BRANCH_REGEX ]];
+            then
               source scripts/assume-role.sh
               aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
             fi
