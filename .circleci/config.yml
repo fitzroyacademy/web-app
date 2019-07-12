@@ -36,8 +36,8 @@ jobs:
             docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
             docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_SHA1}
 
-            if [ "$CIRCLE_BRANCH" != "master" ]
-            then
+            BRANCH_REGEX="(v[0-9]{1,2}\..*)"
+            if [[ $CIRCLE_BRANCH =~ $BRANCH_REGEX ]];
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
               docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
