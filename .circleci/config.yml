@@ -38,6 +38,7 @@ jobs:
 
             BRANCH_REGEX="(v[0-9]{1,2}\..*)"
             if [[ $CIRCLE_BRANCH =~ $BRANCH_REGEX ]];
+            then
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
               docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
