@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Deploy application
           command: |
-              if [ ! $CIRCLE_PULL_REQUEST  && "$CIRCLE_BRANCH" != "master" ]
+              if [[ ! $CIRCLE_PULL_REQUEST  && "$CIRCLE_BRANCH" != "master" ]]
               then
                 aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
               fi
