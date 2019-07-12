@@ -28,7 +28,12 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: Run tests
+          command: |
+            pip install -r requirements.txt
+            nosetests
+      - run:
+          name: Build and tag Docker containers
           command: |
             python3 -m venv venv
             . venv/bin/activate
