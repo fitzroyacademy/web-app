@@ -5,12 +5,7 @@ workflows:
     jobs:
       - build:
           context: fitzroy-circleci
-          filters:
-            branches:
-              only:
-                - master
-                # - circleci-tests
-                # - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
+          
 jobs:
   build:
     machine:
