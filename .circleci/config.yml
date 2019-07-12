@@ -29,12 +29,12 @@ jobs:
           command: |
             image_id=$(docker images fitzroy-academy/web-app -q)
             docker build -t fitzroy-academy/web-app .
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Branch }}
-            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Revision }}
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Branch }}
-            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:{{ .Revision }}
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
+            docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_SHA1}
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
+            docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_SHA1}
 
-            if [ "{{ .Branch }}" != "master" ]; then
+            if [ "$CIRCLE_BRANCH" != "master" ]; then
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
 
@@ -42,11 +42,11 @@ jobs:
           name: Deploy application
           command: |
             $(aws ecr get-login --region us-east-2 --no-include-email)
-             if [ "{{ .Branch }}" != "master" ]; then
+             if [ "$CIRCLE_BRANCH" != "master" ]; then
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
               docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
-            if [ ! $CIRCLE_PULL_REQUEST  && "{{ .Branch }}" != "master" ]; then
+            if [ ! $CIRCLE_PULL_REQUEST  && "$CIRCLE_BRANCH" != "master" ]; then
               chmod +x scripts/assume-role.sh
               source scripts/assume-role.sh
               aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
