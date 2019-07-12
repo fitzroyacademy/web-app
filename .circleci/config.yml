@@ -9,8 +9,8 @@ workflows:
             branches:
               only:
                 - master
-                - circleci-tests
-                - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
+                # - circleci-tests
+                # - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
 jobs:
   build:
     machine:
@@ -50,8 +50,9 @@ jobs:
       - run:
           name: Deploy application
           command: |
-              if [[ ! $CIRCLE_PULL_REQUEST  && "$CIRCLE_BRANCH" != "master" ]]
-              then
-                source scripts/assume-role.sh
-                aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
-              fi
+            BRANCH_REGEX="(v[0-9]{1,2}\..*)"
+            if [[ $CIRCLE_BRANCH =~ $BRANCH_REGEX ]];
+            then
+              source scripts/assume-role.sh
+              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
+            fi
