@@ -42,7 +42,7 @@ jobs:
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
               docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
-            if [ ! $CIRCLE_PULL_REQUEST ]; then
+            if [ ! $CIRCLE_PULL_REQUEST  && "{{ .Branch }}" != "master" ]; then
               chmod +x scripts/assume-role.sh
               source scripts/assume-role.sh
               aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
