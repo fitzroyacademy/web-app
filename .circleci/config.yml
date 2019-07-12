@@ -41,17 +41,20 @@ jobs:
             docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
             docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_SHA1}
 
-            if [ "$CIRCLE_BRANCH" != "master" ]; then
+            if [ "$CIRCLE_BRANCH" != "master" ]
+            then
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
             fi
 
       - run:
           name: Deploy application
           command: |
-             if [ "$CIRCLE_BRANCH" != "master" ]; then
+             if [ "$CIRCLE_BRANCH" != "master" ]
+             then
               docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
               docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
-            fi
-            if [ ! $CIRCLE_PULL_REQUEST  && "$CIRCLE_BRANCH" != "master" ]; then
-              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
-            fi
+              fi
+              if [ ! $CIRCLE_PULL_REQUEST  && "$CIRCLE_BRANCH" != "master" ]
+              then
+                aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
+              fi
