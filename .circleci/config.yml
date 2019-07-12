@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            pip install -r requirements.txt
+            pip install nose
             nosetests
       - run:
           name: Build and tag Docker containers
