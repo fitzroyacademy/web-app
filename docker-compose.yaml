@@ -10,6 +10,7 @@ services:
       FLASK_ENV: development
       DB_ENDPOINT: postgres-container:5432
       DB_USER: postgres
+      DB_PASSWORD: "postgres"
     depends_on:
       - postgres-container
     networks: ['fitzroy-network']
@@ -25,6 +26,5 @@ services:
     networks: ['fitzroy-network']
 networks:
   fitzroy-network:
-
 volumes:
   dbdata:
