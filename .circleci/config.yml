@@ -3,10 +3,45 @@ workflows:
   version: 2
   build:
     jobs:
+      - test
       - build:
           context: fitzroy-circleci
-          
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
 jobs:
+  test:
+    docker:
+      - image: circleci/python:3.7.3
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            python nosetests
+          
   build:
     machine:
       image: ubuntu-1604:201903-01
@@ -18,10 +53,6 @@ jobs:
           command: |
             sudo apt-get install libpq-dev
             chmod +x scripts/assume-role.sh
-            pip install -r requirements.txt
-      - run:
-          name: Run tests
-          command: nosetests
       - run:
           name: Build and tag Docker containers
           command: |
