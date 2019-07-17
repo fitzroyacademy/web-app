@@ -27,8 +27,6 @@ $( document ).ready(function() {
   });  
 
   
-
-
   // do fancy placeholders for inputs:
   $("[data-fit-fancyplace]").on({
     'focus': function() {
