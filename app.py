@@ -8,7 +8,10 @@ import time
 import re
 import os
 import jinja2
+import random
+import string
 from uuid import uuid4
+from os import environ
 from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
@@ -312,9 +315,9 @@ def log_event(event_type):
         return event_type
 
 if __name__ == "__main__":
-    app.secret_key = "super sedcret"
-    compile_sass()
     if app.debug:
+        print("Debug mode is on; autogenerating new secret key.")
+        app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(20))
         xray_recorder.configure(sampling=False)
         from livereload import Server, shell
         server = Server(app.wsgi_app)
@@ -322,4 +325,5 @@ if __name__ == "__main__":
         server.watch('./')
         server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
     else:
+        app.secret_key = environ["APP_SECRET_KEY"]
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
