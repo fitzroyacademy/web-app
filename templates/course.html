@@ -5,7 +5,7 @@
 
     <div class="fit_mobilenav" fit-course_mobilenav_trigger>
       <a class="fit_btn" data-toggle="collapse">
-        <span class="fit_txt"><!-- DEV: Course name goes here --> Intro to social enterprise</span>
+        <span class="fit_txt">{{ course.title }}</span>
         <i class=" fas fa-chevron-down"></i>
       </a>
     </div>
@@ -19,7 +19,11 @@
         </a>
       </div>
       {% for lesson in course.lessons %}
+<<<<<<< HEAD
       <div class="fit_lesson" data-fit-lesson="{{ lesson.id }}"> <!-- DEV: This needs "active" class on 'fit_lesson' if it's the currently playing lesson -->
+=======
+      <div class="fit_lesson {{ 'active' if lesson.id == active_segment.lesson.id }}" data-fit-lesson="{{ lesson.id }}">
+>>>>>>> 5d274548bde98f2a741525bcb6833f07cc8b1bc1
         <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_{{ lesson.id }}" role="button" aria-expanded="fit_lesson_2" aria-controls="fit_lesson_{{ lesson.id }}">
           <div class="fit_pic vid">
             <img src="/assets/images/lessons/community-integration.jpg" alt="course">

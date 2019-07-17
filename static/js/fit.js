@@ -359,6 +359,39 @@ $( document ).ready(function() {
     xhr.send();
   }
 
+  function post(url, data, cb) {
+    let xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        cb(null, xhr, xhr.responseText);
+      } else {
+        cb(xhr.responseText, xhr);
+      }
+    };
+    xhr.open('POST', url);
+    var f = new FormData();
+    for (let k in data) f.append(k, data[k]); 
+    xhr.send(f);
+  }
+
+  // Called from the wistia video embed template.
+  var _fitz_video = false;
+  function fitzVideoReady(video) {
+    _fitz_video = video;
+    video.bind('percentwatchedchanged', handleVideoProgress);
+    window._fitz_video = _fitz_video;
+  }
+  // Export for the Wistia embed.
+  window.fitzVideoReady = fitzVideoReady;
+
+  function handleVideoProgress(percent, lastPercent) {
+    var id = _fitz_video.data.media.hashedId;
+    percent = Math.floor(percent*100);  // Avoid floating point hassles.
+    var active_segment = document.querySelector('[data-fit-segment].active');
+    var segment_id = active_segment.dataset.fitSegment;
+    post('/event/progress', {segment_id:segment_id, percent:percent}, ()=>{});
+  }
+
   // Adds a data-fit-panel property to links which will take a CSS selector
   // and load the content from the link's href into all elements matching
   // that selector.
@@ -404,6 +437,12 @@ $( document ).ready(function() {
     if (resourcePanel) {
       let activeLesson = resourcePanel.dataset.fitActiveLesson;
       if (activeLesson != lid) {
+        //Change active lesson on nav bar.
+        for(let lesson in document.querySelectorAll('.fit_lesson')) {
+          lesson.classList.remove('active');
+        }
+        document.querySelector(`.fit_lesson[data-fit-lesson=${lid}`)
+          .classList.add('active');
         get('/_lesson_resources/'+lid, (e, xhr, data) => {
           if (e) return console.error(e);
           document.querySelector('#fit_resources_panel').innerHTML = data;

@@ -8,12 +8,12 @@
 
     <div class="fit_course">
 
-      <h1><span class="txt">Introduction to social enterprise.</span></h1> <!-- DEV: name of course-->
-      <p>Curated by <strong>Teacher Name Here</strong>. <!-- DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
+      <h1><span class="txt">{{ course.title }}</span></h1> <!-- DEV: name of course-->
+      <!-- <p>Curated by <strong> course.teacher.full_name </strong>. <!-~ DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
 
       <div class="fit_vidya">
         <img class="placeholder" src="/assets/images/defaults/vid.jpg" alt="video"> <!-- DEV: 16:9 image uploaded in edit view -->
-        <a class="fit_vidya_play" href="#"><i class="fas fa-play-circle"></i></a> <!-- DEV: links to first lesson in course -->
+        <a class="fit_vidya_play" href="{{ course.lessons[0].permalink }}"><i class="fas fa-play-circle"></i></a>
       </div>
       
       <div class="row">
@@ -23,25 +23,28 @@
           </h3>
           <div class="fit_pane">
             <dl class="fit_summary_icons">
-              <dt><i class="far fa-users"></i> Who's it for?</dt>
-              <dd>Super early stage social enterprise founders, starting your first business or a new project from scratch.</dd> <!-- DEV: plain text, from course edit -->
+              {% if course.target_audience %}
+                <dt><i class="far fa-users"></i> Who's it for?</dt>
+                <dd>{{ course.target_audience }}</dd>
+              {% endif %}
               <dt><i class="far fa-clock"></i> Course length &amp; workload:</dt>
-              <dd>9 lessons, at your own pace.</dd> <!-- DEV: plain text, from course edit -->
+              <dd>{{ course.lessons|length }} lessons, at your own pace.</dd> <!-- DEV: plain text, from course edit -->
               <dt><i class="far fa-tag"></i> Cost:</dt>
               <dd>Free forever!</dd> <!-- DEV: select from (free | paid | institute_funded), but we will implement this later -->
-              <dt><i class="far fa-university"></i> Skill:</dt>
-              <dd>Introduction level.</dd> <!-- DEV: plain text, from course edit -->
+              {% if course.skill_level %}
+                <dt><i class="far fa-university"></i> Skill:</dt>
+                <dd>{{ course.skill_level }}</dd>
+              {% endif %}
             </dl>
           </div>
           
-          <h3>What you'll learn.</h3>
+          {% if course.summary_html %}
+            <h3>What you'll learn.</h3>
 
-          <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
-          <p><strong>Go from zero to one:</strong> From a basic idea to early customers, business models and getting the numbers right.</p>
-          <p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
-          <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
-          <p>          
-
+            <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
+            {{ course.summary_html|safe }}
+            <p>          
+          {% endif %}
         </div><!-- col -->
 
         <div class="col-md-6">
@@ -54,7 +57,11 @@
           <div class="fit_body fit_lessons">
 
             <!-- DEV: Dump the list of lessons for the course in here, just like in the LHS menu in the actual course -->
-            
+            <ul>
+              {% for lesson in course.lessons %}
+                <li>{{ lesson.title }}</li>
+              {% endfor %}
+            </ul>
           </div>
           <!-- end vid stack -->
 
@@ -76,7 +83,7 @@
       </div>
     </div>
 
-
+    {#
     <!-- DEV: this version is for a course that requires login, but user isn't logged in -->
     <div class="fit_cta">
       <div class="fit_course">
@@ -101,7 +108,7 @@
         <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
       </div>
     </div>
-
+    #}
 
   </article>
 

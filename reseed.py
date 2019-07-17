@@ -13,12 +13,26 @@ for student in stubs.students:
 	user = copy.deepcopy(student)
 	password = user.pop('password')
 	u = datamodels.User(**user)
-	u.set_password(password)
+	u.password = password
 	session.add(u)
 
 session.commit()
 
-c = datamodels.Course(slug="fitzroy-academy", course_code="abc123")
+c = datamodels.Course(
+	title="Into to Social Enterprise",
+	slug="fitzroy-academy",
+	course_code="abc123",
+	target_audience="Super early stage social enterprise founders, starting your first business or a new project from scratch.",
+	skill_level="Introduction.",
+	info="Start here! Basic business models and customer discovery, to pitching for investment. ❤️ 🚀",
+	summary_html="""
+<p><strong>Go from zero to one:</strong> From a basic idea to early customers, business models and getting the numbers right.</p>
+<p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
+<p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
+""",
+	preview_thumbnail="/assets/images/lessons/customer-interviews.jpg",
+	guest_access = True
+)
 session.add(c)
 
 for i, lesson in enumerate(stubs.lessons):

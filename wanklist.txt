@@ -105,6 +105,13 @@
       "type": "Simple",
       "case": "Maintain",
       "active": true
+    },
+    {
+      "repA": "synergistic",
+      "repB": "wanky",
+      "type": "Simple",
+      "case": "Maintain",
+      "active": true
     }
   ]
 }

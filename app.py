@@ -1,15 +1,14 @@
 import json
 import random
-from flask import Flask, render_template, session, request, url_for, redirect
+from flask import Flask, render_template, session, request, url_for, redirect, flash
 import sass
 import stubs
 import datamodels
 import time
 import re
-
-import logging
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+import os
+import jinja2
+from uuid import uuid4
 
 app = Flask('FitzroyFrontend', static_url_path='')
 app.debug = True
@@ -41,30 +40,22 @@ def get_current_user():
     else:
         return None
 
+def uuid():
+    return "{}".format(uuid4().hex)
+
+app.jinja_env.globals.update(uuid=uuid)
+
+
 @app.route('/')
 def index():
-    return render_template('welcome.html')
+    data = {'public_courses': datamodels.get_public_courses()}
+    return render_template('welcome.html', **data)
 
 
 # --------------------------------------------------------------------------------
 # Some 'static' non-functional urls for Will to play with:
 # Not yet ready for backend consumption
-
-@app.route('/playground')
-def playground():
-    return render_template('playground.html')
-
-@app.route('/mistakes')
-def mistakes():
-    return render_template('mistakes.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/resources')
-def resources():
-    return render_template('resources.html')    
+ 
 
 @app.route('/course_edit')
 def course_edit():
@@ -100,7 +91,13 @@ def user_edit():
 @app.route('/404')
 @app.errorhandler(404)
 def fourohfour(e):
-    return render_template('404.html'), 404
+    try:
+        return render_template('static'+request.path+'.html')
+    except jinja2.exceptions.TemplateNotFound:
+        try:
+            return render_template('static'+request.path+'/index.html')
+        except jinja2.exceptions.TemplateNotFound:
+            return render_template('404.html'), 404
 
 @app.errorhandler(Exception)
 @app.route('/502')
@@ -138,10 +135,6 @@ def enroll(course_slug):
         s.commit()
     return redirect(course.lessons[0].permalink)
 
-@app.route('/course_intro')
-def course_intro():
-    return render_template('course_intro.html', **kwargs)
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     data = {'errors': []}
@@ -164,9 +157,30 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
-@app.route('/user/register', methods=["POST"])
+@app.route('/register', methods=["POST"])
 def post_register():
-    return render_template('login.html')
+    db = datamodels.get_session()
+    data = {'errors': []}
+    # We'll roll in better validation with form error integration in beta; this is
+    # to prevent mass assignment vulnerabilities.
+    kwargs = {}
+    valid = ['first_name', 'email', 'username', 'last_name', 'password']
+    for k in valid:
+        kwargs[k] = request.form.get(k)
+    user = datamodels.get_user_by_email(request.form.get('email'))
+    if user is not None:
+        data['errors'].append("Email address already in use.")
+        return render_template('login.html', **data)
+    try:
+        user = datamodels.User(**kwargs)
+    except Exception as e:
+        data['errors'].append("{}".format(e))
+        return render_template('login.html', **data)
+    db.add(user)
+    db.commit()
+    session['user_id'] = user.id
+    flash('Thanks for registering, '+user.full_name+"!")
+    return render_template('welcome.html')
 
 
 # --------------------------------------------------------------------------------
@@ -272,6 +286,22 @@ def _lesson_resources(lid):
 @app.route('/lessons')
 def lessons():
     return render_template('lesson_chart.html')
+
+@app.route('/event/<event_type>', methods=["POST"])
+def log_event(event_type):
+    user = get_current_user()
+    if user is None:
+        # TODO: Log anonymous user progress.
+        return True
+    if event_type == 'progress':
+        segment_id = request.form['segment_id']
+        user_id = user.id
+        progress = request.form['percent']
+        seg = datamodels.get_segment(segment_id)
+        sup = seg.save_user_progress(user, progress)
+        return json.dumps(datamodels.dump(sup))
+    else:
+        return event_type
 
 if __name__ == "__main__":
     app.secret_key = "super sedcret"
