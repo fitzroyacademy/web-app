@@ -9,12 +9,19 @@ import re
 import os
 import jinja2
 from uuid import uuid4
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 app = Flask('FitzroyFrontend', static_url_path='')
-app.debug = True
+
+xray_recorder.configure(service='web-app')
+XRayMiddleware(app, xray_recorder)
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
+
+def log_error(error):
+    print(error)
 
 @app.context_processor
 def inject_current_user():
@@ -102,6 +109,7 @@ def fourohfour(e):
 @app.errorhandler(Exception)
 @app.route('/502')
 def fiveohtwo(e):
+    log_error(e)
     return render_template('502.html')    
 
 # --------------------------------------------------------------------------------
@@ -307,10 +315,11 @@ if __name__ == "__main__":
     app.secret_key = "super sedcret"
     compile_sass()
     if app.debug:
+        xray_recorder.configure(sampling=False)
         from livereload import Server, shell
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./')
-        server.serve(open_url=False,port=5000,debug=True)
+        server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
