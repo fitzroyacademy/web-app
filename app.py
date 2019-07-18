@@ -9,13 +9,9 @@ import re
 import os
 import jinja2
 from uuid import uuid4
-from aws_xray_sdk.core import xray_recorder
-from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 app = Flask('FitzroyFrontend', static_url_path='')
 
-xray_recorder.configure(service='web-app')
-XRayMiddleware(app, xray_recorder)
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -315,7 +311,6 @@ if __name__ == "__main__":
     app.secret_key = "super sedcret"
     compile_sass()
     if app.debug:
-        xray_recorder.configure(sampling=False)
         from livereload import Server, shell
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
