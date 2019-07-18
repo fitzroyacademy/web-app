@@ -24,13 +24,18 @@ $( document ).ready(function() {
   $('[fit-course_mobilenav_trigger]').click(function(e) {
     e.preventDefault();   
     $('html').toggleClass('fit_mobilenav');
-  });  
-
+  });
 
   // toggle mobile menu
   $('[data-fit_mobile_menu_trigger]').click(function(e) {
     e.preventDefault();   
     $('html').toggleClass('fit_mobile_menu_active');
+  });  
+
+  // dropdown that may have an adjacent
+  $('[data-fit_active_trigger]').click(function(e) {
+    e.preventDefault();   
+    $($(this).attr("href")).toggleClass('active')
   });
   
   

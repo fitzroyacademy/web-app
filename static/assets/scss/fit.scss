@@ -27,6 +27,7 @@ $new_watermelon: #f82a5f;
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever. */
 
 $bg: #f5f7f8;
+$bg_light: #f7f9fa;
 
 $brand: #464749;
 $brand_dark: #1c1f20;
@@ -1355,16 +1356,28 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 // and now the two-bar thing with floaty menu
 
-.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding-bottom: 4rem}
+.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding: 1rem 1rem 2rem}
 
+// big version
 @media (min-width: 992px) {
 	.fit_medium_rare{display: flex; align-items:stretch; max-width: 1000px; position: relative; padding: 0 1rem; margin: 0 auto;}
 	.fit_medium_rare .fit_medium{margin: 0; padding: 0;}
-	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 0 2rem 3rem; position: sticky; align-self: flex-start;}
+	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
+
+	.fit_rare_dropdown_trigger{display: none;}
 }
 
-.fit_rare .nav a i{display: none;}
-.fit_rare .nav a.active i{display: inline-block;}
+// small boi tiem
+@media (max-width: 991px) {
+	.fit_medium_rare .fit_rare{background: $bg; padding: .5rem; border:1rem solid #fff;  border-radius: $border_rad_lg}
+
+	.fit_rare_dropdown_trigger{color: $text; font-size: 0.9rem;}
+	.fit_medium_rare .fit_rare .fit_rare_dropdown{display: none;}
+	.fit_medium_rare .fit_rare.active .fit_rare_dropdown{display: block; padding: .5rem;}
+}
+
+
+
 
 .fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
 .fit_medium_nav .btn:last-child{margin-left: auto;}
@@ -1540,6 +1553,19 @@ body > .fit_code {margin-top:10rem;}
 	// .fit_mobile_menu_dropdown .fit_btn i:first-child{display: none;}
 	// .fit_mobile_menu_dropdown .fit_btn .fit_txt:last-child{padding-left: 1.5rem;}
 }
+
+
+
+// footer navs
+
+footer{padding: 2rem 0;}
+.fit_footer_nav a{font-size:0.9rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+
+.fit_footer_nav a small{display:block; color: $text_lighter;}
+
+.fit_footer_nav a.note{color: $blue; margin-bottom: 1rem;}
+
+.fit_footer_nav a:hover{color:$brand; border-bottom-color: $border_light;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
