@@ -19,28 +19,29 @@
         </a>
       </div>
       {% for lesson in course.lessons %}
-      <div class="fit_lesson {{ 'active' if lesson.id == active_segment.lesson.id }}" data-fit-lesson="{{ lesson.id }}">
-        <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_{{ lesson.id }}" role="button" aria-expanded="fit_lesson_2" aria-controls="fit_lesson_{{ lesson.id }}">
-          <div class="fit_pic vid">
-            <img src="/assets/images/lessons/community-integration.jpg" alt="course">
-            <i class="fas fa-play"></i>
-          </div>
-          <span class="fit_txt">{{ lesson.title }}</span>
-          <span class="fit_sub">{{ lesson.duration }}</span>
-          <i class="fit_hovermin fas fa-chevron-up"></i>
-        </a>
-        <div class="collapse {{'show' if lesson.id == active_lesson.id }}" id="fit_lesson_{{ lesson.id }}">
-          <div class="fit_body fit_segments">
-            {% for segment in lesson.segments %}
-              <a class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}" data-fit-parent="{{ segment.lesson_id }}">
-                <i class="fas fa-circle"></i>
-                <span class="fit_txt">{{ segment.title }}</span> 
-                <span class="fit_sub">{{ segment.duration }}</span>
-              </a>
-            {% endfor %}
+        <div class="fit_lesson {{ 'active' if lesson.id == active_segment.lesson.id }}" data-fit-lesson="{{ lesson.id }}">
+          <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_{{ lesson.id }}" role="button" aria-expanded="fit_lesson_2" aria-controls="fit_lesson_{{ lesson.id }}">
+            <div class="fit_pic vid">
+              <!-- DEV: needs to call the image for this lesson -->
+              <img src="/assets/images/lessons/community-integration.jpg" alt="course">
+              <i class="fas fa-play"></i>
+            </div>
+            <span class="fit_txt">{{ lesson.title }}</span>
+            <span class="fit_sub">{{ lesson.duration }}</span>
+            <i class="fit_hovermin fas fa-chevron-up"></i>
+          </a>
+          <div class="collapse {{'show' if lesson.id == active_lesson.id }}" id="fit_lesson_{{ lesson.id }}">
+            <div class="fit_body fit_segments">
+              {% for segment in lesson.segments %}
+                <a class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}" data-fit-parent="{{ segment.lesson_id }}">
+                  <i class="fas fa-circle"></i>
+                  <span class="fit_txt">{{ segment.title }}</span> 
+                  <span class="fit_sub">{{ segment.duration }}</span>
+                </a>
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
       {% endfor %}
 
       <div class="fit_lesson_manage">

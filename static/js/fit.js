@@ -26,6 +26,13 @@ $( document ).ready(function() {
     $('html').toggleClass('fit_mobilenav');
   });  
 
+
+  // toggle mobile menu
+  $('[data-fit_mobile_menu_trigger]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_mobile_menu_active');
+  });
+  
   
   // do fancy placeholders for inputs:
   $("[data-fit-fancyplace]").on({

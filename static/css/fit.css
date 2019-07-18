@@ -1057,7 +1057,8 @@ a.card.rating h5 {
 .fit_course h1 {
   line-height: 2.5rem;
   display: flex;
-  align-items: baseline; }
+  align-items: baseline;
+  padding-bottom: 1rem; }
 
 .fit_course h1 small {
   display: block;
@@ -1194,8 +1195,8 @@ Bleh:;
 
 .fit_avatar,
 .fit_avatar img {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 999rem;
   overflow: hidden;
   position: absolute;
@@ -1769,7 +1770,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head {
   width: 100%; }
 
 .fit_heartplay .bigboy {
-  color: #464749;
+  color: #1c1f20;
   font-size: 10rem;
   transition: all .45s ease-in-out; }
 
@@ -1803,11 +1804,6 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head {
   margin: 0 auto;
   overflow: hidden;
   position: relative; }
-
-.fit_window:after {
-  padding-top: 56.25%;
-  display: block;
-  content: ''; }
 
 .fit_window img {
   width: 100%; }
@@ -2245,7 +2241,7 @@ body > .fit_code {
 .fit_form_code label {
   font-size: 2em;
   color: #fff;
-  opacity: 0.3;
+  opacity: 0.6;
   padding-top: 0.5rem; }
 
 .fit_form_code.active label,
@@ -2382,6 +2378,46 @@ body > .fit_code {
 .fit_form_code_head.active label,
 .fit_form_code_head.labelled label {
   display: none; }
+
+.fit_mobile_menu_trigger .fa-times {
+  display: none; }
+
+@media (max-width: 675px) {
+  .fit_mobile_menu_dropdown {
+    display: none !important;
+    position: fixed;
+    top: 3.2rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    padding: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; }
+  .fit_mobile_menu_dropdown .fit_btn {
+    padding: .5rem 0; }
+  .fit_mobile_menu_dropdown .fit_btn .fit_txt {
+    font-size: 1.3rem; }
+  .fit_mobile_menu_dropdown .fit_btn i {
+    font-size: 1.5rem; }
+  html.fit_mobile_menu_active {
+    height: 100%;
+    overflow: hidden;
+    position: fixed; }
+  html.fit_mobile_menu_active .fit_mobile_menu_dropdown {
+    display: flex !important; }
+  html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-times {
+    display: flex; }
+  html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-chevron-down {
+    display: none; } }
+
+@media (min-width: 676px) {
+  .fit_mobile_menu_trigger {
+    display: none; }
+  .fit_mobile_menu_dropdown .fit_btn {
+    margin-left: -1rem; } }
 
 .fit_wiggle_daddy:hover .fit_wiggle,
 .fit_wiggle:hover {

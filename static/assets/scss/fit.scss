@@ -742,7 +742,7 @@ a.card.rating h5{color: #f4b115;}
 
 // mess with the headers
 
-.fit_course h1{line-height: 2.5rem; display: flex; align-items: baseline;}
+.fit_course h1{line-height: 2.5rem; display: flex; align-items: baseline; padding-bottom: 1rem;}
 .fit_course h1 small{display: block; font-size: 1rem; color:$text_lighter;}
 .fit_course h1 a i.fa-edit{font-size: 1.5rem; color: $text_light;}
 .fit_course h1 a:hover i.fa-edit{color: $blue;}
@@ -824,7 +824,7 @@ Bleh:;
 
 .fit_avatared{position: relative; padding-left: 4rem;}
 .fit_avatar,
-.fit_avatar img{width: 3rem; height: 3rem; border-radius: 999rem; overflow: hidden; position: absolute; top:0; left: 0;}
+.fit_avatar img{width: 2.5rem; height: 2.5rem; border-radius: 999rem; overflow: hidden; position: absolute; top:0; left: 0;}
 
 h2.fit_avatared{padding-left: 3.5rem;}
 h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
@@ -1209,7 +1209,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_heartplay{position: relative; height: 10rem; width: 10rem; margin: 0 auto; display: block; text-decoration: none;}
 .fit_heartplay i{ height: 10rem; position: absolute; top:0; left: 0; width: 100%;}
 
-.fit_heartplay .bigboy{color:$brand; font-size: 10rem; transition: all .45s ease-in-out;}
+.fit_heartplay .bigboy{color:$brand_dark; font-size: 10rem; transition: all .45s ease-in-out;}
 .fit_heartplay .smallboy{color:#fff; font-size: 2.75rem; padding: 3.25rem 0 0 .5rem; transition: all .15s ease-in-out;}
 
 
@@ -1230,7 +1230,8 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
-.fit_window:after{padding-top: $ratio_169; display: block; content: '';}
+// skipping the auto 16:9 for now...
+// .fit_window:after{padding-top: $ratio_169; display: block; content: '';}
 
 .fit_window img{width: 100%;}
 .fit_window img{border-radius: $border_rad_lg;}
@@ -1432,7 +1433,7 @@ body > .fit_code {margin-top:10rem;}
 
 
 // weird label
-.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.3; padding-top: 0.5rem}
+.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.6; padding-top: 0.5rem}
 
 .fit_form_code.active label,
 .fit_form_code.labelled label{position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
@@ -1502,6 +1503,43 @@ body > .fit_code {margin-top:10rem;}
 
 
 
+// ----------------------------------------------------------------------------------------------------------------
+// get yo wiggle on!
+.fit_mobile_menu{}
+.fit_mobile_menu_trigger{}
+.fit_mobile_menu_dropdown{}
+
+
+
+.fit_mobile_menu_trigger .fa-times{display: none;}
+
+// mobile mode
+// NB the mobile menu is an arbitrary width!!! Number of items matters.
+
+@media (max-width: 675px) {
+	.fit_mobile_menu_dropdown{display: none !important; position: fixed; top: $header_height; left: 0; right: 0; bottom: 0; background:rgba(255,255,255,1); padding:1.5rem; justify-content: space-between; align-items:center; justify-content: center; flex-direction:column;}
+
+	.fit_mobile_menu_dropdown .fit_btn{padding: .5rem 0;}
+	.fit_mobile_menu_dropdown .fit_btn .fit_txt{font-size: 1.3rem;}
+	.fit_mobile_menu_dropdown .fit_btn i{font-size: 1.5rem;}
+
+	// active mode
+	html.fit_mobile_menu_active{height: 100%; overflow: hidden; position: fixed; }
+	html.fit_mobile_menu_active .fit_mobile_menu_dropdown{display: flex !important;}
+	html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-times{display: flex;}
+	html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-chevron-down{display: none;}
+
+}
+
+// larger mode
+@media (min-width: 676px) {
+	.fit_mobile_menu_trigger{display: none;}
+
+	// buttons in the non-mobile mode
+	.fit_mobile_menu_dropdown .fit_btn{margin-left: -1rem;}
+	// .fit_mobile_menu_dropdown .fit_btn i:first-child{display: none;}
+	// .fit_mobile_menu_dropdown .fit_btn .fit_txt:last-child{padding-left: 1.5rem;}
+}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!

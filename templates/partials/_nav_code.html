@@ -16,25 +16,41 @@
 		</div>	
   </form>
 
-  <div class="right">
-    <a href="/about" class="fit_btn">
-      <!-- <i class="fal fa-heart"></i> -->
-      <span class="fit_txt">About</span>
-    </a>
+  {% if current_section != 'login' %}
 
-    <a href="/support" class="fit_btn">
-      <!-- <i class="fal fa-question-circle"></i> -->
-      <span class="fit_txt">Support</span>
-    </a>
+    <div class="right fit_mobile_menu">
 
-    {% if current_section != 'login' %}
-      <a href="/login" class="fit_btn" data-fit-userpanel>
-        <span class="fit_txt">Sign up</span>
-        <i class="fal fa-user"></i>
+      <a href="/" class="fit_btn fit_mobile_menu_trigger" data-fit_mobile_menu_trigger>
+        <span class="fit_txt">Menu</span>
+        <i class="fal fa-chevron-down"></i>
+        <i class="fal fa-times"></i>
       </a>
-  {% endif %}
-  </div><!-- right -->
 
+      <div class="right fit_mobile_menu_dropdown">
+        <a href="/about" class="fit_btn">
+          <!-- <i class="fal fa-heart"></i> -->
+          <span class="fit_txt">About</span>
+        </a>
+
+        <a href="/pricing" class="fit_btn">
+          <!-- <i class="fal fa-question-circle"></i> -->
+          <span class="fit_txt">Pricing</span>
+        </a>
+
+        <a href="/support" class="fit_btn">
+          <!-- <i class="fal fa-question-circle"></i> -->
+          <span class="fit_txt">Support</span>
+        </a>
+
+        
+          <a href="/login" class="fit_btn" data-fit-userpanel>
+            <span class="fit_txt">Sign up</span>
+            <i class="fal fa-user"></i>
+          </a>
+        
+      </div>
+    </div><!-- right -->
+  {% endif %}
 </header>
 
 <div class="fit_sidepanel userpanel">
