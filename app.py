@@ -10,10 +10,10 @@ import os
 import jinja2
 from uuid import uuid4
 
-from routes import user
+import routes.user
 
 app = Flask('FitzroyFrontend', static_url_path='')
-app.register_blueprint(user)
+app.register_blueprint(routes.user.blueprint)
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -49,7 +49,6 @@ def uuid():
     return "{}".format(uuid4().hex)
 
 app.jinja_env.globals.update(uuid=uuid)
-
 
 @app.route('/')
 def index():
@@ -219,6 +218,34 @@ def log_event(event_type):
         return json.dumps(datamodels.dump(sup))
     else:
         return event_type
+
+@app.route('/api', methods=["GET"])
+def api():
+    docs = {}
+    for rule in app.url_map.iter_rules():
+        if rule.endpoint is None or '.' not in rule.endpoint:
+            continue
+        path = rule.endpoint.split('.')
+        controller = path[0]
+        action = path[1]  # No support for weird long paths.
+        mod = getattr(routes, controller, None)
+        meth = getattr(mod, action, None)
+        if mod is not None:
+            if meth is not None:
+                doc = meth.__doc__
+            else:
+                doc = 'No documentation.'
+            if controller not in docs:
+                docs[controller] = []
+            docs[controller].append({
+                'endpoint': rule.endpoint,
+                'url_path': rule,
+                'documentation': doc,
+                'parameters': rule.arguments,
+                # TODO: Perfect REST
+                'methods': ", ".join(filter(lambda x: x in ["GET", "POST"], rule.methods))
+            })
+    return render_template('url_fors.html', controllers=docs)
 
 if __name__ == "__main__":
     app.secret_key = "super sedcret"

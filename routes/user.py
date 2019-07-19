@@ -1,18 +1,22 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
 import datamodels
 
-user = Blueprint('user', __name__, template_folder='templates')
+blueprint = Blueprint('user', __name__, template_folder='templates')
 
-@user.route('/<slug>', methods=["GET"])
+@blueprint.route('/<slug>', methods=["GET"])
 def view(slug):
+    """ View a user's profile. """
     user_id = slug
     user = datamodels.get_user(user_id)
     data = {'user': user}
     return render_template('user.html', **data)
 
-@user.route('/edit', methods=["GET", "POST"])
-@user.route('/edit/<slug>', methods=["GET", "POST"])
+@blueprint.route('/edit', methods=["GET", "POST"])
+@blueprint.route('/edit/<slug>', methods=["GET", "POST"])
 def edit(slug=None):
+    """
+    Edit the current user.
+    """
     user_id = slug
     if user_id is None and 'user_id' in session:
         user_id = datamodels.get_user(session['user_id'])
@@ -30,8 +34,11 @@ def edit(slug=None):
             current_user.username = request.form['username']
     return render_template('user_edit.html')
 
-@user.route('/register', methods=["POST"])
+@blueprint.route('/register', methods=["POST"])
 def create():
+    """
+    Create a new user.
+    """
     db = datamodels.get_session()
     data = {'errors': []}
     # We'll roll in better validation with form error integration in beta; this is
@@ -55,8 +62,11 @@ def create():
     flash('Thanks for registering, '+user.full_name+"!")
     return render_template('welcome.html')
 
-@user.route('/enroll/<course_slug>', methods=["POST"])
+@blueprint.route('/enroll/<course_slug>', methods=["POST"])
 def enroll(course_slug):
+    """
+    Enroll a user into a course.
+    """
     course = datamodels.get_course_by_slug(course_slug)
     if course is None:
         return redirect('/404')
@@ -70,8 +80,9 @@ def enroll(course_slug):
         s.commit()
     return redirect(course.lessons[0].permalink)
 
-@user.route('/login', methods=["GET", "POST"])
+@blueprint.route('/login', methods=["GET", "POST"])
 def login():
+    """ Validiate login and save current user to session. """
     data = {'errors': []}
     if request.method == "POST":
         user = datamodels.get_user_by_email(request.form.get('email'))
@@ -87,8 +98,9 @@ def login():
     if len(data['errors']) > 0 or request.method == "GET":
         return render_template('login.html', **data)
 
-@user.route('/logout', methods=["POST"])
+@blueprint.route('/logout', methods=["POST"])
 def logout():
+    """ Clear session data, logging the current user out. """
     session.clear()
     return redirect(url_for('index'))
 
