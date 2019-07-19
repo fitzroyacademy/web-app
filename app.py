@@ -27,6 +27,10 @@ app.register_blueprint(routes.object.blueprint)
 app.register_blueprint(routes.error.blueprint)
 app.register_blueprint(routes.log.blueprint)
 
+@app.route('/')
+def index():
+    return routes.course.index()
+
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
 
@@ -74,11 +78,6 @@ def get_current_user():
 def uuid():
     return "{}".format(uuid4().hex)
 app.jinja_env.globals.update(uuid=uuid)
-
-@app.route('/')
-def index():
-    data = {'public_courses': datamodels.get_public_courses()}
-    return render_template('welcome.html', **data)
 
 
 # --------------------------------------------------------------------------------
