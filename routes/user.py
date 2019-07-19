@@ -3,15 +3,17 @@ import datamodels
 
 user = Blueprint('user', __name__, template_folder='templates')
 
-@user.route('/<user_id>', methods=["GET"])
-def view(user_id):
+@user.route('/<slug>', methods=["GET"])
+def view(slug):
+    user_id = slug
     user = datamodels.get_user(user_id)
     data = {'user': user}
     return render_template('user.html', **data)
 
 @user.route('/edit', methods=["GET", "POST"])
-@user.route('/edit/<user_id>', methods=["GET", "POST"])
-def edit(user_id=None):
+@user.route('/edit/<slug>', methods=["GET", "POST"])
+def edit(slug=None):
+    user_id = slug
     if user_id is None and 'user_id' in session:
         user_id = datamodels.get_user(session['user_id'])
     else:  # TODO: Admin permissions
