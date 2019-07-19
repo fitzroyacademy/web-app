@@ -7,7 +7,12 @@ blueprint = Blueprint('error', __name__, template_folder='templates')
 @blueprint.route('/404')
 @blueprint.errorhandler(404)
 def fourohfour(e):
-    """ For when the user has made a mistake or the file is not found. """
+    """
+    For when the user has made a mistake or the file is not found.
+
+    This will try to find a static file that meets the request
+    parameters and return a 200 if one exists.
+    """
     try:
         return render_template('static'+request.path+'.html')
     except jinja2.exceptions.TemplateNotFound:
