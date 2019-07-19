@@ -4,6 +4,9 @@ import stubs
 
 blueprint = Blueprint('lesson', __name__, template_folder='templates')
 
+@blueprint.route('/lessons')
+def lessons():
+    return render_template('lesson_chart.html')
 
 @blueprint.route('<course_slug>/<lesson_slug>')
 def view(course_slug, lesson_slug):

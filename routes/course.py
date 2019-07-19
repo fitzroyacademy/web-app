@@ -18,3 +18,20 @@ def view(slug):
     if course is None:
         return redirect('/404')
     return render_template('course_intro.html', course=course)
+
+@blueprint.route('/code', methods=["GET", "POST"])
+def by_code():
+    error = None
+    if request.method == "POST":
+        c = datamodels.get_course_by_code(request.form['course_code'])
+        if c is None:
+            error = "Course not found."
+        else:
+            return redirect(c.permalink)
+    if request.method == "GET" or error:
+        data = {'errors': [error]}
+        return render_template('code.html', **data)
+
+@blueprint.route('/<slug>/edit')
+def edit(slug=None):
+    return render_template('course_edit.html')

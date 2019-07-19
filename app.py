@@ -69,67 +69,10 @@ def uuid():
 app.jinja_env.globals.update(uuid=uuid)
 
 
-# --------------------------------------------------------------------------------
-# Some 'static' non-functional urls for Will to play with:
-# Not yet ready for backend consumption
- 
-
-@app.route('/course_edit')
-def course_edit():
-    return render_template('course_edit.html')
-   
-
-# --------------------------------------------------------------------------------
-# Templates that are nearly ready for app-ification:
-
-@app.route('/code', methods=["GET", "POST"])
-def code():
-    error = None
-    if request.method == "POST":
-        c = datamodels.get_course_by_code(request.form['course_code'])
-        if c is None:
-            error = "Course not found."
-        else:
-            return redirect(c.permalink)
-    if request.method == "GET" or error:
-        data = {'errors': [error]}
-        return render_template('code.html', **data)
-
-
-# --------------------------------------------------------------------------------
-# actually within the app now:
-
-
-@app.route('/lessons')
-def lessons():
-    return render_template('lesson_chart.html')
-
+# This route needs to live here forever because it requires access to the app.
 @app.route('/api', methods=["GET"])
 def api():
-    docs = {}
-    for rule in app.url_map.iter_rules():
-        if rule.endpoint is None or '.' not in rule.endpoint:
-            continue
-        path = rule.endpoint.split('.')
-        controller = path[0]
-        action = path[1]  # No support for weird long paths.
-        mod = getattr(routes, controller, None)
-        meth = getattr(mod, action, None)
-        if mod is not None:
-            if meth is not None:
-                doc = meth.__doc__
-            else:
-                doc = 'No documentation.'
-            if controller not in docs:
-                docs[controller] = []
-            docs[controller].append({
-                'endpoint': rule.endpoint,
-                'url_path': rule,
-                'documentation': doc,
-                'parameters': rule.arguments,
-                # TODO: Perfect REST
-                'methods': ", ".join(filter(lambda x: x in ["GET", "POST"], rule.methods))
-            })
+    docs = routes.dump_api(app)
     return render_template('url_fors.html', controllers=docs)
 
 if __name__ == "__main__":
