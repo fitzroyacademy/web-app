@@ -471,3 +471,15 @@ Let's mash this against an example lesson with its translations:
 
 
 ---
+
+
+## Will's foolish notes and design ideas:
+
+### Domains:
+
+* fitzroy.tech
+* fitzroy.space
+* fitzroy.design
+* fitzroy.academy
+* fitzroy.io
+

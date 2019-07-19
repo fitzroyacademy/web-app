@@ -27,11 +27,13 @@ $new_watermelon: #f82a5f;
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever. */
 
 $bg: #f5f7f8;
+$bg_light: #f7f9fa;
 
 $brand: #464749;
 $brand_dark: #1c1f20;
 
 $blue: #0f7ff4;
+$blue_light: #21adf5;
 $blue_alt: #139ddd;
 
 $blue_dark: #0a6da2;
@@ -84,16 +86,21 @@ nav, main, aside{z-index: 100;}
 .fit_subvidya{z-index: 200;}
 .fit_vidya{z-index: 250}
 
-// nb the bootstrap stuff starts at like 1000.
+// nb the bootstrap stuff starts at 1000.
+
+footer{z-index: 1500;}
+
+.fit_player{z-index: 2000;}
 
 header{z-index: 3000;}
-
 header .fit_form_code_head{z-index: 3100;}
-
 
 .fit_sidepanel{z-index: 4000;}
 .fit_sidepanel .panel .content{z-index: 4010;}
 .fit_sidepanel .panel .head{z-index: 4020;}
+
+.tooltip,
+.fit_lesson_tooltip{z-index: 5000;}
 
 // -----------------------------------------------------------------------------------------
 /* header */
@@ -161,8 +168,8 @@ html{height: 100%;}
 body{min-height: 100%;}
 
 body > header, 
-body > nav,
-body > aside,
+body > .fit_player nav,
+body > .fit_player aside,
 .modal-content,
 .fit_sidepanel .panel{box-shadow: 0 0 1.5rem $box_shadow;}
 
@@ -184,7 +191,7 @@ article{flex: 3;}
 // not sure about this :/
 
 @media (min-width: 576px){
-	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto;}
+	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto; background: #fff;}
 
 	main.fit_player nav,
 	main.fit_player article,
@@ -215,6 +222,13 @@ html.fit_minleft{}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
 
+// no tooltip arrows, ew.
+.tooltip .arrow{display: none;}
+.tooltip .tooltip-inner{background: $blue;}
+
+// tooltips on lessons
+.fit_lesson_tooltip{margin-left: $nav_left_width_collapsed;}
+.fit_lesson_tooltip .tooltip-inner{background: $aqua; color: #fff; padding: 0.25rem 0.75rem; font-size: 0.9rem; border-radius: $border_rad_lg; text-align: left;}
 
 .alert > i{font-size: 1.6rem; margin-right: 0.5rem;}
 
@@ -722,7 +736,7 @@ a.card.rating h5{color: #f4b115;}
 
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
-.fit_course{max-width: $sensible_width; margin: 3rem auto; border-radius: 0.3rem; padding: 0 1rem;}
+.fit_course{max-width: $sensible_width; margin: 2rem auto 0; border-radius: 0.3rem; padding: 0 1rem;}
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 
@@ -735,14 +749,29 @@ a.card.rating h5{color: #f4b115;}
 .fit_course small.subtxt{color: #717b81; font-size: 0.9rem;}
 .fit_course small.subtxt i{margin-right: 0.2rem; color: inherit;}
 
+
+// course intro page for enrollment
+.fit_course.intro{}
+
+.fit_badge{background: $bg; border:1px solid $bg; border-radius: $border_rad_sm; color: $text_lighter; text-transform: uppercase; font-size: 0.9rem; font-weight: bold; padding: 0.25rem 0.5rem;}
+.fit_badge:hover{border-color: $border_medium; color:$text;}
+
+.fit_badge:first-child:not(:only-child){margin-right: .5rem;}
+
+.fit_badge i{font-size: 0.8rem; margin-left: 0.25rem; margin-right: -0.1rem;}
+.fit_badge i:hover{color:$blue; cursor: pointer;}
+
 @media (max-width: 575px) {
 	.fit_course h3{display: block;}
 	.fit_course .subtxt{margin: 0; display: block;}
+
+	.fit_course.intro .fit_vidya{border-radius: 0; margin: 0 -1rem 0;}
+	.fit_course.intro .fit_vidya .placeholder{border-radius: 0;}
 }
 
 // mess with the headers
 
-.fit_course h1{line-height: 2.5rem; display: flex; align-items: baseline;}
+.fit_course h1{line-height: 2.5rem; display: flex; align-items: baseline; padding-bottom: 1rem;}
 .fit_course h1 small{display: block; font-size: 1rem; color:$text_lighter;}
 .fit_course h1 a i.fa-edit{font-size: 1.5rem; color: $text_light;}
 .fit_course h1 a:hover i.fa-edit{color: $blue;}
@@ -804,7 +833,7 @@ Bleh:;
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
 
 
-.fit_cta{background: $watermelon; padding: 2rem 0 5rem; border-radius: 0.3rem;}
+.fit_cta{background: $watermelon; padding: 2rem 0 5rem; margin-top: 3rem;}
 .fit_cta .fit_course h3{color: #fff;}
 
 .btn-hg{font-size: 2rem; padding: 1rem 1.5rem; font-weight: 900;}
@@ -816,7 +845,9 @@ Bleh:;
 
 .fit_cta .btn-hg{margin: 1rem 0 2rem;}
 
-
+@media (max-width: 575px) {
+	.fit_cta{margin-top: 1rem; padding: 0 0 2rem;}
+}
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -824,7 +855,7 @@ Bleh:;
 
 .fit_avatared{position: relative; padding-left: 4rem;}
 .fit_avatar,
-.fit_avatar img{width: 3rem; height: 3rem; border-radius: 999rem; overflow: hidden; position: absolute; top:0; left: 0;}
+.fit_avatar img{width: 2.5rem; height: 2.5rem; border-radius: 999rem; overflow: hidden; position: absolute; top:0; left: 0;}
 
 h2.fit_avatared{padding-left: 3.5rem;}
 h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
@@ -1008,6 +1039,7 @@ table.fit_colhover td:hover{cursor: default;}
   nav .fit_link{padding-left: 0;}
 }
 
+.fit_mobilenav{display: none;}
 
 /*  small boye  */
 @media (max-width: 575px){
@@ -1026,7 +1058,8 @@ table.fit_colhover td:hover{cursor: default;}
 
 // and again html
 html.fit_minleft nav{max-width: $nav_left_width_collapsed; min-width: 0;}
-html.fit_minleft nav .fit_txt{display: none;}
+html.fit_minleft nav .fit_txt,
+html.fit_minleft nav .fit_sub{display: none;}
 html.fit_minleft nav .fit_link{padding-left: 0;}
 html.fit_minleft nav .fit_time{display: none}
 
@@ -1192,7 +1225,8 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 // ----------------------------------------------------------------------------------------------------------------
 // heroic introductio big texty friend
 
-.fit_hero{padding: 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
+.fit_hero{padding: 4rem 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
+
 
 .fit_hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
 .fit_hero h1 strong{color:$blue; position: relative; display: inline-block;}
@@ -1207,7 +1241,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_heartplay{position: relative; height: 10rem; width: 10rem; margin: 0 auto; display: block; text-decoration: none;}
 .fit_heartplay i{ height: 10rem; position: absolute; top:0; left: 0; width: 100%;}
 
-.fit_heartplay .bigboy{color:$brand; font-size: 10rem; transition: all .45s ease-in-out;}
+.fit_heartplay .bigboy{color:$brand_dark; font-size: 10rem; transition: all .45s ease-in-out;}
 .fit_heartplay .smallboy{color:#fff; font-size: 2.75rem; padding: 3.25rem 0 0 .5rem; transition: all .15s ease-in-out;}
 
 
@@ -1221,6 +1255,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 @media (max-width: 767px) {
+	.fit_hero{padding: 1rem;}
 	.fit_hero h1{font-size: 2.5rem;}
 	.fit_hero p{font-size: 1.3rem;}
 }
@@ -1228,7 +1263,8 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
-.fit_window:after{padding-top: $ratio_169; display: block; content: '';}
+// skipping the auto 16:9 for now...
+// .fit_window:after{padding-top: $ratio_169; display: block; content: '';}
 
 .fit_window img{width: 100%;}
 .fit_window img{border-radius: $border_rad_lg;}
@@ -1352,16 +1388,34 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 // and now the two-bar thing with floaty menu
 
-.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding-bottom: 4rem}
+.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding: 1rem 1rem 2rem}
 
+.fit_medium_rare .fit_rare a{font-size:1.1rem; color: $text; border-bottom: 3px solid transparent; text-decoration: none; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+.fit_medium_rare .fit_rare a:hover{color:$blue;}
+
+.fit_medium_rare .fit_rare a .fa-external-link{font-size: 0.9rem; margin-left: .25rem; color:$text_lighter;}
+.fit_medium_rare .fit_rare a:hover .fa-external-link{color:$blue;}
+
+// big version
 @media (min-width: 992px) {
 	.fit_medium_rare{display: flex; align-items:stretch; max-width: 1000px; position: relative; padding: 0 1rem; margin: 0 auto;}
 	.fit_medium_rare .fit_medium{margin: 0; padding: 0;}
-	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 0 2rem 3rem; position: sticky; align-self: flex-start;}
+	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
+
+	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{display: none;}
 }
 
-.fit_rare .nav a i{display: none;}
-.fit_rare .nav a.active i{display: inline-block;}
+// small boi tiem
+@media (max-width: 991px) {
+	.fit_medium_rare .fit_rare{background: $bg; padding: .5rem; border:1rem solid #fff;  border-radius: $border_rad_lg}
+
+	.fit_rare_dropdown_trigger{color: $text; font-size: 0.9rem;}
+	.fit_medium_rare .fit_rare .fit_rare_dropdown{display: none;}
+	.fit_medium_rare .fit_rare.active .fit_rare_dropdown{display: block; padding: .5rem;}
+}
+
+
+
 
 .fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
 .fit_medium_nav .btn:last-child{margin-left: auto;}
@@ -1430,7 +1484,7 @@ body > .fit_code {margin-top:10rem;}
 
 
 // weird label
-.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.3; padding-top: 0.5rem}
+.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.6; padding-top: 0.5rem}
 
 .fit_form_code.active label,
 .fit_form_code.labelled label{position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
@@ -1491,7 +1545,8 @@ body > .fit_code {margin-top:10rem;}
 
 // active
 .fit_form_code_head.active .form-control,
-.fit_form_code_head.labelled .form-control{border-color: $watermelon; box-shadow: none; width: 8rem;}
+.fit_form_code_head.labelled .form-control,
+.fit_form_code_head.labelled .form-control:active{border-color: $watermelon; box-shadow: none; width: 8rem;}
 .fit_form_code_head .form-control:focus{background: $watermelon_dark;}
 .fit_form_code_head.active .form-control::placeholder{opacity: 0.6; color:#fff;}
 
@@ -1499,7 +1554,66 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code_head.labelled label{display: none;}
 
 
+// ----------------------------------------------------------------------------------------------------------------
+// get yo wiggle on!
+.fit_mobile_menu{}
+.fit_mobile_menu_trigger{}
+.fit_mobile_menu_dropdown{}
 
+
+
+.fit_mobile_menu_trigger .fa-times{display: none;}
+
+// mobile mode
+// NB the mobile menu is an arbitrary width!!! Number of items matters.
+
+@media (max-width: 675px) {
+
+	// hide desktop nav
+
+	.fit_mobile_menu_dropdown{display: none !important; position: fixed; top: $header_height; left: 0; right: 0; bottom: 0; background:rgba(255,255,255,1); padding:1.5rem; justify-content: space-between; align-items:center; justify-content: center; flex-direction:column;}
+
+	.fit_mobile_menu_dropdown .fit_btn{padding: .5rem 0;}
+	.fit_mobile_menu_dropdown .fit_btn .fit_txt{font-size: 1.3rem;}
+	.fit_mobile_menu_dropdown .fit_btn i{font-size: 1.5rem;}
+
+	// active mode
+	html.fit_mobile_menu_active{height: 100%; overflow: hidden; position: fixed; }
+	html.fit_mobile_menu_active .fit_mobile_menu_dropdown{display: flex !important;}
+	html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-times{display: flex;}
+	html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-chevron-down{display: none;}
+
+}
+
+// larger mode
+@media (min-width: 676px) {
+
+	.fit_mobile_menu_trigger{display: none;}
+
+	// buttons in the non-mobile mode
+	.fit_mobile_menu_dropdown .fit_btn{margin-left: -1rem;}
+	// .fit_mobile_menu_dropdown .fit_btn i:first-child{display: none;}
+	// .fit_mobile_menu_dropdown .fit_btn .fit_txt:last-child{padding-left: 1.5rem;}
+}
+
+
+
+// footer navs
+
+footer{padding: 3rem 0; position: relative;}
+.fit_footer_nav a{font-size:0.9rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+
+.fit_footer_nav a small{display:block; color: $text_lighter;}
+.fit_footer_nav a i{font-size: 0.7rem; margin-left: .25rem;}
+
+.fit_footer_nav a.note{color: $blue; margin-bottom: 1rem;}
+
+.fit_footer_nav a:hover{color:$brand; border-bottom-color: $border_light;}
+
+@media (max-width: 575px) {
+	footer{padding:  0;}
+	footer [class^='col']{padding-bottom: 1.5rem;}
+}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!

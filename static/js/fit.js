@@ -1,13 +1,21 @@
 $( document ).ready(function() {
 
-// Go team
+  // Go team Javascriptz, hack them codez, roxor them boxorz.
 
 
+  // standard tooltips
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
   })
 
-  // min left and right
+  // lesson tooltips
+  $(function () {
+    $('[data-fit_lesson_tooltip]').tooltip({
+      placement : 'right',
+      container: 'body',
+      template : '<div class="fit_lesson_tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
+    });
+  });
   
 
   // toggle overall nav size
@@ -24,11 +32,38 @@ $( document ).ready(function() {
   $('[fit-course_mobilenav_trigger]').click(function(e) {
     e.preventDefault();   
     $('html').toggleClass('fit_mobilenav');
+  });
+
+  // toggle mobile menu
+  $('[data-fit_mobile_menu_trigger]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_mobile_menu_active');
   });  
 
+  // dropdown that may have an adjacent
+  $('[data-fit_active_trigger]').click(function(e) {
+    e.preventDefault();   
+    $($(this).attr("href")).toggleClass('active')
+  });
+
+  // clipboard!
+  var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
+
+  fit_clipboard.on('success', function(e) {
+    // console.info('Action:', e.action);
+    // console.info('Text:', e.text);
+    // console.info('Trigger:', e.trigger);
+    alert("go team");
+
+    e.clearSelection();
+  });
+
+  fit_clipboard.on('error', function(e) {
+    // console.error('Action:', e.action);
+    // console.error('Trigger:', e.trigger);
+  });
   
-
-
+  
   // do fancy placeholders for inputs:
   $("[data-fit-fancyplace]").on({
     'focus': function() {

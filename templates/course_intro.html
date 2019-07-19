@@ -6,13 +6,26 @@
 
   <article>
 
-    <div class="fit_course">
+    <div class="fit_course intro">
 
-      <h1><span class="txt">{{ course.title }}</span></h1> <!-- DEV: name of course-->
-      <!-- <p>Curated by <strong> course.teacher.full_name </strong>. <!-~ DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
+      <h1><span class="txt">{{ course.title }}</span></h1>
+      
+      <!-- DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
+      <input type="hidden" id="secretive_clipboard" value="{{ course.course_code }}" value="">
+      <p>
+        <span class="fit_badge">
+          {{ course.course_code }}
+          <a data-clipboard-target="#secretive_clipboard" data-clipboard-action="copy" data-toggle="lesson_tooltip" title="Copy to clipboard">
+            <i class="fas fa-copy"></i>
+          </a>
+        </span>
+        <span>Curated by <strong> course.teacher.full_name </strong>.</span>
+      </p>
+      
 
       <div class="fit_vidya">
-        <img class="placeholder" src="/assets/images/defaults/vid.jpg" alt="video"> <!-- DEV: 16:9 image uploaded in edit view -->
+        <!-- DEV: 16:9 image uploaded in edit view -->
+        <img class="placeholder" src="/assets/images/defaults/vid.jpg" alt="video"> 
         <a class="fit_vidya_play" href="{{ course.lessons[0].permalink }}"><i class="fas fa-play-circle"></i></a>
       </div>
       
@@ -28,9 +41,9 @@
                 <dd>{{ course.target_audience }}</dd>
               {% endif %}
               <dt><i class="far fa-clock"></i> Course length &amp; workload:</dt>
-              <dd>{{ course.lessons|length }} lessons, at your own pace.</dd> <!-- DEV: plain text, from course edit -->
+              <dd>{{ course.lessons|length }}</dd>
               <dt><i class="far fa-tag"></i> Cost:</dt>
-              <dd>Free forever!</dd> <!-- DEV: select from (free | paid | institute_funded), but we will implement this later -->
+              <dd>Free forever!</dd> <!-- DEV: select from (free | paid | funded) -->
               {% if course.skill_level %}
                 <dt><i class="far fa-university"></i> Skill:</dt>
                 <dd>{{ course.skill_level }}</dd>
@@ -56,12 +69,17 @@
 
           <div class="fit_body fit_lessons">
 
-            <!-- DEV: Dump the list of lessons for the course in here, just like in the LHS menu in the actual course -->
-            <ul>
-              {% for lesson in course.lessons %}
-                <li>{{ lesson.title }}</li>
-              {% endfor %}
-            </ul>
+            {% for lesson in course.lessons %}
+              <a class="fit_btn" href="#fit_lesson_{{ lesson.id }}"> <!-- DEV: This needs to link to the first segment of the relevant lesson -->
+                <div class="fit_pic vid">
+                  <!-- DEV: needs to call the image for this lesson -->
+                  <img src="/assets/images/lessons/community-integration.jpg" alt="course"> 
+                  <i class="fas fa-play"></i>
+                </div>
+                <span class="fit_txt">{{ lesson.title }}</span>
+                <span class="fit_sub">{{ lesson.duration }}</span>
+              </a>
+            {% endfor %}
           </div>
           <!-- end vid stack -->
 
@@ -69,7 +87,6 @@
       </div>
 
     </div>  
-
 
     <!-- DEV: this version is for a free-access course with no code/etc -->
     <div class="fit_cta">
@@ -83,37 +100,43 @@
       </div>
     </div>
 
-    {#
+    
     <!-- DEV: this version is for a course that requires login, but user isn't logged in -->
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
-        <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-lock"></i> Create an account</a>
+        <a href="#DEV" data-fit-userpanel class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-user"></i> Create an account</a>
         <p class="fit_cta_tnc">You need to make a free account to continue.</p>
       </div>
-    </div>    
+    </div>   
 
     <!-- DEV: wheras, this version is for courses locked by a code -->
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
-        <!-- <a href="#" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course</a> -->
-        <form class="fit_form_code">
+        <form class="fit_form_code fit_fancyplace fit_wiggle_daddy" method="post" action="#">
           <div class="form-group">
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Course code" required>
-            <label for="exampleFormControlInput1">Course code</label>
-            <button type="submit" class="btn btn-text"><i class="fas fa-rocket"></i></button>
+            <input type="text" class="form-control" name="course_code" id="course_code" placeholder="Course code" required data-fit-fancyplace>
+            <label for="course_code">Course code</label>
+            <button type="submit" class="btn btn-text fit_wiggle"><i class="fas fa-rocket"></i></button>
           </div>
         </form>
         <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
       </div>
     </div>
-    #}
+
+    <!-- DEV: this version is for a course that requires explicit user invites from the teacher -->
+    <div class="fit_cta">
+      <div class="fit_course">
+        <h3>Ready to begin?</h3>
+        <a href="#" class="btn btn-light btn-hg btn-drop" disabled role="button"><i class="fas fa-lock"></i> Requires invite</a>
+        <p class="fit_cta_tnc">You need to be invited by <strong>teacher.name</strong> to join this course.</p>
+      </div>
+    </div>
+    
 
   </article>
 
 </main>
-
-
 
 {% endblock %}
