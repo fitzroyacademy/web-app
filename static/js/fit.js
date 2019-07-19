@@ -6,8 +6,6 @@ $( document ).ready(function() {
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   })
-
-  // min left and right
   
 
   // toggle overall nav size
@@ -36,6 +34,23 @@ $( document ).ready(function() {
   $('[data-fit_active_trigger]').click(function(e) {
     e.preventDefault();   
     $($(this).attr("href")).toggleClass('active')
+  });
+
+  // clipboard!
+  var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
+
+  fit_clipboard.on('success', function(e) {
+    // console.info('Action:', e.action);
+    // console.info('Text:', e.text);
+    // console.info('Trigger:', e.trigger);
+    alert("go team");
+
+    e.clearSelection();
+  });
+
+  fit_clipboard.on('error', function(e) {
+    // console.error('Action:', e.action);
+    // console.error('Trigger:', e.trigger);
   });
   
   

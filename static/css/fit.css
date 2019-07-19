@@ -175,6 +175,14 @@ main.fit_player aside::-webkit-scrollbar {
   margin: 0 0.3rem;
 }
 
+.tooltip .arrow {
+  display: none;
+}
+
+.tooltip .tooltip-inner {
+  background: #0f7ff4;
+}
+
 .alert > i {
   font-size: 1.6rem;
   margin-right: 0.5rem;
@@ -1304,6 +1312,17 @@ a.card.rating h5 {
 
 .fit_badge:first-child:not(:only-child) {
   margin-right: 0.5rem;
+}
+
+.fit_badge i {
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
+  margin-right: -0.1rem;
+}
+
+.fit_badge i:hover {
+  color: #0f7ff4;
+  cursor: pointer;
 }
 
 @media (max-width: 575px) {

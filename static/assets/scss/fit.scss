@@ -217,6 +217,10 @@ html.fit_minleft{}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
 
+// no tooltip arrows, ew.
+.tooltip .arrow{display: none ;}
+.tooltip .tooltip-inner{background: $blue;}
+
 
 .alert > i{font-size: 1.6rem; margin-right: 0.5rem;}
 
@@ -745,6 +749,9 @@ a.card.rating h5{color: #f4b115;}
 .fit_badge:hover{border-color: $border_medium; color:$text;}
 
 .fit_badge:first-child:not(:only-child){margin-right: .5rem;}
+
+.fit_badge i{font-size: 0.8rem; margin-left: 0.25rem; margin-right: -0.1rem;}
+.fit_badge i:hover{color:$blue; cursor: pointer;}
 
 @media (max-width: 575px) {
 	.fit_course h3{display: block;}
