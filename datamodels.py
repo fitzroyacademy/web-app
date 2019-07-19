@@ -11,13 +11,12 @@ Base = declarative_base()
 
 def dump(obj, seen=None):
 	if not isinstance(obj, Base):
-		try:
-			if isinstance(obj[0], Base):
-				o = []
-				for i in obj:
-					o.append(dump(i, seen=seen))
-				return o
-		except (TypeError, IndexError) as e:
+		if isinstance(obj, list) and isinstance(obj[0], Base):
+			o = []
+			for i in obj:
+				o.append(dump(i, seen=seen))
+			return o
+		else:
 			return obj
 	seen = seen or []  # Recursion trap.
 	seen.append(id(obj))
