@@ -34,6 +34,20 @@ def inject_current_section():
 def inject_cache_code():
     return dict(cache_code=time.time())
 
+@jinja2.contextfunction
+def get_vars(c):
+    if app.debug != True:
+        return ""
+    methods = []
+    for k, v in c.items():
+        if callable(v):
+            continue
+        if k in ["config", "g", "session"]:
+            continue
+        methods.append({'name': k, 'dump': datamodels.dump(v)})
+    return methods
+app.jinja_env.globals.update(get_vars=get_vars)
+
 @app.after_request
 def add_header(response):
     response.headers['Cache-Control'] = 'no-store'
