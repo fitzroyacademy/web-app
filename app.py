@@ -10,22 +10,11 @@ import os
 import jinja2
 from uuid import uuid4
 
-import routes.user
+import routes
 import routes.course
-import routes.lesson
-import routes.segment
-import routes.object
-import routes.error
-import routes.log
 
 app = Flask('FitzroyFrontend', static_url_path='')
-app.register_blueprint(routes.user.blueprint)
-app.register_blueprint(routes.course.blueprint, url_prefix="/course")
-app.register_blueprint(routes.lesson.blueprint, url_prefix="/course")
-app.register_blueprint(routes.segment.blueprint, url_prefix="/course")
-app.register_blueprint(routes.object.blueprint)
-app.register_blueprint(routes.error.blueprint)
-app.register_blueprint(routes.log.blueprint)
+routes.attach(app)
 
 @app.route('/')
 def index():
