@@ -5,7 +5,7 @@ blueprint = Blueprint('course', __name__, template_folder='templates')
 
 @blueprint.route('/')
 def index():
-	""" Shows all courses the user has access to. """
+    """ Shows all courses the user has access to. """
     data = {'public_courses': datamodels.get_public_courses()}
     return render_template('welcome.html', **data)
 
