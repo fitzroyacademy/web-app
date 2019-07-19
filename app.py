@@ -15,6 +15,8 @@ import routes.course
 import routes.lesson
 import routes.segment
 import routes.object
+import routes.error
+import routes.log
 
 app = Flask('FitzroyFrontend', static_url_path='')
 app.register_blueprint(routes.user.blueprint)
@@ -22,6 +24,8 @@ app.register_blueprint(routes.course.blueprint, url_prefix="/course")
 app.register_blueprint(routes.lesson.blueprint, url_prefix="/course")
 app.register_blueprint(routes.segment.blueprint, url_prefix="/course")
 app.register_blueprint(routes.object.blueprint)
+app.register_blueprint(routes.error.blueprint)
+app.register_blueprint(routes.log.blueprint)
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -85,23 +89,7 @@ def index():
 @app.route('/course_edit')
 def course_edit():
     return render_template('course_edit.html')
-
-@app.route('/404')
-@app.errorhandler(404)
-def fourohfour(e):
-    try:
-        return render_template('static'+request.path+'.html')
-    except jinja2.exceptions.TemplateNotFound:
-        try:
-            return render_template('static'+request.path+'/index.html')
-        except jinja2.exceptions.TemplateNotFound:
-            return render_template('404.html'), 404
-
-@app.errorhandler(Exception)
-@app.route('/502')
-def fiveohtwo(e):
-    log_error(e)
-    return render_template('502.html')    
+   
 
 # --------------------------------------------------------------------------------
 # Templates that are nearly ready for app-ification:
@@ -127,22 +115,6 @@ def code():
 @app.route('/lessons')
 def lessons():
     return render_template('lesson_chart.html')
-
-@app.route('/event/<event_type>', methods=["POST"])
-def log_event(event_type):
-    user = get_current_user()
-    if user is None:
-        # TODO: Log anonymous user progress.
-        return True
-    if event_type == 'progress':
-        segment_id = request.form['segment_id']
-        user_id = user.id
-        progress = request.form['percent']
-        seg = datamodels.get_segment(segment_id)
-        sup = seg.save_user_progress(user, progress)
-        return json.dumps(datamodels.dump(sup))
-    else:
-        return event_type
 
 @app.route('/api', methods=["GET"])
 def api():
