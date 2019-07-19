@@ -1245,7 +1245,7 @@ a.card.rating h5 {
 
 .fit_course {
   max-width: 1100px;
-  margin: 3rem auto;
+  margin: 2rem auto 0;
   border-radius: 0.3rem;
   padding: 0 1rem;
 }
@@ -1286,6 +1286,26 @@ a.card.rating h5 {
   color: inherit;
 }
 
+.fit_badge {
+  background: #f5f7f8;
+  border: 1px solid #f5f7f8;
+  border-radius: 0.2rem;
+  color: #b0b4b7;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+}
+
+.fit_badge:hover {
+  border-color: #d5d8d9;
+  color: #4f5153;
+}
+
+.fit_badge:first-child:not(:only-child) {
+  margin-right: 0.5rem;
+}
+
 @media (max-width: 575px) {
   .fit_course h3 {
     display: block;
@@ -1294,6 +1314,15 @@ a.card.rating h5 {
   .fit_course .subtxt {
     margin: 0;
     display: block;
+  }
+
+  .fit_course.intro .fit_vidya {
+    border-radius: 0;
+    margin: 0 -1rem 0;
+  }
+
+  .fit_course.intro .fit_vidya .placeholder {
+    border-radius: 0;
   }
 }
 .fit_course h1 {
@@ -1429,7 +1458,7 @@ Bleh:;
 .fit_cta {
   background: #f82a5f;
   padding: 2rem 0 5rem;
-  border-radius: 0.3rem;
+  margin-top: 3rem;
 }
 
 .fit_cta .fit_course h3 {
@@ -1463,6 +1492,12 @@ Bleh:;
   margin: 1rem 0 2rem;
 }
 
+@media (max-width: 575px) {
+  .fit_cta {
+    margin-top: 1rem;
+    padding: 0 0 2rem;
+  }
+}
 .fit_avatared {
   position: relative;
   padding-left: 4rem;
@@ -2123,7 +2158,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
   }
 }
 .fit_hero {
-  padding: 2rem;
+  padding: 4rem 2rem;
   margin: 0 auto;
   max-width: 768px;
   position: relative;
@@ -2219,6 +2254,10 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 }
 
 @media (max-width: 767px) {
+  .fit_hero {
+    padding: 1rem;
+  }
+
   .fit_hero h1 {
     font-size: 2.5rem;
   }
@@ -2570,6 +2609,30 @@ p.tagline .tag i {
   padding: 1rem 1rem 2rem;
 }
 
+.fit_medium_rare .fit_rare a {
+  font-size: 1.1rem;
+  color: #4f5153;
+  border-bottom: 3px solid transparent;
+  text-decoration: none;
+  display: table;
+  padding: 0.1rem 0;
+  margin: 0 0 0.25rem;
+}
+
+.fit_medium_rare .fit_rare a:hover {
+  color: #0f7ff4;
+}
+
+.fit_medium_rare .fit_rare a .fa-external-link {
+  font-size: 0.9rem;
+  margin-left: 0.25rem;
+  color: #b0b4b7;
+}
+
+.fit_medium_rare .fit_rare a:hover .fa-external-link {
+  color: #0f7ff4;
+}
+
 @media (min-width: 992px) {
   .fit_medium_rare {
     display: flex;
@@ -2594,7 +2657,7 @@ p.tagline .tag i {
     align-self: flex-start;
   }
 
-  .fit_rare_dropdown_trigger {
+  .fit_medium_rare .fit_rare .fit_rare_dropdown_trigger {
     display: none;
   }
 }
@@ -3010,7 +3073,7 @@ body > .fit_code {
   }
 }
 footer {
-  padding: 2rem 0;
+  padding: 3rem 0;
 }
 
 .fit_footer_nav a {
@@ -3029,6 +3092,11 @@ footer {
   color: #b0b4b7;
 }
 
+.fit_footer_nav a i {
+  font-size: 0.7rem;
+  margin-left: 0.25rem;
+}
+
 .fit_footer_nav a.note {
   color: #0f7ff4;
   margin-bottom: 1rem;
@@ -3039,6 +3107,15 @@ footer {
   border-bottom-color: #e1e4e5;
 }
 
+@media (max-width: 575px) {
+  footer {
+    padding: 0;
+  }
+
+  footer [class^=col] {
+    padding-bottom: 1.5rem;
+  }
+}
 .fit_wiggle_daddy:hover .fit_wiggle,
 .fit_wiggle:hover {
   -webkit-animation-name: wiggle;

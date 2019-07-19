@@ -4,9 +4,9 @@
     {% include 'partials/_chrome_fa_svg.html' %}
   </a>
 
-  <form class="fit_form_code_head fit_fancyplace" data-fit_head_code_daddy>
+  <form class="fit_form_code_head fit_fancyplace" method="post" action="/code" data-fit_head_code_daddy>
 	  <div class="input-group input-group-sm">
-		  <input type="text" name="course_code_header" id="course_code_header" class="form-control" placeholder="Course code" aria-label="Coure code" data-fit_head_code data-fit-fancyplace>
+		  <input type="text" name="course_code" id="course_code_header" class="form-control" placeholder="Course code" aria-label="Coure code" data-fit_head_code data-fit-fancyplace>
 		  <div class="input-group-append">
 		    <button class="btn" disabled type="button"><i class="fal fa-rocket"></i> </button>
 		  </div>
@@ -24,15 +24,15 @@
         <i class="fal fa-times"></i>
       </a>
 
-      <div class="right fit_mobile_menu_dropdown">
+      <div class="right">
         <a href="/about" class="fit_btn">
           <!-- <i class="fal fa-heart"></i> -->
           <span class="fit_txt">About</span>
         </a>
 
-        <a href="/pricing" class="fit_btn">
+        <a href="/product" class="fit_btn">
           <!-- <i class="fal fa-question-circle"></i> -->
-          <span class="fit_txt">Pricing</span>
+          <span class="fit_txt">Product</span>
         </a>
 
         <a href="/support" class="fit_btn">
