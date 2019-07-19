@@ -11,9 +11,15 @@ import jinja2
 from uuid import uuid4
 
 import routes.user
+import routes.course
+import routes.lesson
+import routes.segment
 
 app = Flask('FitzroyFrontend', static_url_path='')
 app.register_blueprint(routes.user.blueprint)
+app.register_blueprint(routes.course.blueprint, url_prefix="/course")
+app.register_blueprint(routes.lesson.blueprint, url_prefix="/course")
+app.register_blueprint(routes.segment.blueprint, url_prefix="/course")
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -61,7 +67,6 @@ def get_current_user():
 
 def uuid():
     return "{}".format(uuid4().hex)
-
 app.jinja_env.globals.update(uuid=uuid)
 
 @app.route('/')
