@@ -10,8 +10,10 @@ import os
 import jinja2
 from uuid import uuid4
 
-app = Flask('FitzroyFrontend', static_url_path='')
+from routes import user
 
+app = Flask('FitzroyFrontend', static_url_path='')
+app.register_blueprint(user)
 
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
@@ -64,33 +66,6 @@ def index():
 def course_edit():
     return render_template('course_edit.html')
 
-@app.route('/password')
-def password():
-    return render_template('password.html')
-
-@app.route('/user/<int:user_id>', methods=["GET"])
-def user(user_id):
-    user = datamodels.get_user(user_id)
-    data = {'user': user}
-    return render_template('user.html', **data)
-
-@app.route('/user_edit', methods=["GET", "POST"])
-def user_edit():
-    if 'user_id' in session and session['user_id'] is not None:
-        current_user = datamodels.get_user(session['user_id'])
-    else:
-        return 'Request denied.'
-    if request.method == "POST":
-        if 'email' in request.form:
-            current_user.email = request.form['email']
-        if 'first_name' in request.form:
-            current_user.first_name = request.form['first_name']
-        if 'last_name' in request.form:
-            current_user.last_name = request.form['last_name']
-        if 'username' in request.form:
-            current_user.username = request.form['username']
-    return render_template('user_edit.html')
-
 @app.route('/404')
 @app.errorhandler(404)
 def fourohfour(e):
@@ -123,68 +98,6 @@ def code():
     if request.method == "GET" or error:
         data = {'errors': [error]}
         return render_template('code.html', **data)
-
-@app.route('/enroll/<course_slug>', methods=["POST"])
-def enroll(course_slug):
-    course = datamodels.get_course_by_slug(course_slug)
-    if course is None:
-        return redirect('/404')
-    user = get_current_user()
-    if user and datamodels.get_enrollment(course.id, user.id) is None:
-        enrollment = datamodels.CourseEnrollment(
-            course_id=course.id, user_id=user.id, access_level=1
-        )
-        s = datamodels.get_session()
-        s.add(enrollment)
-        s.commit()
-    return redirect(course.lessons[0].permalink)
-
-@app.route('/login', methods=["GET", "POST"])
-def login():
-    data = {'errors': []}
-    if request.method == "POST":
-        user = datamodels.get_user_by_email(request.form.get('email'))
-        if user is None:
-            data['errors'].append("Bad username or password, try again?")
-        else:
-            valid = user.check_password(request.form.get('password'))
-            if not valid:
-                data['errors'].append("Bad username or password, try again?")
-            else:
-                session['user_id'] = user.id
-                return redirect(url_for('index'))
-    if len(data['errors']) > 0 or request.method == "GET":
-        return render_template('login.html', **data)
-
-@app.route('/logout', methods=["POST"])
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
-
-@app.route('/register', methods=["POST"])
-def post_register():
-    db = datamodels.get_session()
-    data = {'errors': []}
-    # We'll roll in better validation with form error integration in beta; this is
-    # to prevent mass assignment vulnerabilities.
-    kwargs = {}
-    valid = ['first_name', 'email', 'username', 'last_name', 'password']
-    for k in valid:
-        kwargs[k] = request.form.get(k)
-    user = datamodels.get_user_by_email(request.form.get('email'))
-    if user is not None:
-        data['errors'].append("Email address already in use.")
-        return render_template('login.html', **data)
-    try:
-        user = datamodels.User(**kwargs)
-    except Exception as e:
-        data['errors'].append("{}".format(e))
-        return render_template('login.html', **data)
-    db.add(user)
-    db.commit()
-    session['user_id'] = user.id
-    flash('Thanks for registering, '+user.full_name+"!")
-    return render_template('welcome.html')
 
 
 # --------------------------------------------------------------------------------

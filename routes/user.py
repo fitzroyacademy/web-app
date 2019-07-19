@@ -1,0 +1,92 @@
+from flask import Blueprint, render_template, session, request, url_for, redirect, flash
+import datamodels
+
+user = Blueprint('user', __name__, template_folder='templates')
+
+@user.route('/<user_id>', methods=["GET"])
+def view(user_id):
+    user = datamodels.get_user(user_id)
+    data = {'user': user}
+    return render_template('user.html', **data)
+
+@user.route('/edit', methods=["GET", "POST"])
+@user.route('/edit/<user_id>', methods=["GET", "POST"])
+def edit(user_id=None):
+    if user_id is None and 'user_id' in session:
+        user_id = datamodels.get_user(session['user_id'])
+    else:  # TODO: Admin permissions
+        return redirect('/404')
+    user = datamodels.get_user(user_id)
+    if request.method == "POST":
+        if 'email' in request.form:
+            current_user.email = request.form['email']
+        if 'first_name' in request.form:
+            current_user.first_name = request.form['first_name']
+        if 'last_name' in request.form:
+            current_user.last_name = request.form['last_name']
+        if 'username' in request.form:
+            current_user.username = request.form['username']
+    return render_template('user_edit.html')
+
+@user.route('/register', methods=["POST"])
+def create():
+    db = datamodels.get_session()
+    data = {'errors': []}
+    # We'll roll in better validation with form error integration in beta; this is
+    # to prevent mass assignment vulnerabilities.
+    kwargs = {}
+    valid = ['first_name', 'email', 'username', 'last_name', 'password']
+    for k in valid:
+        kwargs[k] = request.form.get(k)
+    user = datamodels.get_user_by_email(request.form.get('email'))
+    if user is not None:
+        data['errors'].append("Email address already in use.")
+        return render_template('login.html', **data)
+    try:
+        user = datamodels.User(**kwargs)
+    except Exception as e:
+        data['errors'].append("{}".format(e))
+        return render_template('login.html', **data)
+    db.add(user)
+    db.commit()
+    session['user_id'] = user.id
+    flash('Thanks for registering, '+user.full_name+"!")
+    return render_template('welcome.html')
+
+@user.route('/enroll/<course_slug>', methods=["POST"])
+def enroll(course_slug):
+    course = datamodels.get_course_by_slug(course_slug)
+    if course is None:
+        return redirect('/404')
+    user = get_current_user()
+    if user and datamodels.get_enrollment(course.id, user.id) is None:
+        enrollment = datamodels.CourseEnrollment(
+            course_id=course.id, user_id=user.id, access_level=1
+        )
+        s = datamodels.get_session()
+        s.add(enrollment)
+        s.commit()
+    return redirect(course.lessons[0].permalink)
+
+@user.route('/login', methods=["GET", "POST"])
+def login():
+    data = {'errors': []}
+    if request.method == "POST":
+        user = datamodels.get_user_by_email(request.form.get('email'))
+        if user is None:
+            data['errors'].append("Bad username or password, try again?")
+        else:
+            valid = user.check_password(request.form.get('password'))
+            if not valid:
+                data['errors'].append("Bad username or password, try again?")
+            else:
+                session['user_id'] = user.id
+                return redirect(url_for('index'))
+    if len(data['errors']) > 0 or request.method == "GET":
+        return render_template('login.html', **data)
+
+@user.route('/logout', methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
