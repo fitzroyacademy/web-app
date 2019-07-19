@@ -33,8 +33,17 @@
           <div class="collapse {{'show' if lesson.id == active_lesson.id }}" id="fit_lesson_{{ lesson.id }}">
             <div class="fit_body fit_segments">
               {% for segment in lesson.segments %}
-                <a class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}" href="{{ segment.permalink }}" data-fit-segment="{{ segment.id }}" data-fit-parent="{{ segment.lesson_id }}">
-                  <i class="fas fa-circle"></i>
+                <a 
+                  class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}" 
+                  href="{{ segment.permalink }}" 
+                  data-fit-segment="{{ segment.id }}" 
+                  data-fit-parent="{{ segment.lesson_id }}"
+                >
+                  <i 
+                    class="fas fa-circle"
+                    data-fit_lesson_tooltip
+                    title="{{ segment.title }}"
+                  ></i>
                   <span class="fit_txt">{{ segment.title }}</span> 
                   <span class="fit_sub">{{ segment.duration }}</span>
                 </a>

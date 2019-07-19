@@ -29,6 +29,14 @@ nav, main, aside {
   z-index: 250;
 }
 
+footer {
+  z-index: 1500;
+}
+
+.fit_player {
+  z-index: 2000;
+}
+
 header {
   z-index: 3000;
 }
@@ -47,6 +55,11 @@ header .fit_form_code_head {
 
 .fit_sidepanel .panel .head {
   z-index: 4020;
+}
+
+.tooltip,
+.fit_lesson_tooltip {
+  z-index: 5000;
 }
 
 /* header */
@@ -108,8 +121,8 @@ body {
 }
 
 body > header,
-body > nav,
-body > aside,
+body > .fit_player nav,
+body > .fit_player aside,
 .modal-content,
 .fit_sidepanel .panel {
   box-shadow: 0 0 1.5rem rgba(82, 63, 105, 0.1);
@@ -148,6 +161,7 @@ article {
     right: 0;
     bottom: 0;
     height: auto;
+    background: #fff;
   }
 
   main.fit_player nav,
@@ -181,6 +195,19 @@ main.fit_player aside::-webkit-scrollbar {
 
 .tooltip .tooltip-inner {
   background: #0f7ff4;
+}
+
+.fit_lesson_tooltip {
+  margin-left: 4rem;
+}
+
+.fit_lesson_tooltip .tooltip-inner {
+  background: #66b3b7;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: 0.4rem;
+  text-align: left;
 }
 
 .alert > i {
@@ -3012,7 +3039,8 @@ body > .fit_code {
 }
 
 .fit_form_code_head.active .form-control,
-.fit_form_code_head.labelled .form-control {
+.fit_form_code_head.labelled .form-control,
+.fit_form_code_head.labelled .form-control:active {
   border-color: #f82a5f;
   box-shadow: none;
   width: 8rem;
@@ -3093,6 +3121,7 @@ body > .fit_code {
 }
 footer {
   padding: 3rem 0;
+  position: relative;
 }
 
 .fit_footer_nav a {

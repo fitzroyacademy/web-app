@@ -86,16 +86,21 @@ nav, main, aside{z-index: 100;}
 .fit_subvidya{z-index: 200;}
 .fit_vidya{z-index: 250}
 
-// nb the bootstrap stuff starts at like 1000.
+// nb the bootstrap stuff starts at 1000.
+
+footer{z-index: 1500;}
+
+.fit_player{z-index: 2000;}
 
 header{z-index: 3000;}
-
 header .fit_form_code_head{z-index: 3100;}
-
 
 .fit_sidepanel{z-index: 4000;}
 .fit_sidepanel .panel .content{z-index: 4010;}
 .fit_sidepanel .panel .head{z-index: 4020;}
+
+.tooltip,
+.fit_lesson_tooltip{z-index: 5000;}
 
 // -----------------------------------------------------------------------------------------
 /* header */
@@ -163,8 +168,8 @@ html{height: 100%;}
 body{min-height: 100%;}
 
 body > header, 
-body > nav,
-body > aside,
+body > .fit_player nav,
+body > .fit_player aside,
 .modal-content,
 .fit_sidepanel .panel{box-shadow: 0 0 1.5rem $box_shadow;}
 
@@ -186,7 +191,7 @@ article{flex: 3;}
 // not sure about this :/
 
 @media (min-width: 576px){
-	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto;}
+	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto; background: #fff;}
 
 	main.fit_player nav,
 	main.fit_player article,
@@ -218,9 +223,12 @@ html.fit_minleft{}
 
 
 // no tooltip arrows, ew.
-.tooltip .arrow{display: none ;}
+.tooltip .arrow{display: none;}
 .tooltip .tooltip-inner{background: $blue;}
 
+// tooltips on lessons
+.fit_lesson_tooltip{margin-left: $nav_left_width_collapsed;}
+.fit_lesson_tooltip .tooltip-inner{background: $aqua; color: #fff; padding: 0.25rem 0.75rem; font-size: 0.9rem; border-radius: $border_rad_lg; text-align: left;}
 
 .alert > i{font-size: 1.6rem; margin-right: 0.5rem;}
 
@@ -1537,13 +1545,13 @@ body > .fit_code {margin-top:10rem;}
 
 // active
 .fit_form_code_head.active .form-control,
-.fit_form_code_head.labelled .form-control{border-color: $watermelon; box-shadow: none; width: 8rem;}
+.fit_form_code_head.labelled .form-control,
+.fit_form_code_head.labelled .form-control:active{border-color: $watermelon; box-shadow: none; width: 8rem;}
 .fit_form_code_head .form-control:focus{background: $watermelon_dark;}
 .fit_form_code_head.active .form-control::placeholder{opacity: 0.6; color:#fff;}
 
 .fit_form_code_head.active label,
 .fit_form_code_head.labelled label{display: none;}
-
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -1560,6 +1568,9 @@ body > .fit_code {margin-top:10rem;}
 // NB the mobile menu is an arbitrary width!!! Number of items matters.
 
 @media (max-width: 675px) {
+
+	// hide desktop nav
+
 	.fit_mobile_menu_dropdown{display: none !important; position: fixed; top: $header_height; left: 0; right: 0; bottom: 0; background:rgba(255,255,255,1); padding:1.5rem; justify-content: space-between; align-items:center; justify-content: center; flex-direction:column;}
 
 	.fit_mobile_menu_dropdown .fit_btn{padding: .5rem 0;}
@@ -1576,6 +1587,7 @@ body > .fit_code {margin-top:10rem;}
 
 // larger mode
 @media (min-width: 676px) {
+
 	.fit_mobile_menu_trigger{display: none;}
 
 	// buttons in the non-mobile mode
@@ -1588,7 +1600,7 @@ body > .fit_code {margin-top:10rem;}
 
 // footer navs
 
-footer{padding: 3rem 0;}
+footer{padding: 3rem 0; position: relative;}
 .fit_footer_nav a{font-size:0.9rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
 
 .fit_footer_nav a small{display:block; color: $text_lighter;}

@@ -1,11 +1,21 @@
 $( document ).ready(function() {
 
-// Go team
+  // Go team Javascriptz, hack them codez, roxor them boxorz.
 
 
+  // standard tooltips
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
   })
+
+  // lesson tooltips
+  $(function () {
+    $('[data-fit_lesson_tooltip]').tooltip({
+      placement : 'right',
+      container: 'body',
+      template : '<div class="fit_lesson_tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
+    });
+  });
   
 
   // toggle overall nav size
