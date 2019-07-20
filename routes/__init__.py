@@ -1,5 +1,5 @@
 import sys
-from . import user, course, lesson, object, error, log, segment
+from . import user, course, lesson, object, error, log, segment, pages
 
 def attach(app):
     app.register_blueprint(user.blueprint)
@@ -9,6 +9,8 @@ def attach(app):
     app.register_blueprint(object.blueprint)
     app.register_blueprint(error.blueprint)
     app.register_blueprint(log.blueprint)
+    pages.attach_static_paths(app, 'templates/static')
+    app.register_blueprint(pages.blueprint)
 
 def dump_api(app):
     """

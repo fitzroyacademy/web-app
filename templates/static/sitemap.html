@@ -1,0 +1,29 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+  <div class="fit_medium">
+
+    <h1>Static Pages</h1>
+
+    <p>These pages live in the <code>./templates/static/</code> directory.</p>
+
+    {% for section, pages in pages.items(): %}
+      <h3>{{ section }}</h3>
+      	<ul>
+      	{% for page in pages %}
+      		<li><code><a href="{{ url_for(section+'.'+page) }}">url_for("{{section}}.{{page}}")</a></code></li>
+      	{% endfor %}
+      	</ul>
+    {% endfor %}
+
+  </div>
+
+  </article>
+
+</main>
+
+{% endblock %}
