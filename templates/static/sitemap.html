@@ -15,11 +15,11 @@
 
     {% for section, pages in pages.items(): %}
       <h3>{{ section }}</h3>
-      	<ul>
-      	{% for page in pages %}
-      		<li><code><a href="{{ url_for(section+'.'+page) }}">url_for("{{section}}.{{page}}") -> {{ url_for(section+'.'+page) }}</a></code></li>
-      	{% endfor %}
-      	</ul>
+        <ul>
+        {% for page in pages %}
+          <li><code>url_for("{{section}}.{{page}}")</code> -> <a href="{{ url_for(section+'.'+ page) }}">{{ url_for(section+'.'+page) }}</a></li>
+        {% endfor %}
+        </ul>
     {% endfor %}
 
   </div>
