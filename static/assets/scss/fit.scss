@@ -257,7 +257,7 @@ html.fit_minleft{}
 .fit_device:hover svg > path{fill:$blue;}
 
 // this hax makes the square logo work
-.fit_device svg{height: 1.75rem; margin: 0.75rem 0.35rem 0rem 0.85rem;}
+.fit_device svg{height: 1.75rem; margin: 0.75rem 0.35rem 0.75rem 0.85rem;}
 
 // -----------------------------------------------------------------------------------------
 /* fablocks */
@@ -1620,6 +1620,10 @@ body > .fit_code {margin-top:10rem;}
 
 footer{padding: 3rem 0 5rem; position: relative;}
 .fit_footer_nav a{font-size:0.9rem; color: $text_lightish; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+
+footer .fit_device{width: 3rem;}
+footer .fit_device svg > path{fill: $watermelon;}
+
 
 .fit_footer_nav a small{display:block; color: $text_lighter;}
 .fit_footer_nav a i{font-size: 0.7rem; margin-left: .25rem;}
