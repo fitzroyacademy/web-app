@@ -2,6 +2,7 @@ from glob import glob
 import re
 from functools import wraps
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
+import datamodels
 
 blueprint = Blueprint('pages', __name__)
 
