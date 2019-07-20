@@ -18,6 +18,17 @@ $( document ).ready(function() {
   });
   
 
+  // DEV: Michelle all of these things just add a class to HTML, should we streamline?
+
+  // toggle header search bar
+  $('[data-fit_search_header]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_search_header_on');
+    $('[data-fit_search_header_input]').focus();
+    // DEV: add an 'escape' cancel to this thing
+  });
+
+
   // toggle overall nav size
   $('[data-fit-minleft]').click(function(e) {
     e.preventDefault();   

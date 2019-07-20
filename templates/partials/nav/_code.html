@@ -26,14 +26,20 @@
 
       <div class="right fit_mobile_menu_dropdown">
 
+        <form class="form fit_search_header" action="/search" method="post">
+          <input class="form-control" type="text" value="" placeholder="Search..." data-fit_search_header_input>
+          <button class="btn btn-link"><i class="fal fa-search"></i></button>
+          <a href="#" class="btn btn-link" data-fit_search_header><i class="fal fa-times"></i></a>
+        </form>
+
+        <a href="/search" class="fit_btn search" data-fit_search_header>
+          <i class="fal fa-search"></i>
+          <span class="fit_txt">Search</span>
+        </a>
+
         <a href="/product" class="fit_btn">
           <!-- <i class="fal fa-question-circle"></i> -->
           <span class="fit_txt">Product</span>
-        </a>
-
-        <a href="/about" class="fit_btn">
-          <!-- <i class="fal fa-heart"></i> -->
-          <span class="fit_txt">Team</span>
         </a>
 
         <a href="/support" class="fit_btn">
@@ -41,11 +47,12 @@
           <span class="fit_txt">Support</span>
         </a>
 
-        
-          <a href="/login" class="fit_btn" data-fit-userpanel>
-            <span class="fit_txt">Sign up</span>
-            <i class="fal fa-user"></i>
-          </a>
+      
+        <a href="/login" class="fit_btn login" data-fit-userpanel>
+          <span class="fit_txt">Sign up</span>
+          <i class="fal fa-user"></i>
+          <i class="fal fa-chevron-right"></i>
+        </a>
         
       </div>
     </div><!-- right -->
