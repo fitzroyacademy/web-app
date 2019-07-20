@@ -62,6 +62,10 @@ header .fit_form_code_head {
   z-index: 5000;
 }
 
+.fit_debug {
+  z-index: 9999;
+}
+
 /* header */
 /* header */
 @media (min-width: 576px) {
@@ -124,7 +128,8 @@ body > header,
 body > .fit_player nav,
 body > .fit_player aside,
 .modal-content,
-.fit_sidepanel .panel {
+.fit_sidepanel .panel,
+.fit_debug {
   box-shadow: 0 0 1.5rem rgba(82, 63, 105, 0.1);
 }
 
@@ -3164,6 +3169,32 @@ footer {
     padding-bottom: 1.5rem;
   }
 }
+.fit_debug {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  left: 70%;
+  background: #fff;
+  padding: 1rem;
+  height: 15%;
+  opacity: 0.1;
+  overflow: hidden;
+  overflow-y: scroll;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.fit_debug:hover {
+  opacity: 1;
+}
+
+html.fit_debug_on .fit_debug {
+  height: 50%;
+  left: 2rem;
+  opacity: 1;
+  cursor: s-resize;
+}
+
 .fit_wiggle_daddy:hover .fit_wiggle,
 .fit_wiggle:hover {
   -webkit-animation-name: wiggle;

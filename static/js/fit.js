@@ -40,6 +40,11 @@ $( document ).ready(function() {
     $('html').toggleClass('fit_mobile_menu_active');
   });  
 
+  $('[data-fit_debug]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_debug_on');
+  });
+
   // dropdown that may have an adjacent
   $('[data-fit_active_trigger]').click(function(e) {
     e.preventDefault();   

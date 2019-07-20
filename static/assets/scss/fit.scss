@@ -102,6 +102,9 @@ header .fit_form_code_head{z-index: 3100;}
 .tooltip,
 .fit_lesson_tooltip{z-index: 5000;}
 
+
+.fit_debug{z-index: 9999;}
+
 // -----------------------------------------------------------------------------------------
 /* header */
 
@@ -167,11 +170,13 @@ header .fit_link:hover,
 html{height: 100%;}
 body{min-height: 100%;}
 
+
 body > header, 
 body > .fit_player nav,
 body > .fit_player aside,
 .modal-content,
-.fit_sidepanel .panel{box-shadow: 0 0 1.5rem $box_shadow;}
+.fit_sidepanel .panel,
+.fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
 
 // this is the main bit that holds the other bits, wowee
 main{display:flex; height:100%; align-items:stretch;}
@@ -1614,6 +1619,15 @@ footer{padding: 3rem 0; position: relative;}
 	footer{padding:  0;}
 	footer [class^='col']{padding-bottom: 1.5rem;}
 }
+
+// ----------------------------------------------------------------------------------------------------------------
+// DEBUG the BUG, squish squish
+
+.fit_debug{position: fixed; bottom: 2rem; right:2rem; left: 70%; background: #fff; padding: 1rem; height: 15%; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
+
+.fit_debug:hover{opacity: 1;}
+
+html.fit_debug_on .fit_debug{height: 50%; left: 2rem; opacity: 1; cursor: s-resize;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
