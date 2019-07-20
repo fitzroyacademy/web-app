@@ -4,7 +4,7 @@
     {% include 'partials/_chrome_fa_svg.html' %}
   </a>
 
-  <form class="fit_form_code_head fit_fancyplace" method="post" action="/code" data-fit_head_code_daddy>
+  <form class="fit_form_code_head fit_fancyplace" method="post" action="{{ url_for('course.code') }}" data-fit_head_code_daddy>
 	  <div class="input-group input-group-sm">
 		  <input type="text" name="course_code" id="course_code_header" class="form-control" placeholder="Course code" aria-label="Coure code" data-fit_head_code data-fit-fancyplace>
 		  <div class="input-group-append">
@@ -18,7 +18,7 @@
 
     <div class="right fit_mobile_menu">
 
-      <a href="/" class="fit_btn fit_mobile_menu_trigger" data-fit_mobile_menu_trigger>
+      <a href="{{ url_for('index') }}" class="fit_btn fit_mobile_menu_trigger" data-fit_mobile_menu_trigger>
         <span class="fit_txt">Menu</span>
         <i class="fal fa-chevron-down"></i>
         <i class="fal fa-times"></i>
@@ -41,7 +41,7 @@
         </a>
 
         
-          <a href="/login" class="fit_btn" data-fit-userpanel>
+          <a href="{{ url_for('user.login') }}" class="fit_btn" data-fit-userpanel>
             <span class="fit_txt">Sign up</span>
             <i class="fal fa-user"></i>
           </a>
