@@ -1,0 +1,27 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="modal" data-fit_modal>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fit_avatared">
+          <span class="fit_pic circle"> 
+            <!-- DEV: if profile picture for the TEACHER who made this question show: -->
+              <img src="/assets/images/defaults/face.jpg" alt="user" class="fit_avatar">
+            <!-- DEV: otherwise, show this icon:
+              <i class="fal fa-user"></i>
+             -->
+          </span>
+          How are you feeling?
+        </h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <textarea class="form-control" data-fit_modal_force placeholder="I'm feeling..." id="feedback_text" rows="3"></textarea>
+        </div>
+    
+      </div>
+      <div class="modal-footer">
+        <button type="button" disabled data-fit_modal_submit="Save and continue" class="btn btn-primary">Save feedback</button>
+      </div>
+    </div>
+  </div>
+</div>

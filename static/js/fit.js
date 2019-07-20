@@ -39,7 +39,6 @@ $( document ).ready(function() {
      else {
 
      }
-     
     }
   });
 
@@ -267,9 +266,9 @@ $( document ).ready(function() {
       // find and enable the go button, set the colour.
       // we only set the colour and gather info if it ISN'T 'fit_gather',
       // passing fit_gather means get the data and colour from the button
-      var gobutton = $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_iconselect_go]');
+      var gobutton = $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_modal_submit]');
 
-      if (gobutton.data('fit_iconselect_go') == 'fit_gather')
+      if (gobutton.data('fit_modal_submit') == 'fit_gather')
       {
         gobutton
         .text(language)
@@ -280,7 +279,7 @@ $( document ).ready(function() {
       else
       {
         gobutton
-        .text(gobutton.data('fit_iconselect_go'))
+        .text(gobutton.data('fit_modal_submit'))
         .prop("disabled", false)
         .removeClass('btn-secondary')
         .addClass('btn-primary');
@@ -291,6 +290,19 @@ $( document ).ready(function() {
     });
   });
 
+
+  $('[data-fit_modal_force]').on({
+    'change, keyup': function() {
+     var val = $(this).val();
+     if (val.length > 0)
+     {
+      $('[data-fit_modal_submit]').prop("disabled", false);
+     }
+     else {
+      $('[data-fit_modal_submit]').prop("disabled", true);
+     }
+    }
+  });
   
 
   // ------------------------------------------------------------

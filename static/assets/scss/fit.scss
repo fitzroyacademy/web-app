@@ -255,8 +255,14 @@ html.fit_minleft{}
 .tooltip .tooltip-inner{background: $blue;}
 
 // tooltips on lessons
-.fit_lesson_tooltip{margin-left: $nav_left_width_collapsed;}
+.fit_lesson_tooltip{margin-left: $nav_left_width_collapsed; visibility: hidden}
 .fit_lesson_tooltip .tooltip-inner{background: $aqua; color: #fff; padding: 0.25rem 0.75rem; font-size: 0.9rem; border-radius: $border_rad_lg; text-align: left;}
+
+// only show the lesson tooltips in certain modes
+html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
+@media (max-width: 900px){
+	html .fit_lesson_tooltip{visibility: visible;}
+}
 
 .alert > i{font-size: 1.6rem; margin-right: 0.5rem;}
 
@@ -429,10 +435,13 @@ aside .fit_btn{color: $text;}
 .fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
 // videos are weird
-.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; overflow: hidden; border-radius: $border_rad_sm; position: relative;}
+.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative;}
 .fit_btn > .fit_pic img{height: 100%;}
 .fit_btn > .fit_pic.vid img{margin-left: -25%;}
-.fit_btn > .fit_pic.circle{border-radius: $border_rad_r;}
+.fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff; background: $bg;}
+
+// weirdy border for the underline
+// .fit_btn > .fit_pic.circle:after{content: ''; display: block; position: absolute; top:0; left: 0; right: 0; bottom: 0; border-radius: $border_rad_r; border:5px solid #0f0;}
 
 // close the circle
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
@@ -776,7 +785,7 @@ a.card.rating h5{color: #f4b115;}
 
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
-.fit_course{max-width: $sensible_width; margin: 2rem auto 0; border-radius: 0.3rem; padding: 0 1rem;}
+.fit_course{max-width: $sensible_width; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem;}
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 

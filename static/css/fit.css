@@ -230,6 +230,7 @@ main.fit_player aside::-webkit-scrollbar {
 
 .fit_lesson_tooltip {
   margin-left: 4rem;
+  visibility: hidden;
 }
 
 .fit_lesson_tooltip .tooltip-inner {
@@ -241,6 +242,15 @@ main.fit_player aside::-webkit-scrollbar {
   text-align: left;
 }
 
+html.fit_minleft .fit_lesson_tooltip {
+  visibility: visible;
+}
+
+@media (max-width: 900px) {
+  html .fit_lesson_tooltip {
+    visibility: visible;
+  }
+}
 .alert > i {
   font-size: 1.6rem;
   margin-right: 0.5rem;
@@ -566,7 +576,6 @@ aside .fit_btn {
   height: 2rem;
   width: 2rem;
   margin: 0.5rem 1rem;
-  overflow: hidden;
   border-radius: 0.2rem;
   position: relative;
 }
@@ -581,6 +590,8 @@ aside .fit_btn {
 
 .fit_btn > .fit_pic.circle {
   border-radius: 9999em;
+  box-shadow: 0 0 10px #fff;
+  background: #f5f7f8;
 }
 
 .fit_btn > .fit_pic .fa-times {
@@ -1342,7 +1353,7 @@ a.card.rating h5 {
 
 .fit_course {
   max-width: 1100px;
-  margin: 2rem auto 0;
+  margin: 2rem auto;
   border-radius: 0.3rem;
   padding: 0 1rem;
 }
