@@ -12,9 +12,14 @@ from uuid import uuid4
 
 import routes
 import routes.course
+import routes.error
 
 app = Flask('FitzroyFrontend', static_url_path='')
 routes.attach(app)
+
+@app.errorhandler(404)
+def static_fallback(e):
+    return routes.error.fourohfour(e)
 
 @app.route('/')
 def index():
