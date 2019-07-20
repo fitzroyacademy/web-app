@@ -40,10 +40,13 @@
 {% include 'partials/nav/_footer.html' %}
 
 <!-- At some point we will decide how to bring these in sensibly -->
-<!-- {% include 'partials/modal/_nps.html' %} -->
-<!-- {% include 'partials/modal/_faces.html' %} -->
-<!-- {% include 'partials/modal/_stuck.html' %} -->
-<!-- {% include 'partials/modal/_text.html' %} -->
+
+{% if non_existant_variable %}
+  {% include 'partials/modal/_nps.html' %}
+  {% include 'partials/modal/_faces.html' %}
+  {% include 'partials/modal/_stuck.html' %}
+  {% include 'partials/modal/_text.html' %}
+ {% endif %}
 
 <!-- Other fool's JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

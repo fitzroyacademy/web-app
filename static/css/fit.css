@@ -2293,10 +2293,14 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 }
 .fit_hero {
   padding: 4rem 2rem;
-  margin: 0 auto;
-  max-width: 768px;
   position: relative;
   text-align: center;
+}
+
+.fit_hero > h1,
+.fit_hero > p {
+  max-width: 768px;
+  margin: 0 auto;
 }
 
 .fit_hero h1 {
@@ -2400,6 +2404,21 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
     font-size: 1.3rem;
   }
 }
+.fit_hero .fit_picture {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.fit_hero .fit_picture img {
+  max-width: 100%;
+  border-radius: 0.6rem;
+  box-shadow: 0 0 1.5rem rgba(82, 63, 105, 0.1);
+}
+
+.fit_code + .fit_picture {
+  margin-top: -6rem;
+}
+
 .fit_window {
   border-radius: 0.4rem;
   margin: 0 auto;
@@ -2470,6 +2489,10 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 
 .fit_picture {
   margin: 0 0 2rem;
+}
+
+.fit_picture img {
+  max-width: 100%;
 }
 
 .caption {
@@ -2920,7 +2943,7 @@ body > .fit_auth {
 
 .fit_tabbydiv {
   border-bottom: 0.15rem solid #eff1f1;
-  height: 3.3rem;
+  height: 0.15rem;
   position: relative;
   margin-bottom: 6rem;
 }

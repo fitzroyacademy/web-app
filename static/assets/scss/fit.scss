@@ -1283,7 +1283,11 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 // ----------------------------------------------------------------------------------------------------------------
 // heroic introductio big texty friend
 
-.fit_hero{padding: 4rem 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
+.fit_hero{padding: 4rem 2rem; position: relative; text-align: center;}
+.fit_hero > h1,
+.fit_hero > p{max-width: 768px; margin: 0 auto;}
+
+
 
 
 .fit_hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
@@ -1318,6 +1322,14 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 	.fit_hero p{font-size: 1.3rem;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+// some sales stuff like big images and whatever
+
+.fit_hero .fit_picture{max-width: 1100px; margin: 0 auto;}
+.fit_hero .fit_picture img{max-width: 100%; border-radius: $border_rad_xl; box-shadow: 0 0 1.5rem $box_shadow;}
+
+.fit_code + .fit_picture{margin-top: -6rem}
+
 
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
@@ -1341,6 +1353,7 @@ transition: all .1s ease-in-out;}
 
 // label the pic if that's a thing.
 .fit_picture{margin: 0 0 2rem;}
+.fit_picture img{max-width: 100%;}
 .caption{display: block; padding: 0.5rem 1rem 1rem; text-align: center; font-size: 0.8rem; color: $text_light; }
 .caption a{color:inherit; text-decoration: underline;}
 
@@ -1521,7 +1534,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
 
 
-.fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: 3.3rem; position: relative; margin-bottom: 6rem;}
+.fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: .15rem; position: relative; margin-bottom: 6rem;}
 .fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto; background: $border_lighter; text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem;}
 
 
@@ -1695,6 +1708,8 @@ footer .fit_device svg > path{fill: $watermelon;}
 	footer{padding:  0;}
 	footer [class^='col']{padding-bottom: 1.5rem;}
 }
+
+
 
 // ----------------------------------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish
