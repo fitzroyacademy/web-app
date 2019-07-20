@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
 import datamodels
+import jinja2
 
 blueprint = Blueprint('error', __name__, template_folder='templates')
 
 
 @blueprint.route('/404')
-@blueprint.errorhandler(404)
 def fourohfour(e):
     """
     For when the user has made a mistake or the file is not found.
