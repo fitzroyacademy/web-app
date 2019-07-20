@@ -28,6 +28,21 @@ $( document ).ready(function() {
     // DEV: add an 'escape' cancel to this thing
   });
 
+  // typing for the search bar
+  $('[data-fit_search_header_input]').on({
+    'change, keyup': function() {
+     var search_term = $(this).val();
+     if (search_term.length > 0)
+     {
+      console.log(search_term);
+     }
+     else {
+
+     }
+     
+    }
+  });
+
 
   // toggle overall nav size
   $('[data-fit-minleft]').click(function(e) {
