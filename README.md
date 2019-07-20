@@ -2,6 +2,8 @@
 
 Simple staging ground for our UX templates.
 
+Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
+
 # Local Installation
 
 This application requires Python 3 to work as well as the libraries listed in requirements.txt.
