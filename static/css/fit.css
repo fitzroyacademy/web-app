@@ -2306,7 +2306,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 
 @media (max-width: 767px) {
   .fit_hero {
-    padding: 1rem;
+    padding: 2rem 1rem 1rem;
   }
 
   .fit_hero h1 {
@@ -2459,6 +2459,18 @@ p.tagline .tag i {
   .fit_course_sell.featured p.tagline .tag:first-child {
     display: block;
     padding-bottom: 0.5rem;
+  }
+}
+@media (max-width: 575px) {
+  .fit_course_sell {
+    border-radius: 0.4rem;
+    border: 1px solid #e1e4e5;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .fit_course_sell p.tagline {
+    margin-bottom: 0;
   }
 }
 .fit_keep_watching {
@@ -2951,21 +2963,6 @@ body > .fit_code {
   border-bottom-color: #fff;
 }
 
-@media (max-width: 575px) {
-  .fit_form_code {
-    padding: 1rem;
-  }
-
-  .fit_form_code input,
-.fit_form_code input:focus {
-    font-size: 1.5rem;
-  }
-
-  .fit_form_code .btn {
-    height: 3rem;
-    width: 4rem;
-  }
-}
 .fit_hero .fit_code {
   margin: 5rem auto;
 }
@@ -2978,6 +2975,26 @@ body > .fit_code {
   text-align: left;
 }
 
+@media (max-width: 575px) {
+  .fit_form_code {
+    padding: 1rem;
+  }
+
+  .fit_form_code label,
+.fit_form_code .form-control,
+.fit_form_code .form-control:focus {
+    font-size: 1.5rem;
+  }
+
+  .fit_form_code .btn {
+    height: 3rem;
+    width: 4rem;
+  }
+
+  .fit_hero .fit_code {
+    margin: 3rem auto 0;
+  }
+}
 /* fit header code */
 .fit_form_code_head {
   float: left;

@@ -1261,7 +1261,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 @media (max-width: 767px) {
-	.fit_hero{padding: 1rem;}
+	.fit_hero{padding: 2rem 1rem 1rem;}
 	.fit_hero h1{font-size: 2.5rem;}
 	.fit_hero p{font-size: 1.3rem;}
 }
@@ -1307,6 +1307,12 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_course_sell.featured h3{font-size: 2.5rem; padding: 1.5rem 0 .5rem;}
 	.fit_course_sell.featured p.tagline .tag{display: inline-block; font-size: 1.1rem; margin-right: 1rem; max-width: none;}
 	.fit_course_sell.featured p.tagline .tag:first-child{display: block;padding-bottom: 0.5rem;}
+}
+
+// small mode for the course sell
+@media (max-width: 575px) {
+	.fit_course_sell{border-radius: $border_rad_lg; border:1px solid $border_light; padding: 1rem; margin-bottom: 2rem;}
+	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
 
 
@@ -1507,20 +1513,23 @@ body > .fit_code {margin-top:10rem;}
 .fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
 
 
-// smaller screens!
-@media (max-width: 575px){
-	.fit_form_code{padding: 1rem;}
-	.fit_form_code input,
-	.fit_form_code input:focus{font-size: 1.5rem;}
-	.fit_form_code .btn{height: 3rem; width: 4rem;}
-}
-
 // in the hero block
 .fit_hero .fit_code{margin: 5rem auto;}
 
 // in the bottom of a cousre page:
 .fit_cta .fit_form_code {padding-left: 0;}
 .fit_cta .fit_cta_tnc{text-align: left;}
+
+// smaller screens for the code and hero mode
+@media (max-width: 575px){
+	.fit_form_code{padding: 1rem;}
+	.fit_form_code label,
+	.fit_form_code .form-control,
+	.fit_form_code .form-control:focus{font-size: 1.5rem;}
+	.fit_form_code .btn{height: 3rem; width: 4rem;}
+
+	.fit_hero .fit_code{margin: 3rem auto 0;}
+}
 
 // -----------------------------------------------------------------------------------------
 /* fit header code */
