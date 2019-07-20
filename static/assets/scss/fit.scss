@@ -64,7 +64,7 @@ $border_dark: #c6cbcc;
 $google_red: #ea4335;
 $facebook_blue: #3b5998;
 
-$white_fade: rgba(255,255,255,0.95);
+$white_fade: rgba(255,255,255,0.99);
 
 $box_shadow: rgba(82,63,105,0.1);
 $box_shadow_blue: rgba(8,53,99,0.4);
@@ -100,8 +100,12 @@ header .fit_form_code_head{z-index: 3100;}
 .fit_sidepanel .panel .content{z-index: 4010;}
 .fit_sidepanel .panel .head{z-index: 4020;}
 
+
+.modal{z-index: 5000;}
+
 .tooltip,
-.fit_lesson_tooltip{z-index: 5000;}
+.fit_lesson_tooltip{z-index: 6000;}
+
 
 
 .fit_debug{z-index: 9999;}
@@ -421,7 +425,7 @@ aside .fit_btn{color: $text;}
 // wtf is happening here with white space and height aRRGHGHgh?!
 // okay so we need nowrap for the headers, but not elsewhere.
 header .fit_btn > .fit_txt,
-.head .fit_btn > .fit_txt{ white-space: nowrap;}
+.head .fit_btn > .fit_txt{ white-space: nowrap; font-size: 0.9rem;}
 header .fit_btn:hover,
 .head .fit_btn:hover{background: transparent;}
 
@@ -1090,18 +1094,27 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // modals
 
 .modal{background: $white_fade;}
-.modal-content{border:1px solid #fff;}
+.modal-header,
+.modal-content,
+.modal-footer{border:1px solid #fff; padding: 1rem;}
 
 
+// make our modals a bit roomier...
+@media (min-width: 576px) {
+	.modal-dialog{max-width: 650px;}
+}
+
+.modal-title{font-weight: 900; font-size: 1.75rem; color:$text;}
 
 
-// as set of icons that can be selected!
-.fit_iconselects{display: flex; align-items:center; justify-content:space-evenly; text-align: center;margin-bottom: 2rem;}
+// ----------------------------------------------------------------------------------------------------------------
+// Iconselect: Sets of icons that can be selected!
+.fit_iconselects{display: flex; align-items:center; justify-content:space-between; text-align: center;margin-bottom: 2rem;}
 
 .fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; }
 
-.fit_iconselect i{font-size: 3.5rem; display: block; color: $text_lighter;}
-.fit_iconselect .sub{color:$text_lighter; font-size: 0.75rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
+.fit_iconselect i{font-size: 4rem; display: block; color: $text_lighter;}
+.fit_iconselect .sub{color:$text_lighter; font-weight: 400; font-size: 0.9rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
 
 
 // ------------------------------------------------------------

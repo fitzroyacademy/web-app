@@ -200,50 +200,50 @@ $( document ).ready(function() {
 
   // ------------------------------------------------------------
   // example modals
-  if ($('#modal_unstoppable').length > 0)
+  if ($('[data-fit_modal_unstoppable]').length > 0)
   {
-    $('#modal_unstoppable').modal({
+    $('[data-fit_modal_unstoppable]').modal({
       backdrop: 'static',
       keyboard: false
-    }).show();  
+    });
   }
 
-  if ($('#modal').length > 0)
+  if ($('[data-fit_modal]').length > 0)
   {
-    $('#modal').modal().show();  
+    $('[data-fit_modal]').modal().show();  
   }  
 
   // ------------------------------------------------------------
-  $('[data-fit-iconselects]').each(function(e) {
+  $('[data-fit_iconselects]').each(function(e) {
     var selected = '';
     var icon_color = '';
 
-    $(this).find('[data-fit-iconselect]').on("click", function(i, e) {
+    $(this).find('[data-fit_iconselect]').on("click", function(i, e) {
 
-      $(this).siblings('[data-fit-iconselect]').addBack().removeClass('active').addClass('inactive');
+      $(this).siblings('[data-fit_iconselect]').addBack().removeClass('active').addClass('inactive');
       
       $(this).removeClass('inactive').addClass('active');
-      $(this).parents('[data-fit-iconselects]').addClass('active');
+      $(this).parents('[data-fit_iconselects]').addClass('active');
 
       icon_color = $(this).find('i').css('color');
-      language = $(this).data('fit-iconselect');
+      language = $(this).data('fit_iconselect');
 
       // if there is a why, show it
       if (typeof $(this).data('fit-triggerwhy') !== 'undefined')
       {
-        $(this).parents('[data-fit-iconselect-parent]').find('[data-fit-feedback-why]').collapse('show');
+        $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('show');
       }
       else
       {
-        $(this).parents('[data-fit-iconselect-parent]').find('[data-fit-feedback-why]').collapse('hide'); 
+        $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('hide'); 
       }
 
       // find and enable the go button, set the colour.
       // we only set the colour and gather info if it ISN'T 'fit_gather',
       // passing fit_gather means get the data and colour from the button
-      var gobutton = $(this).parents('[data-fit-iconselect-parent]').find('[data-fit-iconselect-go]');
+      var gobutton = $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_iconselect_go]');
 
-      if (gobutton.data('fit-iconselect-go') == 'fit_gather')
+      if (gobutton.data('fit_iconselect_go') == 'fit_gather')
       {
         gobutton
         .text(language)
@@ -254,7 +254,7 @@ $( document ).ready(function() {
       else
       {
         gobutton
-        .text(gobutton.data('fit-iconselect-go'))
+        .text(gobutton.data('fit_iconselect_go'))
         .prop("disabled", false)
         .removeClass('btn-secondary')
         .addClass('btn-primary');
