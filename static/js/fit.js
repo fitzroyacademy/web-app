@@ -292,15 +292,13 @@ $( document ).ready(function() {
 
 
   $('[data-fit_modal_force]').on({
-    'change, keyup': function() {
-     var val = $(this).val();
-     if (val.length > 0)
-     {
-      $('[data-fit_modal_submit]').prop("disabled", false);
-     }
-     else {
-      $('[data-fit_modal_submit]').prop("disabled", true);
-     }
+    'change, keyup': function(e) {
+      var val = $(this).val();
+      if (val.length > $(this).data('fit_modal_force')){
+        $('[data-fit_modal_submit]').prop("disabled", false);
+      } else {
+        $('[data-fit_modal_submit]').prop("disabled", true);
+      }
     }
   });
   
