@@ -29,16 +29,16 @@
 {% include 'partials/_flash_alerts.html' %}
 
 {% if current_user %}
-  {% include 'partials/_nav_user_loggedin.html' %}
+  {% include 'partials/nav/_user_loggedin.html' %}
 {% else %}
-  {% include 'partials/_nav_code.html' %}
+  {% include 'partials/nav/_code.html' %}
 {% endif %}
 
 
 {% block body %}{% endblock %}
 
 
-{% include 'partials/_nav_footer.html' %}
+{% include 'partials/nav/_footer.html' %}
 
 <!-- Other fool's JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

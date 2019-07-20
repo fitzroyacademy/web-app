@@ -250,11 +250,14 @@ html.fit_minleft{}
 // -----------------------------------------------------------------------------------------
 // the brand device up the top left
 
-.fit_device{display: block;}
-.fit_device_svg{height: 2rem; margin: 0.5rem 0.35rem 0.5rem 0.65rem;}
-.fit_device_svg > path{fill-rule: evenodd; fill: $brand;}
+.fit_device{display: block; }
+.fit_device svg{height: 2rem; margin: 0.5rem 0.35rem 0.5rem 0.65rem;}
+.fit_device svg > path{fill-rule: evenodd; fill: $brand;}
 
-.fit_device:hover .fit_device_svg > path{fill:$blue;}
+.fit_device:hover svg > path{fill:$blue;}
+
+// this hax makes the square logo work
+.fit_device svg{height: 1.75rem; margin: 0.75rem 0.35rem 0rem 0.85rem;}
 
 // -----------------------------------------------------------------------------------------
 /* fablocks */
@@ -1311,7 +1314,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 // small mode for the course sell
 @media (max-width: 575px) {
-	.fit_course_sell{border-radius: $border_rad_lg; border:1px solid $border_light; padding: 1rem; margin-bottom: 2rem;}
+	.fit_course_sell{border-radius: $border_rad_xl; border:1px solid $border_light; padding: 1rem; margin-bottom: 2rem;}
 	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
 
