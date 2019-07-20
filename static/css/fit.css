@@ -3125,13 +3125,13 @@ body > .fit_code {
   }
 }
 footer {
-  padding: 3rem 0;
+  padding: 3rem 0 5rem;
   position: relative;
 }
 
 .fit_footer_nav a {
   font-size: 0.9rem;
-  color: #717b81;
+  color: #8f989d;
   border-bottom: 3px solid transparent;
   text-decoration: none;
   font-weight: 400;

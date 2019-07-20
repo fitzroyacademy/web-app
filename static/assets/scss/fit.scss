@@ -50,6 +50,7 @@ $watermelon_darker: #cc073a;
 
 $text: #4f5153;
 $text_light: #717b81;
+$text_lightish: #8f989d;
 $text_lighter: #b0b4b7;
 $text_lightest: #d2d7da;
 
@@ -1605,8 +1606,8 @@ body > .fit_code {margin-top:10rem;}
 
 // footer navs
 
-footer{padding: 3rem 0; position: relative;}
-.fit_footer_nav a{font-size:0.9rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+footer{padding: 3rem 0 5rem; position: relative;}
+.fit_footer_nav a{font-size:0.9rem; color: $text_lightish; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
 
 .fit_footer_nav a small{display:block; color: $text_lighter;}
 .fit_footer_nav a i{font-size: 0.7rem; margin-left: .25rem;}
