@@ -2419,6 +2419,11 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
   margin-top: -6rem;
 }
 
+@media (max-width: 575px) {
+  .fit_code + .fit_picture {
+    margin-top: -2rem;
+  }
+}
 .fit_window {
   border-radius: 0.4rem;
   margin: 0 auto;
@@ -2510,6 +2515,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel {
 
 .fit_course_sell {
   padding: 0 0 2rem;
+  background: #fff;
 }
 
 .fit_course_sell h3 {
@@ -2567,12 +2573,55 @@ p.tagline .tag i {
     padding-bottom: 0.5rem;
   }
 }
+.fit_tabbydiv {
+  border-bottom: 0.15rem solid #eff1f1;
+  height: 0.15rem;
+  position: relative;
+  margin-bottom: 6rem;
+}
+
+.fit_tabby {
+  border-radius: 0 0 0.3rem 0.3rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.7rem;
+  display: block;
+  width: 10rem;
+  color: #b0b4b7;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-weight: 900;
+  margin: 0 auto;
+  text-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5rem;
+  background: #eff1f1;
+}
+
 @media (max-width: 575px) {
+  .fit_tabbydiv {
+    margin-bottom: 0;
+  }
+
+  .fit_tabby {
+    background: #fff;
+    box-shadow: 0 1px 1px #e1e4e5;
+  }
+
+  .fit_course_sells {
+    background: #f5f7f8;
+    padding-top: 4rem;
+    padding-bottom: 0.1rem;
+    margin-top: -0.1rem;
+  }
+
   .fit_course_sell {
     border-radius: 0.6rem;
     border: 1px solid #e1e4e5;
     padding: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .fit_course_sell p.tagline {
@@ -2941,33 +2990,6 @@ body > .fit_auth {
   /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */
 }
 
-.fit_tabbydiv {
-  border-bottom: 0.15rem solid #eff1f1;
-  height: 0.15rem;
-  position: relative;
-  margin-bottom: 6rem;
-}
-
-.fit_tabby {
-  border-radius: 0 0 0.3rem 0.3rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.7rem;
-  display: block;
-  width: 10rem;
-  color: #b0b4b7;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  font-weight: 900;
-  margin: 0 auto;
-  background: #eff1f1;
-  text-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.8);
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5rem;
-}
-
 /* the thing that makes big course code entry thing */
 /* NB this builds upon fit_fancyplace */
 .fit_code {
@@ -2981,7 +3003,6 @@ body > .fit_code {
 
 .fit_form_code {
   position: relative;
-  max-width: 25rem;
   background: #f21e55;
   padding: 1.75rem;
   border-radius: 0.6rem;
@@ -2994,6 +3015,7 @@ body > .fit_code {
 .fit_form_code .form-control {
   border: 3px solid #c7003c;
   height: 2em;
+  -webkit-appearance: none;
 }
 
 .fit_form_code .form-control,
@@ -3099,6 +3121,7 @@ body > .fit_code {
 
   .fit_hero .fit_code {
     margin: 3rem auto 0;
+    max-width: 100%;
   }
 }
 /* fit header code */
@@ -3145,6 +3168,7 @@ body > .fit_code {
   padding: 0.25rem 0.75rem;
   width: 4rem;
   transition: all 0.1s ease-in-out;
+  -webkit-appearance: none;
 }
 
 .fit_form_code_head .input-group-append {
@@ -3287,8 +3311,8 @@ footer {
 }
 
 .fit_footer_nav a {
-  font-size: 0.9rem;
-  color: #8f989d;
+  font-size: 0.95rem;
+  color: #717b81;
   border-bottom: 3px solid transparent;
   text-decoration: none;
   font-weight: 400;

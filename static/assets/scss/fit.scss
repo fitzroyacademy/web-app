@@ -1330,6 +1330,9 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 .fit_code + .fit_picture{margin-top: -6rem}
 
+@media (max-width: 575px){
+	.fit_code + .fit_picture{margin-top: -2rem;}
+}
 
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
@@ -1357,7 +1360,7 @@ transition: all .1s ease-in-out;}
 .caption{display: block; padding: 0.5rem 1rem 1rem; text-align: center; font-size: 0.8rem; color: $text_light; }
 .caption a{color:inherit; text-decoration: underline;}
 
-.fit_course_sell{padding: 0 0 2rem;}
+.fit_course_sell{padding: 0 0 2rem; background: #fff;}
 .fit_course_sell h3 {padding: 1rem 0 0;}
 .fit_course_sell h3 a{color: inherit;}
 .fit_course_sell h3 a:hover{color: $blue;}
@@ -1367,6 +1370,7 @@ p.tagline .tag{display: block; position: relative; font-size: 1rem; padding-bott
 p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 @media (min-width: 768px) {
+
 	// featured is a bit weird
 	.fit_course_sell.featured {max-width: 900px; margin:0 auto 2rem;}
 	.fit_course_sell.featured h3{font-size: 2.5rem; padding: 1.5rem 0 .5rem;}
@@ -1374,9 +1378,19 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_course_sell.featured p.tagline .tag:first-child{display: block;padding-bottom: 0.5rem;}
 }
 
-// small mode for the course sell
+// the wee tab
+.fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: .15rem; position: relative; margin-bottom: 6rem;}
+.fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto;  text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem; background: $border_lighter;}
+
+
+// small mode for the course sell on mobile
 @media (max-width: 575px) {
-	.fit_course_sell{border-radius: $border_rad_xl; border:1px solid $border_light; padding: 1rem; margin-bottom: 2rem;}
+	.fit_tabbydiv{margin-bottom: 0;}
+	.fit_tabby{background: #fff; box-shadow: 0 1px 1px $border_light;}
+
+	.fit_course_sells{background: $bg; padding-top: 4rem; padding-bottom: .1rem; margin-top: -.1rem;}
+
+	.fit_course_sell{border-radius: $border_rad_xl; border:1px solid $border_light; padding: 1rem; margin-bottom: 1rem;}
 	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
 
@@ -1534,10 +1548,6 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
 
 
-.fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: .15rem; position: relative; margin-bottom: 6rem;}
-.fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto; background: $border_lighter; text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem;}
-
-
 // ----------------------------------------------------------------------------------------------------------------
 /* the thing that makes big course code entry thing */
 /* NB this builds upon fit_fancyplace */
@@ -1549,10 +1559,10 @@ $fit_code_width: 25rem;
 // on its own
 body > .fit_code {margin-top:10rem;}
 
-.fit_form_code{position: relative; max-width: $fit_code_width; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
+.fit_form_code{position: relative; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
 .fit_form_code .form-group{position: relative;}
 
-.fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em;}
+.fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em; -webkit-appearance: none;}
 .fit_form_code .form-control,
 .fit_form_code .form-control:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; color: #fff; box-shadow: none;text-transform: uppercase;}
 
@@ -1593,7 +1603,7 @@ body > .fit_code {margin-top:10rem;}
 	.fit_form_code .form-control:focus{font-size: 1.5rem;}
 	.fit_form_code .btn{height: 3rem; width: 4rem;}
 
-	.fit_hero .fit_code{margin: 3rem auto 0;}
+	.fit_hero .fit_code{margin: 3rem auto 0; max-width: 100%}
 }
 
 // -----------------------------------------------------------------------------------------
@@ -1615,7 +1625,7 @@ body > .fit_code {margin-top:10rem;}
 
 
 // mess with widths using fancyplace
-.fit_form_code_head .form-control{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out;}
+.fit_form_code_head .form-control{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out; -webkit-appearance: none;}
 .fit_form_code_head .input-group-append{ width: 2.5rem;}
 
 .fit_form_code_head label,
@@ -1691,7 +1701,8 @@ html.fit_search_header_on .fit_search_header{display: flex;}
 // footer navs
 
 footer{padding: 3rem 0 5rem; position: relative;}
-.fit_footer_nav a{font-size:0.9rem; color: $text_lightish; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+
+.fit_footer_nav a{font-size:0.95rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
 
 footer .fit_device{width: 3rem;}
 footer .fit_device svg > path{fill: $watermelon;}
