@@ -1564,7 +1564,7 @@ body > .fit_code {margin-top:10rem;}
 
 .fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em; -webkit-appearance: none;}
 .fit_form_code .form-control,
-.fit_form_code .form-control:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; color: #fff; box-shadow: none;text-transform: uppercase;}
+.fit_form_code .form-control:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; color: #fff; box-shadow: none; text-transform: uppercase;}
 
 .fit_form_code.active .form-control,
 .fit_form_code.labelled .form-control{border:3px solid $watermelon_dark;}
@@ -1625,7 +1625,13 @@ body > .fit_code {margin-top:10rem;}
 
 
 // mess with widths using fancyplace
-.fit_form_code_head .form-control{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out; -webkit-appearance: none;}
+.fit_form_code_head .form-control,
+.fit_form_code_head .form-control:focus{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out; -webkit-appearance: none; text-transform: uppercase;}
+
+.fit_form_code_head .form-control::placeholder,
+.fit_form_code_head .form-control:focus::placeholder{text-transform: none;}
+
+
 .fit_form_code_head .input-group-append{ width: 2.5rem;}
 
 .fit_form_code_head label,
@@ -1645,13 +1651,14 @@ body > .fit_code {margin-top:10rem;}
 
 
 // search in the top bar
-header .fit_search_header{display: none; position: absolute; top:0; left:0; right: 0; background: #fff; padding: 0.5rem;}
+header .fit_search_header{display: none; position: absolute; top:0; left:0; right: 0; background: #fff; padding: 0.5rem; height: $header_height;}
 header .fit_search_header .form-control,
 header .fit_search_header .btn{height: 2.2rem;}
 header .fit_search_header button{margin-left: -2.7rem; color:$text_light;}
 
+header .fit_search_header .results{position: fixed; display: flex; flex-direction:column; top:$header_height; left: 0; right: 0; bottom: 0; background: $bg;}
 
-html.fit_search_header_on .fit_search_header{display: flex;}
+html.fit_search_header_active .fit_search_header{display: flex;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // Mobile menu fun

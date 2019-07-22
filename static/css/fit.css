@@ -3164,11 +3164,18 @@ body > .fit_code {
   color: transparent;
 }
 
-.fit_form_code_head .form-control {
+.fit_form_code_head .form-control,
+.fit_form_code_head .form-control:focus {
   padding: 0.25rem 0.75rem;
   width: 4rem;
   transition: all 0.1s ease-in-out;
   -webkit-appearance: none;
+  text-transform: uppercase;
+}
+
+.fit_form_code_head .form-control::placeholder,
+.fit_form_code_head .form-control:focus::placeholder {
+  text-transform: none;
 }
 
 .fit_form_code_head .input-group-append {
@@ -3220,6 +3227,7 @@ header .fit_search_header {
   right: 0;
   background: #fff;
   padding: 0.5rem;
+  height: 3.2rem;
 }
 
 header .fit_search_header .form-control,
@@ -3232,7 +3240,18 @@ header .fit_search_header button {
   color: #717b81;
 }
 
-html.fit_search_header_on .fit_search_header {
+header .fit_search_header .results {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 3.2rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f5f7f8;
+}
+
+html.fit_search_header_active .fit_search_header {
   display: flex;
 }
 

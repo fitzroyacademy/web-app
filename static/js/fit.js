@@ -21,9 +21,9 @@ $( document ).ready(function() {
   // DEV: Michelle all of these things just add a class to HTML, should we streamline?
 
   // toggle header search bar
-  $('[data-fit_search_header]').click(function(e) {
+  $('[data-fit_search_header_trigger]').click(function(e) {
     e.preventDefault();   
-    $('html').toggleClass('fit_search_header_on');
+    $('html').toggleClass('fit_search_header_active');
     $('[data-fit_search_header_input]').focus();
     // DEV: add an 'escape' cancel to this thing
   });
@@ -311,6 +311,41 @@ $( document ).ready(function() {
   });
 
 
+  // escape to close (27 is escape apparently)
+  $(document).keydown(function(e) {
+    if (e.keyCode == 27) {
+      
+      // first check, and only close menu if search or user panel is not on
+      if (
+          ($('html').hasClass('fit_mobile_menu_active'))
+          &&
+          (!$('html').hasClass('fit_search_header_active'))
+          &&
+          (!$('html').hasClass('fit_revealuserpanel'))
+        ){
+        $('html').removeClass('fit_mobile_menu_active');
+      }
+
+      // just the user panel
+      if (
+          ($('html').hasClass('fit_revealuserpanel'))
+        ){
+        $('html').removeClass('fit_revealuserpanel');
+      }      
+
+      // only remove search if the menu is active
+      if (
+          ($('html').hasClass('fit_search_header_active'))
+        ){
+        $('html').removeClass('fit_search_header_active');
+      }      
+
+    }
+  });  
+
+
+  // ------------------------------------------------------------
+  // charts!
 
   let chart = null;
   function render_student_chart(student_selector) {
