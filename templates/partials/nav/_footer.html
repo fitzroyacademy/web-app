@@ -4,8 +4,8 @@
 
       <div class="row">
         <div class="col-sm">
-          <a href="{{ url_for('index') }}" class="fit_device">
-            {% include 'partials/_chrome_fa_svg.html' %}
+          <a href="/" class="fit_device">
+            {% include 'partials/chrome/_fa_svg_square.html' %}
           </a>
         </div>
         <div class="col-sm">
@@ -25,8 +25,8 @@
         </div>
         <div class="col-sm">
           <div class="fit_footer_nav">
-            <a href="{{ url_for('support.index') }}" class="note {{ active_link('support.index') }}"><small>Need help?</small>Get support</a>
-            {{ link_to('about.michael', 'In loving memory') }}</a>
+            <a href="support" class="note"><small>Need help?</small>Get support</a>
+            <a href="about/michael">In loving memory</a>
           </div>
         </div>
       </div>

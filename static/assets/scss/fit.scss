@@ -22,6 +22,9 @@ $new_blue: #2774f8;
 $new_watermelon: #f82a5f;
 
 
+// pale and stale yo
+$old_blue: #0f7ff4;
+$old_blue_light: #21adf5;
 
 
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever. */
@@ -30,10 +33,11 @@ $bg: #f5f7f8;
 $bg_light: #f7f9fa;
 
 $brand: #464749;
+$brand_light: #666a71;
 $brand_dark: #1c1f20;
 
-$blue: #0f7ff4;
-$blue_light: #21adf5;
+$blue: #2793f8;
+$blue_light: #378ff2;
 $blue_alt: #139ddd;
 
 $blue_dark: #0a6da2;
@@ -42,9 +46,13 @@ $impact_green: #65ae48;
 $pink: #e809db;
 $yellow: #f4b115;
 $aqua: #66b3b7;
-$watermelon: #f82a5f;
-$watermelon_dark: #e71e52;
-$watermelon_darker: #cc073a;
+
+// possibly a new brand?!
+$watermelon: #f21e55;
+$watermelon_light: #f73c6d;
+$watermelon_dark: #c7003c;
+$watermelon_darker: #a90033;
+$watermelon_vibrant: #e6033e;
 
 
 
@@ -64,7 +72,7 @@ $border_dark: #c6cbcc;
 $google_red: #ea4335;
 $facebook_blue: #3b5998;
 
-$white_fade: rgba(255,255,255,0.95);
+$white_fade: rgba(255,255,255,0.99);
 
 $box_shadow: rgba(82,63,105,0.1);
 $box_shadow_blue: rgba(8,53,99,0.4);
@@ -94,14 +102,28 @@ footer{z-index: 1500;}
 .fit_player{z-index: 2000;}
 
 header{z-index: 3000;}
-header .fit_form_code_head{z-index: 3100;}
+header .fit_device,
+header .fit_form_code_head{z-index: 3100}
+header .fit_mobile_menu{z-index: 3200;}
+
+header .fit_btn {z-index: 3300}
+header .fit_btn i{z-index: 3310}
+header .fit_btn > .fit_txt:after{z-index: 3330;}
+
+header .fit_mobile_menu_dropdown,
+header .fit_search_header{z-index: 3500;}
+
 
 .fit_sidepanel{z-index: 4000;}
 .fit_sidepanel .panel .content{z-index: 4010;}
 .fit_sidepanel .panel .head{z-index: 4020;}
 
+
+.modal{z-index: 5000;}
+
 .tooltip,
-.fit_lesson_tooltip{z-index: 5000;}
+.fit_lesson_tooltip{z-index: 6000;}
+
 
 
 .fit_debug{z-index: 9999;}
@@ -175,9 +197,12 @@ body{min-height: 100%;}
 body > header, 
 body > .fit_player nav,
 body > .fit_player aside,
-.modal-content,
 .fit_sidepanel .panel,
 .fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
+
+@media (min-width: 576px){
+	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
+}
 
 // this is the main bit that holds the other bits, wowee
 main{display:flex; height:100%; align-items:stretch;}
@@ -233,8 +258,14 @@ html.fit_minleft{}
 .tooltip .tooltip-inner{background: $blue;}
 
 // tooltips on lessons
-.fit_lesson_tooltip{margin-left: $nav_left_width_collapsed;}
+.fit_lesson_tooltip{margin-left: $nav_left_width_collapsed; visibility: hidden}
 .fit_lesson_tooltip .tooltip-inner{background: $aqua; color: #fff; padding: 0.25rem 0.75rem; font-size: 0.9rem; border-radius: $border_rad_lg; text-align: left;}
+
+// only show the lesson tooltips in certain modes
+html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
+@media (max-width: 900px){
+	html .fit_lesson_tooltip{visibility: visible;}
+}
 
 .alert > i{font-size: 1.6rem; margin-right: 0.5rem;}
 
@@ -250,11 +281,14 @@ html.fit_minleft{}
 // -----------------------------------------------------------------------------------------
 // the brand device up the top left
 
-.fit_device{display: block;}
-.fit_device_svg{height: 2rem; margin: 0.5rem 0.35rem 0.5rem 0.65rem;}
-.fit_device_svg > path{fill-rule: evenodd; fill: $brand;}
+.fit_device{display: block; }
+.fit_device svg{height: 2rem; margin: 0.5rem 0.35rem 0.5rem 0.65rem;}
+.fit_device svg > path{fill-rule: evenodd; fill: $watermelon;}
 
-.fit_device:hover .fit_device_svg > path{fill:$blue;}
+.fit_device:hover svg > path{fill:$watermelon_vibrant;}
+
+// this hax makes the square logo work
+.fit_device svg{height: 1.75rem; margin: 0.75rem 0.35rem 0.75rem 0.85rem;}
 
 // -----------------------------------------------------------------------------------------
 /* fablocks */
@@ -398,17 +432,19 @@ aside .fit_btn{color: $text;}
 .fit_btn:hover{color:$blue;}
 
 // icons, fixed width
-.fit_btn > i,
-.fit_btn > [class*="fa-"]{width: $nav_left_width_collapsed; justify-content: center; text-align: center;}
+.fit_btn > i{width: $nav_left_width_collapsed; justify-content: center; text-align: center;}
 
 // wee bits of text on the right
 .fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
 // videos are weird
-.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; overflow: hidden; border-radius: $border_rad_sm; position: relative;}
+.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative;}
 .fit_btn > .fit_pic img{height: 100%;}
 .fit_btn > .fit_pic.vid img{margin-left: -25%;}
-.fit_btn > .fit_pic.circle{border-radius: $border_rad_r;}
+.fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff; background: $bg;}
+
+// weirdy border for the underline
+// .fit_btn > .fit_pic.circle:after{content: ''; display: block; position: absolute; top:0; left: 0; right: 0; bottom: 0; border-radius: $border_rad_r; border:5px solid #0f0;}
 
 // close the circle
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
@@ -418,12 +454,22 @@ aside .fit_btn{color: $text;}
 // wtf is happening here with white space and height aRRGHGHgh?!
 // okay so we need nowrap for the headers, but not elsewhere.
 header .fit_btn > .fit_txt,
-.head .fit_btn > .fit_txt{ white-space: nowrap;}
+.head .fit_btn > .fit_txt{ white-space: nowrap; font-size: 0.9rem;}
 header .fit_btn:hover,
 .head .fit_btn:hover{background: transparent;}
 
-// header underlines are weird
+// aaah argh okay fine, smaller icons on the headers bah
+header .fit_btn > .fit_txt{}
+header .fit_btn > i{width: 2.5rem}
+header .fit_btn > i:first-child{margin-left: .5rem;} // makes up for the weird width, ugh
+header .fit_btn > i:not(:first-child){margin-right: .5rem;} // not allows for two icons, ugh
 
+// freak the login friend to intimate the right-side fun:
+header .fit_btn.login .fa-chevron-right{display: none; position: absolute; top:0; right: 0; bottom: 0; background: #fff; align-items:center;}
+header .fit_btn.login:hover .fa-chevron-right{display: flex;}
+
+
+// header underlines are weird
 header .fit_btn > .fit_txt:after,
 .head .fit_btn > .fit_txt:after{
 	transition: all .2s ease-in-out;
@@ -742,7 +788,7 @@ a.card.rating h5{color: #f4b115;}
 
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
-.fit_course{max-width: $sensible_width; margin: 2rem auto 0; border-radius: 0.3rem; padding: 0 1rem;}
+.fit_course{max-width: $sensible_width; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem;}
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 
@@ -1087,18 +1133,33 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // modals
 
 .modal{background: $white_fade;}
-.modal-content{border:1px solid #fff;}
+.modal-header,
+.modal-content,
+.modal-footer{border:1px solid #fff; padding: 1rem;}
+
+@media (max-width: 575px) {
+	.modal-header,
+	.modal-content,
+	.modal-footer{padding:.5rem;}
+}
 
 
+// make our modals a bit roomier...
+@media (min-width: 576px) {
+	.modal-dialog{max-width: 650px;}
+}
+
+.modal-title{font-weight: 900; font-size: 1.75rem; color:$text;}
 
 
-// as set of icons that can be selected!
-.fit_iconselects{display: flex; align-items:center; justify-content:space-evenly; text-align: center;margin-bottom: 2rem;}
+// ----------------------------------------------------------------------------------------------------------------
+// Iconselect: Sets of icons that can be selected!
+.fit_iconselects{display: flex; align-items:center; justify-content:space-between; text-align: center;margin-bottom: 2rem;}
 
 .fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; }
 
-.fit_iconselect i{font-size: 3.5rem; display: block; color: $text_lighter;}
-.fit_iconselect .sub{color:$text_lighter; font-size: 0.75rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
+.fit_iconselect i{font-size: 4rem; display: block; color: $text_light;}
+.fit_iconselect .sub{color:$text_lighter; font-weight: 400; font-size: 0.9rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
 
 
 // ------------------------------------------------------------
@@ -1115,7 +1176,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 
 // active
-.fit_iconselects.numbers .fit_iconselect.active{background: #fff; border-color: $border_light; margin: -0.15rem 0;}
+.fit_iconselects.numbers .fit_iconselect.active{background: #fff; border-color: $border_light; margin: -0.15rem 0; border-radius: $border_rad_md;}
 
 // hovers
 .fit_iconselects.numbers .fit_iconselect:hover:not(.active) i{color: $blue;}
@@ -1126,6 +1187,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 @media (max-width: 575px) {
 	.fit_iconselect{width: 3rem; height: 3rem;}
 	.fit_iconselect i{font-size: 2.5rem}
+	.fit_iconselects.numbers .fit_iconselect i{font-size: 1.2rem;}
 }
 
 .fit_iconselect:hover{}
@@ -1231,7 +1293,11 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 // ----------------------------------------------------------------------------------------------------------------
 // heroic introductio big texty friend
 
-.fit_hero{padding: 4rem 2rem; margin: 0 auto; max-width: 768px; position: relative; text-align: center;}
+.fit_hero{padding: 4rem 2rem; position: relative; text-align: center;}
+.fit_hero > h1,
+.fit_hero > p{max-width: 768px; margin: 0 auto;}
+
+
 
 
 .fit_hero h1{line-height: 150%; font-size: 4.5rem; color:$brand_dark;}
@@ -1261,11 +1327,22 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 @media (max-width: 767px) {
-	.fit_hero{padding: 1rem;}
+	.fit_hero{padding: 2rem 1rem 1rem;}
 	.fit_hero h1{font-size: 2.5rem;}
 	.fit_hero p{font-size: 1.3rem;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+// some sales stuff like big images and whatever
+
+.fit_hero .fit_picture{max-width: 900px; margin: 0 auto;}
+.fit_hero .fit_picture img{max-width: 100%; border-radius: $border_rad_xl; box-shadow: 0 0 1.5rem $box_shadow;}
+
+.fit_code + .fit_picture{margin-top: -6rem}
+
+@media (max-width: 575px){
+	.fit_code + .fit_picture{margin-top: -2rem;}
+}
 
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
@@ -1289,10 +1366,11 @@ transition: all .1s ease-in-out;}
 
 // label the pic if that's a thing.
 .fit_picture{margin: 0 0 2rem;}
+.fit_picture img{max-width: 100%;}
 .caption{display: block; padding: 0.5rem 1rem 1rem; text-align: center; font-size: 0.8rem; color: $text_light; }
 .caption a{color:inherit; text-decoration: underline;}
 
-.fit_course_sell{padding: 0 0 2rem;}
+.fit_course_sell{padding: 0 0 2rem; background: #fff;}
 .fit_course_sell h3 {padding: 1rem 0 0;}
 .fit_course_sell h3 a{color: inherit;}
 .fit_course_sell h3 a:hover{color: $blue;}
@@ -1302,11 +1380,28 @@ p.tagline .tag{display: block; position: relative; font-size: 1rem; padding-bott
 p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 @media (min-width: 768px) {
+
 	// featured is a bit weird
 	.fit_course_sell.featured {max-width: 900px; margin:0 auto 2rem;}
 	.fit_course_sell.featured h3{font-size: 2.5rem; padding: 1.5rem 0 .5rem;}
 	.fit_course_sell.featured p.tagline .tag{display: inline-block; font-size: 1.1rem; margin-right: 1rem; max-width: none;}
 	.fit_course_sell.featured p.tagline .tag:first-child{display: block;padding-bottom: 0.5rem;}
+}
+
+// the wee tab
+.fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: .15rem; position: relative; margin-bottom: 6rem;}
+.fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto;  text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem; background: $border_lighter;}
+
+
+// small mode for the course sell on mobile
+@media (max-width: 575px) {
+	.fit_tabbydiv{margin-bottom: 0;}
+	.fit_tabby{background: #fff; box-shadow: 0 1px 1px $border_light;}
+
+	.fit_course_sells{background: $bg; padding-top: 4rem; padding-bottom: .1rem; margin-top: -.1rem;}
+
+	.fit_course_sell{border-radius: $border_rad_xl; border:1px solid $border_light; padding: 1rem; margin-bottom: 1rem;}
+	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
 
 
@@ -1449,8 +1544,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 
 // when it's active
-.fit_fancyplace.active .form-control{border-color: $watermelon;}
-.fit_fancyplace.active.labelled label{color:$watermelon_dark}
+.fit_fancyplace.active .form-control{border-color: $blue;}
+.fit_fancyplace.active.labelled label{color:$text;}
 
 // transparent the placeholder on focus
 .fit_fancyplace .form-control::-webkit-input-placeholder { color:transparent; }
@@ -1461,10 +1556,6 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 // login on its own
 body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
-
-
-.fit_tabbydiv{border-bottom: 0.15rem solid $border_lighter; height: 3.3rem; position: relative; margin-bottom: 6rem;}
-.fit_tabby{border-radius: 0 0 $border_rad_md $border_rad_md; padding:0.5rem 0.75rem; font-size: 0.7rem; display:block; width: 10rem; color:$text_lighter; text-align: center; text-transform: uppercase; letter-spacing: 0.1rem; font-weight: 900; margin: 0 auto; background: $border_lighter; text-shadow: inset 0 -1px 0 rgba(255,255,255,0.8); position: absolute; top:100%; left: 50%; margin-left: -5rem;}
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -1478,12 +1569,12 @@ $fit_code_width: 25rem;
 // on its own
 body > .fit_code {margin-top:10rem;}
 
-.fit_form_code{position: relative; max-width: $fit_code_width; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
+.fit_form_code{position: relative; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
 .fit_form_code .form-group{position: relative;}
 
-.fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em;}
+.fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em; -webkit-appearance: none;}
 .fit_form_code .form-control,
-.fit_form_code .form-control:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; color: #fff; box-shadow: none;text-transform: uppercase;}
+.fit_form_code .form-control:focus{font-size: 2rem; color: #fff; background: $watermelon_dark; color: #fff; box-shadow: none; text-transform: uppercase;}
 
 .fit_form_code.active .form-control,
 .fit_form_code.labelled .form-control{border:3px solid $watermelon_dark;}
@@ -1507,20 +1598,23 @@ body > .fit_code {margin-top:10rem;}
 .fit_cta_tnc a:hover{text-decoration: none; border-bottom-color: #fff;}
 
 
-// smaller screens!
-@media (max-width: 575px){
-	.fit_form_code{padding: 1rem;}
-	.fit_form_code input,
-	.fit_form_code input:focus{font-size: 1.5rem;}
-	.fit_form_code .btn{height: 3rem; width: 4rem;}
-}
-
 // in the hero block
 .fit_hero .fit_code{margin: 5rem auto;}
 
 // in the bottom of a cousre page:
 .fit_cta .fit_form_code {padding-left: 0;}
 .fit_cta .fit_cta_tnc{text-align: left;}
+
+// smaller screens for the code and hero mode
+@media (max-width: 575px){
+	.fit_form_code{padding: 1rem;}
+	.fit_form_code label,
+	.fit_form_code .form-control,
+	.fit_form_code .form-control:focus{font-size: 1.5rem;}
+	.fit_form_code .btn{height: 3rem; width: 4rem;}
+
+	.fit_hero .fit_code{margin: 3rem auto 0; max-width: 100%}
+}
 
 // -----------------------------------------------------------------------------------------
 /* fit header code */
@@ -1541,7 +1635,13 @@ body > .fit_code {margin-top:10rem;}
 
 
 // mess with widths using fancyplace
-.fit_form_code_head .form-control{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out;}
+.fit_form_code_head .form-control,
+.fit_form_code_head .form-control:focus{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out; -webkit-appearance: none; text-transform: uppercase;}
+
+.fit_form_code_head .form-control::placeholder,
+.fit_form_code_head .form-control:focus::placeholder{text-transform: none;}
+
+
 .fit_form_code_head .input-group-append{ width: 2.5rem;}
 
 .fit_form_code_head label,
@@ -1560,24 +1660,32 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code_head.labelled label{display: none;}
 
 
+// search in the top bar
+header .fit_search_header{display: none; position: absolute; top:0; left:0; right: 0; background: #fff; padding: 0.5rem; height: $header_height;}
+header .fit_search_header .form-control,
+header .fit_search_header .btn{height: 2.2rem;}
+header .fit_search_header button{margin-left: -2.7rem; color:$text_light;}
+
+header .fit_search_header .results{position: fixed; display: flex; flex-direction:column; top:$header_height; left: 0; right: 0; bottom: 0; background: $bg;}
+
+html.fit_search_header_active .fit_search_header{display: flex;}
+
 // ----------------------------------------------------------------------------------------------------------------
-// get yo wiggle on!
+// Mobile menu fun
+
 .fit_mobile_menu{}
 .fit_mobile_menu_trigger{}
-.fit_mobile_menu_dropdown{}
-
-
+.fit_mobile_menu_dropdown{position:relative;}
 
 .fit_mobile_menu_trigger .fa-times{display: none;}
 
-// mobile mode
+// mobile mode for the menu!
 // NB the mobile menu is an arbitrary width!!! Number of items matters.
 
 @media (max-width: 675px) {
 
 	// hide desktop nav
-
-	.fit_mobile_menu_dropdown{display: none !important; position: fixed; top: $header_height; left: 0; right: 0; bottom: 0; background:rgba(255,255,255,1); padding:1.5rem; justify-content: space-between; align-items:center; justify-content: center; flex-direction:column;}
+	.fit_mobile_menu_dropdown{position:relative; display: none !important; position: fixed; top: $header_height; left: 0; right: 0; bottom: 0; background:rgba(255,255,255,1); padding:1.5rem; justify-content: space-between; align-items:center; justify-content: center; flex-direction:column;}
 
 	.fit_mobile_menu_dropdown .fit_btn{padding: .5rem 0;}
 	.fit_mobile_menu_dropdown .fit_btn .fit_txt{font-size: 1.3rem;}
@@ -1588,6 +1696,9 @@ body > .fit_code {margin-top:10rem;}
 	html.fit_mobile_menu_active .fit_mobile_menu_dropdown{display: flex !important;}
 	html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-times{display: flex;}
 	html.fit_mobile_menu_active .fit_mobile_menu_trigger .fa-chevron-down{display: none;}
+
+
+	header .fit_search_header{position: fixed; border-bottom: 1px solid $border_light;}
 
 }
 
@@ -1607,7 +1718,12 @@ body > .fit_code {margin-top:10rem;}
 // footer navs
 
 footer{padding: 3rem 0 5rem; position: relative;}
-.fit_footer_nav a{font-size:0.9rem; color: $text_lightish; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+
+.fit_footer_nav a{font-size:0.95rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
+
+footer .fit_device{width: 3rem;}
+footer .fit_device svg > path{fill: $watermelon;}
+
 
 .fit_footer_nav a small{display:block; color: $text_lighter;}
 .fit_footer_nav a i{font-size: 0.7rem; margin-left: .25rem;}
@@ -1620,6 +1736,8 @@ footer{padding: 3rem 0 5rem; position: relative;}
 	footer{padding:  0;}
 	footer [class^='col']{padding-bottom: 1.5rem;}
 }
+
+
 
 // ----------------------------------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish

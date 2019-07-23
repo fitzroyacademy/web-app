@@ -30,16 +30,27 @@
 {% include 'partials/_flash_alerts.html' %}
 
 {% if current_user %}
-  {% include 'partials/_nav_user_loggedin.html' %}
+  {% include 'partials/nav/_user_loggedin.html' %}
 {% else %}
-  {% include 'partials/_nav_code.html' %}
+  {% include 'partials/nav/_code.html' %}
 {% endif %}
-
 
 {% block body %}{% endblock %}
 
 
-{% include 'partials/_nav_footer.html' %}
+{% include 'partials/nav/_footer.html' %}
+
+<!-- At some point we will decide how to bring these in sensibly -->
+
+
+  {% include 'partials/modal/_faces.html' %}
+  
+{% if non_existant_variable_lol %}
+  {% include 'partials/modal/_nps.html' %}
+  {% include 'partials/modal/_faces.html' %}
+  {% include 'partials/modal/_stuck.html' %}
+  {% include 'partials/modal/_text.html' %}
+ {% endif %}
 
 <!-- Other fool's JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
