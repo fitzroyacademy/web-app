@@ -20,7 +20,7 @@ def view(slug):
     return render_template('course_intro.html', course=course)
 
 @blueprint.route('/code', methods=["GET", "POST"])
-def by_code():
+def code():
     error = None
     if request.method == "POST":
         c = datamodels.get_course_by_code(request.form['course_code'])

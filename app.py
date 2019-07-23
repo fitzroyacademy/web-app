@@ -73,6 +73,9 @@ def uuid():
     return "{}".format(uuid4().hex)
 app.jinja_env.globals.update(uuid=uuid)
 
+def url_is(endpoint):
+    return request.endpoint == endpoint
+app.jinja_env.globals.update(url_is=url_is)
 
 # This route needs to live here forever because it requires access to the app.
 @app.route('/api', methods=["GET"])
