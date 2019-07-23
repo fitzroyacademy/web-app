@@ -312,92 +312,6 @@ aside .fit{border-bottom: 1px solid #e1e4e5;}
 // -----------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------
-// the old, block level way
-
-
-
-.fit_link{display: block; padding: 1rem 1.5rem; position: relative; min-height: 3.5rem; font-weight: 400;}
-
-.fit_link > .fas,
-.fit_link > .flag-icon,
-.fit_time,
-.fit_controls{position: absolute; top:0; left:0; height: 100%; display: flex; align-items:center; justify-content: center; width: 4rem;}
-
-.fit_time .progress{width: 2rem; right:1rem; position: relative;}
-
-
-// flag is different
-.fit_link > .flag-icon{width: 1.5rem; height: 1.125rem; top:1.1rem; left: 1.5rem;}
-
-.fit_link > .fas.lg{font-size: 2rem;}
-
-.fit_time,
-.fit_controls{height: 100%; left: auto; right: 0; font-size: 0.8rem;}
-.fit_time{color: $text_lighter;}
-
-.fit_link.i-r .fit_avatar{left:auto; right: 0.75rem;}
-
-.fit_video,
-.fit_link .fit_avatar{width: 2rem; height: 2rem; border-radius: 0.15rem; position: absolute; top:0.75rem; left: 1rem; overflow:hidden; background: $bg; display: flex; align-items:center; justify-content: center;}
-.fit_video img,
-.fit_link .fit_avatar img{height: 100%; margin-left: -25%;}
-.fit_video > .fas{position: absolute; top:0; left:0; height: 100%; width: 100%; display: flex; align-items:center; justify-content: center; color: #fff;}
-
-.fit_video > .fa-check{background: rgba(106, 217, 31, 0.5);}
-.fit_video > .fa-play{background: rgba(19, 157, 221, 0.5);}
-
-.fit_link .fit_avatar .fa-user{color: $text_lighter;}
-
-.fit_left{float: left;}
-.fit_right{float: right;}
-
-// stuff on the right is different?
-.fit_controls{width: auto; padding-right: 1rem;}
-
-// cinematic width, not square
-.fit_video.cinematic{width:3.56rem;}
-.fit_video.cinematic img{margin-left: 0;}
-
-
-// move the avatar into the right place
-.fit_link .fit_avatar{border-radius: 999em;}
-.fit_link .fit_avatar img{width: 100%; margin-left: 0;}
-
-.fit_link.i-l{padding-left: 4rem}
-.fit_link.i-r{padding-right: 4rem}
-.fit_link.i-r .fas{left: auto; right: 0;}
-
-.fit_link.i-t{padding-right: 4rem;}
-
-
-.fit_link.collapsed .fa-chevron-down{transform: rotate(-270deg);}
-
-// -----------------------------------------------------------------------------------------
-// subtler links
-.fit_link.subtle{font-size: 0.9rem; padding: 0.75rem 1.5rem; min-height: 2.9rem; padding-bottom: 0.5rem; color:$text_lighter;}
-.fit_link.subtle:hover{color:$text;}
-.fit_link.subtle.i-l{padding-left: 4rem;}
-
-// ------------------------------------------------------------------------------------------
-// compact links
-
-.fit_link.compact{padding:0.75rem; min-height: 3rem;}
-.fit_link.compact.i-l{padding-left: 3rem}
-.fit_link.compact .fit_video, 
-.fit_link.compact .fit_avatar{width: 1.5rem; height: 1.5rem; left: 0.75rem; top:0.75rem;}
-
-
-// this is an icon to show minimusing up
-.fit_link > .fit_lesson_min{position: absolute; top:0; right: 0; left: auto; height: 100%; width: 4rem; align-items: center; justify-content: center; color: $text_lighter; background: $bg; display: none;}
-
-.fit_link:hover > .fit_lesson_min{display: flex;}
-.fit_link.collapsed > .fit_lesson_min{transform: rotate(-180deg);}
-
-
-
-// -----------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------
 // The new, sexy way to do fitzroy linkies
 
 
@@ -438,7 +352,7 @@ aside .fit_btn{color: $text;}
 .fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
 // videos are weird
-.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative;}
+.fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative; overflow: hidden;}
 .fit_btn > .fit_pic img{height: 100%;}
 .fit_btn > .fit_pic.vid img{margin-left: -25%;}
 .fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff; background: $bg;}

@@ -225,6 +225,19 @@ $( document ).ready(function() {
 
   // ------------------------------------------------------------
   // example modals
+  // Just paste this stuff in console to launch modals:
+
+  /*  
+
+
+  $('#fit_modal_faces_reason'). modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_faces').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_stuck').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_nps').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_text').modal({backdrop: 'static', keyboard: false});
+  
+
+
   if ($('[data-fit_modal_unstoppable]').length > 0)
   {
     $('[data-fit_modal_unstoppable]').modal({
@@ -237,6 +250,8 @@ $( document ).ready(function() {
   {
     $('[data-fit_modal]').modal().show();  
   }  
+
+  */
 
   // ------------------------------------------------------------
   $('[data-fit_iconselects]').each(function(e) {
@@ -254,7 +269,7 @@ $( document ).ready(function() {
       language = $(this).data('fit_iconselect');
 
       // if there is a why, show it
-      if (typeof $(this).data('fit-triggerwhy') !== 'undefined')
+      if (typeof $(this).data('fit_triggerwhy') !== 'undefined')
       {
         $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('show');
       }
@@ -283,6 +298,25 @@ $( document ).ready(function() {
         .prop("disabled", false)
         .removeClass('btn-secondary')
         .addClass('btn-primary');
+      }
+
+      // wuh oh, what if there's a textarea? Then disable it again until changed
+
+      // if it has a force value....
+      if ($('[data-fit_feedback_why_input]').data('fit_modal_force').length > 0){
+
+        gobutton.prop("disabled", true);
+        
+        $('[data-fit_feedback_why_input]').on({
+          'change, keyup': function(e) {
+            var val = $(this).val();
+            if (val.length > $(this).data('fit_modal_force')){
+              gobutton.prop("disabled", false);
+            } else {
+              gobutton.prop("disabled", true);
+            }
+          }
+        });
       }
 
       console.log(language);
