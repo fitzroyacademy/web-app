@@ -197,9 +197,12 @@ body{min-height: 100%;}
 body > header, 
 body > .fit_player nav,
 body > .fit_player aside,
-.modal-content,
 .fit_sidepanel .panel,
 .fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
+
+@media (min-width: 576px){
+	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
+}
 
 // this is the main bit that holds the other bits, wowee
 main{display:flex; height:100%; align-items:stretch;}
@@ -1134,6 +1137,12 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .modal-content,
 .modal-footer{border:1px solid #fff; padding: 1rem;}
 
+@media (max-width: 575px) {
+	.modal-header,
+	.modal-content,
+	.modal-footer{padding:.5rem;}
+}
+
 
 // make our modals a bit roomier...
 @media (min-width: 576px) {
@@ -1149,7 +1158,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 .fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; }
 
-.fit_iconselect i{font-size: 4rem; display: block; color: $text_lighter;}
+.fit_iconselect i{font-size: 4rem; display: block; color: $text_light;}
 .fit_iconselect .sub{color:$text_lighter; font-weight: 400; font-size: 0.9rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
 
 
@@ -1167,7 +1176,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 
 // active
-.fit_iconselects.numbers .fit_iconselect.active{background: #fff; border-color: $border_light; margin: -0.15rem 0;}
+.fit_iconselects.numbers .fit_iconselect.active{background: #fff; border-color: $border_light; margin: -0.15rem 0; border-radius: $border_rad_md;}
 
 // hovers
 .fit_iconselects.numbers .fit_iconselect:hover:not(.active) i{color: $blue;}
@@ -1178,6 +1187,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 @media (max-width: 575px) {
 	.fit_iconselect{width: 3rem; height: 3rem;}
 	.fit_iconselect i{font-size: 2.5rem}
+	.fit_iconselects.numbers .fit_iconselect i{font-size: 1.2rem;}
 }
 
 .fit_iconselect:hover{}

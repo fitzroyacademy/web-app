@@ -41,7 +41,10 @@
 
 <!-- At some point we will decide how to bring these in sensibly -->
 
-{% if non_existant_variable %}
+
+  {% include 'partials/modal/_faces.html' %}
+  
+{% if non_existant_variable_lol %}
   {% include 'partials/modal/_nps.html' %}
   {% include 'partials/modal/_faces.html' %}
   {% include 'partials/modal/_stuck.html' %}

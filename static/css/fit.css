@@ -153,12 +153,16 @@ body {
 body > header,
 body > .fit_player nav,
 body > .fit_player aside,
-.modal-content,
 .fit_sidepanel .panel,
 .fit_debug {
   box-shadow: 0 0 1.5rem rgba(82, 63, 105, 0.1);
 }
 
+@media (min-width: 576px) {
+  .modal-content {
+    box-shadow: 0 0.5rem 1.5rem rgba(82, 63, 105, 0.1);
+  }
+}
 main {
   display: flex;
   height: 100%;
@@ -2025,6 +2029,13 @@ html.fit_minright [data-fit-minright] i {
   padding: 1rem;
 }
 
+@media (max-width: 575px) {
+  .modal-header,
+.modal-content,
+.modal-footer {
+    padding: 0.5rem;
+  }
+}
 @media (min-width: 576px) {
   .modal-dialog {
     max-width: 650px;
@@ -2061,7 +2072,7 @@ html.fit_minright [data-fit-minright] i {
 .fit_iconselect i {
   font-size: 4rem;
   display: block;
-  color: #b0b4b7;
+  color: #717b81;
 }
 
 .fit_iconselect .sub {
@@ -2117,6 +2128,7 @@ html.fit_minright [data-fit-minright] i {
   background: #fff;
   border-color: #e1e4e5;
   margin: -0.15rem 0;
+  border-radius: 0.3rem;
 }
 
 .fit_iconselects.numbers .fit_iconselect:hover:not(.active) i {
@@ -2131,6 +2143,10 @@ html.fit_minright [data-fit-minright] i {
 
   .fit_iconselect i {
     font-size: 2.5rem;
+  }
+
+  .fit_iconselects.numbers .fit_iconselect i {
+    font-size: 1.2rem;
   }
 }
 .fit_iconselect:hover i,
