@@ -156,11 +156,30 @@ These can be set by the admin, and control access via a short code.
 
 ### Conditional logic for codes:
 
-* Publicly visible, no log in
-* Publicly visible, need logged in --> log in form --> play first lesson
-* Public, needs code --> type in the code --> go in
-* Public, needs code, needs login --> type in the code --> check login --> enter course
-* Private: Needs login with certain domain.
+* Public listed: Shows up on public listings
+* Public: Anonymous access allowed
+* Public + login --> log in form --> play first lesson
+* Public + code --> type in the code --> access
+* Public + code + needs login --> type in the code --> check login --> enter course
+* Public to certain domain: Needs login with certain domain(s), e.g. @harvard.edu
+* Private: Doesn't show up on the site unless you type in the course code.
+* Private + Needs login: Doesn't show up on the site unless you type in the course code, AND needs login
+
+This means we have these options in edit:
+
+* Listed | Public | Private
+* Code | No code
+* Set particular domain(s)
+* Featured or not (shows up on home page, only set by superadmin)
+
+NB: "Listed" means public, and visible in lists
+
+#### Domain acccess:
+
+* When teacher is editing a course, can set one or many domains (or subdomains) for access
+* Course shows "log in with your @domain email"
+* This will require users to confirm their email address - how the hell do we deal with this?
+
 
 #### Later on:
 
