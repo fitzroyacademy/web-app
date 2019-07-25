@@ -42,6 +42,13 @@ $( document ).ready(function() {
     }
   });
 
+  // things I want:
+  // toggle a HTML class
+  // remove a html class
+  // add a html class
+  // keyboard esc = removing a html class?
+  // option to focus on an input ID
+
 
   // toggle overall nav size
   $('[data-fit-minleft]').click(function(e) {
@@ -63,6 +70,13 @@ $( document ).ready(function() {
   $('[data-fit_mobile_menu_trigger]').click(function(e) {
     e.preventDefault();   
     $('html').toggleClass('fit_mobile_menu_active');
+  }); 
+
+  // ------------------------------------------------------------
+  // user toggle
+  $('[data-fit-userpanel]').on("click", function(e, i) {
+    e.preventDefault();
+    $('html').toggleClass('fit_revealuserpanel');
   });  
 
   $('[data-fit_debug]').click(function(e) {
@@ -336,14 +350,6 @@ $( document ).ready(function() {
     }
   });
 
-  // ------------------------------------------------------------
-  // user toggle
-  $('[data-fit-userpanel]').on("click", function(e, i) {
-    e.preventDefault();
-
-    $('html').toggleClass('fit_revealuserpanel');
-  });
-
 
   // escape to close (27 is escape apparently)
   $(document).keydown(function(e) {
@@ -372,7 +378,7 @@ $( document ).ready(function() {
           ($('html').hasClass('fit_search_header_active'))
         ){
         $('html').removeClass('fit_search_header_active');
-      }      
+      }
 
     }
   });  

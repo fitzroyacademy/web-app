@@ -28,11 +28,15 @@ To reseed the DB - this takes everything from `stubs.py` and puts it in the data
 
 Here's the reseed code on all one line for copy/pasting:
 
+```
 rm dev_db.sqlite; python3 reseed.py; python3 app.py
+```
 
 ### To make the CSS work:
 
-`sass --watch static/assets/scss/fit.scss static/css/fit.css`
+```
+sass --watch static/assets/scss/fit.scss static/css/fit.css
+```
 
 ### To add issues to Github:
 

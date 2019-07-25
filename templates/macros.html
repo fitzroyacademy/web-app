@@ -5,3 +5,10 @@
 {% macro active_link(endpoint) -%}
 	{{ 'active' if url_is(endpoint) }}
 {%- endmacro %}
+
+
+<!-- 
+
+class="foo {{ 'class_here' if url_is("about.location") }}"
+
+-->
