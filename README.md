@@ -1,4 +1,4 @@
-# web-app
+{# web-app
 
 Simple staging ground for our UX templates.
 
@@ -152,6 +152,21 @@ These can be set by the admin, and control access via a short code.
 * 8+ characters, letters and numbers
 * Controls student access
 * Most be unique
+
+
+### Conditional logic for codes:
+
+* Publicly visible, no log in
+* Publicly visible, need logged in --> log in form --> play first lesson
+* Public, needs code --> type in the code --> go in
+* Public, needs code, needs login --> type in the code --> check login --> enter course
+* Private: Needs login with certain domain.
+
+#### Later on:
+
+* Private: Needs login with particular email or user ID in whitelist.
+
+
 
 Codes are central to user login: They are UIDs for courses. If a teacher wishes to constrain access to a course, they can add a code AND demand that only logged in users can access.
 
