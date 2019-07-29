@@ -29,11 +29,11 @@
         <form class="form fit_search_header" action="/search" method="post">
           <input class="form-control" type="text" value="" placeholder="Search..." data-fit_search_header_input>
           <button class="btn btn-link"><i class="fal fa-search"></i></button>
-          <a href="#" class="btn btn-link" data-fit_search_header_trigger><i class="fal fa-times"></i></a>
+          <a href="#" class="btn btn-link" data-fit_toggle_mode="fit_search_header_active"><i class="fal fa-times"></i></a>
           <div class="results"></div>
         </form>
 
-        <a href="/search" class="fit_btn search" data-fit_search_header_trigger>
+        <a href="/search" class="fit_btn search" data-fit_toggle_mode="fit_search_header_active" data-fit_focus="[data-fit_search_header_input]">
           <i class="fal fa-search"></i>
           <span class="fit_txt">Search</span>
         </a>

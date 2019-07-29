@@ -630,6 +630,19 @@ $( document ).ready(function() {
     e.preventDefault();
   });
 
+  delegate('[data-fit_toggle_mode]', 'click', (e, t) => {
+    e.preventDefault();
+    let sel  = t.dataset['fit_toggle_parent'] || 'html';
+    let mode = t.dataset['fit_toggle_mode'];
+    $(sel).toggleClass(mode);
+  });
+
+  delegate('[data-fit_focus]', 'click', (e, t) => {
+    e.preventDefault();
+    let sel  = t.dataset['fit_focus'];
+    $(sel).focus();
+  });
+
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.
   window.addEventListener('popstate', (event) => {
