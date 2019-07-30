@@ -4,7 +4,8 @@
 
 
 <!-- DEV: This fit_keep_watching chunk shows when the user has started a course -->
-<div class="alert fit_keep_watching alert-dismissible fade show" role="alert">
+<!-- DEV: d-none to display none for now. :( -->
+<div class="alert fit_keep_watching alert-dismissible fade show d-none" role="alert">
   <div class="fit_course">
 
     <a href="#" data-dismiss="alert" aria-label="Close" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
@@ -26,13 +27,17 @@
         <a href="#" class="btn btn btn-outline-light"><i class="fal fa-play"></i> Keep watching</a>
       </div>
     </div>
+
+
+
   </div>
 </div>
 
 
 <div class="fit_hero">
-  <h1>The <strong data-fit-heartplay>friendly</strong> online <br>enterprise school.</h1>
-  <p>Learn <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills online. Free! 🚀</p>
+  <!-- <h1>The <strong data-fit-heartplay>friendly</strong> online <br>enterprise school.</h1> -->
+  <h1>The online social impact school.</h1>
+  <p>Learn <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills, for free! 🚀</p>
 
   <div class="fit_code">
     {% include 'partials/_course_code.html' %}
