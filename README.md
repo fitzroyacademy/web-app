@@ -141,6 +141,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Guest access? (i.e. can anonymous users access this course?)
 * On the home page (i.e. does this show up on the home page?) **NB: This option is only for super admins**
 * Parent Institute
+* Whitelabel (removes FA branding from course)
 * One or many affiliated users with access levels including:
 	* Enrolled students
 	* Teachers (admins)
@@ -149,7 +150,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 
 These can be set by the admin, and control access via a short code.
 
-* 8+ characters, letters and numbers
+* 4+ characters, letters and numbers
 * Controls student access
 * Most be unique
 
@@ -165,14 +166,13 @@ These can be set by the admin, and control access via a short code.
 * Private: Doesn't show up on the site unless you type in the course code.
 * Private + Needs login: Doesn't show up on the site unless you type in the course code, AND needs login
 
-This means we have these options in edit:
+This means we have these options in course edit page:
 
 * Listed | Public | Private
-* Code | No code
-* Set particular domain(s)
+* Code (optional)
+* Secure by domain(s)
 * Featured or not (shows up on home page, only set by superadmin)
 
-NB: "Listed" means public, and visible in lists
 
 #### Domain acccess:
 
@@ -181,11 +181,9 @@ NB: "Listed" means public, and visible in lists
 * This will require users to confirm their email address - how the hell do we deal with this?
 
 
-#### Later on:
+#### Later on: Whitelist
 
-* Private: Needs login with particular email or user ID in whitelist.
-
-
+This will require some sort of fancy "invite all these email addresses" thing? Do it later.
 
 Codes are central to user login: They are UIDs for courses. If a teacher wishes to constrain access to a course, they can add a code AND demand that only logged in users can access.
 
@@ -353,10 +351,11 @@ This is expressed in the course edit with:
 ## Users
 
 * UID
+* Phone number
 * First name
 * Last name
-* Email
-* Phone number
+* Primary email
+* More emails
 * Date of birth
 * Display pic
 * Color (randomly chosen from a list)
