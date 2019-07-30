@@ -9,6 +9,7 @@ import re
 import os
 import jinja2
 from uuid import uuid4
+from werkzeug.routing import BuildError
 
 import routes
 import routes.course
@@ -72,6 +73,15 @@ def get_current_user():
 def uuid():
     return "{}".format(uuid4().hex)
 app.jinja_env.globals.update(uuid=uuid)
+
+def url4(*args, **kwargs):
+    try:
+        return url_for(*args, **kwargs)
+    except BuildError as e:
+        if app.debug == True:
+            flash(e)
+        return "#"
+app.jinja_env.globals.update(url_for=url4)
 
 def url_is(endpoint):
     return request.endpoint == endpoint
