@@ -316,8 +316,7 @@ def log_event(event_type):
 
 if __name__ == "__main__":
     if app.debug:
-        print("Debug mode is on; autogenerating new secret key.")
-        app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(20))
+        app.secret_key = 'l7j7BqOKH7' # Doesn't need to be random for local development
         xray_recorder.configure(sampling=False)
         from livereload import Server, shell
         server = Server(app.wsgi_app)
