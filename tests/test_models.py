@@ -34,10 +34,12 @@ class TestModels(unittest.TestCase):
         self.assertEqual(u, None)
 
     def test_course_creation(self):
-        c = datamodels.Course(id=1, course_code="ABC123", title="Foo Course")
+        c = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
         self.session.add(c)
         c = datamodels.get_course_by_code('ABC123')
+        c2 = datamodels.get_course_by_slug("abc-123")
         self.assertEqual(c.title, "Foo Course")
+        self.assertEqual(c, c2)
 
     def test_public_course_creation(self):
         c = datamodels.Course(id=2, course_code="DEF456", title="Bar Course", guest_access=True)
@@ -58,3 +60,8 @@ class TestModels(unittest.TestCase):
         l = datamodels.get_lesson(1)
         self.assertEqual(l.title, "Lesson")
 
+    def test_segment_creation(self):
+        s = datamodels.Segment(id=1, title="Segment", duration_seconds=200, url="fitzroyacademy.com", language="EN", order=1)
+        self.session.add(s)
+        s = datamodels.get_segment(1)
+        self.assertEqual(s.title, "Segment")
