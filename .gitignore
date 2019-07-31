@@ -2,3 +2,5 @@
 *__pycache__*
 static/css/fit.css
 *.sqlite
+Pipfile
+Pipfile.lock
