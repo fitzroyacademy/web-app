@@ -324,5 +324,10 @@ if __name__ == "__main__":
         server.watch('./')
         server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
     else:
-        app.secret_key = environ["APP_SECRET_KEY"]
-        app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
+        if 'APP_SECRET_KEY' in environ and environ['APP_SECRET_KEY'] != "":
+            app.secret_key = environ['APP_SECRET_KEY']
+            app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
+        elif 'APP_SECRET_KEY' not in environ:
+            raise Exception('Application running in non-local environment, but APP_SECRET_KEY environment variable not provided.')
+        else:
+            raise Exception('Secret key provided in APP_SECRET_KEY, but key is empty.')
