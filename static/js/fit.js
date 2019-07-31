@@ -91,6 +91,7 @@ $( document ).ready(function() {
   });
 
   // clipboard!
+  // DEV: Michelle this is apparently clipboard JS but I don't know JS:
   var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
 
   fit_clipboard.on('success', function(e) {
