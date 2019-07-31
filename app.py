@@ -18,10 +18,6 @@ import routes.error
 app = Flask('FitzroyFrontend', static_url_path='')
 routes.attach(app)
 
-@app.errorhandler(404)
-def static_fallback(e):
-    return routes.error.fourohfour(e)
-
 @app.route('/')
 def index():
     return routes.course.index()
@@ -79,7 +75,7 @@ def url4(*args, **kwargs):
         return url_for(*args, **kwargs)
     except BuildError as e:
         if app.debug == True:
-            flash(e)
+            flash("{}".format(e))
         return "#"
 app.jinja_env.globals.update(url_for=url4)
 

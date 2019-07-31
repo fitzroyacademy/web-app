@@ -12,6 +12,14 @@ def attach(app):
     pages.attach_static_paths(app, 'templates/static')
     app.register_blueprint(pages.blueprint)
 
+    @app.errorhandler(404)
+    def static_fallback(e):
+        return error.fourohfour(e)
+
+    @app.errorhandler(502)
+    def error_pagek(e):
+        return error.fiveohtwo(e)
+
 def dump_api(app):
     """
     Dump API methods into something vaguely resembling documentation.

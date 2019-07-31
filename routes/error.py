@@ -21,7 +21,6 @@ def fourohfour(e):
         except jinja2.exceptions.TemplateNotFound:
             return render_template('404.html'), 404
 
-@blueprint.errorhandler(Exception)
 @blueprint.route('/502')
 def fiveohtwo(e):
     """ For when something bad happens to the server. """

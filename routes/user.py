@@ -3,7 +3,7 @@ import datamodels
 
 blueprint = Blueprint('user', __name__, template_folder='templates')
 
-@blueprint.route('/<slug>', methods=["GET"])
+@blueprint.route('/user/<slug>', methods=["GET"])
 def view(slug):
     """ View a user's profile. """
     user_id = slug
