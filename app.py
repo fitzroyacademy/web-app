@@ -8,9 +8,11 @@ import time
 import re
 import os
 import jinja2
+import random
+import string
 from uuid import uuid4
+from os import environ
 from werkzeug.routing import BuildError
-
 import routes
 import routes.course
 import routes.error
@@ -90,13 +92,18 @@ def api():
     return render_template('url_fors.html', controllers=docs)
 
 if __name__ == "__main__":
-    app.secret_key = "super sedcret"
-    compile_sass()
     if app.debug:
+        app.secret_key = 'l7j7BqOKH7' # Doesn't need to be random for local development
         from livereload import Server, shell
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./')
         server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
     else:
-        app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
+        if 'APP_SECRET_KEY' in environ and environ['APP_SECRET_KEY'] != "":
+            app.secret_key = environ['APP_SECRET_KEY']
+            app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
+        elif 'APP_SECRET_KEY' not in environ:
+            raise Exception('Application running in non-local environment, but APP_SECRET_KEY environment variable not provided.')
+        else:
+            raise Exception('Secret key provided in APP_SECRET_KEY, but key is empty.')
