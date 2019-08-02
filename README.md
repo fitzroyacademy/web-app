@@ -1,6 +1,8 @@
-# web-app
+{# web-app
 
 Simple staging ground for our UX templates.
+
+Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
 
 # Local Installation
 
@@ -18,15 +20,23 @@ python3 app.py
 
 To reseed the DB - this takes everything from `stubs.py` and puts it in the database `dev_db.sqlite`, which is our local databse:
 
-* To change the database, edit `stubs.py`, and delete `dev_db.sqlite`
+* To change the database, edit `stubs.py`, and rm `dev_db.sqlite`
 * `python3 reseed.py` to reseed from stubs
 * Then reset the app via `python3 app.py`
 * Then hit [localhost:5000](http://localhost:5000).
-* For a lesson: [http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a](http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a)
+* For an example lesson: [http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a](http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a)
+
+Here's the reseed code on all one line for copy/pasting:
+
+```
+rm dev_db.sqlite; python3 reseed.py; python3 app.py
+```
 
 ### To make the CSS work:
 
-`sass --watch static/assets/scss/fit.scss static/css/fit.css`
+```
+sass --watch static/assets/scss/fit.scss static/css/fit.css
+```
 
 ### To add issues to Github:
 
@@ -131,6 +141,7 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 * Guest access? (i.e. can anonymous users access this course?)
 * On the home page (i.e. does this show up on the home page?) **NB: This option is only for super admins**
 * Parent Institute
+* Whitelabel (removes FA branding from course)
 * One or many affiliated users with access levels including:
 	* Enrolled students
 	* Teachers (admins)
@@ -139,9 +150,40 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 
 These can be set by the admin, and control access via a short code.
 
-* 8+ characters, letters and numbers
+* 4+ characters, letters and numbers
 * Controls student access
 * Most be unique
+
+
+### Conditional logic for codes:
+
+* Public listed: Shows up on public listings
+* Public: Anonymous access allowed
+* Public + login --> log in form --> play first lesson
+* Public + code --> type in the code --> access
+* Public + code + needs login --> type in the code --> check login --> enter course
+* Public to certain domain: Needs login with certain domain(s), e.g. @harvard.edu
+* Private: Doesn't show up on the site unless you type in the course code.
+* Private + Needs login: Doesn't show up on the site unless you type in the course code, AND needs login
+
+This means we have these options in course edit page:
+
+* Listed | Public | Private
+* Code (optional)
+* Secure by domain(s)
+* Featured or not (shows up on home page, only set by superadmin)
+
+
+#### Domain acccess:
+
+* When teacher is editing a course, can set one or many domains (or subdomains) for access
+* Course shows "log in with your @domain email"
+* This will require users to confirm their email address - how the hell do we deal with this?
+
+
+#### Later on: Whitelist
+
+This will require some sort of fancy "invite all these email addresses" thing? Do it later.
 
 Codes are central to user login: They are UIDs for courses. If a teacher wishes to constrain access to a course, they can add a code AND demand that only logged in users can access.
 
@@ -309,10 +351,11 @@ This is expressed in the course edit with:
 ## Users
 
 * UID
+* Phone number
 * First name
 * Last name
-* Email
-* Phone number
+* Primary email
+* More emails
 * Date of birth
 * Display pic
 * Color (randomly chosen from a list)
@@ -471,3 +514,15 @@ Let's mash this against an example lesson with its translations:
 
 
 ---
+
+
+## Will's foolish notes and design ideas:
+
+### Domains:
+
+* fitzroy.tech
+* fitzroy.space
+* fitzroy.design
+* fitzroy.academy
+* fitzroy.io
+

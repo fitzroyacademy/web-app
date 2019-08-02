@@ -1,0 +1,38 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+  <div class="fit_medium">
+
+    <h1>API Endpoints</h1>
+
+    <p>These are all the fun URLs we can link to in the app and what they do.</p>
+
+    <p><b>Note</b>: This only includes new-style routes that have a proper <code>url_for</code>; paths will be added automatically to this page as they become available.</p>
+
+    {% for key, endpoints in controllers.items(): %}
+      <a href="#{{ key }}">{{ key }}</a>
+    {% endfor %}
+
+    {% for key, endpoints in controllers.items(): %}
+      <h2 id="{{ key }}">{{ key }}</h2>
+      {% for endpoint in endpoints %}
+        <h3>{{ endpoint.endpoint }} -&gt;<code> {{ endpoint.url_path }} [<small>{{ endpoint.methods }}</small>]</code>
+        <h4>Documentation</h4>
+        <p>{{ endpoint.documentation }}</p>
+        <h4>Link to it in a template:</h4>
+        <code>{%raw%}{{{%endraw%} url_for("{{ endpoint.endpoint }}"{% for p in endpoint.parameters %}, {{ p }}=""{% endfor %}) {%raw%}}}{%endraw%}</code>
+        <p style="height:50px;"> <!-- TODO: Perfect semantics. -->
+      {% endfor %}
+    {% endfor %}
+
+  </div>
+
+  </article>
+
+</main>
+
+{% endblock %}

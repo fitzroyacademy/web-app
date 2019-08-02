@@ -3,16 +3,19 @@
 
 
 
-<!-- DEV: This fit_keep_watching chunk shows when the user has started a course, repeat this chunk for as many courses as the user has joined -->
-<div class="alert fit_keep_watching alert-dismissible fade show" role="alert">
+<!-- DEV: This fit_keep_watching chunk shows when the user has started a course -->
+<!-- DEV: d-none to display none for now. :( -->
+<div class="alert fit_keep_watching alert-dismissible fade show d-none" role="alert">
   <div class="fit_course">
 
     <a href="#" data-dismiss="alert" aria-label="Close" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
 
+
+    <!-- DEV: repeat this "row" for every course the user is enrolled in -->
     <div class="row">
       <div class="col-sm-4">
         <a href="lessons" class="vid">
-          <img src="/assets/images/lessons/sales.jpg" alt="image"> <!-- DEV: Lesson picture (not course) -->
+          <img src="/assets/images/lessons/sales.jpg" alt="image"> <!-- DEV: course.lesson picture (not course.image) -->
           <div class="bar">
             <div class="far" style="width: 65% "></div> <!-- DEV: Width here is % through the whole course for the student -->
           </div>
@@ -24,100 +27,101 @@
         <a href="#" class="btn btn btn-outline-light"><i class="fal fa-play"></i> Keep watching</a>
       </div>
     </div>
+    
   </div>
 </div>
 
-<main>
 
-  <article>
+<div class="fit_hero">
+  <!-- <h1>The <strong data-fit-heartplay>friendly</strong> online <br>enterprise school.</h1> -->
+  <h1>The online social impact school.</h1>
+  <p>Learn <a href="#">business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills, for free! 🚀</p>
 
-    <div class="fit_hero">
-        <!-- <a class="fit_heartplay" data-fit-heartplay>
-          <i class="bigboy fas fa-heart"></i>
-          <i class="smallboy fas fa-play"></i>
-        </a> -->
-        <h1>The <strong data-fit-heartplay>impact</strong>-first <br>online school.</h1>
-        <p>Learn <a href="/#public">business</a>, <a href="/#public">social impact</a> and <a href="/#public">tech</a> skills! 🚀</p>
+  <div class="fit_code">
+    {% include 'partials/_course_code.html' %}
+  </div>
+<!-- 
+  ehhhhh not feeling it rn. :(
+  <div class="fit_picture">
+    <img src="/assets/images/static/about/leang_teaches.jpg" alt="image">
+    <small class="caption">Leang teaches her colleagues some sweet moves, online...</small>
+  </div>
+ -->
 
-        <div class="fit_code">
-          {% include 'partials/_course_code.html' %}
+</div>
+
+<!-- <div class="fit_picture breakbig">
+  <img src="/assets/images/static/about/maddy_will.jpg" alt="image">
+  <small class="caption">Maddy, works on her social media lesson with Will, our founder.</small>
+</div> -->
+
+<div id="public" class="fit_tabbydiv">
+  <div class="fit_tabby">Public courses</div>
+</div>
+
+{% for course in public_courses %}
+  <div class="fit_course fit_course_sells">
+    <div class="fit_course_sell featured">
+      {% if course.preview_thumbnail %}
+        <div class="fit_window">
+          <img src="{{ course.preview_thumbnail }}" alt="image">
+          <a href="{{ course.permalink }}" class="play"><i class="fas fa-play-circle"></i></a>
         </div>
-      </div>
-
-    <div id="public" class="fit_tabbydiv">
-      <div class="fit_tabby">Public courses</div>
+      {% endif %}
+      <h3><a href="{{ course.permalink }}">Intro to social enterprise.</a></h3>
+      <p class="tagline">
+        <span class="tag"><i class="fal fa-info-square"></i> {{ course.info }}</span>
+        <span class="tag"><i class="fal fa-calendar"></i> {{ course.lessons|length }} lessons over 12 weeks.</span>
+        <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
+        <span class="tag"><i class="fal fa-university"></i> {{ course.skill_level }}</span>
+      </p>
     </div>
+{% endfor %}
 
-    {% for course in public_courses %}
-      <div class="fit_course">
-        <div class="fit_course_sell featured">
-          {% if course.preview_thumbnail %}
-            <div class="fit_window">
-              <img src="{{ course.preview_thumbnail }}" alt="image">
-              <div class="butts">
-                <a></a>
-                <a></a>
-                <a></a>
-              </div>
-              <a href="{{ course.permalink }}" class="play"><i class="fas fa-play-circle"></i></a>
-            </div>
-          {% endif %}
-          <h3><a href="{{ course.permalink }}">Intro to social enterprise.</a></h3>
-          <p class="tagline">
-            <span class="tag"><i class="fal fa-info-square"></i> {{ course.info }}</span>
-            <span class="tag"><i class="fal fa-calendar"></i> {{ course.lessons|length }} lessons over 12 weeks.</span>
-            <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
-            <span class="tag"><i class="fal fa-university"></i> {{ course.skill_level }}</span>
-          </p>
-        </div>
-    {% endfor %}
-
-      <!--div class="row">
-        <div class="col-sm-6">
-          <div class="fit_course_sell">
-            <div class="fit_window">
-              <img src="/assets/images/lessons/design-iteration-form.jpg" alt="image">
-              <div class="butts">
-                <a></a>
-                <a></a>
-                <a></a>
-              </div>      
-              <a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
-            </div>
-            <h3><a href="course_intro">International development.</a></h3>
-            <p class="tagline">
-              <span class="tag"><i class="fal fa-info-square"></i> Designing for lasting impact at scale, direct from the best minds in the sector.</span>
-              <span class="tag"><i class="fal fa-calendar"></i> 8 lessons, at your own pace.</span>
-              <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
-              <span class="tag"><i class="fal fa-university"></i> Intermediate to advanced.</span>
-            </p>    
+  <!--div class="row">
+    <div class="col-sm-6">
+      <div class="fit_course_sell">
+        <div class="fit_window">
+          <img src="/assets/images/lessons/design-iteration-form.jpg" alt="image">
+          <div class="butts">
+            <a></a>
+            <a></a>
+            <a></a>
           </div>      
+          <a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
         </div>
-        <div class="col-sm-6">
-          <div class="fit_course_sell">
-            <div class="fit_window">
-              <img src="/assets/images/lessons/empathy-mapping.jpg" alt="image">
-              <div class="butts">
-                <a></a>
-                <a></a>
-                <a></a>
-              </div>      
-              <a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
-            </div>
-            <h3><a href="course_intro">Social sector digital.</a></h3>
-            <p class="tagline">
-              <span class="tag"><i class="fal fa-info-square"></i> Do the internet better. Help more people, in more places by doing digital the right way: human-first.</span>
-              <span class="tag"><i class="fal fa-calendar"></i> 9 lessons, at your own pace.</span>
-              <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
-              <span class="tag"><i class="fal fa-university"></i> Introduction level.</span>
-            </p>
-          </div>
-        </div>        
-      </div>
-    -->
+        <h3><a href="course_intro">International development.</a></h3>
+        <p class="tagline">
+          <span class="tag"><i class="fal fa-info-square"></i> Designing for lasting impact at scale, direct from the best minds in the sector.</span>
+          <span class="tag"><i class="fal fa-calendar"></i> 8 lessons, at your own pace.</span>
+          <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
+          <span class="tag"><i class="fal fa-university"></i> Intermediate to advanced.</span>
+        </p>    
+      </div>      
     </div>
-  </article>
+    <div class="col-sm-6">
+      <div class="fit_course_sell">
+        <div class="fit_window">
+          <img src="/assets/images/lessons/empathy-mapping.jpg" alt="image">
+          <div class="butts">
+            <a></a>
+            <a></a>
+            <a></a>
+          </div>      
+          <a href="course_intro" class="play"><i class="fas fa-play-circle"></i></a>
+        </div>
+        <h3><a href="course_intro">Social sector digital.</a></h3>
+        <p class="tagline">
+          <span class="tag"><i class="fal fa-info-square"></i> Do the internet better. Help more people, in more places by doing digital the right way: human-first.</span>
+          <span class="tag"><i class="fal fa-calendar"></i> 9 lessons, at your own pace.</span>
+          <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
+          <span class="tag"><i class="fal fa-university"></i> Introduction level.</span>
+        </p>
+      </div>
+    </div>        
+  </div>
+-->
+</div>    
 
-</main>
 
 {% endblock %}

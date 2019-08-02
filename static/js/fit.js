@@ -1,14 +1,54 @@
 $( document ).ready(function() {
 
-// Go team
+  // Go team Javascriptz, hack them codez, roxor them boxorz.
 
 
+  // standard tooltips
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
   })
 
-  // min left and right
+  // lesson tooltips
+  $(function () {
+    $('[data-fit_lesson_tooltip]').tooltip({
+      placement : 'right',
+      container: 'body',
+      template : '<div class="fit_lesson_tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
+    });
+  });
   
+
+  // DEV: Michelle all of these things just add a class to HTML, should we streamline?
+
+  // toggle header search bar
+  $('[data-fit_search_header_trigger]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_search_header_active');
+    $('[data-fit_search_header_input]').focus();
+    // DEV: add an 'escape' cancel to this thing
+  });
+
+  // typing for the search bar
+  $('[data-fit_search_header_input]').on({
+    'change, keyup': function() {
+     var search_term = $(this).val();
+     if (search_term.length > 0)
+     {
+      console.log(search_term);
+     }
+     else {
+
+     }
+    }
+  });
+
+  // things I want:
+  // toggle a HTML class
+  // remove a html class
+  // add a html class
+  // keyboard esc = removing a html class?
+  // option to focus on an input ID
+
 
   // toggle overall nav size
   $('[data-fit-minleft]').click(function(e) {
@@ -24,11 +64,51 @@ $( document ).ready(function() {
   $('[fit-course_mobilenav_trigger]').click(function(e) {
     e.preventDefault();   
     $('html').toggleClass('fit_mobilenav');
+  });
+
+  // toggle mobile menu
+  $('[data-fit_mobile_menu_trigger]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_mobile_menu_active');
+  }); 
+
+  // ------------------------------------------------------------
+  // user toggle
+  $('[data-fit-userpanel]').on("click", function(e, i) {
+    e.preventDefault();
+    $('html').toggleClass('fit_revealuserpanel');
   });  
 
+  $('[data-fit_debug]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fit_debug_on');
+  });
+
+  // dropdown that may have an adjacent
+  $('[data-fit_active_trigger]').click(function(e) {
+    e.preventDefault();   
+    $($(this).attr("href")).toggleClass('active')
+  });
+
+  // clipboard!
+  // DEV: Michelle this is apparently clipboard JS but I don't know JS:
+  var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
+
+  fit_clipboard.on('success', function(e) {
+    // console.info('Action:', e.action);
+    // console.info('Text:', e.text);
+    // console.info('Trigger:', e.trigger);
+    alert("go team");
+
+    e.clearSelection();
+  });
+
+  fit_clipboard.on('error', function(e) {
+    // console.error('Action:', e.action);
+    // console.error('Trigger:', e.trigger);
+  });
   
-
-
+  
   // do fancy placeholders for inputs:
   $("[data-fit-fancyplace]").on({
     'focus': function() {
@@ -160,50 +240,65 @@ $( document ).ready(function() {
 
   // ------------------------------------------------------------
   // example modals
-  if ($('#modal_unstoppable').length > 0)
+  // Just paste this stuff in console to launch modals:
+
+  /*  
+
+
+  $('#fit_modal_faces_reason'). modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_faces').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_stuck').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_nps').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_text').modal({backdrop: 'static', keyboard: false});
+  
+
+
+  if ($('[data-fit_modal_unstoppable]').length > 0)
   {
-    $('#modal_unstoppable').modal({
+    $('[data-fit_modal_unstoppable]').modal({
       backdrop: 'static',
       keyboard: false
-    }).show();  
+    });
   }
 
-  if ($('#modal').length > 0)
+  if ($('[data-fit_modal]').length > 0)
   {
-    $('#modal').modal().show();  
+    $('[data-fit_modal]').modal().show();  
   }  
 
+  */
+
   // ------------------------------------------------------------
-  $('[data-fit-iconselects]').each(function(e) {
+  $('[data-fit_iconselects]').each(function(e) {
     var selected = '';
     var icon_color = '';
 
-    $(this).find('[data-fit-iconselect]').on("click", function(i, e) {
+    $(this).find('[data-fit_iconselect]').on("click", function(i, e) {
 
-      $(this).siblings('[data-fit-iconselect]').addBack().removeClass('active').addClass('inactive');
+      $(this).siblings('[data-fit_iconselect]').addBack().removeClass('active').addClass('inactive');
       
       $(this).removeClass('inactive').addClass('active');
-      $(this).parents('[data-fit-iconselects]').addClass('active');
+      $(this).parents('[data-fit_iconselects]').addClass('active');
 
       icon_color = $(this).find('i').css('color');
-      language = $(this).data('fit-iconselect');
+      language = $(this).data('fit_iconselect');
 
       // if there is a why, show it
-      if (typeof $(this).data('fit-triggerwhy') !== 'undefined')
+      if (typeof $(this).data('fit_triggerwhy') !== 'undefined')
       {
-        $(this).parents('[data-fit-iconselect-parent]').find('[data-fit-feedback-why]').collapse('show');
+        $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('show');
       }
       else
       {
-        $(this).parents('[data-fit-iconselect-parent]').find('[data-fit-feedback-why]').collapse('hide'); 
+        $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('hide'); 
       }
 
       // find and enable the go button, set the colour.
       // we only set the colour and gather info if it ISN'T 'fit_gather',
       // passing fit_gather means get the data and colour from the button
-      var gobutton = $(this).parents('[data-fit-iconselect-parent]').find('[data-fit-iconselect-go]');
+      var gobutton = $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_modal_submit]');
 
-      if (gobutton.data('fit-iconselect-go') == 'fit_gather')
+      if (gobutton.data('fit_modal_submit') == 'fit_gather')
       {
         gobutton
         .text(language)
@@ -214,10 +309,29 @@ $( document ).ready(function() {
       else
       {
         gobutton
-        .text(gobutton.data('fit-iconselect-go'))
+        .text(gobutton.data('fit_modal_submit'))
         .prop("disabled", false)
         .removeClass('btn-secondary')
         .addClass('btn-primary');
+      }
+
+      // wuh oh, what if there's a textarea? Then disable it again until changed
+
+      // if it has a force value....
+      if ($('[data-fit_feedback_why_input]').data('fit_modal_force').length > 0){
+
+        gobutton.prop("disabled", true);
+        
+        $('[data-fit_feedback_why_input]').on({
+          'change, keyup': function(e) {
+            var val = $(this).val();
+            if (val.length > $(this).data('fit_modal_force')){
+              gobutton.prop("disabled", false);
+            } else {
+              gobutton.prop("disabled", true);
+            }
+          }
+        });
       }
 
       console.log(language);
@@ -225,17 +339,54 @@ $( document ).ready(function() {
     });
   });
 
-  
 
-  // ------------------------------------------------------------
-  // user toggle
-  $('[data-fit-userpanel]').on("click", function(e, i) {
-    e.preventDefault();
-
-    $('html').toggleClass('fit_revealuserpanel');
+  $('[data-fit_modal_force]').on({
+    'change, keyup': function(e) {
+      var val = $(this).val();
+      if (val.length > $(this).data('fit_modal_force')){
+        $('[data-fit_modal_submit]').prop("disabled", false);
+      } else {
+        $('[data-fit_modal_submit]').prop("disabled", true);
+      }
+    }
   });
 
 
+  // escape to close (27 is escape apparently)
+  $(document).keydown(function(e) {
+    if (e.keyCode == 27) {
+      
+      // first check, and only close menu if search or user panel is not on
+      if (
+          ($('html').hasClass('fit_mobile_menu_active'))
+          &&
+          (!$('html').hasClass('fit_search_header_active'))
+          &&
+          (!$('html').hasClass('fit_revealuserpanel'))
+        ){
+        $('html').removeClass('fit_mobile_menu_active');
+      }
+
+      // just the user panel
+      if (
+          ($('html').hasClass('fit_revealuserpanel'))
+        ){
+        $('html').removeClass('fit_revealuserpanel');
+      }      
+
+      // only remove search if the menu is active
+      if (
+          ($('html').hasClass('fit_search_header_active'))
+        ){
+        $('html').removeClass('fit_search_header_active');
+      }
+
+    }
+  });  
+
+
+  // ------------------------------------------------------------
+  // charts!
 
   let chart = null;
   function render_student_chart(student_selector) {
@@ -478,6 +629,19 @@ $( document ).ready(function() {
     // Push to browser history so back/forward works.
     window.history.pushState({"segment_id":t.dataset.fitSegment},"", t.href);
     e.preventDefault();
+  });
+
+  delegate('[data-fit_toggle_mode]', 'click', (e, t) => {
+    e.preventDefault();
+    let sel  = t.dataset['fit_toggle_parent'] || 'html';
+    let mode = t.dataset['fit_toggle_mode'];
+    $(sel).toggleClass(mode);
+  });
+
+  delegate('[data-fit_focus]', 'click', (e, t) => {
+    e.preventDefault();
+    let sel  = t.dataset['fit_focus'];
+    $(sel).focus();
   });
 
   // Load the video dynamically when people hit back so the URLs in their

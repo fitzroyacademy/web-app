@@ -1,48 +1,47 @@
 <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
   <i class="fal fa-books"></i>
   <span class="fit_txt">Resources</span> 
-  <span class="fas fa-chevron-down"></span>
+  <i class="fas fa-chevron-down"></i>
 </a>
-<div>
 
-  <div class="fit_body collapse show" id="fit_lesson_resources">
-    <div class="fit_body_content">
-      {% for resource in lesson.resources %}
+<div class="fit_body collapse show" id="fit_lesson_resources">
+  <div class="fit_body_content">
+    {% for resource in lesson.resources %}
 
-        <!-- 
-          DEV: This anchor will need anothe class for TYPE of resource:
-          Resource type will be part of the DB, added when the teacher adds the resource link in edit.
-          - google_doc
-          - google_spreadsheet
-          - google_slide
-          - google_drawing
-          - youtube_video
-          - url
-          - file_pdf
-          - file_image (for jpg/gif/etc)
-          - file_doc (.doc and .docx etc)
+      <!-- 
+        DEV: This anchor will need anothe class for TYPE of resource:
+        Resource type will be part of the DB, added when the teacher adds the resource link in edit.
+        - google_doc
+        - google_spreadsheet
+        - google_slide
+        - google_drawing
+        - youtube_video
+        - url
+        - file_pdf
+        - file_image (for jpg/gif/etc)
+        - file_doc (.doc and .docx etc)
 
-          We may add more types to this list as we find people using them, but the above is a good start.
-        -->
-        <a class="fit_btn resource_link {{ resource.type }} {{ 'featured' if resource.featured }}" href="{{ resource.url }}">
-          <span class="fas {{ resource.icon }} lg"></span>
-          <span class="fit_txt">
-            {{ resource.title }}
-            <small>{{ resource.description }}</small>
-          </span>
-        </a>
-      {% endfor %}
+        We may add more types to this list as we find people using them, but the above is a good start.
+      -->
+      <a class="fit_btn resource_link {{ resource.type }} {{ 'featured' if resource.featured }}" href="{{ resource.url }}">
+        <i class="fas {{ resource.icon }} lg"></i>
+        <span class="fit_txt">
+          {{ resource.title }}
+          <small>{{ resource.description }}</small>
+        </span>
+      </a>
+    {% endfor %}
 
-      <!--<a class="fit_btn subtle" href="#">
-        <span class="fas fa-arrow-left"></span>
-        <span class="fit_txt">Load full lesson resources</span>
-      </a>-->
-    </div>
+    <!--<a class="fit_btn subtle" href="#">
+      <span class="fas fa-arrow-left"></span>
+      <span class="fit_txt">Load full lesson resources</span>
+    </a>-->
   </div>
-  </div>
+</div>
 
-  <!--
-  <div class="fit">
+
+<!--
+<div class="fit">
   <a class="fit_btn  collapsed" data-toggle="collapse" href="#fit_lesson_faqs" role="button" aria-expanded="fitse" aria-controls="fit_lesson_faqs">
     <i class="fal fa-question"></i>
     <span class="fit_txt">Frequently asked questions</span>
@@ -130,5 +129,5 @@
         {% include 'partials/_student_list.html' %}
       </div>
     </div>
-  </div> -->
-</div>
+  </div>
+-->

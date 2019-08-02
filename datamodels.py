@@ -11,7 +11,13 @@ Base = declarative_base()
 
 def dump(obj, seen=None):
 	if not isinstance(obj, Base):
-		return obj
+		if isinstance(obj, list) and isinstance(obj[0], Base):
+			o = []
+			for i in obj:
+				o.append(dump(i, seen=seen))
+			return o
+		else:
+			return obj
 	seen = seen or []  # Recursion trap.
 	seen.append(id(obj))
 	ignored = ["metadata"]
@@ -390,7 +396,7 @@ def get_course_by_code(code):
 
 def get_public_courses():
 	session = get_session()
-	return session.query(Course).filter(Course.guest_access == True)
+	return session.query(Course).filter(Course.guest_access == True).all()
 
 def get_lesson(lesson_id):
 	session = get_session()

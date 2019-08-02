@@ -1,0 +1,14 @@
+{% macro link_to(endpoint, title) -%}
+    <a href="{{ url_for(endpoint) }}" class="{{ 'active' if url_is(endpoint) }}">{{ title }}</a>
+{%- endmacro %}
+
+{% macro active_link(endpoint) -%}
+	{{ 'active' if url_is(endpoint) }}
+{%- endmacro %}
+
+
+<!-- 
+
+class="foo {{ 'class_here' if url_is("about.location") }}"
+
+-->

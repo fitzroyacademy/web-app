@@ -1,0 +1,7 @@
+{% for var in get_vars() %}
+	<li><b>{{ var.name }}</b>
+		<code>
+			{{ var.dump }}
+		</code>
+	</li>
+{% endfor %}

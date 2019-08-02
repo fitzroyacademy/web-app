@@ -1,0 +1,31 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+  <div class="fit_medium">
+
+    <h1>Static Pages</h1>
+
+    <p>These pages live in the <code>./templates/static/</code> directory.</p>
+
+    <p><strong>NB:</strong> All endpoints (like <code>support.index</code>) must exist by having HTML files within the templates/static directories or the link macros will throw a template error.</p>
+
+    {% for section, pages in pages.items(): %}
+      <h3>{{ section }}</h3>
+        <ul>
+        {% for page in pages %}
+          <li><code>url_for("{{section}}.{{page}}")</code> -> <a href="{{ url_for(section+'.'+ page) }}">{{ url_for(section+'.'+page) }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+
+  </div>
+
+  </article>
+
+</main>
+
+{% endblock %}
