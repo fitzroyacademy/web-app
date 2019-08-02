@@ -47,9 +47,8 @@
               <!-- <li><strong>34</strong> years old, from <strong>Paris, France</strong>.</li> <! DEV: from the user DB -->
             </ul>
             
-            
             <form method="post" action="/logout" class="form-inline">
-              <a href="/user_edit" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit your details</a>
+              <a href="{{ url_for('user.edit') }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit your details</a>
               &nbsp; 
               <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="fas fa-sign-out"></i> Log out</button>
             </form>

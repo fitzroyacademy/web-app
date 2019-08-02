@@ -85,8 +85,6 @@ body{font-family: "Lato", Arial, san-serif;}
 
 h1, h2, h3{font-weight: 900;}
 
-
-
 // -----------------------------------------------------------------------------------------
 /* z */
 
@@ -1689,18 +1687,19 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; opacity: 1; cursor: s-resi
 
 
 
-.fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 5px 0 100px;}
-.fit_quote p{font-size: 1rem; color: $text_light; line-height: 1.1rem; margin-bottom: 15px;}
+.fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 5px 0 100px; border:2px solid $border_medium; position: relative;}
+.fit_quote p{font-size: 1.2rem; line-height: 1.5rem; color: $text_light; margin-bottom: 15px;}
 .fit_quote p em{font-size: 1rem; display: block; color: $text; padding-bottom: 10px;}
 .fit_quote p strong{color: $text; padding: 0 3px; font-weight: inherit;}
 
 .fit_quote cite{font-size: 0.9rem; position: absolute; top: 100%; left: 0; padding: 35px 0 0 85px; color: $text_lighter;}
-.fit_quote cite img{display: block; position: absolute; top:15px; left: 20px; border-radius: 9999em; width: 50px; height: 50px;}
+.fit_quote cite img{display: block; position: absolute; top:30px; left: 20px; border-radius: 9999em; width: 50px; height: 50px;}
 .fit_quote cite:after,
 .fit_quote cite:before{display: block; position: absolute; top:0; left: 30px; border: 15px solid transparent; border-top-color: #fff; content: '';}
+.fit_quote cite:after{border-top-color: $border_medium}
+
 .fit_quote cite a{color: inherit; text-decoration: underline;}
 .fit_quote cite a:hover{color: $blue;}
-
 
 
 
