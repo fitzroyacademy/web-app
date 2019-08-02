@@ -11,7 +11,7 @@ Base = declarative_base()
 
 def dump(obj, seen=None):
 	if not isinstance(obj, Base):
-		if isinstance(obj, list) and isinstance(obj[0], Base):
+		if isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], Base):
 			o = []
 			for i in obj:
 				o.append(dump(i, seen=seen))
