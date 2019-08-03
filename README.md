@@ -72,6 +72,12 @@ docker-compose up # add -d to detach
 docker-compose down
 ```
 
+### Seeding the DB while using docker-compose
+While docker-compose is running:
+```
+docker exec -it $(docker ps -f name="fitzroy-academy-app" -q) flask reseed-database
+```
+
 ### Connecting to the docker-compose DB locally
 You can open a [psql](https://www.postgresql.org/docs/8.3/tutorial-accessdb.html) shell like the following:
 ```

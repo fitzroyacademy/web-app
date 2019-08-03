@@ -40,7 +40,7 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 	SECRET_KEY = 'INSECURE_FOR_LOCAL_DEVELOPMENT'
 	DB_HOST = environ.get('DB_HOST', default='dev_db.sqlite')
-	DB_OPTIONS = '?check_same_thread=False'
+	DB_OPTIONS = environ.get('DB_OPTIONS', default='?check_same_thread=False')
 
 class TestingConfig(Config):
 	DEBUG = False

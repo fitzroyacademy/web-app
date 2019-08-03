@@ -8,9 +8,12 @@ services:
       - .:/app:cached
     environment:
       FLASK_ENV: development
-      DB_ENDPOINT: postgres-container:5432
+      DB_HOST: postgres-container:5432
       DB_USER: postgres
       DB_PASSWORD: "postgres"
+      DB_DRIVER: postgres
+      DB_NAME: postgres
+      DB_OPTIONS: ""
     depends_on:
       - postgres-container
     networks: ['fitzroy-network']
