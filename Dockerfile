@@ -1,4 +1,6 @@
-FROM python:3.7.3
+FROM python:3.7-slim
+RUN apt-get update
+RUN apt-get install libpq-dev gcc musl-dev -y
 RUN mkdir /app/
 ADD requirements.txt /app/
 WORKDIR /app/
