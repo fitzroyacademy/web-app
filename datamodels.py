@@ -5,8 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import json
 from os import environ
 from sqlalchemy.ext.hybrid import hybrid_property
-
-
+from flask import current_app as app
+import pprint
 Base = declarative_base()
 
 def dump(obj, seen=None):
@@ -365,16 +365,7 @@ _session = None
 def get_session():
 	global _session
 	if _session is None:
-		# TODO: Move this into a configuration file somewhere.
-		if 'DB_USER' in environ and 'DB_ENDPOINT' in environ and 'DB_PASSWORD' in environ :
-			db_connect_string = 'postgres://' + environ['DB_USER'] + ':' + environ['DB_PASSWORD'] +'@' + environ['DB_ENDPOINT']
-		elif environ['FLASK_ENV'] == 'development':
-			db_connect_string = 'sqlite:///dev_db.sqlite?check_same_thread=False'
-		elif environ['FLASK_ENV'] == 'test':
-			db_connect_string = 'sqlite:///:memory:'
-		else:
-			raise Exception('DB_USER, DB_ENDPOINT, and/or DB_PASSWORD environment variables not provided, and app.debug is false.')
-		engine = sa.create_engine(db_connect_string)
+		engine = sa.create_engine(app.config['DB_URI'])
 		Base.metadata.create_all(engine)
 		Session = orm.scoped_session(orm.sessionmaker(bind=engine))
 		_session = Session()
