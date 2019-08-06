@@ -14,6 +14,8 @@ class Config(object):
 	DB_DRIVER = environ.get("DB_DRIVER", default='sqlite')
 	DB_NAME = environ.get("DB_NAME", default=None)
 	DB_OPTIONS = environ.get("DB_OPTIONS", default='')
+	MAILGUN_API_URL = environ.get("MAILGUN_API_URL", default=None)
+	MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
 
 	@property
 	def DB_URI(self):
