@@ -11,7 +11,8 @@ workflows:
           filters:
             branches:
               only:
-                - /v[0-9]+\.[0-9]+(?:\.[0-9])?/
+                - master
+
 jobs:
   test:
     docker:
@@ -74,4 +75,4 @@ jobs:
           name: Deploy application
           command: |
               source scripts/assume-role.sh
-              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app --force-new-deployment --region us-east-2
+              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app-alpha --force-new-deployment --region us-east-2
