@@ -21,7 +21,7 @@ python3 app.py
 To reseed the DB - this takes everything from `stubs.py` and puts it in the database `dev_db.sqlite`, which is our local databse:
 
 * To change the database, edit `stubs.py`, and rm `dev_db.sqlite`
-* `python3 reseed.py` to reseed from stubs
+* Ensure your virtualenv is active and packages are installed, then `flask reseed-database` to reseed from stubs
 * Then reset the app via `python3 app.py`
 * Then hit [localhost:5000](http://localhost:5000).
 * For an example lesson: [http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a](http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas/seg_a)
@@ -70,6 +70,12 @@ docker-compose up # add -d to detach
 ### Stopping docker-compose
 ```
 docker-compose down
+```
+
+### Seeding the DB while using docker-compose
+While docker-compose is running:
+```
+docker exec -it $(docker ps -f name="fitzroy-academy-app" -q) flask reseed-database
 ```
 
 ### Connecting to the docker-compose DB locally

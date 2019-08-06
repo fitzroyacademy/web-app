@@ -3,11 +3,14 @@ import unittest
 import datetime
 import string
 import random
+from app import app
+
 
 class TestModels(unittest.TestCase):
 
     def setUp(self):
-        self.session = datamodels.get_session()
+        with app.app_context():
+            self.session = datamodels.get_session()
 
     def tearDown(self):
         datamodels._clear_session_for_tests()

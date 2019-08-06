@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, request, url_for, redirect, flash
+from flask import Blueprint, render_template, session, request, url_for, redirect, flash, current_app as app
 import datamodels
 import jinja2
 
@@ -24,5 +24,5 @@ def fourohfour(e):
 @blueprint.route('/502')
 def fiveohtwo(e):
     """ For when something bad happens to the server. """
-    log_error(e)
+    app.logger.error(e)
     return render_template('502.html')   

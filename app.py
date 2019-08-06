@@ -13,12 +13,60 @@ import string
 from uuid import uuid4
 from os import environ
 from werkzeug.routing import BuildError
+from werkzeug.utils import import_string
 import routes
 import routes.course
 import routes.error
+import config
+import requests
+import click
 
 app = Flask('FitzroyFrontend', static_url_path='')
+
+environment = environ.get("FLASK_ENV", default="")
+
+if environment == "development":
+    cfg = import_string('config.DevelopmentConfig')()
+elif environment == "test":
+    cfg = import_string('config.TestingConfig')()
+elif environment == "production":
+    cfg = import_string('config.ProductionConfig')()
+else:
+    app.logger.warning("FLASK_ENV not specified. Use export FLASK_ENV=development to develop locally.")
+    cfg = import_string('config.Config')()
+
+app.config.from_object(cfg)
+
 routes.attach(app)
+
+@app.cli.command("reseed-database")
+def reseed_database():
+    import reseed
+
+@app.cli.command("test-email")
+@click.argument("email_to")
+@click.argument("email_from")
+@click.argument("subject")
+@click.argument("body")
+def test_email(email_to,email_from,subject,body):
+    send_email(email_to,email_from,subject,body)
+
+def send_email(email_to, email_from, subject, body):
+    message_data = {'from': email_from,
+       'to': email_to,
+       'subject': subject,
+       'html': body}
+    message_data = {k: v for k, v in message_data.items() if v is not None}
+
+    if not app.config.get('MAILGUN_API_URL') or not app.config.get('MAILGUN_API_KEY'):
+        app.logger.warning('No MAILGUN_API_URL or MAILGUN_API_KEY provided. Dumping email contents: {}'.format(message_data))
+        return
+    
+    response = requests.post("{}/messages".format(app.config.get('MAILGUN_API_URL')),
+    auth=requests.auth.HTTPBasicAuth("api", app.config.get('MAILGUN_API_KEY')),
+    data=message_data)
+    response.raise_for_status()
+    return response
 
 @app.route('/')
 def index():
@@ -27,16 +75,13 @@ def index():
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
 
-def log_error(error):
-    print(error)
-
 @app.context_processor
 def inject_current_user():
     return dict(current_user=get_current_user())
 
 @app.context_processor
 def inject_current_section():
-    print(request.path, request.path.split('/')[1])
+    app.logger.info(request.path)
     return dict(current_section=request.path.split('/')[1])
 
 @app.context_processor
@@ -92,18 +137,13 @@ def api():
     return render_template('url_fors.html', controllers=docs)
 
 if __name__ == "__main__":
+    app.logger.info("Building SASS")
+    compile_sass()
     if app.debug:
-        app.secret_key = 'l7j7BqOKH7' # Doesn't need to be random for local development
         from livereload import Server, shell
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./')
-        server.serve(host='0.0.0.0',open_url=False,port=5000,debug=True)
+        server.serve(host='0.0.0.0',open_url=False,port=5000)
     else:
-        if 'APP_SECRET_KEY' in environ and environ['APP_SECRET_KEY'] != "":
-            app.secret_key = environ['APP_SECRET_KEY']
-            app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
-        elif 'APP_SECRET_KEY' not in environ:
-            raise Exception('Application running in non-local environment, but APP_SECRET_KEY environment variable not provided.')
-        else:
-            raise Exception('Secret key provided in APP_SECRET_KEY, but key is empty.')
+        app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
