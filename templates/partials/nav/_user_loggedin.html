@@ -1,9 +1,8 @@
 <header>
   
   <a href="/" class="fit_btn left"> 
-    <!-- DEV: this will link to the previous 'bit' of the app, i.e. from a lesson back to a course, course back to course intro, course intro back to home.... When in doubt ask Will! -->
     <i class="fas fa-arrow-left"></i>
-    <span class="fit_txt">Back</span>
+    <span class="fit_txt">Home</span>
   </a>
 
   <a href="user.html" class="fit_btn right" data-fit-userpanel>
@@ -12,7 +11,7 @@
       <span class="d-none d-md-inline-block">{{ current_user.last_name }}</span>
     </span>
     <span class="fit_pic circle"> 
-      <!-- DEV: if profile picture added show: -->
+      <!-- DEV: if profile picture exists show: -->
         <img src="{{ current_user.profile_picture }}" alt="user">
       <!-- DEV: otherwise, show this icon:
         <i class="fal fa-user"></i>
