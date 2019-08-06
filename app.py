@@ -137,6 +137,8 @@ def api():
     return render_template('url_fors.html', controllers=docs)
 
 if __name__ == "__main__":
+    app.logger.info("Building SASS")
+    compile_sass()
     if app.debug:
         from livereload import Server, shell
         server = Server(app.wsgi_app)
