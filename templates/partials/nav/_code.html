@@ -33,28 +33,27 @@
           <div class="results"></div>
         </form>
 
-        <a href="/search" class="fit_btn search" data-fit_toggle_mode="fit_search_header_active" data-fit_focus="[data-fit_search_header_input]">
+        <a href="/search" class="fit_btn search d-none" data-fit_toggle_mode="fit_search_header_active" data-fit_focus="[data-fit_search_header_input]">
           <i class="fal fa-search"></i>
           <span class="fit_txt">Search</span>
         </a>
 
-        <a href="/about" class="fit_btn">
+        <a href="{{ url_for('about.index') }}" class="fit_btn">
           <!-- <i class="fal fa-question-circle"></i> -->
           <span class="fit_txt">About</span>
         </a>
 
-        <a href="/product" class="fit_btn">
+        <a href="{{ url_for('product.index') }}" class="fit_btn">
           <!-- <i class="fal fa-question-circle"></i> -->
           <span class="fit_txt">Product</span>
         </a>
 
-        <a href="/support" class="fit_btn">
+        <a href="{{ url_for('support.index') }}" class="fit_btn">
           <!-- <i class="fal fa-question-circle"></i> -->
           <span class="fit_txt">Support</span>
         </a>
-
       
-        <a href="/login" class="fit_btn login" data-fit-userpanel>
+        <a href="{{ url_for('user.login') }}" class="fit_btn login" data-fit-userpanel>
           <span class="fit_txt">Sign up</span>
           <i class="fal fa-user"></i>
           <i class="fal fa-chevron-right"></i>
@@ -70,7 +69,7 @@
   <div class="panel">
   
     <div class="head">
-      <a href="/login" class="fit_btn right" data-fit-userpanel>
+      <a href="{{ url_for('user.login') }}" class="fit_btn right" data-fit-userpanel>
         <span class="fit_txt">Close</span>
         <i class="far fa-times"></i>
       </a>
