@@ -79,6 +79,16 @@ class User(Base):
 	def full_name(self):
 		return " ".join([self.first_name, self.last_name])
 
+	@staticmethod
+	def find_by_id(user_id):
+		session = get_session()
+		return session.query(User).filter(User.id == user_id).first()
+
+	@staticmethod
+	def find_by_email(email):
+		session = get_session()
+		return session.query(User).filter(User.email == email).first()
+
 
 class Institute(Base):
 
@@ -181,6 +191,16 @@ class Course(Base):
 	def permalink(self):
 		return "/course/{}".format(self.slug)
 
+	@staticmethod
+	def find_by_slug(slug):
+		session = get_session()
+		return session.query(Course).filter(Course.slug == slug).first()
+
+	@staticmethod
+	def find_by_code(code):
+		session = get_session()
+		return session.query(Course).filter(Course.course_code == code).first()
+
 
 class CourseTranslation(Base):
 
@@ -205,6 +225,14 @@ class CourseEnrollment(Base):
 
 	user = orm.relationship("User", back_populates="courses")
 	course = orm.relationship("Course", back_populates="users")
+
+	@staticmethod
+	def find_by_course_and_student(course_id, student_id):
+		session = get_session()
+		return session.query(CourseEnrollment).filter(
+			CourseEnrollment.course_id == course_id and
+			CourseEnrollment.student_id == student_id
+		).first()
 
 
 class Lesson(Base):
@@ -235,6 +263,23 @@ class Lesson(Base):
 	@property
 	def permalink(self):
 		return "/course/{}/{}".format(self.course.slug, self.slug)
+
+	@staticmethod
+	def find_by_id(lesson_id):
+		session = get_session()
+		return session.query(Lesson).filter(Lesson.id == lesson_id).first()
+
+	@staticmethod
+	def find_by_slug(course_slug, lesson_slug):
+		session = get_session()
+		q = session.query(Lesson).\
+			join(Lesson.course).\
+			filter(Course.slug == course_slug).\
+			filter(Lesson.slug == lesson_slug)
+		try:
+			return q.first()
+		except:
+			return None
 
 
 class LessonTranslation(Base):
@@ -298,6 +343,35 @@ class Segment(Base):
 	def save_user_progress(self, user, percent):
 		return save_segment_progress(self.id, user.id, percent)
 
+	@staticmethod
+	def find_by_id(segment_id):
+		session = get_session()
+		return session.query(Segment).filter(Segment.id == segment_id).first()
+
+	@staticmethod
+	def find_user_progress(segment_id, user_id):
+		session = get_session()
+		q = session.query(SegmentUserProgress).\
+			filter(SegmentUserProgress.segment_id == segment_id).\
+			filter(SegmentUserProgress.user_id == user_id)
+		try:
+			return q.first()
+		except:
+			return None
+
+	@staticmethod
+	def find_by_slug(course_slug, lesson_slug, segment_slug):
+		session = get_session()
+		q = session.query(Segment).\
+			join(Lesson.segments).\
+			join(Lesson.course).\
+			filter(Course.slug == course_slug).\
+			filter(Lesson.slug == lesson_slug).\
+			filter(Segment.slug == segment_slug)
+		try:
+			return q.first()
+		except:
+			return None
 
 class SegmentTranslation(Base):
 
@@ -377,36 +451,34 @@ def _clear_session_for_tests():
 		raise Exception("Session clearing is for test instances only.")
 	_session = None
 
+
+def get_user(user_id):
+	return User.find_by_id(user_id)
+
+def get_user_by_email(email):
+	return User.find_by_email(email)
+
 def get_course_by_slug(slug):
-	session = get_session()
-	return session.query(Course).filter(Course.slug == slug).first()
+	return Course.find_by_slug(slug)
 
 def get_course_by_code(code):
-	session = get_session()
-	return session.query(Course).filter(Course.course_code == code).first()
+	return Course.find_by_code(code)
 
 def get_public_courses():
 	session = get_session()
 	return session.query(Course).filter(Course.guest_access == True).all()
 
 def get_lesson(lesson_id):
-	session = get_session()
-	return session.query(Lesson).filter(Lesson.id == lesson_id).first()
+	return Lesson.find_by_id(lesson_id)
 
 def get_lesson_by_slug(course_slug, lesson_slug):
-	session = get_session()
-	q = session.query(Lesson).\
-		join(Lesson.course).\
-		filter(Course.slug == course_slug).\
-		filter(Lesson.slug == lesson_slug)
-	try:
-		return q.first()
-	except:
-		return None
+	return Lesson.find_by_slug(course_slug, lesson_slug)
 
 def get_segment(segment_id):
-	session = get_session()
-	return session.query(Segment).filter(Segment.id == segment_id).first()
+	return Segment.find_by_id(segment_id)
+
+def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
+	return Segment.find_by_slug(course_slug, lesson_slug, segment_slug)
 
 def get_segment_progress(segment_id, user_id):
 	session = get_session()
@@ -430,30 +502,5 @@ def save_segment_progress(segment_id, user_id, percent):
 	session.commit()
 	return sup
 
-def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
-	session = get_session()
-	q = session.query(Segment).\
-		join(Lesson.segments).\
-		join(Lesson.course).\
-		filter(Course.slug == course_slug).\
-		filter(Lesson.slug == lesson_slug).\
-		filter(Segment.slug == segment_slug)
-	try:
-		return q.first()
-	except:
-		return None
-
-def get_user(user_id):
-	session = get_session()
-	return session.query(User).filter(User.id == user_id).first()
-
-def get_user_by_email(email):
-	session = get_session()
-	return session.query(User).filter(User.email == email).first()
-
 def get_enrollment(course_id, student_id):
-	session = get_session()
-	return session.query(CourseEnrollment).filter(
-		CourseEnrollment.course_id == course_id and
-		CourseEnrollment.student_id == student_id
-	).first()
+	return CourseEnrollment.get_by_course_and_student(course_id, student_id)
