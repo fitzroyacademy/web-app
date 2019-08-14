@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
 import datamodels
+import stubs
 
 blueprint = Blueprint('segment', __name__, template_folder='templates')
 

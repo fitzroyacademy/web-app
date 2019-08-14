@@ -9,7 +9,9 @@ def add_event(event_type):
     Log an event triggered by the current user to the database if
     it's the right type, or just some random logfile if it's not.
     """
-    user = get_current_user()
+    user = None
+    if 'user_id' in session:
+        user = datamodels.get_user(session['user_id'])
     if user is None:
         # TODO: Log anonymous user progress.
         return True
