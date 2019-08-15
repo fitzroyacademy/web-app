@@ -5,7 +5,7 @@
 
   <article>
 
-  <div class="fit_medium">
+  <div class="fit_course">
 
     <h1>API Endpoints</h1>
 
@@ -13,9 +13,13 @@
 
     <p><b>Note</b>: This only includes new-style routes that have a proper <code>url_for</code>; paths will be added automatically to this page as they become available.</p>
 
-    {% for key, endpoints in controllers.items(): %}
-      <a href="#{{ key }}">{{ key }}</a>
-    {% endfor %}
+    <ul class="nav nav-tabs  mb-3" id="tab" role="tablist">
+      {% for key, endpoints in controllers.items(): %}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="pill" href="#{{ key }}">New <span class="d-none d-sm-inline">{{ key }}</span></a>
+        </li>    
+      {% endfor %}
+    </ul>
 
     {% for key, endpoints in controllers.items(): %}
       <h2 id="{{ key }}">{{ key }}</h2>

@@ -175,6 +175,8 @@ $border_rad_r: 9999em;
 
 header{height: $header_height; background: #fff; position: fixed; top:0; left: 0; right: 0; display: flex;}
 
+header .container{display: flex;}
+
 header .fit_link:hover,
 .fit_sidepanel .panel .head .fit_link:hover{background: none;}
 
@@ -259,6 +261,7 @@ html.fit_minleft{}
 // .btn-sm [class^='fa']:first-child{margin: 0 0.1rem;}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
+.container{max-width: 1100px;}
 
 // no tooltip arrows, ew.
 .tooltip .arrow{display: none;}
@@ -372,8 +375,15 @@ aside .fit_btn{color: $text;}
 
 .fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;}
 
+
+
+
+
 // wtf is happening here with white space and height aRRGHGHgh?!
 // okay so we need nowrap for the headers, but not elsewhere.
+
+header .fit_btn{}
+
 header .fit_btn > .fit_txt,
 .head .fit_btn > .fit_txt{ white-space: nowrap; font-size: 0.9rem;}
 header .fit_btn:hover,
@@ -810,11 +820,13 @@ Bleh:;
 .fit_cta .fit_course h3{color: #fff;}
 
 .btn-hg{font-size: 2rem; padding: 1rem 1.5rem; font-weight: 900;}
-.btn-hg:hover{color: $brand;}
+.btn-hg:hover{color: $brand_dark;}
 .btn-hg i:first-child{margin-right: 0.5rem;}
 
+.fit_cta .btn-hg:hover{color: $watermelon_dark;}
+
 .btn-drop{box-shadow: 0 0.3rem 0 rgba(0,0,0,0.15);}
-.btn-drop:hover{box-shadow: 0 0.25rem 0 rgba(0,0,0,0.4); background: #fff;}
+.btn-drop:hover{box-shadow: 0 0.25rem 0.1rem rgba(0,0,0,0.3); background: #fff;}
 
 .fit_cta .btn-hg{margin: 1rem 0 2rem;}
 
@@ -1267,6 +1279,17 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 }
 
 
+.fit_entry_buttons{margin: 2rem 0;}
+.fit_entry_buttons .btn{margin: 0 .5rem;}
+
+
+
+
+
+
+// ----------------------------------------------------------------------------------------------------------------
+// the window for pictures and courses.
+
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
 // skipping the auto 16:9 for now...
 // .fit_window:after{padding-top: $ratio_169; display: block; content: '';}
@@ -1593,7 +1616,7 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code_head.active .form-control,
 .fit_form_code_head.labelled .form-control,
 .fit_form_code_head.labelled .form-control:active{border-color: $watermelon; box-shadow: none; width: 8rem;}
-.fit_form_code_head .form-control:focus{background: $watermelon_dark;}
+.fit_form_code_head .form-control:focus{background: $watermelon;}
 .fit_form_code_head.active .form-control::placeholder{opacity: 0.6; color:#fff;}
 
 .fit_form_code_head.active label,
@@ -1686,11 +1709,11 @@ footer .fit_device svg > path{fill: $watermelon;}
 // ----------------------------------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish
 
-.fit_debug{position: fixed; bottom: 2rem; right:2rem; left: 70%; background: #fff; padding: 1rem; height: 15%; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
+.fit_debug{position: fixed; bottom: 2rem; right:2rem; right: 2rem; background: #fff; padding: 1rem; width: 6rem; height: 6rem; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
 
 .fit_debug:hover{opacity: 1;}
 
-html.fit_debug_on .fit_debug{height: 50%; left: 2rem; opacity: 1; cursor: s-resize;}
+html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; cursor: s-resize;}
 
 
 

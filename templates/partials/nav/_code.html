@@ -1,67 +1,69 @@
 <header>
 
-  <a href="/" class="fit_device">
-    {% include 'partials/chrome/_fa_svg_square.html' %}
-  </a>
+  <div class="container">
+    <a href="/" class="fit_device">
+      {% include 'partials/chrome/_fa_svg_square.html' %}
+    </a>
 
-  <form class="fit_form_code_head fit_fancyplace" method="post" action="{{ url_for('course.code') }}" data-fit_head_code_daddy>
-	  <div class="input-group input-group-sm">
-		  <input type="text" name="course_code" id="course_code_header" class="form-control" placeholder="Course code" aria-label="Coure code" data-fit_head_code data-fit-fancyplace>
-		  <div class="input-group-append">
-		    <button class="btn" disabled type="button"><i class="fal fa-rocket"></i> </button>
-		  </div>
-      <label for="course_code_header"><span class="course">Course</span> <span class="code">Code</span> </label>
-		</div>	
-  </form>
+    <form class="fit_form_code_head fit_fancyplace" method="post" action="{{ url_for('course.code') }}" data-fit_head_code_daddy>
+  	  <div class="input-group input-group-sm">
+  		  <input type="text" name="course_code" id="course_code_header" class="form-control" placeholder="Course code" aria-label="Coure code" data-fit_head_code data-fit-fancyplace>
+  		  <div class="input-group-append">
+  		    <button class="btn" disabled type="button"><i class="fal fa-rocket"></i> </button>
+  		  </div>
+        <label for="course_code_header"><span class="course">Course</span> <span class="code">Code</span> </label>
+  		</div>	
+    </form>
 
-  {% if current_section != 'login' %}
+    {% if current_section != 'login' %}
 
-    <div class="right fit_mobile_menu">
+      <div class="right fit_mobile_menu">
 
-      <a href="{{ url_for('index') }}" class="fit_btn fit_mobile_menu_trigger" data-fit_mobile_menu_trigger>
-        <span class="fit_txt">Menu</span>
-        <i class="fal fa-chevron-down"></i>
-        <i class="fal fa-times"></i>
-      </a>
-
-      <div class="right fit_mobile_menu_dropdown">
-
-        <form class="form fit_search_header" action="/search" method="post">
-          <input class="form-control" type="text" value="" placeholder="Search..." data-fit_search_header_input>
-          <button class="btn btn-link"><i class="fal fa-search"></i></button>
-          <a href="#" class="btn btn-link" data-fit_toggle_mode="fit_search_header_active"><i class="fal fa-times"></i></a>
-          <div class="results"></div>
-        </form>
-
-        <a href="/search" class="fit_btn search d-none" data-fit_toggle_mode="fit_search_header_active" data-fit_focus="[data-fit_search_header_input]">
-          <i class="fal fa-search"></i>
-          <span class="fit_txt">Search</span>
+        <a href="{{ url_for('index') }}" class="fit_btn fit_mobile_menu_trigger" data-fit_mobile_menu_trigger>
+          <span class="fit_txt">Menu</span>
+          <i class="fal fa-chevron-down"></i>
+          <i class="fal fa-times"></i>
         </a>
 
-        <a href="{{ url_for('about.index') }}" class="fit_btn">
-          <!-- <i class="fal fa-question-circle"></i> -->
-          <span class="fit_txt">About</span>
-        </a>
+        <div class="right fit_mobile_menu_dropdown">
 
-        <a href="{{ url_for('product.index') }}" class="fit_btn">
-          <!-- <i class="fal fa-question-circle"></i> -->
-          <span class="fit_txt">Product</span>
-        </a>
+          <form class="form fit_search_header" action="/search" method="post">
+            <input class="form-control" type="text" value="" placeholder="Search..." data-fit_search_header_input>
+            <button class="btn btn-link"><i class="fal fa-search"></i></button>
+            <a href="#" class="btn btn-link" data-fit_toggle_mode="fit_search_header_active"><i class="fal fa-times"></i></a>
+            <div class="results"></div>
+          </form>
 
-        <a href="{{ url_for('support.index') }}" class="fit_btn">
-          <!-- <i class="fal fa-question-circle"></i> -->
-          <span class="fit_txt">Support</span>
-        </a>
-      
-        <a href="{{ url_for('user.login') }}" class="fit_btn login" data-fit-userpanel>
-          <span class="fit_txt">Sign up</span>
-          <i class="fal fa-user"></i>
-          <i class="fal fa-chevron-right"></i>
-        </a>
+          <a href="/search" class="fit_btn search d-none" data-fit_toggle_mode="fit_search_header_active" data-fit_focus="[data-fit_search_header_input]">
+            <i class="fal fa-search"></i>
+            <span class="fit_txt">Search</span>
+          </a>
+
+          <a href="{{ url_for('about.index') }}" class="fit_btn">
+            <!-- <i class="fal fa-question-circle"></i> -->
+            <span class="fit_txt">About</span>
+          </a>
+
+          <a href="{{ url_for('product.index') }}" class="fit_btn">
+            <!-- <i class="fal fa-question-circle"></i> -->
+            <span class="fit_txt">Product</span>
+          </a>
+
+          <a href="{{ url_for('support.index') }}" class="fit_btn">
+            <!-- <i class="fal fa-question-circle"></i> -->
+            <span class="fit_txt">Support</span>
+          </a>
         
-      </div>
-    </div><!-- right -->
-  {% endif %}
+          <a href="{{ url_for('user.login') }}" class="fit_btn login" data-fit-userpanel>
+            <span class="fit_txt">Sign up</span>
+            <i class="fal fa-user"></i>
+            <i class="fal fa-chevron-right"></i>
+          </a>
+          
+        </div>
+      </div><!-- right -->
+    {% endif %}
+  </div>
 </header>
 
 <div class="fit_sidepanel userpanel">
