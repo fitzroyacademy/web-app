@@ -384,6 +384,11 @@ aside .fit_btn{color: $text;}
 // wtf is happening here with white space and height aRRGHGHgh?!
 // okay so we need nowrap for the headers, but not elsewhere.
 
+// mess with the container, when it's there
+header .container > .fit_btn.left:first-child,
+header .container > .fit_device:first-child{margin-left: -15px;}
+header .container > .right:last-child {margin-right: -15px;}
+
 header .fit_btn{color:$text;}
 
 header .fit_btn > .fit_txt,
@@ -1333,7 +1338,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 @media (min-width: 768px) {
 
 	// featured is a bit weird
-	.fit_course_sell.featured {max-width: 900px; margin:0 auto 2rem;}
+	.fit_course_sell.featured {max-width: 768px; margin:0 auto 2rem;}
 	.fit_course_sell.featured h3{font-size: 2.5rem; padding: 1.5rem 0 .5rem;}
 	.fit_course_sell.featured p.tagline .tag{display: inline-block; font-size: 1.1rem; margin-right: 1rem; max-width: none;}
 	.fit_course_sell.featured p.tagline .tag:first-child{display: block;padding-bottom: 0.5rem;}
