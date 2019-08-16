@@ -300,6 +300,8 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 // this hax makes the square logo work
 .fit_device svg{height: 1.75rem; margin: 0.75rem 0.35rem 0.75rem 0.85rem;}
 
+header .fit_device svg > path{fill:$brand;}
+
 // -----------------------------------------------------------------------------------------
 /* fablocks */
 
@@ -382,7 +384,7 @@ aside .fit_btn{color: $text;}
 // wtf is happening here with white space and height aRRGHGHgh?!
 // okay so we need nowrap for the headers, but not elsewhere.
 
-header .fit_btn{}
+header .fit_btn{color:$text;}
 
 header .fit_btn > .fit_txt,
 .head .fit_btn > .fit_txt{ white-space: nowrap; font-size: 0.9rem;}

@@ -5,36 +5,3 @@
 {% macro active_link(endpoint) -%}
 	{{ 'active' if url_is(endpoint) }}
 {%- endmacro %}
-
-
-
-<!--
-
-class="foo {{ 'class_here' if url_is("about.location") }}"
-
-
-{% if url_is('course.view') %}
-   Course View!
-{% endif %}
-
-{% if current_section('course.view') %}
-   Course View!
-{% endif %}
-
-
-
-{% if url_is('course.view') %}
-    You're on the course view.
-{% else %}
-    <a href="{{ url_for('course.view') }}">Go to course view.</a>
-{% endif %}
-
-<a href="{{ url_for('course.view') }}"
-  class="{{ 'active' if url_is('course.view') }}">
-    Course Overview
-</a>
-
-
-https://fitzroyacademy.com/login/doreset/79/3npnak9kue6wJUpoCM3AUH0Qnll0uGkpfSKOr1qzruT5VNdLVhERtDtFtINcvgGX
-
--->

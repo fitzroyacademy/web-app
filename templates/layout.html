@@ -29,11 +29,7 @@
 
 {% include 'partials/_flash_alerts.html' %}
 
-{% if current_user %}
-  {% include 'partials/nav/_user_loggedin.html' %}
-{% else %}
-  {% include 'partials/nav/_code.html' %}
-{% endif %}
+{% include 'partials/nav/_header.html' %}
 
 {% block body %}{% endblock %}
 

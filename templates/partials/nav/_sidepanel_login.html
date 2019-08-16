@@ -1,0 +1,21 @@
+<div class="fit_sidepanel userpanel">
+  <div class="whiteout" data-fit-userpanel></div>
+  <div class="panel">
+  
+    <div class="head">
+      <a href="{{ url_for('user.login') }}" class="fit_btn right" data-fit-userpanel>
+        <span class="fit_txt">Close</span>
+        <i class="far fa-times"></i>
+      </a>
+    </div>
+    
+    <div class="content">
+      
+      {% if current_section != 'login' %}
+        {% include 'partials/form/_login.html' %}
+      {% endif %}
+
+    </div>
+
+  </div>
+</div>

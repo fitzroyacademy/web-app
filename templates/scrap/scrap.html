@@ -1,0 +1,33 @@
+
+class="foo {{ 'class_here' if url_is("about.location") }}"
+
+
+{% if url_is('course.view') %}
+   Course View!
+{% endif %}
+
+{% if url_is('course.view') %}
+    You're on the course view.
+{% else %}
+    <a href="{{ url_for('course.view') }}">Go to course view.</a>
+{% endif %}
+
+<a href="{{ url_for('course.view') }}"
+  class="{{ 'active' if url_is('course.view') }}">
+    Course Overview
+</a>
+
+
+
+<!-- reset for OG site -->
+https://fitzroyacademy.com/login/doreset/79/3npnak9kue6wJUpoCM3AUH0Qnll0uGkpfSKOr1qzruT5VNdLVhERtDtFtINcvgGX
+
+
+
+
+
+{% if current_user %}
+  {% include 'partials/nav/_user_loggedin.html' %}
+{% else %}
+  {% include 'partials/nav/_code.html' %}
+{% endif %}
