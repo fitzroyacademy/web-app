@@ -424,13 +424,15 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn_lg > .fit_txt{font-size: 1.4rem;}
 
 // weird one in the panes
-.fit_pane.fat .fit_btn_lg{margin: -1.5rem;}
-.fit_pane.fat .fit_btn_lg + .fit_body{padding-top: 2rem;}
+.fit_pane > .fit{margin: -.5rem}
+.fit_pane > .fit_body{padding-top: 1.5rem}
 
 // weirdo collapsey boies
 .fit_pane .fit_btn[data-toggle="collapse"].collapsed{background: transparent; color:$blue}
 .fit_pane .fit_btn[data-toggle="collapse"]{background: #fff; color: $brand;}
 .fit_pane .fit_btn[data-toggle="collapse"]:hover{color: $blue;}
+
+.fit_pane .fit_btn[data-toggle="collapse"] .fa-chevron-down{padding: 1rem;}
 
 // Okay. This is the 'segment types' bit, where we use freaky stuff to display certain icons:
 .fit_btn > .fit_circle{}
@@ -812,9 +814,9 @@ Bleh:;
 
 .fit_summary_icons{padding: 0.5rem 0 0 ;}
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
-.fit_summary_icons dt{padding:0.1rem 0 1rem 2.8rem; position: relative; font-size: 1.2rem;}
-.fit_summary_icons dt i{position: absolute; top:0.2rem; left: -0.2rem; font-size: 1.5rem; color: #b0b4b7;}
-.fit_summary_icons dd{padding: 0 0 0.5rem 2.8rem; margin-top: -0.4rem;}
+.fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
+.fit_summary_icons dt i{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
+.fit_summary_icons dd{padding: 0 0 0.5rem 3.2rem; margin-top: -0.4rem;}
 .fit_summary_icons dd .badge{font-size: 0.9rem;}
 
 .fit_pane .fit_summary_icons{margin-bottom: -1rem;}
@@ -1359,8 +1361,6 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_course_sell{border-radius: $border_rad_xl; border:1px solid $border_light; padding: 1rem; margin-bottom: 1rem;}
 	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
-
-
 
 // ----------------------------------------------------------------------------------------------------------------
 // Keep watching, bucko! Get back on that horse, get on track, get it done ya hear.

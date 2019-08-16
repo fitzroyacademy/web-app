@@ -42,7 +42,7 @@ $( document ).ready(function() {
     }
   });
 
-  // things I want:
+  // things I want when this stuff is made singular:
   // toggle a HTML class
   // remove a html class
   // add a html class
