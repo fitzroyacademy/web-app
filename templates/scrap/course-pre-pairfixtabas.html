@@ -85,9 +85,30 @@
   </article>
 
   <aside>
-    {% with lesson = active_lesson %}
-      {% include 'partials/course/_lesson_detail.html' %}
-    {% endwith %}
+    <div class="fits">
+      
+      {% with lesson = active_lesson %}
+        {% include 'partials/course/_lesson_detail.html' %}
+      {% endwith %}
+
+      <div class="fit_collapse">
+        <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_teacher" role="button" aria-expanded="fitse" aria-controls="fit_lesson_teacher">
+          <i class="fal fa-chalkboard-teacher"></i>
+          <span class="fit_txt">Teacher</span>
+          <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="fit_body collapse" id="fit_lesson_teacher">
+          <div class="fit_body_content">
+            <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
+              <span class="fit_pic circle"><img src="/assets/images/defaults/face.jpg" alt="user"></span>
+              <span class="fit_txt">Victoria Cullen</span> 
+            </a>
+            <p>&ldquo;I'm a prefix "meta-" here referred not to a reflective stance or repeated rumination, but to Plato's metaxy, which denotes a movement between opposite poles as well as beyond them.&rdquo;</p>
+          </div>
+        </div>
+      </div> 
+
+    </div>
   </aside>  
 
   

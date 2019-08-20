@@ -1,5 +1,6 @@
-<div class="fit_collapse" id="fit_resources_panel" data-fit-active-lesson="{{ active_lesson.id }}">
-  <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
+<div class="fits" data-fit-active-lesson="{{ active_lesson.id }}">
+
+  <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button">
     <i class="fal fa-books"></i>
     <span class="fit_txt">Resources</span> 
     <i class="fas fa-chevron-down"></i>
@@ -9,7 +10,7 @@
     <div class="fit_body_content">
       {% for resource in lesson.resources %}
 
-        <!-- 
+        {#
 
           DEV: This anchor will need anothe class for TYPE of resource:
           Resource type will be part of the DB, added when the teacher adds the resource link in edit.
@@ -25,7 +26,8 @@
 
           We may add more types to this list as we find people using them, but the above is a good start.
           
-        -->
+        #}
+
         <a class="fit_btn resource_link {{ resource.type }} {{ 'featured' if resource.featured }}" href="{{ resource.url }}">
           <i class="fas {{ resource.icon }} lg"></i>
           <span class="fit_txt">
@@ -36,6 +38,23 @@
       {% endfor %}
     </div>
   </div>
+
+  <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_teacher" role="button" aria-expanded="fitse" aria-controls="fit_lesson_teacher">
+    <i class="fal fa-chalkboard-teacher"></i>
+    <span class="fit_txt">Teacher</span>
+    <i class="fas fa-chevron-down"></i>
+  </a>
+
+  <div class="fit_body collapse" id="fit_lesson_teacher">
+    <div class="fit_body_content">
+      <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
+        <span class="fit_pic circle"><img src="/assets/images/defaults/face.jpg" alt="user"></span>
+        <span class="fit_txt">Victoria Cullen</span> 
+      </a>
+      <p>&ldquo;I'm a prefix "meta-" here referred not to a reflective stance or repeated rumination, but to Plato's metaxy, which denotes a movement between opposite poles as well as beyond them.&rdquo;</p>
+    </div>
+  </div>
+
 </div>
 
 
