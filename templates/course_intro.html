@@ -22,13 +22,13 @@
            -->
         </span>
 
-        <span>Curated by <strong> course.teacher.full_name </strong>.</span>
+        <span>Curated by <strong> course.teacher.full_name</strong>.</span>
       </p>
       
 
       <div class="fit_vidya">
         <!-- DEV: 16:9 image uploaded in edit view -->
-        <img class="placeholder" src="/assets/images/defaults/vid.jpg" alt="video"> 
+        <img class="placeholder" src="{{ course.thumbnail }}" alt="video"> 
         <a class="fit_vidya_play" href="{{ course.lessons[0].permalink }}"><i class="fas fa-play-circle"></i></a>
       </div>
       
