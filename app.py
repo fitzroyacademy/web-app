@@ -80,6 +80,13 @@ def inject_current_user():
     return dict(current_user=get_current_user())
 
 @app.context_processor
+def inject_resume_video():
+    segment_id = request.cookies.get('resume_segment_id', None)
+    segment = datamodels.Segment.find_by_id(segment_id)
+    place = request.cookies.get('resume_segment_place', None)
+    return dict(last_segment=segment, last_segment_place=place)
+
+@app.context_processor
 def inject_current_section():
     app.logger.info(request.path)
     return dict(current_section=request.path.split('/')[1])

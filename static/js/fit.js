@@ -497,6 +497,10 @@ $( document ).ready(function() {
     window.delegate = delegate;
   })();
 
+  function setCookie(name, value) {
+    document.cookie = `${name}=${value};expires=Mon, 01 Jan 2970 00:00:00 GMT; path=/`;
+  }
+
   function get(url, cb) {
     let xhr = new XMLHttpRequest();
     xhr.onload = () => {
@@ -530,10 +534,22 @@ $( document ).ready(function() {
   function fitzVideoReady(video) {
     _fitz_video = video;
     video.bind('percentwatchedchanged', handleVideoProgress);
+    video.bind("secondchange", handleVideoTime);
+    handleResume(video);
     window._fitz_video = _fitz_video;
   }
   // Export for the Wistia embed.
   window.fitzVideoReady = fitzVideoReady;
+
+  function handleResume(video) {
+    if (window.location.search) {
+      let m = window.location.search.match(/\bt=(.*)\b/);
+      if (m) {
+        let t = video.time(parseInt(m[1]));
+        video.play();
+      }
+    }
+  }
 
   function handleVideoProgress(percent, lastPercent) {
     var id = _fitz_video.data.media.hashedId;
@@ -541,6 +557,14 @@ $( document ).ready(function() {
     var active_segment = document.querySelector('[data-fit-segment].active');
     var segment_id = active_segment.dataset.fitSegment;
     post('/event/progress', {segment_id:segment_id, percent:percent}, ()=>{});
+  }
+
+  function handleVideoTime(seconds) {
+    if (seconds % 15 > 0) return;
+    var active_segment = document.querySelector('[data-fit-segment].active');
+    var segment_id = active_segment.dataset.fitSegment;
+    setCookie('resume_segment_place', seconds);
+    setCookie('resume_segment_id', segment_id);
   }
 
   // Adds a data-fit-panel property to links which will take a CSS selector
