@@ -52,10 +52,12 @@ jobs:
       - run: 
           name: Install dependencies
           command: |
-            # sudo apt-get install libpq-dev
+            apt-get -y -qq update
+            apt-get -y -qq install python3.4-dev
+            curl -O https://bootstrap.pypa.io/get-pip.py
+            python3.4 get-pip.py --user
+            pip install awscli --upgrade --user
             chmod +x scripts/assume-role.sh
-            # sudo apt-get update
-            sudo apt-get install -y jq awscli
       - run:
           name: Build and tag Docker containers
           command: |
