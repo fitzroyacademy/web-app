@@ -76,42 +76,33 @@
     <div class="fit_vidya">
       {% include 'partials/_active_segment.html' %}
     </div>
-    
-    <div class="fit_subvidya fit_completion d-none">
+    {#<div class="fit_subvidya fit_completion">
       <a href="#" class="fit_closepanel"><i class="fas fa-times"></i></a>
       {% include 'partials/_completion_chart.html' %}
-    </div>
 
+
+      <!-- DEV: WD testing scrolling, do not remove --><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+    </div>#}
   </article>
 
   <aside>
     <div class="fits">
-      
-      {% with lesson = active_lesson %}
-        {% include 'partials/_lesson_resources.html' %}
-      {% endwith %}
 
-      <div class="fit_collapse">
-        <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_teacher" role="button" aria-expanded="fitse" aria-controls="fit_lesson_teacher">
-          <i class="fal fa-chalkboard-teacher"></i>
-          <span class="fit_txt">Teacher</span>
-          <i class="fas fa-chevron-down"></i>
+      <div class="fit fit_hider">
+        <a class="fit_btn subtle " data-fit-minright href="#">
+          <span class="fit_txt">Hide</span>
+          <i class="fas fa-chevron-right"></i>
         </a>
-        <div class="fit_body collapse" id="fit_lesson_teacher">
-          <div class="fit_body_content">
-            <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
-              <span class="fit_pic circle"><img src="/assets/images/defaults/face.jpg" alt="user"></span>
-              <span class="fit_txt">Victoria Cullen</span> 
-            </a>
-            <p>&ldquo;I'm a prefix "meta-" here referred not to a reflective stance or repeated rumination, but to Plato's metaxy, which denotes a movement between opposite poles as well as beyond them.&rdquo;</p>
-          </div>
-        </div>
-      </div> 
+      </div>
+
+      <div class="fit" id="fit_resources_panel" data-fit-active-lesson="{{ active_lesson.id }}">
+        {% with lesson = active_lesson %}
+          {% include 'partials/_lesson_resources.html' %}
+        {% endwith %}
+      </div>
 
     </div>
-  </aside>  
-
-  
+  </aside>
 </main>
 
 {% endblock %}

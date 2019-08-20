@@ -1,4 +1,3 @@
-
 /*
 
 TODO
@@ -88,7 +87,8 @@ h1, h2, h3{font-weight: 900;}
 // -----------------------------------------------------------------------------------------
 /* z */
 
-nav, main, aside{z-index: 100;}
+nav, main, article, aside{z-index: 100;}
+nav{z-index: 150}
 
 .fit_subvidya{z-index: 200;}
 .fit_vidya{z-index: 250}
@@ -103,7 +103,6 @@ footer{z-index: 1500;}
 .fit_medium_rare{z-index: 2000;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
-
 
 
 header{z-index: 3000;}
@@ -205,7 +204,6 @@ body{min-height: 100%;}
 
 body > header, 
 body > .fit_player nav,
-body > .fit_player aside,
 .fit_sidepanel .panel,
 .fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
 
@@ -222,9 +220,7 @@ article{position: static;}
 nav, aside{flex: 0 0 $nav_left_width_flex; min-width: $nav_left_width_min; max-width: $nav_left_width_max;}
 aside{flex: 0 0 $nav_right_width_flex; max-width: $nav_right_width_max;}
 
-article{flex: 3;}
-
-
+article{flex: 1;}
 
 // messing with scrollbars coz ugh
 // only happens on the player screen
@@ -234,12 +230,10 @@ article{flex: 3;}
 	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto; background: #fff;}
 
 	main.fit_player nav,
-	main.fit_player article,
-	main.fit_player aside{overscroll-behavior: contain; overflow: hidden; overflow-y: scroll;}
+	main.fit_player article{overscroll-behavior: contain; overflow: hidden; overflow-y: scroll;}
 
 	main.fit_player nav::-webkit-scrollbar,
-	main.fit_player article::-webkit-scrollbar,
-	main.fit_player aside::-webkit-scrollbar{background: transparent; width: 0px;}
+	main.fit_player article::-webkit-scrollbar{background: transparent; width: 0px;}
 
 	main.fit_player article::-webkit-scrollbar-thumb {border-radius: $border_rad_r;}
 }
@@ -315,9 +309,9 @@ header .fit_device svg > path{fill:$brand;}
 
 
 // this is a panel
-.fit{font-size: 1rem; line-height: 1.2rem; display: block; font-weight: 400;}
+.fit_collapse{font-size: 1rem; line-height: 1.2rem; display: block; font-weight: 400;}
 .fit_overflow .fit_body{ max-height: 25rem; overflow-y: scroll;}
-aside .fit{border-bottom: 1px solid #e1e4e5;}
+aside .fit_collapse{border-bottom: 1px solid #e1e4e5;}
 
 
 
@@ -1046,6 +1040,26 @@ table.fit_colhover td:hover{cursor: default;}
   html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+// the version of the site with the aside below...
+
+@media (min-width: 576px){
+
+	main.fit_player{display: block; padding-left: 4rem}
+
+	main.fit_player nav{position: absolute; top: 0; left: 0; bottom: 0; flex:none; max-width: none;}
+	main.fit_player article,
+	main.fit_player aside{flex:none; display: block; max-width: none;}
+
+}
+
+@media (min-width: 900px){
+	main.fit_player{padding-left: 25%}
+	main.fit_player nav{width: 25%}
+
+	html.fit_minleft main.fit_player{padding-left: 4rem}
+	html.fit_minleft main.fit_player nav{width: 4rem}
+}
 
 // and again html
 html.fit_minleft nav{max-width: $nav_left_width_collapsed; min-width: 0;}
@@ -1737,7 +1751,6 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_quote cite a:hover{color: $blue;}
 
 
-
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
 
@@ -1776,4 +1789,6 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
   75% {transform: rotate(-5deg);}
   100% {transform: rotate(0deg);}
 }
+
+
 
