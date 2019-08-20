@@ -54,7 +54,7 @@ jobs:
           command: |
             # sudo apt-get install libpq-dev
             chmod +x scripts/assume-role.sh
-            sudo apt-get update
+            # sudo apt-get update
             sudo apt-get install -y jq awscli
       - run:
           name: Build and tag Docker containers
