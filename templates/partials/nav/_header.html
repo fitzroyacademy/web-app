@@ -4,7 +4,7 @@
 
     <!-- Left hand side logic -->
 
-    {% if url_is('course.view') %}
+    {% if url_is('course.view') or url_is('lesson.view')  %}
 
       {% include 'partials/nav/_header_home.html' %}
 
@@ -24,7 +24,7 @@
 
       <!-- logged in -->
 
-      {% if url_is('course.view') %}
+      {% if url_is('course.view') or url_is('lesson.view')  %}
 
         {% include 'partials/nav/_header_userlink.html' %}
       
