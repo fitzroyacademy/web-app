@@ -144,6 +144,7 @@ if __name__ == "__main__":
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./')
+        server.watch('./*.sqlite', ignore=True)
         server.serve(host='0.0.0.0',open_url=False,port=5000)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
