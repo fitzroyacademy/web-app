@@ -52,8 +52,7 @@ jobs:
       - run: 
           name: Install dependencies
           command: |
-            sudo apt-get install libpq-dev
-            chmod +x scripts/assume-role.sh
+            sudo pip install awscli
       - run:
           name: Build and tag Docker containers
           command: |

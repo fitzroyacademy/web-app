@@ -1,4 +1,3 @@
-
 /*
 
 TODO
@@ -88,7 +87,8 @@ h1, h2, h3{font-weight: 900;}
 // -----------------------------------------------------------------------------------------
 /* z */
 
-nav, main, aside{z-index: 100;}
+nav, main, article, aside{z-index: 100;}
+nav{z-index: 150}
 
 .fit_subvidya{z-index: 200;}
 .fit_vidya{z-index: 250}
@@ -103,7 +103,6 @@ footer{z-index: 1500;}
 .fit_medium_rare{z-index: 2000;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
-
 
 
 header{z-index: 3000;}
@@ -175,6 +174,8 @@ $border_rad_r: 9999em;
 
 header{height: $header_height; background: #fff; position: fixed; top:0; left: 0; right: 0; display: flex;}
 
+header .container{display: flex;}
+
 header .fit_link:hover,
 .fit_sidepanel .panel .head .fit_link:hover{background: none;}
 
@@ -203,7 +204,6 @@ body{min-height: 100%;}
 
 body > header, 
 body > .fit_player nav,
-body > .fit_player aside,
 .fit_sidepanel .panel,
 .fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
 
@@ -220,9 +220,7 @@ article{position: static;}
 nav, aside{flex: 0 0 $nav_left_width_flex; min-width: $nav_left_width_min; max-width: $nav_left_width_max;}
 aside{flex: 0 0 $nav_right_width_flex; max-width: $nav_right_width_max;}
 
-article{flex: 3;}
-
-
+article{flex: 1;}
 
 // messing with scrollbars coz ugh
 // only happens on the player screen
@@ -232,12 +230,10 @@ article{flex: 3;}
 	main.fit_player{position: absolute; top:$header_height; left: 0; right: 0; bottom: 0; height: auto; background: #fff;}
 
 	main.fit_player nav,
-	main.fit_player article,
-	main.fit_player aside{overscroll-behavior: contain; overflow: hidden; overflow-y: scroll;}
+	main.fit_player article{overscroll-behavior: contain; overflow: hidden; overflow-y: scroll;}
 
 	main.fit_player nav::-webkit-scrollbar,
-	main.fit_player article::-webkit-scrollbar,
-	main.fit_player aside::-webkit-scrollbar{background: transparent; width: 0px;}
+	main.fit_player article::-webkit-scrollbar{background: transparent; width: 0px;}
 
 	main.fit_player article::-webkit-scrollbar-thumb {border-radius: $border_rad_r;}
 }
@@ -259,6 +255,7 @@ html.fit_minleft{}
 // .btn-sm [class^='fa']:first-child{margin: 0 0.1rem;}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
+.container{max-width: 1100px;}
 
 // no tooltip arrows, ew.
 .tooltip .arrow{display: none;}
@@ -297,6 +294,8 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 // this hax makes the square logo work
 .fit_device svg{height: 1.75rem; margin: 0.75rem 0.35rem 0.75rem 0.85rem;}
 
+header .fit_device svg > path{fill:$brand;}
+
 // -----------------------------------------------------------------------------------------
 /* fablocks */
 
@@ -310,9 +309,9 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 
 
 // this is a panel
-.fit{font-size: 1rem; line-height: 1.2rem; display: block; font-weight: 400;}
+.fit_collapse{font-size: 1rem; line-height: 1.2rem; display: block; font-weight: 400;}
 .fit_overflow .fit_body{ max-height: 25rem; overflow-y: scroll;}
-aside .fit{border-bottom: 1px solid #e1e4e5;}
+aside .fit_collapse{border-bottom: 1px solid #e1e4e5;}
 
 
 
@@ -372,8 +371,20 @@ aside .fit_btn{color: $text;}
 
 .fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;}
 
+
+
+
+
 // wtf is happening here with white space and height aRRGHGHgh?!
 // okay so we need nowrap for the headers, but not elsewhere.
+
+// mess with the container, when it's there
+header .container > .fit_btn.left:first-child,
+header .container > .fit_device:first-child{margin-left: -15px;}
+header .container > .right:last-child {margin-right: -15px;}
+
+header .fit_btn{color:$text;}
+
 header .fit_btn > .fit_txt,
 .head .fit_btn > .fit_txt{ white-space: nowrap; font-size: 0.9rem;}
 header .fit_btn:hover,
@@ -407,13 +418,15 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn_lg > .fit_txt{font-size: 1.4rem;}
 
 // weird one in the panes
-.fit_pane.fat .fit_btn_lg{margin: -1.5rem;}
-.fit_pane.fat .fit_btn_lg + .fit_body{padding-top: 2rem;}
+.fit_pane > .fit{margin: -.5rem}
+.fit_pane > .fit_body{padding-top: 1.5rem}
 
 // weirdo collapsey boies
 .fit_pane .fit_btn[data-toggle="collapse"].collapsed{background: transparent; color:$blue}
 .fit_pane .fit_btn[data-toggle="collapse"]{background: #fff; color: $brand;}
 .fit_pane .fit_btn[data-toggle="collapse"]:hover{color: $blue;}
+
+.fit_pane .fit_btn[data-toggle="collapse"] .fa-chevron-down{padding: 1rem;}
 
 // Okay. This is the 'segment types' bit, where we use freaky stuff to display certain icons:
 .fit_btn > .fit_circle{}
@@ -441,9 +454,6 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn.locked > .fit_txt,
 .fit_btn.locked > i,
 .fit_btn.locked{color: $text_lighter;}
-
-
-
 
 
 
@@ -795,9 +805,9 @@ Bleh:;
 
 .fit_summary_icons{padding: 0.5rem 0 0 ;}
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
-.fit_summary_icons dt{padding:0.1rem 0 1rem 2.8rem; position: relative; font-size: 1.2rem;}
-.fit_summary_icons dt i{position: absolute; top:0.2rem; left: -0.2rem; font-size: 1.5rem; color: #b0b4b7;}
-.fit_summary_icons dd{padding: 0 0 0.5rem 2.8rem; margin-top: -0.4rem;}
+.fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
+.fit_summary_icons dt i{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
+.fit_summary_icons dd{padding: 0 0 0.5rem 3.2rem; margin-top: -0.4rem;}
 .fit_summary_icons dd .badge{font-size: 0.9rem;}
 
 .fit_pane .fit_summary_icons{margin-bottom: -1rem;}
@@ -810,11 +820,13 @@ Bleh:;
 .fit_cta .fit_course h3{color: #fff;}
 
 .btn-hg{font-size: 2rem; padding: 1rem 1.5rem; font-weight: 900;}
-.btn-hg:hover{color: $brand;}
+.btn-hg:hover{color: $brand_dark;}
 .btn-hg i:first-child{margin-right: 0.5rem;}
 
+.fit_cta .btn-hg:hover{color: $watermelon_dark;}
+
 .btn-drop{box-shadow: 0 0.3rem 0 rgba(0,0,0,0.15);}
-.btn-drop:hover{box-shadow: 0 0.25rem 0 rgba(0,0,0,0.4); background: #fff;}
+.btn-drop:hover{box-shadow: 0 0.25rem 0.1rem rgba(0,0,0,0.3); background: #fff;}
 
 .fit_cta .btn-hg{margin: 1rem 0 2rem;}
 
@@ -1028,6 +1040,26 @@ table.fit_colhover td:hover{cursor: default;}
   html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+// the version of the site with the aside below...
+
+@media (min-width: 576px){
+
+	main.fit_player{display: block; padding-left: 4rem}
+
+	main.fit_player nav{position: absolute; top: 0; left: 0; bottom: 0; flex:none; max-width: none;}
+	main.fit_player article,
+	main.fit_player aside{flex:none; display: block; max-width: none;}
+
+}
+
+@media (min-width: 900px){
+	main.fit_player{padding-left: 25%}
+	main.fit_player nav{width: 25%}
+
+	html.fit_minleft main.fit_player{padding-left: 4rem}
+	html.fit_minleft main.fit_player nav{width: 4rem}
+}
 
 // and again html
 html.fit_minleft nav{max-width: $nav_left_width_collapsed; min-width: 0;}
@@ -1267,6 +1299,17 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 }
 
 
+.fit_entry_buttons{margin: 2rem 0;}
+.fit_entry_buttons .btn{margin: 0 .5rem;}
+
+
+
+
+
+
+// ----------------------------------------------------------------------------------------------------------------
+// the window for pictures and courses.
+
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
 // skipping the auto 16:9 for now...
 // .fit_window:after{padding-top: $ratio_169; display: block; content: '';}
@@ -1308,7 +1351,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 @media (min-width: 768px) {
 
 	// featured is a bit weird
-	.fit_course_sell.featured {max-width: 900px; margin:0 auto 2rem;}
+	.fit_course_sell.featured {max-width: 768px; margin:0 auto 2rem;}
 	.fit_course_sell.featured h3{font-size: 2.5rem; padding: 1.5rem 0 .5rem;}
 	.fit_course_sell.featured p.tagline .tag{display: inline-block; font-size: 1.1rem; margin-right: 1rem; max-width: none;}
 	.fit_course_sell.featured p.tagline .tag:first-child{display: block;padding-bottom: 0.5rem;}
@@ -1329,8 +1372,6 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_course_sell{border-radius: $border_rad_xl; border:1px solid $border_light; padding: 1rem; margin-bottom: 1rem;}
 	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
-
-
 
 // ----------------------------------------------------------------------------------------------------------------
 // Keep watching, bucko! Get back on that horse, get on track, get it done ya hear.
@@ -1593,7 +1634,7 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code_head.active .form-control,
 .fit_form_code_head.labelled .form-control,
 .fit_form_code_head.labelled .form-control:active{border-color: $watermelon; box-shadow: none; width: 8rem;}
-.fit_form_code_head .form-control:focus{background: $watermelon_dark;}
+.fit_form_code_head .form-control:focus{background: $watermelon;}
 .fit_form_code_head.active .form-control::placeholder{opacity: 0.6; color:#fff;}
 
 .fit_form_code_head.active label,
@@ -1686,11 +1727,11 @@ footer .fit_device svg > path{fill: $watermelon;}
 // ----------------------------------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish
 
-.fit_debug{position: fixed; bottom: 2rem; right:2rem; left: 70%; background: #fff; padding: 1rem; height: 15%; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
+.fit_debug{position: fixed; bottom: 2rem; right:2rem; right: 2rem; background: #fff; padding: 1rem; width: 6rem; height: 6rem; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
 
 .fit_debug:hover{opacity: 1;}
 
-html.fit_debug_on .fit_debug{height: 50%; left: 2rem; opacity: 1; cursor: s-resize;}
+html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; cursor: s-resize;}
 
 
 
@@ -1708,7 +1749,6 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; opacity: 1; cursor: s-resi
 
 .fit_quote cite a{color: inherit; text-decoration: underline;}
 .fit_quote cite a:hover{color: $blue;}
-
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -1749,4 +1789,6 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; opacity: 1; cursor: s-resi
   75% {transform: rotate(-5deg);}
   100% {transform: rotate(0deg);}
 }
+
+
 

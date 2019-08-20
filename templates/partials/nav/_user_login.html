@@ -1,37 +1,40 @@
 <header>
-  
-  <a href="/" class="fit_btn left"> <!-- DEV: this will link to the previous 'bit' of the app, i.e. from a lesson back to a course, course back to course intro, course intro back to home.... When in doubt ask Will! -->
-    <i class="fas fa-arrow-left"></i>
-    <span class="fit_txt">Back</span>
-  </a>
 
-  <a href="/login" class="fit_btn right" data-fit-userpanel>
-    <span class="fit_txt">Sign up</span>
-    <i class="fal fa-user"></i>
-  </a>
+  <div class="container">
+    <a href="/" class="fit_btn left"> 
+      <!-- DEV: this will link to the previous 'bit' of the app, i.e. from a lesson back to a course, course back to course intro, course intro back to home.... When in doubt ask Will! -->
+      <i class="fas fa-arrow-left"></i>
+      <span class="fit_txt">Back</span>
+    </a>
 
-</header>
+    <a href="/login" class="fit_btn right" data-fit-userpanel>
+      <span class="fit_txt">Sign in</span>
+      <i class="fal fa-user"></i>
+    </a>
 
-<div class="fit_sidepanel userpanel">
-  <div class="whiteout" data-fit-userpanel></div>
-  <div class="panel">
-  
-    <div class="head">
-      <a href="/login" class="fit_btn right" data-fit-userpanel>
-        <span class="fit_txt">
-          Sign up
-        </span>
-        <span class="fit_pic circle">
-          <i class="far fa-times"></i>
-        </span>
-      </a>
-    </div>
+  </header>
+
+  <div class="fit_sidepanel userpanel">
+    <div class="whiteout" data-fit-userpanel></div>
+    <div class="panel">
     
-    <div class="content">
+      <div class="head">
+        <a href="/login" class="fit_btn right" data-fit-userpanel>
+          <span class="fit_txt">
+            Sign in
+          </span>
+          <span class="fit_pic circle">
+            <i class="far fa-times"></i>
+          </span>
+        </a>
+      </div>
       
-      {% include 'partials/_login_form.html' %}
+      <div class="content">
+        
+        {% include 'partials/_login_form.html' %}
+
+      </div>
 
     </div>
-
   </div>
 </div>

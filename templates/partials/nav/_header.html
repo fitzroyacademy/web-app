@@ -1,0 +1,113 @@
+<header>
+
+  {% if url_is('lesson.view') %} {% else %} <div class="container"> {% endif %}
+
+    <!-- Left hand side logic -->
+
+    {% if url_is('course.view') %}
+
+      {% include 'partials/nav/_header_home.html' %}
+
+    {% else %}
+
+      <a href="/" class="fit_device">
+        {% include 'partials/chrome/_fa_svg_square.html' %}
+      </a>
+
+      {% include 'partials/nav/_header_code.html' %}      
+
+    {% endif %}
+
+    <!-- Right hand side logic -->
+
+    {% if current_user %}
+
+      <!-- logged in -->
+
+      {% if url_is('course.view') %}
+
+        {% include 'partials/nav/_header_userlink.html' %}
+      
+      {% else %}
+
+        {% include 'partials/nav/_header_sales_nav.html' %}
+
+      {% endif %}
+
+      {% if current_section != 'login' %}
+      
+      {% endif %}
+
+    {% else %}
+
+      <!-- anon -->
+
+      {% if url_is('course.view') %}
+
+        {% include 'partials/nav/_header_login.html' %}
+      
+      {% else %}    
+
+        {% include 'partials/nav/_header_sales_nav.html' %}
+
+      {% endif %}
+      
+    {% endif %}
+
+
+  {% if url_is('lesson.view') %} {% else %} </div> {% endif %}
+
+</header>
+
+
+{% if current_user %}
+
+  {% include 'partials/nav/_sidepanel_user.html' %}
+
+{% else %}
+
+  {% include 'partials/nav/_sidepanel_login.html' %}
+
+{% endif %}
+
+<!--
+
+Psuedocode for how the header should work:
+
+When the user is on the home page:
+ * If logged in: Code on the left, sales on right
+ * If anon: Code on the left, sales on right
+
+When the user is on a course or lesson
+ * If logged in: back on left, my details on right
+ * If anon: back on left, login on right
+
+When the user is on a static page
+ * If logged in: code on left, sales PLUS my details on right?
+ * If anon: Code on the left, sales on right
+
+When the user is on their user page
+ * If logged in: Back to home on left?
+ * If anon: 
+
+by login, maybe?
+
+If logged in:
+
+* home = code + sales
+* course intro = home + me
+* course lesson = back to intro + me
+* static = code + sales
+* user = home + ___
+
+If anon:
+
+* home = code + sales
+* course intro = home + sales
+* course lesson = back + sales
+* static = code + sales
+* user = home + ___
+
+AAARGH.
+
+-->

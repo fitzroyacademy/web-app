@@ -1,26 +1,3 @@
-<header>
-  
-  <a href="/" class="fit_btn left"> 
-    <i class="fas fa-arrow-left"></i>
-    <span class="fit_txt">Home</span>
-  </a>
-
-  <a href="user.html" class="fit_btn right" data-fit-userpanel>
-    <span class="fit_txt">
-      <span class="d-none d-sm-inline-block">{{ current_user.first_name }}</span>
-      <span class="d-none d-md-inline-block">{{ current_user.last_name }}</span>
-    </span>
-    <span class="fit_pic circle"> 
-      <!-- DEV: if profile picture exists show: -->
-        <img src="{{ current_user.profile_picture }}" alt="user">
-      <!-- DEV: otherwise, show this icon:
-        <i class="fal fa-user"></i>
-       -->
-    </span>
-  </a>
-
-</header>
-
 <div class="fit_sidepanel userpanel">
   <div class="whiteout" data-fit-userpanel></div>
   <div class="panel">

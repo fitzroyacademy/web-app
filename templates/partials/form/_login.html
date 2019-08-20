@@ -1,8 +1,8 @@
 <div class="fit_auth">
 
-  <ul class="nav nav-tabs nav-fill mb-3" id="tab" role="tablist">
+  <ul class="nav nav-tabs nav-justified mb-3" id="tab" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" id="register-tab" data-toggle="pill" href="#register" role="tab" aria-controls="profile" aria-selected="false">Create <span class="d-none d-sm-inline">account</span></a>
+      <a class="nav-link active" id="register-tab" data-toggle="pill" href="#register" role="tab" aria-controls="profile" aria-selected="false">New <span class="d-none d-sm-inline">account</span></a>
     </li>    
     <li class="nav-item">
       <a class="nav-link" id="login-tab" data-toggle="pill" href="#login" role="tab" aria-controls="home" aria-selected="true">Log in</a>
@@ -11,7 +11,7 @@
 
   <div class="tab-content" id="tabContent">
     <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
-      {% include 'partials/_form_errors.html' %}
+      {% include 'partials/form/_errors.html' %}
       <form class="form" action="{{ url_for('user.login') }}" method="post">
         <div class="fit_fancyplace">
           <label for="inputEmail">Email address</label>
@@ -23,10 +23,6 @@
           <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
 
-        <div class="custom-control custom-checkbox mb-3">
-          <input type="checkbox" class="custom-control-input" name="remember" id="customCheck1">
-          <label class="custom-control-label" for="customCheck1">Remember password</label>
-        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
     </div><!-- login -->
@@ -58,7 +54,7 @@
           <input type="password" name="password" id="register_password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
 
-        <div class="form-group">
+        <div class="form-group d-none">
           <div class="input-group fit_fancyplace">
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">@</span>
