@@ -1,4 +1,3 @@
-sudo apt-get install -y jq awscli
 unset AWS_SESSION_TOKEN
 assumed_role=$(aws sts assume-role --role-arn "arn:aws:iam::$SANDBOX_ACCOUNT_ID:role/CircleCICrossAccountRole" --role-session-name "circleci-sandbox")
 export AWS_ACCESS_KEY_ID=$(echo $assumed_role | jq -r .Credentials.AccessKeyId)
