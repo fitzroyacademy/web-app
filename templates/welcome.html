@@ -3,9 +3,8 @@
 
 
 
-<!-- DEV: This fit_keep_watching chunk shows when the user has started a course -->
-<!-- DEV: d-none to display none for now. :( -->
-<div class="alert fit_keep_watching alert-dismissible fade show d-none" role="alert">
+{% if last_segment %}
+<div class="alert fit_keep_watching alert-dismissible fade show" role="alert">
   <div class="fit_course">
 
     <a href="#" data-dismiss="alert" aria-label="Close" class="fit_closepanel reverse"><i class="fas fa-times"></i></a>
@@ -15,21 +14,22 @@
     <div class="row">
       <div class="col-sm-4">
         <a href="lessons" class="vid">
-          <img src="/assets/images/lessons/sales.jpg" alt="image"> <!-- DEV: course.lesson picture (not course.image) -->
-          <div class="bar">
+          <img src="{{ last_segment.lesson.thumbnail }}" alt="image"> <!-- DEV: course.lesson picture (not course.image) -->
+          {#<div class="bar">
             <div class="far" style="width: 65% "></div> <!-- DEV: Width here is % through the whole course for the student -->
-          </div>
+          </div>#}
         </a>
       </div>
       <div class="col-sm-7">
-        <h3>Sales for people who hate selling.</h3> <!-- DEV: Title of the segment the student is up to (not the lesson or the course) -->
-        <p>From <a href="#"><!-- DEV: Course name -->Super awesome social enterprise</a>.</p>
-        <a href="#" class="btn btn btn-outline-light"><i class="fal fa-play"></i> Keep watching</a>
+        <h3>{{ last_segment.title }}</h3>
+        <p>From <a href="{{ last_segment.lesson.course.permalink }}">{{ last_segment.lesson.course.title }}</a>.</p>
+        <a href="{{ last_segment.permalink }}?t={{ last_segment_place }}" class="btn btn btn-outline-light"><i class="fal fa-play"></i> Keep watching</a>
       </div>
     </div>
     
   </div>
 </div>
+{% endif %}
 
 
 <div class="fit_hero">
@@ -68,7 +68,7 @@
           <a href="{{ course.permalink }}" class="play"><i class="fas fa-play-circle"></i></a>
         </div>
       {% endif %}
-      <h3><a href="{{ course.permalink }}">Intro to social enterprise.</a></h3>
+      <h3><a href="{{ course.permalink }}">{{ course.title }}</a></h3>
       <p class="tagline">
         <span class="tag"><i class="fal fa-info-square"></i> {{ course.info }}</span>
         <span class="tag"><i class="fal fa-calendar"></i> {{ course.lessons|length }} lessons over 12 weeks.</span>
