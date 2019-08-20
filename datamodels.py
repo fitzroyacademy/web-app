@@ -7,6 +7,8 @@ from os import environ
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask import current_app as app
 import pprint
+import requests
+
 Base = declarative_base()
 
 def dump(obj, seen=None):
@@ -191,6 +193,10 @@ class Course(Base):
 	def permalink(self):
 		return "/course/{}".format(self.slug)
 
+	@property
+	def thumbnail(self):
+		return self.lessons[0].thumbnail
+
 	@staticmethod
 	def find_by_slug(slug):
 		session = get_session()
@@ -264,6 +270,10 @@ class Lesson(Base):
 	def permalink(self):
 		return "/course/{}/{}".format(self.course.slug, self.slug)
 
+	@property
+	def thumbnail(self):
+		return self.segments[0].thumbnail
+
 	@staticmethod
 	def find_by_id(lesson_id):
 		session = get_session()
@@ -309,6 +319,7 @@ class Segment(Base):
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50))  # Unique in relation to parent
 	order = sa.Column(sa.Integer)
+	_thumbnail = sa.Column(sa.String)  # S3 Link
 
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="segments")
@@ -331,6 +342,13 @@ class Segment(Base):
 			self.lesson.slug,
 			self.slug
 		)
+
+	@property
+	def thumbnail(self):
+		if self._thumbnail is None:
+			self._thumbnail = fetch_thumbnail(self.external_id)
+			return "http://placekitten.com/640/360"
+		return self._thumbnail
 
 	def user_progress(self, user):
 		if user is None:
@@ -504,3 +522,10 @@ def save_segment_progress(segment_id, user_id, percent):
 
 def get_enrollment(course_id, student_id):
 	return CourseEnrollment.get_by_course_and_student(course_id, student_id)
+
+def fetch_thumbnail(wistia_id, width=640, height=360):
+	""" TODO: Put this in an S3 bucket before returning the URL. """
+	url = 'http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/{}?embedType=async&videoWidth=640'.\
+	      format(wistia_id)
+	data = requests.get(url).json()
+	return data['thumbnail_url'].split('?')[0]+'?image_crop_resized={}x{}'.format(width, height)
