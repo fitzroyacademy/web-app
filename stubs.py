@@ -409,7 +409,6 @@ lessons = [
         'course_id': '00', # pop
         'slug': 'how-to-have-good-ideas',
         'title': 'How to have good ideas',
-        'duration': '45:15', # -> Dur seconds
         'segments': segments[0],
         'active': True,
         'resources': [
@@ -428,7 +427,6 @@ lessons = [
         'slug': 'how-to-sell-when-you-hate-selling',
         'course_id': '00',
         'title': 'How to sell when you hate selling',
-        'duration': '45:15',
         'segments': segments[1],
         'active': True,
         'resources': [
@@ -455,7 +453,6 @@ lessons = [
         'slug': 'growth-forecasting',
         'course_id': '00',
         'title': 'Growth forecasting',
-        'duration': '45:15',
         'segments': segments[2],
         'active': True,
         'resources': [

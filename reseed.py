@@ -43,7 +43,6 @@ for i, lesson in enumerate(stubs.lessons):
 	segments = lesson.pop('segments')
 	lesson.pop('id')
 	lesson.pop('course_id')
-	lesson['duration_seconds'] = get_seconds(lesson.pop('duration'))
 	lesson["order"] = i
 	lesson["language"] = "en"
 	l = datamodels.Lesson(**lesson)

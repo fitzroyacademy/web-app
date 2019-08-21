@@ -265,23 +265,32 @@ class CourseEnrollment(Base):
 	course_id = sa.Column('course_id', sa.Integer, sa.ForeignKey('courses.id'))
 	access_level = sa.Column('access_level', sa.Integer)
 
-	user = orm.relationship("User", back_populates="courses")
+	user = orm.relationship("User", back_populates="course_enrollments")
 	course = orm.relationship("Course", back_populates="users")
 
 	@staticmethod
 	def find_by_course_and_student(course_id, student_id):
 		session = get_session()
 		return session.query(CourseEnrollment).filter(
-			CourseEnrollment.course_id == course_id and
-			CourseEnrollment.student_id == student_id
+			CourseEnrollment.course_id == course_id)\
+		.filter(
+			CourseEnrollment.user_id == student_id
 		).first()
 
 	@staticmethod
 	def find_teachers_for_course(course_id):
 		session = get_session()
 		return session.query(CourseEnrollment).filter(
-			CourseEnrollment.course_id == course_id and
+			CourseEnrollment.course_id == course_id)\
+		.filter(
 			CourseEnrollment.access_level == COURSE_ACCESS_TEACHER
+		).all()
+
+	@staticmethod
+	def find_by_user(user_id):
+		session = get_session()
+		return session.query(CourseEnrollment).filter(
+			CourseEnrollment.user_id == user_id
 		).all()
 
 class Lesson(Base):
@@ -290,7 +299,6 @@ class Lesson(Base):
 
 	id = sa.Column(sa.Integer, primary_key=True)
 	title = sa.Column(sa.String)
-	duration_seconds = sa.Column(sa.Integer) # derivable through children
 	active = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50))  # Unique in relation to parent
