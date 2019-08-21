@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, session, request, url_for, redirec
 import datamodels
 
 import json
+import random
 
 blueprint = Blueprint('object', __name__, template_folder='templates')
 
@@ -62,4 +63,4 @@ def lesson_resources(lesson_id):
 		'students': students,
 		'lesson': lesson
 	}
-	return render_template('partials/_lesson_resources.html', **data)
+	return render_template('partials/course/_lesson_detail.html', **data)
