@@ -10,20 +10,7 @@
 
       <h1><span class="txt">{{ course.title }}</span></h1>
       
-      <!-- DEV: shows all teachers with edit access (might be more than one, comma delimit) -->
-      <input type="hidden" id="secretive_clipboard" value="{{ course.course_code }}" value="">
-      <p>
-        <span class="fit_badge">
-          {{ course.course_code }}
-          <!--    DEV: Make this work later          
-          <a data-clipboard-target="#secretive_clipboard" data-clipboard-action="copy" data-toggle="tooltip" title="Copy to clipboard">
-            <i class="fas fa-copy"></i>
-          </a>
-           -->
-        </span>
-
-        <span>Curated by <strong> course.teacher.full_name</strong>.</span>
-      </p>
+      <p><span>Curated by <strong> {{ course.instructors|join_names }}</strong>.</span></p>
       
 
       <div class="fit_vidya">

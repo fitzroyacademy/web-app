@@ -61,6 +61,7 @@ class User(Base):
 	dob = sa.Column(sa.Date)
 	password_hash = sa.Column(sa.String(128))
 	profile_picture = sa.Column(sa.String)
+	bio = sa.Column(sa.String)
 
 	institutes = orm.relationship("InstituteEnrollment", back_populates="user")
 	programs = orm.relationship("ProgramEnrollment", back_populates="user")
@@ -151,6 +152,10 @@ class ProgramEnrollment(Base):
 	program = orm.relationship("Program", back_populates="users")
 
 
+COURSE_ACCESS_STUDENT = 1
+COURSE_ACCESS_TEACHER = 2
+COURSE_ACCESS_ADMIN = 3
+
 class Course(Base):
 
 	__tablename__ = 'courses'
@@ -187,7 +192,10 @@ class Course(Base):
 		association = CourseEnrollment(access_level=access_level)
 		association.course = self
 		association.user = user
-		self.users.append(a)
+		self.users.append(association)
+
+	def add_instructor(self, user):
+		self.add_user(user, COURSE_ACCESS_TEACHER)
 
 	@property
 	def permalink(self):
@@ -196,6 +204,16 @@ class Course(Base):
 	@property
 	def thumbnail(self):
 		return self.lessons[0].thumbnail
+
+	@property
+	def instructors(self):
+		""" A unique list of users associated with this course that
+		have teacher-level access."""
+		associations = CourseEnrollment.find_teachers_for_course(self.id)
+		users = []
+		for ass in associations:
+			users.append(ass.user)
+		return users
 
 	@staticmethod
 	def find_by_slug(slug):
@@ -240,6 +258,13 @@ class CourseEnrollment(Base):
 			CourseEnrollment.student_id == student_id
 		).first()
 
+	@staticmethod
+	def find_teachers_for_course(course_id):
+		session = get_session()
+		return session.query(CourseEnrollment).filter(
+			CourseEnrollment.course_id == course_id and
+			CourseEnrollment.access_level == COURSE_ACCESS_TEACHER
+		).all()
 
 class Lesson(Base):
 

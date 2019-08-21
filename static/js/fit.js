@@ -607,28 +607,27 @@ $( document ).ready(function() {
       _fitz_video.play();
     });
 
-    // Reload the lesson resources, if the lesson has changed.
-    let resourcePanel = document.querySelector("#fit_resources_panel[data-fit-active-lesson]");
+    // Reload the lesson details, if the lesson has changed.
+    let resourcePanel = document.querySelector("#fit_lesson_detail[data-fit-active-lesson]");
     if (resourcePanel) {
       let activeLesson = resourcePanel.dataset.fitActiveLesson;
       if (activeLesson != lid) {
         //Change active lesson on nav bar.
-        for(let lesson in document.querySelectorAll('.fit_lesson')) {
+        for(let lesson of document.querySelectorAll('.fit_lesson')) {
           lesson.classList.remove('active');
         }
-        document.querySelector(`.fit_lesson[data-fit-lesson=${lid}`)
+        document.querySelector(`.fit_lesson[data-fit-lesson='${lid}']`)
           .classList.add('active');
         get('/_lesson_resources/'+lid, (e, xhr, data) => {
           if (e) return console.error(e);
-          document.querySelector('#fit_resources_panel').innerHTML = data;
-          document.querySelector('#fit_resources_panel').dataset.fitActiveLesson = lid;
+          document.querySelector('#fit_lesson_detail').innerHTML = data;
+          document.querySelector('#fit_lesson_detail').dataset.fitActiveLesson = lid;
           render_student_chart(studentSel);
         });
       }
     }
 
-    // Change the active state of segment link on the left lesson
-    // links panel.
+    // Change the active state of segment link on the lesson links panel.
     let t = document.querySelector(`[data-fit-segment="${sid}"]`);
     if (!t) return;
     for (let l of document.querySelectorAll('[data-fit-segment].active')) {

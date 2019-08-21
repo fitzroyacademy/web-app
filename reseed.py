@@ -33,6 +33,8 @@ c = datamodels.Course(
 	preview_thumbnail="/assets/images/lessons/customer-interviews.jpg",
 	guest_access = True
 )
+c.add_instructor(datamodels.get_user(1))  # Homer
+c.add_instructor(datamodels.get_user(2))  # Marge
 session.add(c)
 
 for i, lesson in enumerate(stubs.lessons):
