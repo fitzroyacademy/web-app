@@ -1,6 +1,7 @@
 import json
 import random
 from flask import Flask, render_template, session, request, url_for, redirect, flash
+from util import get_current_user
 import sass
 import stubs
 import datamodels
@@ -122,12 +123,6 @@ def join_names(users):
     for user in users:
         names.append(user.full_name)
     return ", ".join(names)
-
-def get_current_user():
-    if 'user_id' in session:
-        return datamodels.get_user(session['user_id'])
-    else:
-        return None
 
 def uuid():
     return "{}".format(uuid4().hex)

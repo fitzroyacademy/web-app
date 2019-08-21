@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
 import datamodels
+from util import get_current_user
 
 blueprint = Blueprint('user', __name__, template_folder='templates')
 
@@ -71,13 +72,7 @@ def enroll(course_slug):
     if course is None:
         return redirect('/404')
     user = get_current_user()
-    if user and datamodels.get_enrollment(course.id, user.id) is None:
-        enrollment = datamodels.CourseEnrollment(
-            course_id=course.id, user_id=user.id, access_level=1
-        )
-        s = datamodels.get_session()
-        s.add(enrollment)
-        s.commit()
+    course.enroll(user)
     return redirect(course.lessons[0].permalink)
 
 @blueprint.route('/login', methods=["GET", "POST"])

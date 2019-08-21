@@ -215,6 +215,17 @@ class Course(Base):
 			users.append(ass.user)
 		return users
 
+	def enroll(self, student):
+		""" Adds a user to a course with student-level access. """
+		if get_enrollment(self.id, student.id) is None:
+			enrollment = CourseEnrollment(
+				course_id=self.id, user_id=student.id,
+				access_level=COURSE_ACCESS_STUDENT
+			)
+			s = get_session()
+			s.add(enrollment)
+			s.commit()
+
 	@staticmethod
 	def find_by_slug(slug):
 		session = get_session()
@@ -546,7 +557,7 @@ def save_segment_progress(segment_id, user_id, percent):
 	return sup
 
 def get_enrollment(course_id, student_id):
-	return CourseEnrollment.get_by_course_and_student(course_id, student_id)
+	return CourseEnrollment.find_by_course_and_student(course_id, student_id)
 
 def fetch_thumbnail(wistia_id, width=640, height=360):
 	""" TODO: Put this in an S3 bucket before returning the URL. """
