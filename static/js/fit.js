@@ -533,6 +533,7 @@ $( document ).ready(function() {
   var _fitz_video = false;
   function fitzVideoReady(video) {
     _fitz_video = video;
+    video.bind('end', handleVideoEnd);
     video.bind('percentwatchedchanged', handleVideoProgress);
     video.bind("secondchange", handleVideoTime);
     handleResume(video);
@@ -549,6 +550,10 @@ $( document ).ready(function() {
         video.play();
       }
     }
+  }
+
+  function handleVideoEnd() {
+    nextSegment(true);  // Autoplay next, stop at lesson end.
   }
 
   function handleVideoProgress(percent, lastPercent) {
@@ -635,10 +640,10 @@ $( document ).ready(function() {
     } t.classList.add('active');
   }
 
-  function nextSegment() {
+  function nextSegment(stopAtLessonEnd) {
     let current = document.querySelector('a[data-fit-segment].active');
     let next = current.nextElementSibling;
-    if (!next) {
+    if (!next && !stopAtLessonEnd) {
       let next_lesson = current.closest('[data-fit-lesson]').nextElementSibling;
       if (!next_lesson) return; // No next lesson, no next.
       next = next_lesson.querySelector('[data-fit-segment]');
