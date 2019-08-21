@@ -142,8 +142,8 @@ def url4(*args, **kwargs):
         return "#"
 app.jinja_env.globals.update(url_for=url4)
 
-def url_is(endpoint):
-    return request.endpoint == endpoint
+def url_is(*endpoints):
+    return (request.endpoint in endpoints)
 app.jinja_env.globals.update(url_is=url_is)
 
 # This route needs to live here forever because it requires access to the app.
