@@ -171,10 +171,12 @@ if __name__ == "__main__":
     compile_sass()
     if app.debug:
         from livereload import Server, shell
+        def ignore_func(path):
+            if path.split('.')[-1] == "sqlite":
+                return True
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
-        server.watch('./')
-        server.watch('./*.sqlite', ignore=True)
+        server.watch('./', ignore=ignore_func)
         server.serve(host='0.0.0.0',open_url=False,port=5000)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
