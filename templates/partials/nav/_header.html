@@ -1,12 +1,19 @@
 <header>
 
-  {% if url_is('lesson.view') %} {% else %} <div class="container"> {% endif %}
+  {% if url_is('course.view') or url_is('lesson.view') or url_is('segment.view')  %}
+  {% else %} <div class="container"> {% endif %}
 
     <!-- Left hand side logic -->
 
-    {% if url_is('course.view') or url_is('lesson.view')  %}
+    {% if url_is('course.view') %}
 
       {% include 'partials/nav/_header_home.html' %}
+
+    {% endif %}
+
+    {% if url_is('lesson.view') or url_is('segment.view') %}
+
+      {% include 'partials/nav/_header_back_coursetitle.html' %}
 
     {% else %}
 
@@ -24,7 +31,7 @@
 
       <!-- logged in -->
 
-      {% if url_is('course.view') or url_is('lesson.view')  %}
+      {% if url_is('course.view') or url_is('lesson.view') or url_is('segment.view')  %}
 
         {% include 'partials/nav/_header_userlink.html' %}
       

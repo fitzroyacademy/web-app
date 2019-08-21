@@ -57,83 +57,27 @@
     {% endfor %}
   </div>
 
-</div>
-
-
-<!--
-
-For some reason we are keeping all the scrap here?
-
-<div class="fit">
-  <a class="fit_btn  collapsed" data-toggle="collapse" href="#fit_lesson_faqs" role="button" aria-expanded="fitse" aria-controls="fit_lesson_faqs">
-    <i class="fal fa-question"></i>
-    <span class="fit_txt">Frequently asked questions</span>
-    <span class="fas fa-chevron-down"></span>
+  <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_manage" role="button" aria-expanded="fitse" aria-controls="fit_lesson_manage">
+    <i class="fal fa-cog"></i>
+    <span class="fit_txt">Manage <span href="#" class="badge badge-light">Teacher only</span></span>
+    <i class="fas fa-chevron-down"></i>
   </a>
-  <div class="fit_body collapse" id="fit_lesson_faqs">
+
+  <div class="fit_body collapse" id="fit_lesson_manage">
     <div class="fit_body_content">
-
-      <h5>What's with Vermeulen and van den Akker?</h5>
-      <p>He is some big ol kinda jerk and you probably wouldn't like him hey.</p>
-      
-      <h5>Also my butt?</h5>
-      <p>The prefix "meta-" here referred not to a reflective stance or repeated rumination, but to Plato's metaxy, which denotes a movement between opposite poles as well as beyond them.</p>
-
-      <h5>And what about your butt?</h5>
-      <p>Vermeulen asserts that "metamodernism is not so much a philosophy—which implies a closed ontology—as it is an attempt at a vernacular, or a sort of open source document.</p>
-
-      <a class="fit_btn subtle " href="#">
-        <span class="fas fa-arrow-left"></span>
-        <span class="fit_txt">Load 8 more FAQs</span>
+      <a class="fit_btn" href="#">
+        <i class="fas fa-edit"></i>
+        <span class="fit_txt">Edit this lesson</span>
       </a>
-
+      <a class="fit_btn" href="#">
+        <i class="fas fa-user-plus"></i>
+        <span class="fit_txt">Manage students</span>
+      </a>
+      <a class="fit_btn" href="#">
+        <i class="fas fa-chart-bar"></i>
+        <span class="fit_txt">Course stats</span>
+      </a>
     </div>
-  </div>
-  </div>
 
-  <div class="fit">
-  <a class="fit_btn  collapsed" data-toggle="collapse" href="#fit_lesson_transcript" role="button" aria-expanded="fitse" aria-controls="fit_lesson_transcript">
-    <i class="fal fa-scroll"></i>
-    <span class="fit_txt">Transcript</span>
-    <span class="fas fa-chevron-down"></span>
-  </a>
-  <div class="fit_body collapse" id="fit_lesson_transcript">
-    <div class="fit_body_content">
-      <p>The term metamodernist appeared as early as 1975, when Mas'ud Zavarzadeh isolatedly used it to describe a cluster of aesthetics or attitudes which had been emerging in American literary narratives since the mid-1950s.</p>
-      <a class="fit_btn subtle " href="#">
-        <span class="fas fa-arrow-left"></span>
-        <span class="fit_txt">Full transcript</span>
-      </a>            
-    </div>
-  </div>
-  </div>      
 
-  <div class="fit fit_overflow">
-  <a class="fit_btn " data-toggle="collapse" href="#fit_lesson_stats" role="button" aria-expanded="fitse" aria-controls="fit_lesson_stats">
-    <i class="fal fa-chart-bar"></i>
-    <span class="fit_txt">Analytics <span href="#" class="badge badge-light">admins only</span></span>
-    <span class="fas fa-chevron-down"></span>
-  </a>
-
-  <div class="fit_body collapse show person_active" id="fit_lesson_stats">
-    <div class="fit_body_content">
-      <form class="form">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-            </div>
-            <input type="text" class="form-control" name="search" value="" id="search" placeholder="Filter" aria-label="search" aria-describedby="search">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button"><i class="fas fa-sort"></i> <span class="d-none d-sm-inline-block"></button>
-            </div>
-          </div>  
-        </div>
-      </form>
-
-      <div id="fit_student_list">
-        {% include 'partials/_student_list.html' %}
-      </div>
-    </div>
-  </div>
--->
+</div> <!-- /#fit_lesson_detail -->
