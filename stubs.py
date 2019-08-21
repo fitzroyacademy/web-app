@@ -34,7 +34,8 @@ students = [
         'password': 'homer',
         'username': 'homer',
         'email': 'homer@simpsons.com',
-        'profile_picture': '/assets/stub/homer.png'
+        'profile_picture': '/assets/stub/homer.png',
+        'bio': 'Homer is the Chief Safety Inspector and former power plant operator at the Springfield Nuclear Power Plant',
     },
     {
         'first_name': 'Marge',
@@ -42,6 +43,7 @@ students = [
         'password': 'marge',
         'username': 'marge',
         'email': 'marge@simpsons.com',
+        'bio': 'Marge is a homemaker with previous experience as a buisnesswoman and police officer',
         'profile_picture': '/assets/stub/marge.png'
     },
     {

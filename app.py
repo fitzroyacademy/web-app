@@ -114,6 +114,15 @@ def add_header(response):
     response.headers['Cache-Control'] = 'no-store'
     return response
 
+@app.template_filter()
+def join_names(users):
+    if users is None:
+        return ""
+    names = []
+    for user in users:
+        names.append(user.full_name)
+    return ", ".join(names)
+
 def get_current_user():
     if 'user_id' in session:
         return datamodels.get_user(session['user_id'])
