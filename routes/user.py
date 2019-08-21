@@ -60,7 +60,7 @@ def create():
     db.commit()
     session['user_id'] = user.id
     flash('Thanks for registering, '+user.full_name+"!")
-    return render_template('welcome.html')
+    return redirect(url_for(request.args.get('from', 'index')))
 
 @blueprint.route('/enroll/<course_slug>', methods=["POST"])
 def enroll(course_slug):
@@ -94,7 +94,7 @@ def login():
                 data['errors'].append("Bad username or password, try again?")
             else:
                 session['user_id'] = user.id
-                return redirect(url_for('index'))
+                return redirect(url_for(request.args.get('from', 'index')))
     if len(data['errors']) > 0 or request.method == "GET":
         return render_template('login.html', **data)
 
