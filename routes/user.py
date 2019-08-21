@@ -73,6 +73,7 @@ def enroll(course_slug):
         return redirect('/404')
     user = get_current_user()
     course.enroll(user)
+    flash("You are now enrolled in ", course.title)
     return redirect(course.lessons[0].permalink)
 
 @blueprint.route('/login', methods=["GET", "POST"])

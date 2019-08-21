@@ -65,7 +65,7 @@ class User(Base):
 
 	institutes = orm.relationship("InstituteEnrollment", back_populates="user")
 	programs = orm.relationship("ProgramEnrollment", back_populates="user")
-	courses = orm.relationship("CourseEnrollment", back_populates="user")
+	course_enrollments = orm.relationship("CourseEnrollment", back_populates="user")
 
 	@hybrid_property
 	def password(self):
@@ -81,6 +81,13 @@ class User(Base):
 	@property
 	def full_name(self):
 		return " ".join([self.first_name, self.last_name])
+
+	@property
+	def courses(self):
+		courses = []
+		for enrollment in CourseEnrollment.find_by_user(self.id):
+			courses.append(enrollment.course)
+		return courses
 
 	@staticmethod
 	def find_by_id(user_id):
