@@ -87,7 +87,7 @@ h1, h2, h3{font-weight: 900;}
 // -----------------------------------------------------------------------------------------
 /* z */
 
-nav, main, article, aside{z-index: 100;}
+main, article, aside{z-index: 100;}
 nav{z-index: 150}
 
 .fit_subvidya{z-index: 200;}
@@ -309,9 +309,8 @@ header .fit_device svg > path{fill:$brand;}
 
 
 // this is a panel
-.fit_collapse{font-size: 1rem; line-height: 1.2rem; display: block; font-weight: 400;}
-.fit_overflow .fit_body{ max-height: 25rem; overflow-y: scroll;}
-aside .fit_collapse{border-bottom: 1px solid #e1e4e5;}
+// .fit_collapse{font-size: 1rem; line-height: 1.2rem; display: block; font-weight: 400;}
+// .fit_overflow .fit_body{ max-height: 25rem; overflow-y: scroll;}
 
 
 
@@ -480,6 +479,7 @@ aside .fit_btn .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,25
 aside .fit_btn:hover .fit_txt:after,
 aside .fit_btn.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
 
+aside .fit_btn[data-toggle="collapse"]{border-top:1px solid $border_light;}
 
 // rotate all the chevrons and things
 html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
@@ -1024,7 +1024,7 @@ table.fit_colhover td:hover{cursor: default;}
   nav .fit_link{padding-left: 0;}
 }
 
-.fit_mobilenav{display: none;}
+.fit_mobilenav_trigger{display: none;}
 
 /*  small boye  */
 @media (max-width: 575px){
@@ -1035,6 +1035,7 @@ table.fit_colhover td:hover{cursor: default;}
   .fit_vidya{position: -webkit-sticky !important; position: sticky !important; top:0;}
 
 	// fit player mobile nav
+	main.fit_player .fit_mobilenav_trigger{display: block;}
   main.fit_player nav .fits{display: none;}
   html.fit_mobilenav main.fit_player nav .fits{display: block;}
   html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
@@ -1045,9 +1046,9 @@ table.fit_colhover td:hover{cursor: default;}
 
 @media (min-width: 576px){
 
-	main.fit_player{display: block; padding-left: 4rem}
+	main.fit_player{display: block; padding-left: 4rem; height: auto; overflow-y: scroll;}
 
-	main.fit_player nav{position: absolute; top: 0; left: 0; bottom: 0; flex:none; max-width: none;}
+	main.fit_player nav{position: fixed; top: 0; left: 0; bottom: 0; flex:none; max-width: none; border-right: 1px solid $border_light;}
 	main.fit_player article,
 	main.fit_player aside{flex:none; display: block; max-width: none;}
 
