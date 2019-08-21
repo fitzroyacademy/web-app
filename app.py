@@ -1,5 +1,6 @@
 import json
 import random
+import datetime
 from flask import Flask, render_template, session, request, url_for, redirect, flash
 from util import get_current_user
 import sass
@@ -123,6 +124,24 @@ def join_names(users):
     for user in users:
         names.append(user.full_name)
     return ", ".join(names)
+
+@app.template_filter()
+def format_time(seconds):
+    t = str(datetime.timedelta(seconds=seconds)).split(':')
+    hours = int(t[0])
+    minutes = int(t[1])
+    out = ""
+    if hours > 0:
+        out += "{} hour".format(hours)
+        if hours > 1:
+            out += "s"
+    if hours > 0 and minutes > 0:
+        out += ", "
+    if minutes > 0:
+        out += "{} minute".format(minutes)
+        if minutes > 1:
+            out += "s"
+    return out
 
 def uuid():
     return "{}".format(uuid4().hex)

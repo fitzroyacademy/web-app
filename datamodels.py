@@ -198,6 +198,13 @@ class Course(Base):
 		self.add_user(user, COURSE_ACCESS_TEACHER)
 
 	@property
+	def duration_seconds(self):
+		t = 0
+		for lesson in self.lessons:
+			t += lesson.duration_seconds
+		return t
+
+	@property
 	def permalink(self):
 		return "/course/{}".format(self.slug)
 
@@ -309,6 +316,13 @@ class Lesson(Base):
 	@property
 	def thumbnail(self):
 		return self.segments[0].thumbnail
+
+	@property
+	def duration_seconds(self):
+		t = 0
+		for seg in self.segments:
+			t += seg.duration_seconds
+		return t
 
 	@staticmethod
 	def find_by_id(lesson_id):
