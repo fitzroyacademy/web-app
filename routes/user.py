@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
 import datamodels
+from util import get_current_user
 
 blueprint = Blueprint('user', __name__, template_folder='templates')
 
@@ -60,7 +61,7 @@ def create():
     db.commit()
     session['user_id'] = user.id
     flash('Thanks for registering, '+user.full_name+"!")
-    return render_template('welcome.html')
+    return redirect(url_for(request.args.get('from', 'index')))
 
 @blueprint.route('/enroll/<course_slug>', methods=["POST"])
 def enroll(course_slug):
@@ -71,13 +72,8 @@ def enroll(course_slug):
     if course is None:
         return redirect('/404')
     user = get_current_user()
-    if user and datamodels.get_enrollment(course.id, user.id) is None:
-        enrollment = datamodels.CourseEnrollment(
-            course_id=course.id, user_id=user.id, access_level=1
-        )
-        s = datamodels.get_session()
-        s.add(enrollment)
-        s.commit()
+    course.enroll(user)
+    flash("You are now enrolled in ", course.title)
     return redirect(course.lessons[0].permalink)
 
 @blueprint.route('/login', methods=["GET", "POST"])
@@ -94,7 +90,7 @@ def login():
                 data['errors'].append("Bad username or password, try again?")
             else:
                 session['user_id'] = user.id
-                return redirect(url_for('index'))
+                return redirect(url_for(request.args.get('from', 'index')))
     if len(data['errors']) > 0 or request.method == "GET":
         return render_template('login.html', **data)
 

@@ -15,22 +15,42 @@ class TestModels(unittest.TestCase):
     def tearDown(self):
         datamodels._clear_session_for_tests()
 
-    def test_user_creation(self):
-        password = ''.join(random.choice([string.ascii_letters + string.digits]) for x in range(16))
-        first_name = 'Homer'
-        last_name = 'Simpson'
-        email = "homer.simpson@fitzroyacademy.com"
-        username = "krustyburger80"
-        phone_number = "555-444-1234"
-        dob = datetime.datetime.now()
+    def makeUser(self, id=1, first_name='Homer', last_name='Simpson',
+                 email="homer@simpsons.com", username="homer",
+                 password="password", phone_number="555-444-1234",
+                 dob=None):
+        dob = dob or datetime.datetime.now()
         u = datamodels.User(id=1, first_name=first_name, last_name=last_name, 
             email=email, username=username, phone_number=phone_number, dob=dob)
-        u.password = password
+        u.password = 'password'
+        return u
+
+    def test_user_creation(self):
+        u = self.makeUser(
+            id=1,
+            first_name="Marge", last_name="Simpson",
+            email="marge@simpsons.com",
+            password="password"
+        )
         self.session.add(u)
         u2 = datamodels.get_user(1)
-        self.assertEqual(u2.full_name, 'Homer Simpson')
-        self.assertEqual(u2.email, email)
-        self.assertTrue(u2.check_password, password)
+        self.assertEqual(u2.full_name, 'Marge Simpson')
+        self.assertEqual(u2.email, 'marge@simpsons.com')
+        self.assertTrue(u2.check_password, 'password')
+
+    def test_student_enrollment(self):
+        u = self.makeUser(id=1)
+        self.session.add(u)
+        c = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
+        self.session.add(c)
+        c.enroll(u)
+        u2 = datamodels.get_user(1)
+        self.assertEqual(len(u2.courses), 1)
+        self.assertEqual(u2.courses[0].id, 1)
+        self.assertEqual(
+            u2.course_enrollments[0].access_level,
+            datamodels.COURSE_ACCESS_STUDENT
+        )
 
     def test_user_not_found(self):
         u = datamodels.get_user(1)

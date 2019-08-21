@@ -1,6 +1,8 @@
 import json
 import random
+import datetime
 from flask import Flask, render_template, session, request, url_for, redirect, flash
+from util import get_current_user
 import sass
 import stubs
 import datamodels
@@ -123,11 +125,23 @@ def join_names(users):
         names.append(user.full_name)
     return ", ".join(names)
 
-def get_current_user():
-    if 'user_id' in session:
-        return datamodels.get_user(session['user_id'])
-    else:
-        return None
+@app.template_filter()
+def format_time(seconds):
+    t = str(datetime.timedelta(seconds=seconds)).split(':')
+    hours = int(t[0])
+    minutes = int(t[1])
+    out = ""
+    if hours > 0:
+        out += "{} hour".format(hours)
+        if hours > 1:
+            out += "s"
+    if hours > 0 and minutes > 0:
+        out += ", "
+    if minutes > 0:
+        out += "{} minute".format(minutes)
+        if minutes > 1:
+            out += "s"
+    return out
 
 def uuid():
     return "{}".format(uuid4().hex)
@@ -142,8 +156,8 @@ def url4(*args, **kwargs):
         return "#"
 app.jinja_env.globals.update(url_for=url4)
 
-def url_is(endpoint):
-    return request.endpoint == endpoint
+def url_is(*endpoints):
+    return (request.endpoint in endpoints)
 app.jinja_env.globals.update(url_is=url_is)
 
 # This route needs to live here forever because it requires access to the app.
@@ -157,10 +171,12 @@ if __name__ == "__main__":
     compile_sass()
     if app.debug:
         from livereload import Server, shell
+        def ignore_func(path):
+            if path.split('.')[-1] == "sqlite":
+                return True
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
-        server.watch('./')
-        server.watch('./*.sqlite', ignore=True)
+        server.watch('./', ignore=ignore_func)
         server.serve(host='0.0.0.0',open_url=False,port=5000)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn

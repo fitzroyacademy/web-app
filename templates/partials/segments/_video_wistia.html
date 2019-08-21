@@ -10,9 +10,8 @@
 
 <script>
 window._wq = window._wq || [];
-_wq.push({ id: "{{ segment.external_id }}", onReady: function(video) {
-  fitzVideoReady(video);
-}});
+_wq.push({id: "_all", onReady: (v) => fitzVideoReady(v) });
+_wq.push({id: "{{ segment.external_id }}"});
 </script>
 
 {# 

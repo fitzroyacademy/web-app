@@ -54,16 +54,16 @@
             
           <h3>
             <span class="txt">Lesson plan.</span>
-            <small class="subtxt"><span class="fas fa-clock"></span> 4 hours, 49 minutes</small> <!-- DEV: total length on the whole lesson -->
+            <small class="subtxt"><span class="fas fa-clock"></span> {{ course.duration_seconds|format_time }}</small>
           </h3>
 
           <div class="fit_body fit_lessons">
 
             {% for lesson in course.lessons %}
-              <a class="fit_btn" href="#fit_lesson_{{ lesson.id }}"> <!-- DEV: This needs to link to the first segment of the relevant lesson -->
+              <a class="fit_btn" href="{{ lesson.permalink }}"> <!-- DEV: This needs to link to the first segment of the relevant lesson -->
                 <div class="fit_pic vid">
                   <!-- DEV: needs to call the image for this lesson -->
-                  <img src="/assets/images/lessons/community-integration.jpg" alt="course"> 
+                  <img src="{{ lesson.thumbnail }}" alt="course"> 
                   <i class="fas fa-play"></i>
                 </div>
                 <span class="fit_txt">{{ lesson.title }}</span>

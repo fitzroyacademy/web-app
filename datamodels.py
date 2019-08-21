@@ -65,7 +65,7 @@ class User(Base):
 
 	institutes = orm.relationship("InstituteEnrollment", back_populates="user")
 	programs = orm.relationship("ProgramEnrollment", back_populates="user")
-	courses = orm.relationship("CourseEnrollment", back_populates="user")
+	course_enrollments = orm.relationship("CourseEnrollment", back_populates="user")
 
 	@hybrid_property
 	def password(self):
@@ -81,6 +81,13 @@ class User(Base):
 	@property
 	def full_name(self):
 		return " ".join([self.first_name, self.last_name])
+
+	@property
+	def courses(self):
+		courses = []
+		for enrollment in CourseEnrollment.find_by_user(self.id):
+			courses.append(enrollment.course)
+		return courses
 
 	@staticmethod
 	def find_by_id(user_id):
@@ -198,6 +205,13 @@ class Course(Base):
 		self.add_user(user, COURSE_ACCESS_TEACHER)
 
 	@property
+	def duration_seconds(self):
+		t = 0
+		for lesson in self.lessons:
+			t += lesson.duration_seconds
+		return t
+
+	@property
 	def permalink(self):
 		return "/course/{}".format(self.slug)
 
@@ -214,6 +228,17 @@ class Course(Base):
 		for ass in associations:
 			users.append(ass.user)
 		return users
+
+	def enroll(self, student):
+		""" Adds a user to a course with student-level access. """
+		if get_enrollment(self.id, student.id) is None:
+			enrollment = CourseEnrollment(
+				course_id=self.id, user_id=student.id,
+				access_level=COURSE_ACCESS_STUDENT
+			)
+			s = get_session()
+			s.add(enrollment)
+			s.commit()
 
 	@staticmethod
 	def find_by_slug(slug):
@@ -247,23 +272,32 @@ class CourseEnrollment(Base):
 	course_id = sa.Column('course_id', sa.Integer, sa.ForeignKey('courses.id'))
 	access_level = sa.Column('access_level', sa.Integer)
 
-	user = orm.relationship("User", back_populates="courses")
+	user = orm.relationship("User", back_populates="course_enrollments")
 	course = orm.relationship("Course", back_populates="users")
 
 	@staticmethod
 	def find_by_course_and_student(course_id, student_id):
 		session = get_session()
 		return session.query(CourseEnrollment).filter(
-			CourseEnrollment.course_id == course_id and
-			CourseEnrollment.student_id == student_id
+			CourseEnrollment.course_id == course_id)\
+		.filter(
+			CourseEnrollment.user_id == student_id
 		).first()
 
 	@staticmethod
 	def find_teachers_for_course(course_id):
 		session = get_session()
 		return session.query(CourseEnrollment).filter(
-			CourseEnrollment.course_id == course_id and
+			CourseEnrollment.course_id == course_id)\
+		.filter(
 			CourseEnrollment.access_level == COURSE_ACCESS_TEACHER
+		).all()
+
+	@staticmethod
+	def find_by_user(user_id):
+		session = get_session()
+		return session.query(CourseEnrollment).filter(
+			CourseEnrollment.user_id == user_id
 		).all()
 
 class Lesson(Base):
@@ -272,7 +306,6 @@ class Lesson(Base):
 
 	id = sa.Column(sa.Integer, primary_key=True)
 	title = sa.Column(sa.String)
-	duration_seconds = sa.Column(sa.Integer) # derivable through children
 	active = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50))  # Unique in relation to parent
@@ -298,6 +331,13 @@ class Lesson(Base):
 	@property
 	def thumbnail(self):
 		return self.segments[0].thumbnail
+
+	@property
+	def duration_seconds(self):
+		t = 0
+		for seg in self.segments:
+			t += seg.duration_seconds
+		return t
 
 	@staticmethod
 	def find_by_id(lesson_id):
@@ -546,7 +586,7 @@ def save_segment_progress(segment_id, user_id, percent):
 	return sup
 
 def get_enrollment(course_id, student_id):
-	return CourseEnrollment.get_by_course_and_student(course_id, student_id)
+	return CourseEnrollment.find_by_course_and_student(course_id, student_id)
 
 def fetch_thumbnail(wistia_id, width=640, height=360):
 	""" TODO: Put this in an S3 bucket before returning the URL. """
