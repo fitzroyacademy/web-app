@@ -518,9 +518,9 @@ $( document ).ready(function() {
     let xhr = new XMLHttpRequest();
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        cb(null, xhr, xhr.responseText);
+        if (cb) cb(null, xhr, xhr.responseText);
       } else {
-        cb(xhr.responseText, xhr);
+        if (cb) cb(xhr.responseText, xhr);
       }
     };
     xhr.open('POST', url);
@@ -593,6 +593,12 @@ $( document ).ready(function() {
       if (e) console.error(e);
       for (let el of matches) el.innerHTML = data;
     });
+  });
+
+  delegate('[data-fit-preference-toggle]', 'click', (e, t) => {
+    var value = !t.querySelector('input[type=checkbox]').checked;
+    var tag = t.dataset.fitPreferenceToggle;
+    post(`/preference/${tag}/${(value)?'on':'off'}`);
   });
 
   let studentSel = '[data-fit-student-completion].active';
