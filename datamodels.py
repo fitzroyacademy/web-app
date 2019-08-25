@@ -89,6 +89,15 @@ class User(Base):
 			courses.append(enrollment.course)
 		return courses
 
+	def set_preference(self, tag, boolean):
+		UserPreference.set_preference(self, tag, boolean)
+
+	def preference(self, tag):
+		pref = UserPreference.get_preference(self, tag)
+		if pref is not None:
+			return pref.toggled
+		return False
+
 	@staticmethod
 	def find_by_id(user_id):
 		session = get_session()
@@ -99,6 +108,46 @@ class User(Base):
 		session = get_session()
 		return session.query(User).filter(User.email == email).first()
 
+
+PreferenceTags = [
+	'emails_from_teachers',
+	'emails_from_site',
+	'data_research',
+	'data_show_name',
+	'data_show_email'
+]
+
+class UserPreference(Base):
+
+	__tablename__ = 'users_preferences'
+
+	id = sa.Column(sa.Integer, primary_key=True)
+	user_id = sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id'))
+	# Corresponds to PreferenceTags list for now.
+	preference = sa.Column(sa.Integer)
+	toggled = sa.Column(sa.Boolean)
+
+	@staticmethod
+	def get_preference(user, preference_tag):
+		if preference_tag not in PreferenceTags:
+			raise Exception("Preference Unknown: {}".format(preference_tag))
+		i = PreferenceTags.index(preference_tag)
+		session = get_session()
+		return session.query(UserPreference).\
+		    filter(UserPreference.user_id == user.id).\
+		    filter(UserPreference.preference == i).\
+		    first()
+
+	@staticmethod
+	def set_preference(user, preference_tag, boolean):
+		pref = UserPreference.get_preference(user, preference_tag)
+		if pref is None:
+			i = PreferenceTags.index(preference_tag)
+			session = get_session()
+			pref = UserPreference(user_id = user.id, preference=i, toggled=boolean)
+		pref.boolean = boolean
+		session.add(pref)
+		session.commit()
 
 class Institute(Base):
 

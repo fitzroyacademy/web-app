@@ -100,3 +100,22 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
+@blueprint.route('/preference/<preference_tag>/<on_or_off>', methods=["POST"])
+def set_preference(preference_tag, on_or_off):
+    """ Set a user preference. """
+    user = get_current_user()
+    if user is None:
+        return "No user"
+    if preference_tag not in datamodels.PreferenceTags:
+        flash("Unknown preference.")
+        return "Unknown preference tag."
+    if on_or_off in ["ON", "on"]:
+        value = True
+    elif on_or_off in ["OFF", "off"]:
+        value = False
+    else:
+        flash("Unknown preference setting.")
+        return "Unknown preference setting."
+    user.set_preference(preference_tag, value)
+    return ""
+

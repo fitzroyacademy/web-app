@@ -1,3 +1,10 @@
+{% macro pref_toggle(tag, label) -%}
+  <div class="form-group" data-fit-preference-toggle="{{ tag }}">
+    <input type="checkbox" {{ 'checked' if current_user.preference(tag) }} data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
+    <label for="permissions_1">{{ label }}</label>
+  </div>
+{%- endmacro %}
+
 <div class="fit_sidepanel userpanel">
   <div class="whiteout" data-fit-userpanel></div>
   <div class="panel">
@@ -69,29 +76,14 @@
       <dl class="fit_summary_icons">
         <dt><i class="far fa-lock"></i> Notifications.</dt>
         <dd>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-            <label for="permissions_1">Receieve emails and notifications from your teachers.</label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-            <label for="permissions_1">Receieve emails and notifications from <a href="/">Fitzroy Academy</a>.</label>
-          </div>
+          {{ pref_toggle('emails_from_teachers', 'Receieve emails and notifications from your teachers.') }} <!-- DEV: user privacy permissions. Let's talk this through -->
+          {{ pref_toggle('emails_from_site', 'Receieve emails and notifications from Fitzroy Academy.') }} 
         </dd>
         <dt><i class="far fa-lock"></i> Your details and data.</dt>
         <dd>     
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-            <label for="permissions_1">Let us use your learning data for research. <a href="/faq#research">What&rsquo;s this?</a></label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-            <label for="permissions_1">Allow other students to see my name</label>
-          </div>
-          <div class="form-group">
-            <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">  <!-- DEV: user privacy permissions. Let's talk this through -->
-            <label for="permissions_1">Allow other registered users to see my email address</label>
-          </div>
+          {{ pref_toggle('data_research', 'Let us use your learning data for research.') }} 
+          {{ pref_toggle('data_show_name', 'Allow other students to see my name') }} 
+          {{ pref_toggle('data_show_email', 'Allow other registered users to see my email address') }} 
         </dd>          
       </dl>
       <p>Not sure about privacy or data? <a href="/faq#privacy">Read the FAQs</a> about our data and research.</p>
