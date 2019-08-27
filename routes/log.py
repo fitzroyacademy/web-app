@@ -13,15 +13,22 @@ def add_event(event_type):
     user = None
     if 'user_id' in session:
         user = datamodels.get_user(session['user_id'])
-    if user is None:
-        # TODO: Log anonymous user progress.
-        return True
     if event_type == 'progress':
         segment_id = request.form['segment_id']
-        user_id = user.id
-        progress = request.form['percent']
-        seg = datamodels.get_segment(segment_id)
-        sup = seg.save_user_progress(user, progress)
-        return json.dumps(datamodels.dump(sup))
+        progress = int(request.form['percent'])
+        if user is not None:
+            user_id = user.id
+            progress = request.form['percent']
+            seg = datamodels.get_segment(segment_id)
+            sup = seg.save_user_progress(user, progress)
+            return json.dumps(datamodels.dump(sup))
+        else:
+            sess = session.get('anon_progress', '\{\}')
+            d = json.loads(sess)
+            if segment_id not in d\
+               or d[segment_id] < progress:
+               d[segment_id] = progress
+            session['anon_progress'] = json.dumps(d)
+            return json.dumps(d)
     else:
         return event_type
