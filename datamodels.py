@@ -6,6 +6,7 @@ import json
 from os import environ
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask import current_app as app
+from flask import url_for
 import pprint
 import requests
 
@@ -262,7 +263,7 @@ class Course(Base):
 
 	@property
 	def permalink(self):
-		return "/course/{}".format(self.slug)
+		return url_for('course.view', slug=self.slug)
 
 	@property
 	def thumbnail(self):
@@ -375,7 +376,11 @@ class Lesson(Base):
 
 	@property
 	def permalink(self):
-		return "/course/{}/{}".format(self.course.slug, self.slug)
+		return url_for(
+			'lesson.view',
+			course_slug=self.course.slug,
+			lesson_slug=self.slug
+		)
 
 	@property
 	def thumbnail(self):
@@ -451,10 +456,11 @@ class Segment(Base):
 
 	@property
 	def permalink(self):
-		return "/course/{}/{}/{}".format(
-			self.lesson.course.slug,
-			self.lesson.slug,
-			self.slug
+		return url_for(
+			"segment.view",
+			segment_slug=self.slug,
+			lesson_slug=self.lesson.slug,
+			course_slug=self.lesson.course.slug
 		)
 
 	@property
