@@ -160,6 +160,11 @@ def url_is(*endpoints):
     return (request.endpoint in endpoints)
 app.jinja_env.globals.update(url_is=url_is)
 
+def teacher_of(course):
+    current_user = get_current_user()
+    return current_user and current_user.teaches(course)
+app.jinja_env.globals.update(teacher_of=teacher_of)
+
 # This route needs to live here forever because it requires access to the app.
 @app.route('/api', methods=["GET"])
 def api():
