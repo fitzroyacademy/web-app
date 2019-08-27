@@ -99,6 +99,10 @@ class User(Base):
 			return pref.toggled
 		return False
 
+	def merge_anonymous_data(self, data):
+		for seg_id in data:
+			save_segment_progress(seg_id, self.id, int(data[seg_id]))
+
 	@staticmethod
 	def find_by_id(user_id):
 		session = get_session()
