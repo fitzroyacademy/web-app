@@ -90,7 +90,7 @@ def login():
                 data['errors'].append("Bad username or password, try again?")
             else:
                 session['user_id'] = user.id
-                return redirect(url_for(request.args.get('from', 'index')))
+                return redirect(request.form.get('last_page', ''))
     if len(data['errors']) > 0 or request.method == "GET":
         return render_template('login.html', **data)
 
