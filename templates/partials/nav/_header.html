@@ -1,6 +1,7 @@
 <header>
 
-  {% if url_is('course.view'), url_is('lesson.view'), url_is('segment.view')  %}
+  {% if url_is('lesson.view'), url_is('segment.view')  %}
+  
   {% else %} <div class="container"> {% endif %}
 
     <!-- Left hand side logic -->
@@ -11,7 +12,7 @@
 
     {% endif %}
 
-    {% if url_is('lesson.view'), url_is('segment.view') %}
+    {% if url_is('lesson.view') or url_is('segment.view') %}
 
       {% include 'partials/nav/_header_back_coursetitle.html' %}
 
@@ -62,7 +63,7 @@
     {% endif %}
 
 
-  {% if url_is('lesson.view') %} {% else %} </div> {% endif %}
+  {% if url_is('lesson.view'), url_is('segment.view')  %} {% else %} </div> {% endif %}
 
 </header>
 

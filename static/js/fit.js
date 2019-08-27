@@ -31,16 +31,33 @@ $( document ).ready(function() {
   // typing for the search bar
   $('[data-fit_search_header_input]').on({
     'change, keyup': function() {
-     var search_term = $(this).val();
-     if (search_term.length > 0)
-     {
+      var search_term = $(this).val();
+      if (search_term.length > 0)
+      {
       console.log(search_term);
-     }
-     else {
+      }
+      else {
 
-     }
+      }
     }
   });
+
+
+  // setting course permissions
+    // typing for the search bar
+  $('[data-fit-course-permissions-set]').on({
+    'change': function() {
+      var perm = $(this).data('fit-course-permissions-set');
+
+      $('[data-fit-course-permissions-detail]').removeClass('active');
+
+      $('[data-fit-course-permissions-detail=' + perm + ']').addClass('active');
+
+    }
+  });
+
+
+  
 
   // things I want when this stuff is made singular:
   // toggle a HTML class

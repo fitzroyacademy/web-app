@@ -1,0 +1,200 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+    <div class="fit_course intro">
+
+      <h1>
+        <input type="text" class="form-control form-control-lg" name="course_name" value="" id="course_name" placeholder="Name your course">
+      </h1>
+      
+      <p><span>Curated by <strong> Username Here</strong>.</span></p>
+      
+
+      <div class="fit_vidya">
+        <!-- DEV: 16:9 image uploaded in edit view -->
+        <img class="placeholder" src="https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360" alt="video"> 
+        <a class="fit_vidya_play" href="/course/fitzroy-academy/how-to-have-good-ideas"><i class="fas fa-upload"></i></a>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <h3>
+            <span class="txt">The course.</span>
+          </h3>
+          <div class="fit_pane">
+            <dl class="fit_summary_icons">
+              
+                <dt><i class="far fa-users"></i> Who's it for?</dt>
+                <dd>
+                  <div class="form-group">
+                    <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." value=""></textarea>
+                  </div>
+                </dd>
+              
+              <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="workload" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." value=""></textarea>
+                </div>
+              </dd>
+
+              <dt><i class="far fa-university"></i> Skill level</dt>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3"  type="text" class="form-control" id="workload" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." value=""></textarea>
+                </div>
+              </dd>              
+            </dl>
+          </div><!-- pane -->
+
+          <div class="fit_pane">
+            <dl class="fit_summary_icons">
+
+            <dt><i class="far fa-rocket"></i> Access code</dt>
+              <dd>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text" id=""><i class="fal fa-lock"></i></div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Course code" maxlength="12" minlength="8">
+                  </div>
+                  <small class="form-text text-muted">All courses must have a code, for easy access. 8 - 12 characters, letters and numbers</small>
+                </div>
+              </dd> 
+
+              <dt><i class="far fa-lock"></i> Visibility</dt>
+              <dd>
+                <div class="form-group">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary active">
+                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-course-visibility-trigger="public"> Public
+                    </label>        
+                    <label class="btn btn-outline-secondary">
+                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off"  data-fit-course-visibility-trigger="code"> Code only
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group active" data-fit-course-visibility-detail="public">
+                  <small class="form-text text-muted">Can be accessed by anyone, appears publicly on the site.</small>
+                </div>
+
+                <div class="form-group" data-fit-course-visibility-detail="code">
+                  <small class="form-text text-muted">Can only be found via the access code.</small>
+                </div>
+            </dd>
+
+            <dt><i class="far fa-ticket"></i> Cost</dt>
+              <dd>
+                <div class="form-group">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary active">
+                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-course-cost-trigger="public"> Free
+                    </label>                
+                    <label class="btn btn-outline-secondary">
+                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off"  data-fit-course-cost-trigger="code"> Paid
+                    </label>
+                  </div>
+                </div>
+
+
+                <div class="form-group" data-fit-course-cost-detail="registered">
+                  <small class="form-text text-muted">Anyone can access this course for free.</small>
+                </div>
+
+                <div class="form-group" data-fit-course-cost-detail="paid">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text" id=""><i class="fal fa-usd-square"></i></div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="100">
+                  </div>
+                  <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
+                </div>
+              </dd>
+
+
+              <dt><i class="far fa-eye"></i> Anonymity</dt>
+              <dd>
+                <div class="form-group">
+                  <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
+                  <label for="">Allow anonymous access</label>
+                  <small class="form-text text-muted">I.e. users without an account can access this course</small>
+                </div>
+              </dd>
+             
+            </dl>
+          </div>
+
+          
+          <h3>What you'll learn.</h3>
+
+          <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
+          <div class="form-group">
+            <textarea rows="8" class="form-control" placeholder="From a basic idea to early customers, business models and getting the numbers right. 
+
+You'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact..."></textarea>
+          </div>
+
+        </div><!-- col -->
+
+        <div class="col-md-6">
+            
+          <h3>
+            <span class="txt">Lesson plan.</span>
+            <small class="subtxt"><span class="fas fa-clock"></span> ???</small>
+          </h3>
+
+          <div class="fit_body fit_lessons">
+              
+              <div>
+                <!-- DEV: Put user-added lessons here -->
+                <div class="fit_btn"> <!-- DEV: This needs to link to the first segment of the relevant lesson -->
+                  <div class="fit_pic vid">
+                    <img src="https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360" alt="course"> 
+                  </div>
+                  <span class="fit_txt">How to have good ideas</span>
+                  <span class="sub">
+                    <a href="#" class="btn btn-light"><i class="fal fa-edit"></i></a>
+                    <a href="#" class="btn btn-light"><i class="fal fa-arrows-v"></i></a>
+                  </span>
+                </div>
+              </div>
+              
+              <a class="fit_btn solid secondary" href="#"> <!-- DEV: This needs to link to the first segment of the relevant lesson -->
+                <i class="fas fa-plus"></i>
+                <span class="fit_txt">Add a lesson / segment</span>
+              </a>
+            
+          </div>
+          <!-- end vid stack -->
+
+        </div><!-- col -->
+      </div><!-- row -->
+
+      <div class="fit_pane">
+        <button class="btn btn-lg btn-primary">Save changes</button>
+      </div>
+
+    </div>
+
+  </article>
+
+</main>
+
+<!--
+              <dd>
+                <div class="form-group">
+                  <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
+                  <label for="permissions_1">Paid lesson.</label>
+                </div>
+              </dd>
+-->
+
+
+{% endblock %}

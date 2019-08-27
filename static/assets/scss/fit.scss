@@ -45,6 +45,8 @@ $impact_green: #65ae48;
 $pink: #e809db;
 $yellow: #f4b115;
 $aqua: #66b3b7;
+$aqua_80: rgb(102, 179, 183, .8);
+$aqua_50: rgb(102, 179, 183, .5);
 
 // possibly a new brand?!
 $watermelon: #f21e55;
@@ -348,7 +350,7 @@ aside .fit_btn{color: $text;}
 
 .fit_btn:hover,
 .fit_btn.active{text-decoration: none; background: $bg;}
-.fit_btn:hover{color:$blue;}
+a.fit_btn:hover{color:$blue;}
 
 // icons, fixed width
 .fit_btn > i{width: $nav_left_width_collapsed; justify-content: center; text-align: center;}
@@ -362,6 +364,14 @@ aside .fit_btn{color: $text;}
 .fit_btn > .fit_pic.vid img{margin-left: -25%;}
 .fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff; background: $bg;}
 
+
+// icons that appear over images if needed:
+.fit_btn > .fit_pic i{position: absolute; padding: .5rem 0; display: flex; top:0; width: 100%; height: 100%; color: #fff; justify-content: center; text-align: center; opacity: 0;}
+
+// active classes
+.fit_lesson.active .fit_btn > .fit_pic i.fa-play{background: $aqua_80; opacity: 1;}
+// not needed because dropdown? .fit_lesson .fit_btn:hover > .fit_pic i.fa-play{background: $aqua_50; opacity: 1;}
+
 // weirdy border for the underline
 // .fit_btn > .fit_pic.circle:after{content: ''; display: block; position: absolute; top:0; left: 0; right: 0; bottom: 0; border-radius: $border_rad_r; border:5px solid #0f0;}
 
@@ -369,6 +379,16 @@ aside .fit_btn{color: $text;}
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
 
 .fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;}
+
+// some sub-stuff on the right
+
+.fit_btn .sub{}
+.fit_btn .sub:last-child{padding:.5rem;}
+.fit_btn .sub .btn{padding: .25rem; margin: 0 .25rem; min-width: 2.5rem;}
+
+// weird solid buttons
+.fit_btn.solid{position: relative; border-radius: $border_rad_md; background: $bg;}
+.fit_btn.solid:after{display: block; content: ''; position: absolute; top:0; left: 0; bottom: 0; right: 0; border-radius: $border_rad_md; border:5px solid #fff;}
 
 
 
@@ -854,7 +874,7 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 // mess with styles for the toggle thingos
 // ----------------------------------------------------------------------------------------------------------------
-.fit_summary_icons dd .form-group:first-child{margin-top: 1rem;}
+// WD: Figure where this is used lol -->. .fit_summary_icons dd .form-group:first-child{margin-top: 1rem;}
 
 
 .toggle.simple{border-radius: 999rem;}
@@ -1751,6 +1771,15 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_quote cite a{color: inherit; text-decoration: underline;}
 .fit_quote cite a:hover{color: $blue;}
 
+
+// ----------------------------------------------------------------------------------------------------------------
+// course edit stuff:
+[data-fit-course-permissions-detail]{display: none}
+[data-fit-course-permissions-detail].active{display: block;}
+
+// forms within the summary
+.fit_summary_icons .form-group{padding-right: 1rem;}
+.fit_summary_icons .form-group:last-child{margin-bottom: 0;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
