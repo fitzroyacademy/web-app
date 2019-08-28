@@ -103,6 +103,14 @@ class User(Base):
 		for seg_id in data:
 			save_segment_progress(seg_id, self.id, int(data[seg_id]))
 
+	def teaches(self, course):
+		e = CourseEnrollment.find_by_course_and_student(course.id, self.id)
+		if e is None:
+			return False
+		if e.access_level == COURSE_ACCESS_TEACHER:
+			return True
+		return False
+
 	@staticmethod
 	def find_by_id(user_id):
 		session = get_session()
