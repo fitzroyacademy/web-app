@@ -680,6 +680,8 @@ $( document ).ready(function() {
     loadSegment(t.dataset.fitSegment, t.dataset.fitParent);
     // Push to browser history so back/forward works.
     window.history.pushState({"segment_id":t.dataset.fitSegment},"", t.href);
+    var lastpages = document.querySelectorAll('[data-fit-lastpage]');
+    for (let l in lastpages) l.value = t.href;
     e.preventDefault();
   });
 
@@ -694,6 +696,21 @@ $( document ).ready(function() {
     e.preventDefault();
     let sel  = t.dataset['fit_focus'];
     $(sel).focus();
+  });
+
+  // Pause/resume video on sidebar and after interacting with sidepanel forms.
+  delegate('[data-fit-userpanel]', 'click', (e, t) => {
+    if (!_fitz_video) return;
+    if (document.documentElement.classList.contains('fit_revealuserpanel')) {
+      _fitz_video.pause();
+      let lastpages = document.querySelectorAll('[data-fit-lastpage]');
+      let t = Math.floor(_fitz_video.time());
+      for (let l of lastpages) {
+        l.value = l.value.split('?')[0] + `?t=${t}`;
+      }
+    } else {
+      _fitz_video.play();
+    }
   });
 
   // Load the video dynamically when people hit back so the URLs in their

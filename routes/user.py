@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
 import datamodels
 from util import get_current_user
+import json
 
 blueprint = Blueprint('user', __name__, template_folder='templates')
 
@@ -57,6 +58,10 @@ def create():
     except Exception as e:
         data['errors'].append("{}".format(e))
         return render_template('login.html', **data)
+    if 'anon_progress' in session:
+        d = json.loads(session['anon_progress'])
+        user.merge_anonymous_data(d)
+        session.pop('anon_progress')
     db.add(user)
     db.commit()
     session['user_id'] = user.id
@@ -90,7 +95,11 @@ def login():
                 data['errors'].append("Bad username or password, try again?")
             else:
                 session['user_id'] = user.id
-                return redirect(url_for(request.args.get('from', 'index')))
+                if 'anon_progress' in session:
+                    d = json.loads(session['anon_progress'])
+                    user.merge_anonymous_data(d)
+                    session.pop('anon_progress')
+                return redirect(request.form.get('last_page', ''))
     if len(data['errors']) > 0 or request.method == "GET":
         return render_template('login.html', **data)
 
