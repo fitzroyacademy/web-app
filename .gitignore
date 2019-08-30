@@ -4,3 +4,4 @@ static/css/fit.css
 *.sqlite
 Pipfile
 Pipfile.lock
+.idea/**
