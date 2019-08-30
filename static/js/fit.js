@@ -267,6 +267,7 @@ $( document ).ready(function() {
   $('#fit_modal_stuck').modal({backdrop: 'static', keyboard: false});
   $('#fit_modal_nps').modal({backdrop: 'static', keyboard: false});
   $('#fit_modal_text').modal({backdrop: 'static', keyboard: false});
+  $('#fit_modal_add_lesson').modal();
   
 
 

@@ -26,10 +26,11 @@ $old_blue: #0f7ff4;
 $old_blue_light: #21adf5;
 
 
-$fff: #fff; /* LOL I liteally keep screwing this up so whatever. */
+$fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me. */
 
 $bg: #f5f7f8;
 $bg_light: #f7f9fa;
+$bg_dark: #f1f4f5;
 
 $brand: #464749;
 $brand_light: #666a71;
@@ -361,7 +362,7 @@ a.fit_btn:hover{color:$blue;}
 // videos are weird
 .fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative; overflow: hidden;}
 .fit_btn > .fit_pic img{height: 100%;}
-.fit_btn > .fit_pic.vid img{margin-left: -25%;}
+.fit_btn > .fit_pic.vid img{margin-left: -35%;} // this is super weird, but hopefully pushes it left enough to centre it.
 .fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff; background: $bg;}
 
 
@@ -384,14 +385,24 @@ a.fit_btn:hover{color:$blue;}
 
 .fit_btn .sub{}
 .fit_btn .sub:last-child{padding:.5rem;}
-.fit_btn .sub .btn{padding: .25rem; margin: 0 .25rem; min-width: 2.5rem;}
+.fit_btn .sub .btn{padding: .25rem; margin: 0 .25rem; min-width: 2.5rem; line-height: 1.5rem}
+
+.fit_btn .sub .dropdown{display: inline-block;}
+// not needed without dropdown-toggle on elem --> .fit_btn .sub .dropdown .dropdown-toggle::after{display: none;}
+.dropdown .dropdown-item i{margin-right: .25rem; width: 1.2rem}
+
+
+.fit_btn .subtle{font-size: 0.8rem; color:$text_light;}
 
 // weird solid buttons
 .fit_btn.solid{position: relative; border-radius: $border_rad_md; background: $bg;}
-.fit_btn.solid:after{display: block; content: ''; position: absolute; top:0; left: 0; bottom: 0; right: 0; border-radius: $border_rad_md; border:5px solid #fff;}
+.fit_btn.outline:before,
+.fit_btn.solid:after{display: block; content: ''; position: absolute; top:0; left: 0; bottom: 0; right: 0; border-radius: $border_rad_sm; border:5px solid #fff;}
 
+.fit_btn.solid:hover{background: $bg_dark}
 
-
+.fit_btn.outline:before{top:5px; left: 5px; right: 5px; bottom: 5px; border:1px solid $blue;}
+.fit_btn.secondary.outline:before{border-color: $border_medium;}
 
 
 // wtf is happening here with white space and height aRRGHGHgh?!
@@ -745,7 +756,8 @@ a.card.rating h5{color: #f4b115;}
 
 .fit_course .fit_lessons{border: 1px solid #e1e4e5; border-radius: 0.3rem; margin-top: 1rem} 
 
-.fit_course h3{padding-top: 2rem; line-height: 2.5rem; display: flex; align-items: baseline;}
+.fit_course h1,
+.fit_course h3{padding-top: 2rem; line-height: 2.5rem; display: flex; align-items: initial;}
 
 .fit_course h3 .txt{}
 .fit_course .subtxt{margin-left: auto;}
@@ -803,10 +815,7 @@ a.card.rating h5{color: #f4b115;}
 .fit_pane .fit_link:hover .fit_avatar{background: $bg;}
 
 // weirdo collapsey friends
-.fit_pane .fit_summary_icons{margin-top: .5rem;}
-
-// and when it's got a big dumb thing above it
-.fit_pane .fit_summary_icons{margin-top: .5rem;}
+// .fit_pane .fit_summary_icons{margin-top: .5rem;}
 
 
 
@@ -1117,6 +1126,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 	.modal-footer{padding:.5rem;}
 }
 
+.modal-header .close{font-size: 2.5rem;}
 
 // make our modals a bit roomier...
 @media (min-width: 576px) {
@@ -1130,9 +1140,9 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // Iconselect: Sets of icons that can be selected!
 .fit_iconselects{display: flex; align-items:center; justify-content:space-between; text-align: center;margin-bottom: 2rem;}
 
-.fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; }
+.fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; text-decoration: none;}
 
-.fit_iconselect i{font-size: 4rem; display: block; color: $text_light;}
+.fit_iconselect i{font-size: 4rem; display: block; color: $text_light; text-decoration: none;}
 .fit_iconselect .sub{color:$text_lighter; font-weight: 400; font-size: 0.9rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
 
 
@@ -1204,6 +1214,16 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // the why thing
 .modal .modal-body .collapse.show .form-group:first-child,
 .modal .modal-body .collapsing .form-group:first-child{padding-top: 1.5rem;}
+
+
+// for creating new things, higher amount of text
+
+.fit_iconselects.high_sub .fit_iconselect,
+.fit_iconselects.high_sub .fit_iconselect:hover{height: 7rem; width: 50%; margin-bottom: 5rem; border:none; text-decoration: none;}
+.fit_iconselects.high_sub .fit_iconselect .sub h4{display: block; font-size:1.1rem; font-weight: bold; color:$brand;}
+
+.fit_iconselects.high_sub .use_fitz i{color:$watermelon;}
+.fit_iconselects.high_sub .make_new i{color:$blue;}
 
 
 
