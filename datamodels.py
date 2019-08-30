@@ -463,6 +463,10 @@ class Segment(Base):
 		return value
 
 	@property
+	def duration(self):
+		return self.duration_seconds
+
+	@property
 	def template(self):
 		return "video_wistia"
 
