@@ -177,7 +177,12 @@ class Institute(Base):
 		association = InstituteEnrollment(access_level=access_level)
 		association.institute = self
 		association.user = user
-		self.users.append(a)
+		self.users.append(association)
+
+	@staticmethod
+	def find_by_slug(slug):
+		session = get_session()
+		return session.query(Institute).filter(Institute.slug == slug).first()
 
 
 class InstituteEnrollment(Base):
@@ -207,7 +212,12 @@ class Program(Base):
 		association = ProgramEnrollment(access_level=access_level)
 		association.program = self
 		association.user = user
-		self.users.append(a)
+		self.users.append(association)
+
+	@classmethod
+	def find_by_slug(cls, slug):
+		session = get_session()
+		return session.query(cls).filter(cls.slug == slug).first()
 
 
 class ProgramEnrollment(Base):
@@ -621,6 +631,9 @@ def get_course_by_code(code):
 def get_public_courses():
 	session = get_session()
 	return session.query(Course).filter(Course.guest_access == True).all()
+
+def get_program_by_slug(slug):
+	return Program.find_by_slug(slug)
 
 def get_lesson(lesson_id):
 	return Lesson.find_by_id(lesson_id)
