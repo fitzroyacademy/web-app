@@ -15,13 +15,15 @@
       <div class="col-sm-4">
         <a href="lessons" class="vid">
           <img src="{{ last_segment.lesson.thumbnail }}" alt="image"> <!-- DEV: course.lesson picture (not course.image) -->
-          {#<div class="bar">
-            <div class="far" style="width: 65% "></div> <!-- DEV: Width here is % through the whole course for the student -->
-          </div>#}
+          {#
+            <div class="bar">
+              <div class="far" style="width: 65% "></div> <!-- DEV: Width here is % through the whole course for the student -->
+            </div>
+          #}
         </a>
       </div>
       <div class="col-sm-7">
-        <h3>{{ last_segment.title }}</h3>
+        <h3><a href="{{ last_segment.permalink }}?t={{ last_segment_place }}">{{ last_segment.title }}</a></h3>
         <p>From <a href="{{ last_segment.lesson.course.permalink }}">{{ last_segment.lesson.course.title }}</a>.</p>
         <a href="{{ last_segment.permalink }}?t={{ last_segment_place }}" class="btn btn btn-outline-light"><i class="fal fa-play"></i> Keep watching</a>
       </div>
@@ -36,7 +38,7 @@
   
   <h1>Online social <br>enterprise courses.</h1>
   
-  <p>Learn <a href="#">Business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills from the best. 🚀</p>
+  <p><a href="#">Business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills from the best. 🚀</p>
 
   <div class="fit_entry_buttons">
     <a class="btn btn-lg btn-success" href="#">Choose a course</a>

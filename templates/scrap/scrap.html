@@ -43,6 +43,35 @@ https://fitzroyacademy.com/login/doreset/79/3npnak9kue6wJUpoCM3AUH0Qnll0uGkpfSKO
 
 
 
+<!-- checking multiple things on the one 'helper function' -->
+
+{% if url_is('lesson.view', 'segment.view') %}
+
+<!-- using ors: -->
+{% if url_is('lesson.view') or url_is('lesson.view') %}
+<!-- returns true -->
+
+checking false:
+{% if not url_is('lesson.view') %}
+
+<!-- checking multiple nots -->
+{% if not url_is('lesson.view') and not url_is('lesson.view') %}
+
+
+{% if url_is('lesson.view') %}
+
+FOO
+
+{% elif url_is('bah.view') %}
+
+BAR
+
+{% else %}
+
+MOOP
+
+{% endif %}
+
 
 <span class="fit_badge">
     {{ course.course_code }}
@@ -51,7 +80,7 @@ https://fitzroyacademy.com/login/doreset/79/3npnak9kue6wJUpoCM3AUH0Qnll0uGkpfSKO
       <i class="fas fa-copy"></i>
     </a>
      -->
-  </span>
+  </sn>
 <input type="hidden" id="secretive_clipboard" value="{{ course.course_code }}" value="">
 
 

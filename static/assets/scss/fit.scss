@@ -42,7 +42,7 @@ $blue_alt: #139ddd;
 
 $blue_dark: #0a6da2;
 $red: #e8151f;
-$impact_green: #65ae48;
+$green: #65ae48;
 $pink: #e809db;
 $yellow: #f4b115;
 $aqua: #66b3b7;
@@ -77,7 +77,7 @@ $facebook_blue: #3b5998;
 $white_fade: rgba(255,255,255,0.99);
 
 $box_shadow: rgba(82,63,105,0.1);
-$box_shadow_blue: rgba(8,53,99,0.4);
+$box_shadow_blue: rgba(8,53,99,0.2);
 
 // -----------------------------------------------------------------------------------------
 
@@ -380,6 +380,7 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
 
 .fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;}
+.fit_btn > a.fit_txt{text-decoration: none;}
 
 // some sub-stuff on the right
 
@@ -391,6 +392,8 @@ a.fit_btn:hover{color:$blue;}
 // not needed without dropdown-toggle on elem --> .fit_btn .sub .dropdown .dropdown-toggle::after{display: none;}
 .dropdown .dropdown-item i{margin-right: .25rem; width: 1.2rem}
 
+[data-fit-dragndrop]{cursor: move; cursor: grab; cursor: -moz-grab; cursor: -webkit-grab;}
+[data-fit-dragndrop]:active {cursor: grabbing; cursor: -moz-grabbing; cursor: -webkit-grabbing;}
 
 .fit_btn .subtle{font-size: 0.8rem; color:$text_light;}
 
@@ -461,6 +464,19 @@ header .fit_btn:hover > .fit_txt:after,
 // Okay. This is the 'segment types' bit, where we use freaky stuff to display certain icons:
 .fit_btn > .fit_circle{}
 
+// weird stuff in resource links
+.fit_pane .fit_btn.resource_link{background: #fff; border-radius: $border_rad_md; flex-wrap:wrap;}
+.fit_btn > .fit_txt .fa-external-link{margin-left: .25rem; font-size: 80%;}
+
+.fit_btn.resource_link i.lg{font-size: 2rem;}
+.fit_txt small{display: block; color:#ccd}
+
+.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize;}
+.fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
+
+.fit_btn.resource_link .explain:active,
+.fit_btn.resource_link .explain:focus{height: auto;}
+
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
 .fit_btn.video > [class*="fa-"]:before{content: "\f04b";}
@@ -527,11 +543,6 @@ html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
 .fit_btn.subtle{color: $text_subtle;}
 
 
-// resources (i.e. docs and other links)
-.fit_btn.resource_link [class*="fa-"]{font-size: 2rem;}
-.fit_txt small{display: block; color:#ccd}
-
-
 // weird in the header
 header{}
 header .fit_btn > .fit_txt{white-space:nowrap;}
@@ -581,9 +592,11 @@ header .right,
 
 
 
-/*icon colours*/
-.fa-file-spreadsheet{color: #6ad91f;}
-.fa-file-image{color: #f4b115;}
+/* icon colours */
+.resource_link .fa-file,
+.resource_link .fa-file-alt{color: $blue;}
+.resource_link .fa-file-spreadsheet{color: $green;}
+.resource_link .fa-file-image{color: $watermelon;}
 
 
 
@@ -648,7 +661,7 @@ header .right,
 .fit_closepanel:hover{background: $bg; text-decoration: none; color:$blue;}
 
 @media (min-width: 768px) {
-  .fit_closepanel{top: 1.5rem; right: 1.5rem;}
+  .fit_closepanel{top: 1.5rem; right: .5rem;}
 }
 
 .fit_closepanel.reverse{color: #fff;}
@@ -750,7 +763,7 @@ a.card.rating h5{color: #f4b115;}
 
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
-.fit_course{max-width: $sensible_width; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem;}
+.fit_course{max-width: $sensible_width; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem; position: relative;}
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 
@@ -791,6 +804,12 @@ a.card.rating h5{color: #f4b115;}
 .fit_course h1 a i.fa-edit{font-size: 1.5rem; color: $text_light;}
 .fit_course h1 a:hover i.fa-edit{color: $blue;}
 
+// responsive for tucking subtext under things
+@media (max-width: 767px) {
+	.fit_course h1{display: block;}
+	.fit_course h1 .subtxt{display:block; margin: .5rem 0;}
+}
+
 .fit_txt.spacer,
 .fit_txt.secondary{font-size: 0.8rem;}
 
@@ -801,6 +820,8 @@ a.card.rating h5{color: #f4b115;}
 .fit_pane{background: $bg; padding: 1rem; border-radius: 0.3rem; margin: 1rem 0;}
 .fit_pane.fat{padding:2rem;}
 .fit_pane.slim{padding: 0.1rem;}
+.fit_pane.slimmest{padding: 0rem;}
+.fit_pane.bordered{border: 1px solid $border_medium}
 
 
 // weird radius when in another thingo like a pane
@@ -1432,17 +1453,19 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_keep_watching .vid .bar .far:after{content: ''; display: block; position: absolute; top:-0.25rem; right: -0.4rem; height: 1rem; width: 1rem; border-radius: $border_rad_r; background: #fff;}
 
 .fit_keep_watching h3{color: #fff; padding:1.5rem 0 0 0;}
+.fit_keep_watching h3 a{color:#fff; text-decoration: none;}
+.fit_keep_watching h3 a:hover{}
 .fit_keep_watching p{color: #fff; padding: 0 0 .5rem;}
 .fit_keep_watching p a{color:#fff; border-bottom: 0.15rem solid rgba(255,255,255,0.6); text-decoration: none;}
 .fit_keep_watching p a:hover{border-bottom-color: #fff;}
 
 .fit_keep_watching .vid:hover{box-shadow: 0 .5rem 1.5rem $box_shadow_blue;}
 
-.fit_keep_watching .fit_closepanel{top: 1.5rem;}
+.fit_keep_watching .fit_closepanel{top: -.5rem;}
 
 @media (max-width: 567px) {
 	.fit_keep_watching{padding:1rem 4rem 2rem 0;}
-	.fit_keep_watching .fit_closepanel{top: 1rem;}
+	.fit_keep_watching .fit_closepanel{top: 0; right:-3rem}
 }
 
 // large stuff padding
@@ -1762,7 +1785,7 @@ footer .fit_device svg > path{fill: $watermelon;}
 
 
 .fit_michael .fit_hero > img{max-width: 600px; margin-bottom: 2rem;}
-.fit_michael .fit_medium {text-align: center; max-width: 550px; margin: 0 auto; font-size: 1.2rem; background: $bg; border-radius: $border_rad_xl; padding: 2rem 2rem 1rem; margin-bottom: 10rem;}
+.fit_michael .fit_medium {text-align: center; max-width: 450px; margin: 0 auto; font-size: 1.2rem; background: $bg; border-radius: $border_rad_xl; padding: 2rem 2rem 1rem; margin-bottom: 10rem;}
 
 
 // ----------------------------------------------------------------------------------------------------------------

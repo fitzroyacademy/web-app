@@ -1,20 +1,21 @@
 <header>
 
-  {% if url_is('lesson.view'), url_is('segment.view')  %}
+  {% if not url_is('lesson.view', 'segment.view')  %}
+
+    <div class="container"> 
   
-  {% else %} <div class="container"> {% endif %}
+  {% endif %}
 
     <!-- Left hand side logic -->
+    <!-- ---------------------------------------------------------------- -->
 
     {% if url_is('course.view') %}
 
-      {% include 'partials/nav/_header_home.html' %}
+      {% include 'partials/nav/_header_link_home.html' %}
 
-    {% endif %}
+    {% elif url_is('lesson.view', 'segment.view') %}
 
-    {% if url_is('lesson.view') or url_is('segment.view') %}
-
-      {% include 'partials/nav/_header_back_coursetitle.html' %}
+      {% include 'partials/nav/_header_link_coursetitle.html' %}
 
     {% else %}
 
@@ -22,48 +23,41 @@
         {% include 'partials/chrome/_fa_svg_square.html' %}
       </a>
 
-      {% include 'partials/nav/_header_code.html' %}      
+      {% include 'partials/nav/_header_nav_code.html' %}      
 
     {% endif %}
 
     <!-- Right hand side logic -->
+    <!-- ---------------------------------------------------------------- -->
 
-    {% if current_user %}
+      {% if url_is('course.view', 'lesson.view', 'segment.view') %}
 
-      <!-- logged in -->
+        <div class="right">
 
-      {% if url_is('course.view'), url_is('lesson.view'), url_is('segment.view')  %}
+          {% if current_user %}
+            
+            {% include 'partials/nav/_header_link_user.html' %}
 
-        {% include 'partials/nav/_header_userlink.html' %}
+          {% else %}
+
+            {% include 'partials/nav/_header_link_login.html' %}
+
+          {% endif %}
+
+        </div>
       
       {% else %}
 
-        {% include 'partials/nav/_header_sales_nav.html' %}
+        {% include 'partials/nav/_header_nav_sales.html' %}
 
       {% endif %}
 
-      {% if current_section != 'login' %}
-      
-      {% endif %}
 
-    {% else %}
+    {% if not url_is('lesson.view', 'segment.view')  %}
 
-      <!-- anon -->
-
-      {% if url_is('course.view') %}
-
-        {% include 'partials/nav/_header_login.html' %}
-      
-      {% else %}    
-
-        {% include 'partials/nav/_header_sales_nav.html' %}
-
-      {% endif %}
-      
+      </div> 
+  
     {% endif %}
-
-
-  {% if url_is('lesson.view'), url_is('segment.view')  %} {% else %} </div> {% endif %}
 
 </header>
 
@@ -119,3 +113,6 @@ If anon:
 AAARGH.
 
 -->
+
+
+
