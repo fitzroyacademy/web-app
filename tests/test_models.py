@@ -8,6 +8,14 @@ from app import app
 
 class TestModels(unittest.TestCase):
 
+    standard_course = {'course_code': 'ABC123', 'title': 'Foo Course', 'slug': 'abc-123'}
+    standard_course_lesson = {'title': 'Lesson', 'active': True, 'language': 'EN', 'slug': 'lesson', 'order': 1}
+    standard_course_lesson_segment = {'title': 'Segment',
+                                      'duration_seconds': 200,
+                                      'url': 'fitzroyacademy.com',
+                                      'language': 'EN',
+                                      'order': 1}
+
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
@@ -48,7 +56,7 @@ class TestModels(unittest.TestCase):
     def test_student_enrollment(self):
         u = self.makeUser(id=1)
         self.session.add(u)
-        c = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
+        c = datamodels.Course(id=1, **self.standard_course)
         self.session.add(c)
         c.enroll(u)
         u2 = datamodels.get_user(1)
@@ -63,7 +71,7 @@ class TestModels(unittest.TestCase):
         u = self.makeUser(id=1)
         self.session.add(u)
 
-        course = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
+        course = datamodels.Course(id=1, **self.standard_course)
         self.session.add(course)
 
         self.assertFalse(u.teaches(course))
@@ -81,7 +89,7 @@ class TestModels(unittest.TestCase):
         self.assertIsNone(u)
 
     def test_course_creation(self):
-        c = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
+        c = datamodels.Course(id=1, **self.standard_course)
         self.session.add(c)
         c = datamodels.get_course_by_code('ABC123')
         c2 = datamodels.get_course_by_slug("abc-123")
@@ -102,39 +110,37 @@ class TestModels(unittest.TestCase):
         self.assertIsNone(u)
 
     def test_lesson_creation(self):
-        l = datamodels.Lesson(id=1,title="Lesson", active=True, language="EN", slug="lesson", order=1)
+        l = datamodels.Lesson(id=1, **self.standard_course_lesson)
         self.session.add(l)
         l = datamodels.get_lesson(1)
         self.assertEqual(l.title, "Lesson")
 
     def test_segment_creation(self):
-        s = datamodels.Segment(id=1, title="Segment", duration_seconds=200, url="fitzroyacademy.com", language="EN", order=1)
+        s = datamodels.Segment(id=1, **self.standard_course_lesson_segment)
         self.session.add(s)
         s = datamodels.get_segment(1)
         self.assertEqual(s.title, "Segment")
 
     def test_course_duration(self):
-        course = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
+        course = datamodels.Course(id=1, **self.standard_course)
         self.session.add(course)
 
         # Course without lessons have length of 0 seconds
         self.assertEqual(course.duration_seconds, 0)
 
         # Add a lesson to the course with a segment of non-zero duration
-        lesson = datamodels.Lesson(id=1, title="Lesson", active=True, language="EN",
-                                   slug="lesson", order=1, course=course)
+        lesson = datamodels.Lesson(id=1, course=course, **self.standard_course_lesson)
         self.session.add(lesson)
 
-        s = datamodels.Segment(id=1, title="Segment", duration_seconds=200, url="fitzroyacademy.com", language="EN",
-                               order=1, lesson=lesson)
+        s = datamodels.Segment(id=1, lesson=lesson, **self.standard_course_lesson_segment)
         self.session.add(s)
 
         self.assertEqual(course.duration_seconds, 200)
 
     def test_find_lesson_by_slug(self):
-        course = datamodels.Course(id=1, course_code="ABC123", title="Foo Course", slug="abc-123")
+        course = datamodels.Course(id=1, **self.standard_course)
         self.session.add(course)
-        lesson = datamodels.Lesson(id=1, title="Lesson", active=True, language="EN", slug="lesson", order=1, course=course)
+        lesson = datamodels.Lesson(id=1, course=course, **self.standard_course_lesson)
         self.session.add(lesson)
 
         lesson2 = datamodels.get_lesson_by_slug(course.slug, lesson.slug)
@@ -144,6 +150,20 @@ class TestModels(unittest.TestCase):
         lesson2 = datamodels.get_lesson_by_slug(course.slug, 'no_such_lesson')
         self.assertIsNone(lesson2)
 
+    def test_get_lesson_thumbnail(self):
+        course = datamodels.Course(**self.standard_course)
+        self.session.add(course)
+        lesson = datamodels.Lesson(course=course, **self.standard_course_lesson)
+        self.session.add(lesson)
+
+        with self.assertRaises(Exception):
+            thumbnail = lesson.thumbnail
+
+        s1 = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment, _thumbnail='thumbnail_1')
+        s2 = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment, _thumbnail='thumbnail_2')
+        self.session.add(s1, s2)
+
+        self.assertEqual(lesson.thumbnail, 'thumbnail_1')
 
     def test_password(self):
         u = self.makeUser()
@@ -220,3 +240,41 @@ class TestModels(unittest.TestCase):
         program2.add_user(user)
         self.assertEqual(len(self.session.query(datamodels.ProgramEnrollment).all()), 1)
         self.assertEqual(program2.users[0].user.id, user.id)
+
+    def test_get_segment_progress(self):
+        course = datamodels.Course(**self.standard_course)
+        self.session.add(course)
+        lesson = datamodels.Lesson(course=course, **self.standard_course_lesson)
+        self.session.add(lesson)
+        user = self.makeUser()
+        segment = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment)
+        self.session.add(user, segment)
+
+        # User doesn't have any progress
+        self.assertIsNone(datamodels.get_segment_progress(segment.id, user.id))
+        self.assertEqual(segment.user_progress(None), 0)
+        self.assertEqual(segment.user_progress(user), 0)
+
+        # User has progress
+        progress = datamodels.SegmentUserProgress(user_id=user.id, segment_id=segment.id, progress=20)
+        self.session.add(progress)
+
+        progress = datamodels.get_segment_progress(segment.id, user.id)
+        self.assertIsInstance(progress, datamodels.SegmentUserProgress)
+        self.assertEqual(progress.progress, 20)
+        self.assertEqual(segment.user_progress(user), 20)
+
+    def test_save_progress(self):
+        course = datamodels.Course(**self.standard_course)
+        self.session.add(course)
+        lesson = datamodels.Lesson(course=course, **self.standard_course_lesson)
+        self.session.add(lesson)
+        user = self.makeUser()
+        segment = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment)
+        self.session.add(user, segment)
+
+        self.assertEqual(segment.user_progress(user), 0)
+        datamodels.save_segment_progress(segment.id, user.id, 30)
+        self.assertEqual(segment.user_progress(user), 30)
+        datamodels.save_segment_progress(segment.id, user.id, 50)
+        self.assertEqual(segment.user_progress(user), 50)

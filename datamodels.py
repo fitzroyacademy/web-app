@@ -498,7 +498,7 @@ class Segment(Base):
 
 	def user_progress(self, user):
 		if user is None:
-			return '0'
+			return 0
 		progress = get_segment_progress(self.id, user.id)
 		if progress:
 			return progress.progress
@@ -648,14 +648,7 @@ def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	return Segment.find_by_slug(course_slug, lesson_slug, segment_slug)
 
 def get_segment_progress(segment_id, user_id):
-	session = get_session()
-	q = session.query(SegmentUserProgress).\
-		filter(SegmentUserProgress.segment_id == segment_id).\
-		filter(SegmentUserProgress.user_id == user_id)
-	try:
-		return q.first()
-	except:
-		return None
+	return Segment.find_user_progress(segment_id, user_id)
 
 def save_segment_progress(segment_id, user_id, percent):
 	session = get_session()
