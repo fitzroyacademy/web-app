@@ -44,14 +44,17 @@ $( document ).ready(function() {
 
 
   // setting course permissions
-    // typing for the search bar
-  $('[data-fit-course-permissions-set]').on({
+  // This uses 'trigger' to find a 'detail' of the same 'type', and toggle active classes
+  // NB: Show/hide is done via css, aka [data-data-fit-perm-type]{display: none}
+
+  $('[data-fit-perm-trigger]').on({
     'change': function() {
-      var perm = $(this).data('fit-course-permissions-set');
+      var perm = $(this).data('fit-perm-trigger');
+      var type = $(this).data('fit-perm-type');
 
-      $('[data-fit-course-permissions-detail]').removeClass('active');
+      $('[data-fit-perm-detail][data-fit-perm-type="' + type + '"]').removeClass('active');
 
-      $('[data-fit-course-permissions-detail=' + perm + ']').addClass('active');
+      $('[data-fit-perm-detail=' + perm + ']').addClass('active');
 
     }
   });

@@ -382,11 +382,13 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn > .fit_txt{flex: 1; font-size: 0.95rem; line-height: 1.2rem;}
 .fit_btn > a.fit_txt{text-decoration: none;}
 
-// some sub-stuff on the right
 
+// -----------------------------------------------------------------------------------------
+// some sub-stuff on the right
+// this is a bit weird honestly, but needed for aligned buttons on the right.
 .fit_btn .sub{}
-.fit_btn .sub:last-child{padding:.5rem;}
-.fit_btn .sub .btn{padding: .25rem; margin: 0 .25rem; min-width: 2.5rem; line-height: 1.5rem}
+.fit_btn .sub.buttonset{padding:.5rem;}
+.fit_btn .sub.buttonset .btn{padding: .25rem; margin: 0 .25rem; min-width: 2.5rem; line-height: 1.5rem}
 
 .fit_btn .sub .dropdown{display: inline-block;}
 // not needed without dropdown-toggle on elem --> .fit_btn .sub .dropdown .dropdown-toggle::after{display: none;}
@@ -799,7 +801,7 @@ a.card.rating h5{color: #f4b115;}
 
 // mess with the headers
 
-.fit_course h1{line-height: 2.5rem; display: flex; align-items: baseline; padding-bottom: 1rem;}
+.fit_course h1{line-height: 2.5rem; display: flex; align-items: initial; padding-bottom: 1rem;}
 .fit_course h1 small{display: block; font-size: 1rem; color:$text_lighter;}
 .fit_course h1 a i.fa-edit{font-size: 1.5rem; color: $text_light;}
 .fit_course h1 a:hover i.fa-edit{color: $blue;}
@@ -857,7 +859,7 @@ Bleh:;
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
 .fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
 .fit_summary_icons dt i{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
-.fit_summary_icons dd{padding: 0 0 0.5rem 3.2rem; margin-top: -0.4rem;}
+.fit_summary_icons dd{padding: 0 0 0rem 3.2rem; margin-top: -0.4rem;}
 .fit_summary_icons dd .badge{font-size: 0.9rem;}
 
 .fit_pane .fit_summary_icons{margin-bottom: -1rem;}
@@ -1098,7 +1100,7 @@ table.fit_colhover td:hover{cursor: default;}
 
 	main.fit_player{display: block; padding-left: 4rem; height: auto; overflow-y: scroll;}
 
-	main.fit_player nav{position: fixed; top: 0; left: 0; bottom: 0; flex:none; max-width: none; border-right: 1px solid $border_light;}
+	main.fit_player nav{position: fixed; top: $header_height; left: 0; bottom: 0; flex:none; max-width: none; border-right: 1px solid $border_light;}
 	main.fit_player article,
 	main.fit_player aside{flex:none; display: block; max-width: none;}
 
@@ -1152,9 +1154,17 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // make our modals a bit roomier...
 @media (min-width: 576px) {
 	.modal-dialog{max-width: 650px;}
+	.fit_modal_single .modal-dialog{max-width: 350px;}
 }
 
+// weird single thing
+.fit_modal_single .fit_iconselects.high_sub .fit_iconselect, 
+.fit_modal_single .fit_iconselects.high_sub .fit_iconselect:hover{width: 100%}
+
+
 .modal-title{font-weight: 900; font-size: 1.75rem; color:$text;}
+
+
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -1164,7 +1174,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_iconselect{text-align: center; padding:1rem; border:0.15rem solid #fff; border-radius: $border_rad_r; width: 5rem; height: 5rem; display: flex; align-items:center; justify-content:center; position: relative; cursor: pointer; text-decoration: none;}
 
 .fit_iconselect i{font-size: 4rem; display: block; color: $text_light; text-decoration: none;}
-.fit_iconselect .sub{color:$text_lighter; font-weight: 400; font-size: 0.9rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem 0;}
+.fit_iconselect .sub{color:$text_lighter; font-weight: 400; font-size: 0.9rem; position: absolute; top:100%; left: 0; width: 100%; padding: 0.5rem;}
 
 
 // ------------------------------------------------------------
@@ -1817,12 +1827,31 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 // ----------------------------------------------------------------------------------------------------------------
 // course edit stuff:
-[data-fit-course-permissions-detail]{display: none}
-[data-fit-course-permissions-detail].active{display: block;}
+[data-fit-perm-detail]{display: none}
+[data-fit-perm-detail].active{display: block;}
 
 // forms within the summary
 .fit_summary_icons .form-group{padding-right: 1rem;}
-.fit_summary_icons .form-group:last-child{margin-bottom: 0;}
+
+
+// ----------------------------------------------------------------------------------------------------------------
+// Edit FAQs
+
+.fit_faq_edits{}
+.fit_faq_edit{}
+
+.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem;}
+.fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
+
+// ----------------------------------------------------------------------------------------------------------------
+// Custom radios for permissions and things
+.fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
+.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
+.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.15rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
+
+.fit_radio_icons input:checked + label{color: $blue; font-weight: bold}
+.fit_radio_icons input:checked + label .form-text{color: $text  !important;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
