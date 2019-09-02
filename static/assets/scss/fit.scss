@@ -1100,7 +1100,7 @@ table.fit_colhover td:hover{cursor: default;}
 
 	main.fit_player{display: block; padding-left: 4rem; height: auto; overflow-y: scroll;}
 
-	main.fit_player nav{position: fixed; top: 0; left: 0; bottom: 0; flex:none; max-width: none; border-right: 1px solid $border_light;}
+	main.fit_player nav{position: fixed; top: $header_height; left: 0; bottom: 0; flex:none; max-width: none; border-right: 1px solid $border_light;}
 	main.fit_player article,
 	main.fit_player aside{flex:none; display: block; max-width: none;}
 
