@@ -1088,7 +1088,8 @@ table.fit_colhover td:hover{cursor: default;}
 
 	// fit player mobile nav
 	main.fit_player .fit_mobilenav_trigger{display: block;}
-  main.fit_player nav .fits{display: none;}
+  main.fit_player nav {max-width: none;}
+  main.fit_player nav .fits {display: none;}
   html.fit_mobilenav main.fit_player nav .fits{display: block;}
   html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
 }
@@ -1120,6 +1121,13 @@ html.fit_minleft nav .fit_txt,
 html.fit_minleft nav .fit_sub{display: none;}
 html.fit_minleft nav .fit_link{padding-left: 0;}
 html.fit_minleft nav .fit_time{display: none}
+
+// ... unless in small mode
+@media (max-width: 575px){
+	html.fit_minleft nav{max-width: none}
+	html.fit_minleft nav .fit_txt,
+	html.fit_minleft nav .fit_sub{display: block;}
+}
 
 // and the rotation
 html.fit_minleft [data-fit-minleft] i{transform: rotate(-180deg);}
