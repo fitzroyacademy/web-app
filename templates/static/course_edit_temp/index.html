@@ -19,12 +19,10 @@
       <div class="form-group">
         <input type="text" class="form-control form-control-lg" name="course_name" value="" id="course_name" placeholder="Name your course">
       </div>
-      
-      <p>
-        <span>Curated by <strong> Username Here</strong>.</span>
-        <!-- <a href="#" class="btn btn-sm btn-outline-primary"><i class="fal fa-user-plus"></i> Invite a collaborator</a> -->
-      </p>
-      
+      <div class="form-group">
+        <!-- <label for="lesson_description">Short description</label> -->
+        <input type="text" class="form-control" id="course_description" maxlength="140" placeholder="Short description of the lesson. 140 characters max.">
+      </div>
 
       <div class="fit_vidya">
         <!-- DEV: 16:9 image uploaded in edit view -->
@@ -53,7 +51,8 @@
           <div>
 
 
-            <!-- This first one is spcial, just for the intro video: -->
+            <!-- DEV: This first one is spcial, just for the intro video: -->
+            <!-- Note this one can't be moved from the first position, because it's an intro! -->
             <div class="fit_btn">
               <div class="fit_pic vid">
                 <img src="/assets/images/lessons/agile-project-management.jpg" alt="course"> 
@@ -62,7 +61,7 @@
                 Introduction
               </span>
 
-              <span class="sub">
+              <div class="sub buttonset">
                 
                 <span class="btn btn-text subtle">1:29</span>
                 
@@ -81,7 +80,7 @@
                 Judah Pollack
               </div>
 
-              <div class="sub">
+              <div class="sub buttonset">
                 
                 <div class="btn btn-text subtle">45:36</div>
 
@@ -92,7 +91,7 @@
                   
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
                     <a class="dropdown-item" href="#"><i class="fal fa-edit"></i> Edit</a>
-                    <a class="dropdown-item" href="#"><i class="fal fa-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
                     <a class="dropdown-item" href="#"><i class="fal fa-copy"></i> Duplicate</a>
                   </div>
                 </div>
@@ -120,12 +119,20 @@
           <div class="fit_pane">
             <dl class="fit_summary_icons">
               
-                <dt><i class="far fa-users"></i> Who's it for?</dt>
-                <dd>
-                  <div class="form-group">
-                    <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." value=""></textarea>
-                  </div>
-                </dd>
+              <dt><i class="far fa-calendar"></i> Year</dt>
+              <dd>
+                <div class="form-group">
+                  <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="">
+                  <small class="form-text text-muted">Useful if you're running the same course over multiple years.</small>
+                </div>
+              </dd>
+
+              <dt><i class="far fa-users"></i> Who's it for?</dt>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." value=""></textarea>
+                </div>
+              </dd>
               
               <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
               <dd>
@@ -184,24 +191,20 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-course-visibility-trigger="public"> Public
+                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="visibility" data-fit-perm-trigger="public"> Public
                     </label>
                     <label class="btn btn-outline-secondary ">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off"  data-fit-course-visibility-trigger="public"> Institute only
+                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="institute"> Institute only
                     </label>      
                     <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off"  data-fit-course-visibility-trigger="code"> Code only
+                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="code"> Code only
                     </label>
                   </div>
+                  <small class="form-text text-muted active" data-fit-perm-type="visibility" data-fit-perm-detail="public">Can be accessed by anyone, appears publicly on the site.</small>
+                  <small class="form-text text-muted" data-fit-perm-type="visibility" data-fit-perm-detail="institute">Can only be found via your institute / school page.</small>
+                  <small class="form-text text-muted" data-fit-perm-type="visibility" data-fit-perm-detail="code">Can only be found via access code.</small>
                 </div>
-
-                <div class="form-group active" data-fit-course-visibility-detail="public">
-                  <small class="form-text text-muted">Can be accessed by anyone, appears publicly on the site.</small>
-                </div>
-
-                <div class="form-group" data-fit-course-visibility-detail="code">
-                  <small class="form-text text-muted">Can only be found via the access code.</small>
-                </div>
+                
             </dd>
 
             <dt><i class="far fa-ticket"></i> Cost</dt>
@@ -209,25 +212,22 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-course-cost-trigger="public"> Free
+                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="cost" data-fit-perm-trigger="free"> Free
                     </label>                
                     <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off"  data-fit-course-cost-trigger="code"> Paid
+                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="cost" data-fit-perm-type="cost" data-fit-perm-trigger="paid"> Paid
                     </label>
                   </div>
+                  <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
                 </div>
 
 
-                <div class="form-group" data-fit-course-cost-detail="registered">
-                  <small class="form-text text-muted">Anyone can access this course for free.</small>
-                </div>
-
-                <div class="form-group" data-fit-course-cost-detail="paid">
+                <div class="form-group" data-fit-perm-type="cost" data-fit-perm-detail="paid">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text" id=""><i class="fal fa-usd-square"></i></div>
                     </div>
-                    <input type="text" class="form-control" placeholder="100">
+                    <input type="text" class="form-control" placeholder="e.g. 100">
                   </div>
                   <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
                 </div>
@@ -239,7 +239,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 <div class="form-group">
                   <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
                   <label for="">Allow anonymous access</label>
-                  <small class="form-text text-muted">I.e. users without an account can access this course</small>
+                  <small class="form-text text-muted">Users without an account can access this course</small>
                 </div>
               </dd>
              
@@ -251,8 +251,8 @@ You'll define your impact model, look into creating behaviour change that lasts,
       </div><!-- row -->
 
       <div class="fit_pane d-flex justify-content-between">
-        <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save changes</button>
         <button class="btn btn-lg btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
+        <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save changes</button>
       </div>
 
     </div>

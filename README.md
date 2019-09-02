@@ -274,8 +274,8 @@ Segments are of different types to indicate to the user their utility, i.e. a "p
 
 * Video
 	* Intro
+	* Standard
 	* Resource
-	* Video
 	* Practical
 	* Story
 	* Interview
