@@ -1839,8 +1839,19 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 [data-fit-perm-detail].active{display: block;}
 
 // forms within the summary
-.fit_summary_icons .form-group{padding-right: 1rem;}
+.fit_summary_icons{padding-right: 1rem;}
 
+// teacher quick search
+.fit_quicksearch{background: #fff; border:1px solid $border_medium; border-radius: $border_rad_sm; margin-bottom: 1rem;}
+
+.fit_quicksearch > .input-group.searchy{border-bottom: 1px solid $border_medium;}
+.fit_quicksearch > .input-group.searchy .input-group-text,
+.fit_quicksearch > .input-group.searchy .form-control{border:none; border-radius: $border_rad_sm $border_rad_sm 0 0; background: #fff;}
+
+.fit_quicksearch > .input-group.searchy .input-group-prepend{}
+ 
+
+.fit_quicksearch .results:empty{background: $bg_dark;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // Edit FAQs

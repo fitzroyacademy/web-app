@@ -121,13 +121,40 @@
 
               <dt><i class="far fa-chalkboard-teacher"></i> Teacher(s)</dt>
               <dd>
-                <div class="form-group">
-                  <div class="input-group">
+                <div class="fit_quicksearch">
+
+                  <div class="input-group searchy">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Type to search for a teacher">
-                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! -->
+                    <input type="text" class="form-control" placeholder="Search for a teacher to add">
+                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
+                  </div>
+
+                  <div class="results">
+
+                    <!-- DEV: Show quick search results here, fit_btn for each: -->
+                    <div class="fit_btn">
+                      <div class="fit_pic circle"><img src="/assets/stub/homer.png" alt="user"></div>
+                      <div class="fit_txt">Homer Simpson</div>
+                      <div class="sub buttonset">
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add teacher</a>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="teachers">
+
+                    <!-- DEV: for each teacher, this html: -->
+                    <div class="fit_btn">
+                      <div class="fit_pic circle"><img src="/assets/stub/marge.png" alt="user"></div>
+                      <div class="fit_txt">Marge Simpson</div>
+                      <div class="sub buttonset">
+                        <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </dd>
@@ -186,7 +213,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
           <div class="fit_pane">
             <dl class="fit_summary_icons">
 
-            <dt><i class="far fa-rocket"></i> Access code</dt>
+              <dt><i class="far fa-rocket"></i> Course code</dt>
               <dd>
                 <div class="form-group">
                   <div class="input-group">
@@ -217,10 +244,10 @@ You'll define your impact model, look into creating behaviour change that lasts,
                   <small class="form-text text-muted" data-fit-perm-type="visibility" data-fit-perm-detail="institute">Can only be found via your institute / school page.</small>
                   <small class="form-text text-muted" data-fit-perm-type="visibility" data-fit-perm-detail="code">Can only be found via access code.</small>
                 </div>
-                
-            </dd>
+              
+              </dd>
 
-            <dt><i class="far fa-ticket"></i> Cost</dt>
+              <dt><i class="far fa-ticket"></i> Cost</dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -228,7 +255,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                       <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="cost" data-fit-perm-trigger="free"> Free
                     </label>                
                     <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="cost" data-fit-perm-type="cost" data-fit-perm-trigger="paid"> Paid
+                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="cost" data-fit-perm-trigger="paid"> Paid
                     </label>
                   </div>
                   <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
@@ -246,17 +273,38 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 </div>
               </dd>
 
-              <div data-fit-perm-type="cost" data-fit-perm-detail="free">
+              <div class="active" data-fit-perm-type="cost" data-fit-perm-detail="free">
                 <dt><i class="far fa-eye"></i> Anonymity</dt>
                 <dd>
                   <div class="form-group">
                     <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
                     <label for="">Allow anonymous access</label>
-                    <small class="form-text text-muted">Users without an account can access this course</small>
+                    <!-- <small class="form-text text-muted">Users without an account can access this course</small> -->
                   </div>
                 </dd>
               </div>
              
+
+            <dt><i class="far fa-file-edit"></i> Draft</dt>
+              <dd>
+                <div class="form-group">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary active">
+                      <input type="radio" name="course_permission" value="draft" id="option1" autocomplete="off" checked data-fit-perm-type="draft" data-fit-perm-trigger="draft"> Draft
+                    </label>                
+                    <label class="btn btn-outline-secondary">
+                      <input type="radio" name="course_permission" value="live" id="option3" autocomplete="off" data-fit-perm-type="draft" data-fit-perm-trigger="live"> Live
+                    </label>
+                  </div>
+                  <small class="form-text text-muted active" data-fit-perm-type="draft" data-fit-perm-detail="draft">Can only be accessed via direct link. Doesn't appear anywhere.</small>
+                  <small class="form-text text-muted" data-fit-perm-type="draft" data-fit-perm-detail="live">
+                    <span class="active" data-fit-perm-type="visibility" data-fit-perm-detail="public">Live on the site for <strong>anyone</strong> as this is a public course.</span>
+                    <span data-fit-perm-type="visibility" data-fit-perm-detail="institute">Live on your <strong>institute page</strong> only.</span>
+                    <span data-fit-perm-type="visibility" data-fit-perm-detail="code">Live, but only accessible via the <strong>course code.</strong></span>
+                  </small>
+                </div>
+              </dd>
+
             </dl>
           </div><!-- pane -->
 
