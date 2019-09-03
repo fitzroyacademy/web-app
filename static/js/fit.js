@@ -158,7 +158,8 @@ $( document ).ready(function() {
   var slug_ugly = '';
   var slug_pretty = '';
   var slug_userset = false;
-  var slug_maxlength = 20;
+  var slug_maxlength = 15;
+  var slug_url = '';
 
   // slugification
   function slugify(string) {
@@ -189,6 +190,12 @@ $( document ).ready(function() {
     {
       $('[data-fit-slug-set]').val(slug_pretty);
     }
+
+    // change the auto url:
+    slug_url = $('[data-fit-slug-url]').data('fit-slug-url');
+    slug_url = (slug_url + slug_pretty);
+
+    $('[data-fit-slug-url]').attr('href', slug_url);
   }
 
   $("[data-fit-slug-set]").on({
