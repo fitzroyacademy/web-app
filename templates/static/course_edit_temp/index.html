@@ -147,7 +147,7 @@
                 </div>
               </dd>
 
-            <dt><i class="far fa-info-square"></i> What you&rsquo;ll learn</dt>
+              <dt><i class="far fa-info-square"></i> What you&rsquo;ll learn</dt>
               <dd>
                 <div class="form-group">
                   <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
@@ -156,7 +156,20 @@
 You'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact..."></textarea>
                 </div>
               </dd>
+              
+              <dt><i class="far fa-tag"></i> Tags</dt>
+              <dd>
+                <div class="form-group">
+                  <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
+                  <!-- For now, can be comma delimited? -->
+                  <input type="text" class="form-control" placeholder="E.g. socent, agile, highschool">
+                </div>
+                <small class="form-text text-muted">Only letters, with commas between tags.</small>
+              </dd>
             </dl>
+
+
+
           </div><!-- pane -->
 
 
@@ -171,17 +184,19 @@ You'll define your impact model, look into creating behaviour change that lasts,
 
           <div class="fit_pane">
             <dl class="fit_summary_icons">
+              
 
+              <!-- DEV: We should probably check if this tag is taken while it's being entered? Is that a security hole? Do we care? -->
               <dt><i class="far fa-external-link"></i> Link</dt>
               <dd>
                 <div class="form-group">
-                  <div class="input-group fit_fancyplace">
+                  <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="" placeholder="url" data-fit-slug-set>
+                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="" placeholder="short link" data-fit-slug-set>
                   </div>
-                  <small id="emailHelp" class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/???">fitzroyacademy.com/course/<strong data-fit-slug-reveal></strong></a></small>
+                  <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/???">fitzroyacademy.com/course/<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->
                 </div>
               </dd> 
@@ -260,7 +275,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
               
               </dd>
 
-              <dt><i class="far fa-ticket"></i> Cost</dt>
+              <dt><i class="far fa-usd-square"></i> Cost</dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -278,7 +293,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 <div class="form-group" data-fit-perm-type="cost" data-fit-perm-detail="paid">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <div class="input-group-text" id=""><i class="fal fa-usd-square"></i></div>
+                      <div class="input-group-text" id="">$</div>
                     </div>
                     <input type="text" class="form-control" placeholder="e.g. 100">
                   </div>
