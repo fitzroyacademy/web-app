@@ -416,6 +416,20 @@ class Lesson(Base):
 			t += seg.duration_seconds
 		return t
 
+	def user_progress_percent(self, user):
+		if len(self.segments) is 0:
+			return 100
+		total = 0
+		for segment in self.segments:
+			total = total + segment.user_progress(user)
+		return int(total/len(self.segments))
+
+	def user_progress_list(self, user):
+		output = []
+		for segment in self.segments:
+			output.append(segment.user_progress(user))
+		return output
+
 	@staticmethod
 	def find_by_id(lesson_id):
 		session = get_session()

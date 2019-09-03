@@ -279,6 +279,32 @@ class TestModels(unittest.TestCase):
         datamodels.save_segment_progress(segment.id, user.id, 50)
         self.assertEqual(segment.user_progress(user), 50)
 
+    def test_lesson_progress(self):
+        course = datamodels.Course(**self.standard_course)
+        self.session.add(course)
+        lesson = datamodels.Lesson(course=course, **self.standard_course_lesson)
+        self.session.add(lesson)
+        user = self.makeUser()
+        self.session.add(user)
+        seg_a = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment)
+        seg_b = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment)
+        self.session.add(seg_a)
+        self.session.add(seg_b)
+        self.assertEqual(len(lesson.segments), 2)
+
+        self.assertEqual(lesson.user_progress_percent(user), 0)
+        seg_a.save_user_progress(user, 30)
+        self.assertEqual(lesson.user_progress_list(user), [30, 0])
+        self.assertEqual(lesson.user_progress_percent(user), 15)
+        seg_b.save_user_progress(user, 30)
+        self.assertEqual(lesson.user_progress_list(user), [30, 30])
+        self.assertEqual(lesson.user_progress_percent(user), 30)
+
+        user_b = self.makeUser(id=2, username='marge', email='marge@example.com')
+        self.session.add(user_b)
+        self.assertEqual(lesson.user_progress_percent(user_b), 0)
+        self.assertEqual(lesson.user_progress_list(user_b), [0, 0])
+
     def test_resource_access_log(self):
         course = datamodels.Course(**self.standard_course)
         self.session.add(course)
