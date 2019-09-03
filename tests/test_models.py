@@ -278,3 +278,49 @@ class TestModels(unittest.TestCase):
         self.assertEqual(segment.user_progress(user), 30)
         datamodels.save_segment_progress(segment.id, user.id, 50)
         self.assertEqual(segment.user_progress(user), 50)
+
+    def test_resource_access_log(self):
+        course = datamodels.Course(**self.standard_course)
+        self.session.add(course)
+        lesson = datamodels.Lesson(course=course, **self.standard_course_lesson)
+        self.session.add(lesson)
+        user_a = self.makeUser(id=1)
+        user_b = self.makeUser(id=2, username="marge", email="marge@simpsons.com")
+        resource_a = datamodels.Resource(lesson=lesson, title="Some Resource")
+        resource_b = datamodels.Resource(lesson=lesson, title="Other Resource")
+
+        self.session.add(user_a)
+        self.session.add(user_b)
+        self.session.add(resource_a)
+        self.session.add(resource_b)
+
+        self.session.commit()
+
+        self.assertEqual(resource_a.total_views, 0)
+        resource_a.log_user_view(user_a)
+        self.assertEqual(resource_a.views_by_user(user_a), 1)
+        self.assertEqual(resource_a.total_views, 1)
+        resource_a.log_user_view(user_a)
+        self.assertEqual(resource_a.views_by_user(user_a), 2)
+        self.assertEqual(resource_a.total_views, 2)
+        resource_a.log_user_view(user_a)
+        self.assertEqual(resource_a.views_by_user(user_a), 3)
+        self.assertEqual(resource_a.total_views, 3)
+        resource_a.log_user_view(user_a)
+        self.assertEqual(resource_a.views_by_user(user_a), 4)
+        self.assertEqual(resource_a.total_views, 4)
+        resource_a.log_user_view(user_a)
+        self.assertEqual(resource_a.views_by_user(user_a), 5)
+        self.assertEqual(resource_a.total_views, 5)
+
+        resource_a.log_user_view(user_b)
+        self.assertEqual(resource_a.views_by_user(user_b), 1)
+        self.assertEqual(resource_a.total_views, 6)
+
+        self.assertEqual(resource_b.views_by_user(user_a), 0)
+        self.assertEqual(resource_b.views_by_user(user_b), 0)
+        self.assertEqual(resource_b.total_views, 0)
+
+        resource_a.log_anonymous_view()
+        self.assertEqual(resource_a.total_views, 7)
+ 

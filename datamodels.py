@@ -9,6 +9,7 @@ from flask import current_app as app
 from flask import url_for
 import pprint
 import requests
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -537,6 +538,7 @@ class Segment(Base):
 		except:
 			return None
 
+
 class SegmentTranslation(Base):
 
 	__tablename__ = 'lesson_segments_translated'
@@ -563,9 +565,24 @@ class Resource(Base):
 	featured = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50))
+	anonymous_views = sa.Column(sa.Integer, default=0)
 
 	lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
 	lesson = orm.relationship("Lesson", back_populates="resources")
+
+	@property
+	def total_views(self):
+		return LessonResourceUserAccess.count_access(self.id) \
+		       + self.anonymous_views
+
+	def views_by_user(self, user):
+		return LessonResourceUserAccess.count_access(self.id, user.id)
+
+	def log_user_view(self, user):
+		LessonResourceUserAccess.log_user_access(self.id, user.id)
+
+	def log_anonymous_view(self):
+		self.anonymous_views += 1
 
 	@property
 	def icon(self):
@@ -588,6 +605,41 @@ class Resource(Base):
 		if self.type in stubs:
 			return stubs[self.type]
 		return 'External file'
+
+	@property
+	def permalink(self):
+		return url_for('resource.view', resource_id=self.id)
+
+	@staticmethod
+	def find_by_id(resource_id):
+		session = get_session()
+		return session.query(Resource).filter(Resource.id == resource_id).first()
+
+
+class LessonResourceUserAccess(Base):
+	__tablename__ = "resource_user_access"
+	id = sa.Column(sa.Integer, primary_key=True)
+	resource_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_resources.id'))
+	user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
+	access_date = sa.Column(sa.DateTime, default=datetime.utcnow)
+
+	@staticmethod
+	def count_access(resource_id, user_id=None):
+		session = get_session()
+		q = session.query(sa.func.count(LessonResourceUserAccess.id)).\
+			filter(LessonResourceUserAccess.resource_id == resource_id)
+		if user_id is not None:
+			q = q.filter(LessonResourceUserAccess.user_id == user_id)
+		return q.all()[0][0]
+
+	@staticmethod
+	def log_user_access(resource_id, user_id):
+		session = get_session()
+		log = LessonResourceUserAccess(resource_id=resource_id, user_id=user_id)
+		q = session.query(LessonResourceUserAccess).\
+			filter(LessonResourceUserAccess.resource_id == resource_id)
+		session.add(log)
+		session.commit()
 
 
 class SegmentUserProgress(Base):
