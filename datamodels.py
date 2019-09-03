@@ -91,6 +91,16 @@ class User(Base):
 			courses.append(enrollment.course)
 		return courses
 
+	@property
+	def course_progress(self):
+		courses = self.courses
+		if len(courses) is 0:
+			return 100
+		total = 0
+		for course in courses:
+			total = total + course.user_progress(self)
+		return int(total/len(courses))
+
 	def set_preference(self, tag, boolean):
 		UserPreference.set_preference(self, tag, boolean)
 
@@ -301,6 +311,14 @@ class Course(Base):
 		for ass in associations:
 			users.append(ass.user)
 		return users
+
+	def user_progress(self, user):
+		if len(self.lessons) is 0:
+			return 100
+		total = 0
+		for lesson in self.lessons:
+			total = total + lesson.user_progress_percent(user)
+		return int(total/len(self.lessons))
 
 	def enroll(self, student):
 		""" Adds a user to a course with student-level access. """

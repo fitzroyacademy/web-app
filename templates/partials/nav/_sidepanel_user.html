@@ -41,7 +41,7 @@
       <div class="fit_course">
         <h3>
           <span class="txt">Your courses.</span>
-          <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
+          <small class="subtxt"><span class="fas fa-check"></span> {{ current_user.course_progress }}% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
         </h3>
 
         <div class="fit_body fit_lessons">
@@ -58,7 +58,7 @@
                   <img src="{{ course.thumbnail }}" alt="course">
                   <span class="fas fa-check"></span>
                 </div>
-                <span class="fit_txt">{{ course.title }}</span>
+                <span class="fit_txt">{{ course.title }} {{ course.user_progress(current_user) }}%</span>
                 <span class="fit_txt secondary">{{ course.instructors|join_names }}</span>
                 <span class="fit_time">{{ course.duration_seconds|format_time }}</span>
               </a>
