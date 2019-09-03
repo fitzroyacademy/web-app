@@ -159,8 +159,8 @@ class TestModels(unittest.TestCase):
         with self.assertRaises(Exception):
             thumbnail = lesson.thumbnail
 
-        s1 = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment, _thumbnail='thumbnail_1')
-        s2 = datamodels.Segment(lesson=lesson, **self.standard_course_lesson_segment, _thumbnail='thumbnail_2')
+        s1 = datamodels.Segment(lesson=lesson, _thumbnail='thumbnail_1', **self.standard_course_lesson_segment)
+        s2 = datamodels.Segment(lesson=lesson, _thumbnail='thumbnail_2', **self.standard_course_lesson_segment)
         self.session.add(s1, s2)
 
         self.assertEqual(lesson.thumbnail, 'thumbnail_1')
