@@ -158,7 +158,8 @@ $( document ).ready(function() {
   var slug_ugly = '';
   var slug_pretty = '';
   var slug_userset = false;
-  var slug_maxlength = 20;
+  var slug_maxlength = 15;
+  var slug_url = '';
 
   // slugification
   function slugify(string) {
@@ -182,16 +183,22 @@ $( document ).ready(function() {
     slug_pretty = slugify(slug_ugly);
     slug_pretty = slug_pretty.substring(0,slug_maxlength);
     
-    $('[data-fit-userslug]').text(slug_pretty);
-    $('[data-fit-userslug_secret]').val(slug_pretty);
+    $('[data-fit-slug-reveal]').text(slug_pretty);
+    $('[data-fit-slug-reveal-secret]').val(slug_pretty);
 
     if (slug_userset == false)
     {
-      $('[data-fit-userslug_set]').val(slug_pretty);
+      $('[data-fit-slug-set]').val(slug_pretty);
     }
+
+    // change the auto url:
+    slug_url = $('[data-fit-slug-url]').data('fit-slug-url');
+    slug_url = (slug_url + slug_pretty);
+
+    $('[data-fit-slug-url]').attr('href', slug_url);
   }
 
-  $("[data-fit-userslug_set]").on({
+  $("[data-fit-slug-set]").on({
     'change, keyup': function() {
      slug_ugly = $(this).val();
      slug_userset = true;
@@ -201,7 +208,7 @@ $( document ).ready(function() {
 
   // and set it automatically from the user id:
 
-  $("[data-fit-userslug_name]").on({
+  $("[data-fit-slug-name]").on({
     'change, keyup': function() {
       
       // if it's empty, unset user input
@@ -212,7 +219,15 @@ $( document ).ready(function() {
       // user hasn't set it manually:
       if (slug_userset == false)
       {
-        slug_ugly = ($('[data-fit-userslug_firstname]').val() + $('[data-fit-userslug_lastname]').val());
+        // first bit
+
+        if ($('[data-fit-slug-first]').length > 0 && $('[data-fit-slug-first]').val() != ''){
+          slug_ugly = $('[data-fit-slug-first]').val();
+        }
+        // add second if there
+        if ($('[data-fit-slug-last]').length > 0 && $('[data-fit-slug-last]').val() != ''){
+          slug_ugly = (slug_ugly + $('[data-fit-slug-last]').val());
+        }
       }
       
       userslug_set();

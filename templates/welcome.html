@@ -40,14 +40,12 @@
   
   <p><a href="#">Business</a>, <a href="#">tech</a> and <a href="#">impact</a> skills from the best. 🚀</p>
 
-  <div class="fit_entry_buttons">
-    <a class="btn btn-lg btn-success" href="#">Choose a course</a>
-    <a class="btn btn-lg btn-primary" href="#">Teacher resources</a>
-    <!-- <a class="btn btn-lg btn-primary" href="#">Accelerators</a> -->
-  </div>
-
-  <div class="fit_code">
+  <div class="fit_code no_tnc">
     {% include 'partials/_course_code.html' %}
+    <div class="fit_entry_buttons">
+      <a class="btn btn-lg btn-success" href="#">Choose a course</a>
+      <a class="btn btn-lg btn-primary" href="#">Teacher resources</a>
+    </div>
   </div>  
 
 </div>
@@ -61,8 +59,9 @@
   <div class="fit_tabby">Public courses</div>
 </div>
 
-{% for course in public_courses %}
-  <div class="fit_course fit_course_sells">
+<div class="fit_course fit_course_sells">
+
+  {% for course in public_courses %}
     <div class="fit_course_sell featured">
       {% if course.preview_thumbnail %}
         <div class="fit_window">
@@ -78,7 +77,8 @@
         <span class="tag"><i class="fal fa-university"></i> {{ course.skill_level }}</span>
       </p>
     </div>
-{% endfor %}
+  {% endfor %}
+</div>
 
   <!--div class="row">
     <div class="col-sm-6">
@@ -123,7 +123,7 @@
     </div>        
   </div>
 -->
-</div>    
+  
 
 
 {% endblock %}
