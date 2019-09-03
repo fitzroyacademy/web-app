@@ -177,7 +177,12 @@ class Institute(Base):
 		association = InstituteEnrollment(access_level=access_level)
 		association.institute = self
 		association.user = user
-		self.users.append(a)
+		self.users.append(association)
+
+	@staticmethod
+	def find_by_slug(slug):
+		session = get_session()
+		return session.query(Institute).filter(Institute.slug == slug).first()
 
 
 class InstituteEnrollment(Base):
@@ -207,7 +212,12 @@ class Program(Base):
 		association = ProgramEnrollment(access_level=access_level)
 		association.program = self
 		association.user = user
-		self.users.append(a)
+		self.users.append(association)
+
+	@classmethod
+	def find_by_slug(cls, slug):
+		session = get_session()
+		return session.query(cls).filter(cls.slug == slug).first()
 
 
 class ProgramEnrollment(Base):
@@ -488,7 +498,7 @@ class Segment(Base):
 
 	def user_progress(self, user):
 		if user is None:
-			return '0'
+			return 0
 		progress = get_segment_progress(self.id, user.id)
 		if progress:
 			return progress.progress
@@ -622,6 +632,9 @@ def get_public_courses():
 	session = get_session()
 	return session.query(Course).filter(Course.guest_access == True).all()
 
+def get_program_by_slug(slug):
+	return Program.find_by_slug(slug)
+
 def get_lesson(lesson_id):
 	return Lesson.find_by_id(lesson_id)
 
@@ -635,14 +648,7 @@ def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
 	return Segment.find_by_slug(course_slug, lesson_slug, segment_slug)
 
 def get_segment_progress(segment_id, user_id):
-	session = get_session()
-	q = session.query(SegmentUserProgress).\
-		filter(SegmentUserProgress.segment_id == segment_id).\
-		filter(SegmentUserProgress.user_id == user_id)
-	try:
-		return q.first()
-	except:
-		return None
+	return Segment.find_user_progress(segment_id, user_id)
 
 def save_segment_progress(segment_id, user_id, percent):
 	session = get_session()

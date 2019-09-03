@@ -13,12 +13,12 @@
     		</a>
     		<span class="fit_txt">{{ current_user.full_name }}.</span>
     	</h1> 
-    		{% include 'partials/_form_errors.html' %}
+    		{% include 'partials/form/_errors.html' %}
 			<div class="fit_pane">
 			  <dl class="fit_summary_icons">
 			    <dt><i class="far fa-user"></i> About you.</dt>
 			    <dd>
-			      <form class="fit_user_edit" method="post" action="/user_edit">
+			      <form class="fit_user_edit" method="post" action="/edit">
 							<div class="row">
 			          <div class="col">
 			            <div class="fit_fancyplace">

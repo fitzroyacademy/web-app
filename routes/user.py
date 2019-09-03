@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, session, request, url_for, redirect, flash
+from sqlalchemy.exc import IntegrityError
 import datamodels
 from util import get_current_user
 import json
@@ -21,20 +22,32 @@ def edit(slug=None):
     """
     user_id = slug
     if user_id is None and 'user_id' in session:
-        user_id = datamodels.get_user(session['user_id'])
+        user = datamodels.get_user(session['user_id'])
     else:  # TODO: Admin permissions
         return redirect('/404')
-    user = datamodels.get_user(user_id)
+
+    data = {'errors': []}
     if request.method == "POST":
         if 'email' in request.form:
-            current_user.email = request.form['email']
+            user.email = request.form['email']
         if 'first_name' in request.form:
-            current_user.first_name = request.form['first_name']
+            user.first_name = request.form['first_name']
         if 'last_name' in request.form:
-            current_user.last_name = request.form['last_name']
+            user.last_name = request.form['last_name']
         if 'username' in request.form:
-            current_user.username = request.form['username']
-    return render_template('user_edit.html')
+            user.username = request.form['username']
+        if 'password' in request.form:
+            setattr(user, 'password', request.form['password'])
+
+        db = datamodels.get_session()
+        try:
+            db.add(user)
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            data['errors'] = ['Wrong email address']
+
+    return render_template('user_edit.html', **data)
 
 @blueprint.route('/register', methods=["POST"])
 def create():
