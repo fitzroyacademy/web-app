@@ -12,7 +12,7 @@
       <form>
         <div class="form-group">
           <label for="course_name">Course name</label>
-          <input type="text" class="form-control form-control-lg" name="course_name" value="Introduction to social enterprise" id="course_name" placeholder="Name your course">
+          <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course">
         </div>
         <div class="form-group">
           <label for="course_by">Curated by</label>
@@ -167,6 +167,7 @@
         </div>
       </div>
       <!-- end vid stack -->
+      <form action="/course/{{ course.slug }}/edit" method="post">
       <div class="fit_pane">
 <!--       <h3>
         <span class="txt">About the course.</span>
@@ -175,7 +176,7 @@
           <dt><i class="far fa-users"></i> Who's it for?</dt>
           <dd>
             <div class="form-group">
-              <input type="text" class="form-control" id="blah" placeholder="Who is this course for?" value="Super early stage social enterprise founders, starting your first business or a new project from scratch.">
+              <input type="text" class="form-control" id="blah" placeholder="Who is this course for?" value="{{ course.target_audience }}" onChange="autosave(event)">
               <small id="emailHelp" class="form-text text-muted">For a good examples, see <a href="#">our guide.</a></small>
             </div>
           </dd>
@@ -198,13 +199,11 @@
       </div>
       <h3>What you'll learn.</h3>
       <div class="form-group">
-        <textarea type="text" rows="10" class="form-control" id="blah" placeholder="What will students know by the end of this course?">Go from zero to one: From a basic idea to early customers, business models and getting the numbers right.
-
-You don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling,
-
-On the social impact side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</textarea>
+        <textarea type="text" rows="10" class="form-control" id="blah" placeholder="What will students know by the end of this course?">
+          {{ course.summary_html }}
+          </textarea>
       </div>
-
+      </form>
     </div>      
 
     <div class="fit_cta">

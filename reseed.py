@@ -31,7 +31,8 @@ c = datamodels.Course(
 <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
 """,
 	preview_thumbnail="/assets/images/lessons/customer-interviews.jpg",
-	guest_access = True
+	guest_access=True,
+	draft=False
 )
 c.add_instructor(datamodels.get_user(1))  # Homer
 c.add_instructor(datamodels.get_user(2))  # Marge

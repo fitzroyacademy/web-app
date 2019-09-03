@@ -565,6 +565,10 @@ $( document ).ready(function() {
     xhr.send(f);
   }
 
+  function autosave(event) {
+    post(event.target.form.action, FormData(event.target.form));
+  }
+
   // Called from the wistia video embed template.
   var _fitz_video = false;
   function fitzVideoReady(video) {
