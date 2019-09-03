@@ -251,6 +251,7 @@ class Course(Base):
 	guest_access = sa.Column(sa.Boolean)
 	language = sa.Column(sa.String(2))
 	slug = sa.Column(sa.String(50), unique=True)
+	draft = sa.Column(sa.Boolean, default=True)
 
 	target_audience = sa.Column(sa.String())
 	skill_level = sa.Column(sa.String())

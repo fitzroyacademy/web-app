@@ -1,5 +1,6 @@
 import sys
 from . import user, course, lesson, object, error, log, segment, pages, resource
+from util import InvalidUsage
 
 def attach(app):
     app.register_blueprint(user.blueprint)
@@ -20,6 +21,10 @@ def attach(app):
     @app.errorhandler(502)
     def error_pagek(e):
         return error.fiveohtwo(e)
+
+    @app.errorhandler(InvalidUsage)
+    def test_error(e):
+        return error.fourohfour(e)
 
 def dump_api(app):
     """
