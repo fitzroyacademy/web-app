@@ -1841,6 +1841,10 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 // forms within the summary
 .fit_summary_icons{padding-right: 1rem;}
 
+.fit_live_course_btn:hover,
+.fit_live_course_btn.active{background: $red !important; border-color: $red !important;}
+
+
 // teacher quick search
 .fit_quicksearch{background: #fff; border:1px solid $border_medium; border-radius: $border_rad_sm; margin-bottom: 1rem;}
 
