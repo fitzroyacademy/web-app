@@ -10,7 +10,7 @@
   <div class="panel">
   
     <div class="head">
-      <a href="user.html" class="fit_btn right" data-fit-userpanel>
+      <a href="{{ url_for('user.edit') }}" class="fit_btn right" data-fit-userpanel>
         <span class="fit_txt">
           {{ current_user.full_name }}
         </span>
@@ -41,7 +41,10 @@
       <div class="fit_course">
         <h3>
           <span class="txt">Your courses.</span>
-          <small class="subtxt"><span class="fas fa-check"></span> {{ current_user.course_progress }}% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
+          {% if current_user.courses|length > 0 %}
+            <small class="subtxt"><span class="fas fa-check"></span> {{ current_user.course_progress }}% complete</small> 
+            <!-- DEV: total % complete, aggregated across all courses user has started -->
+          {% endif %}
         </h3>
 
         <div class="fit_body fit_lessons">
@@ -49,7 +52,9 @@
           <!-- DEV: this is links (without the accordion!) direct to the courses user is enrolled in -->
 
           {% if current_user.courses|length == 0 %}
-            <div class="fit_lesson">You're not enrolled in any courses.</div>
+            <div class="fit_btn">
+              <div class="fit_txt">You're not enrolled in any courses yet!</div>
+            </div>
           {% else %}
             {% for course in current_user.courses %}
             <div class="fit_lesson">
@@ -74,19 +79,19 @@
       </h3>
       <p></p>
       <dl class="fit_summary_icons">
-        <dt><i class="far fa-lock"></i> Notifications.</dt>
+        <dt><i class="far fa-bell"></i> Notifications.</dt>
         <dd>
           {{ pref_toggle('emails_from_teachers', 'Receieve emails and notifications from your teachers.') }} <!-- DEV: user privacy permissions. Let's talk this through -->
           {{ pref_toggle('emails_from_site', 'Receieve emails and notifications from Fitzroy Academy.') }} 
         </dd>
-        <dt><i class="far fa-lock"></i> Your details and data.</dt>
+        <dt><i class="far fa-lock"></i> Privacy.</dt>
         <dd>     
-          {{ pref_toggle('data_research', 'Let us use your learning data for research.') }} 
-          {{ pref_toggle('data_show_name', 'Allow other students to see my name') }} 
-          {{ pref_toggle('data_show_email', 'Allow other registered users to see my email address') }} 
+          {{ pref_toggle('data_show_name', 'Allow other students to see my name') }}
+          {{ pref_toggle('data_show_email', 'Allow other students to see my email address') }}
+          {{ pref_toggle('data_research', 'Let us use your learning data for research.') }}
         </dd>          
       </dl>
-      <p>Not sure about privacy or data? <a href="/faq#privacy">Read the FAQs</a> about our data and research.</p>
+      <p>Wondering about privacy? <a href="/support/privacy">Learn more.</a></p>
     </div>
 
   </div>

@@ -91,7 +91,7 @@
                 </div>
               </dd>
               
-              <dt><i class="far fa-location"></i> Address (optional)</dt>
+              <dt><i class="far fa-location"></i> Address <span class="text-muted">(optional)</span></dt>
               <dd>
                 <div class="form-group">
                   <textarea rows="3" type="text" class="form-control" id="location" placeholder="E.g. 25 Academy Way,
@@ -99,6 +99,19 @@ Fitzroy, Melbourne,
 Australia, 3000" value=""></textarea>
                 </div>
               </dd>
+
+              <dt><i class="far fa-language"></i> Default language</dt>
+              <dd>
+                <div class="form-group">
+                  <select class="form-control">
+                    <option>English</option>
+                    <option>Khmer</option>
+                    <option>Vietnamese</option>
+                    <option>Tagolog</option>
+                  </select>
+                </div>
+              </dd>
+
             </dl>
 
 
@@ -127,14 +140,17 @@ Australia, 3000" value=""></textarea>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="" placeholder="short link" data-fit-slug-set>
+                    <input type="text" id="course_slug" class="form-control" maxlength="15" name="course_slug" value="" placeholder="short link" data-fit-slug-set>
                   </div>
-                  <small class="form-text text-muted">Course link: <a data-fit-slug-url="/program/" href="/program/???">fitzroyacademy.com/program/<strong data-fit-slug-reveal></strong></a></small>
+                  <small class="form-text text-muted">Program link: <a data-fit-slug-url="/program/" href="/program/???">fitzroyacademy.com/program/<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->
                 </div>
               </dd> 
 
-              <dt><i class="far fa-chalkboard-teacher"></i> Teacher(s)</dt>
+              <dt><i class="far fa-user-crown"></i> 
+                Program managers 
+                <a class="" data-toggle="tooltip" title="Can manage all programs and courses. Click for info." href="#"><i class="fas fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="fit_quicksearch">
 
@@ -142,7 +158,7 @@ Australia, 3000" value=""></textarea>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Search for a teacher to invite">
+                    <input type="text" class="form-control" placeholder="Search for a program manager">
                     <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
                   </div>
 
@@ -151,9 +167,9 @@ Australia, 3000" value=""></textarea>
                     <!-- DEV: Show quick search results here, fit_btn for each: -->
                     <div class="fit_btn">
                       <div class="fit_pic circle"><img src="/assets/stub/homer.png" alt="user"></div>
-                      <div class="fit_txt">Homer Simpson</div>
+                      <a href="#" class="fit_txt">Homer Simpson</a>
                       <div class="sub buttonset">
-                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add teacher</a>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add</a>
                       </div>
                     </div>
 
@@ -164,7 +180,7 @@ Australia, 3000" value=""></textarea>
                     <!-- DEV: for each teacher, this html: -->
                     <div class="fit_btn">
                       <div class="fit_pic circle"><img src="/assets/stub/marge.png" alt="user"></div>
-                      <div class="fit_txt">Marge Simpson</div>
+                      <a href="#" class="fit_txt">Marge Simpson</a>
                       <div class="sub buttonset">
                         <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
                       </div>
@@ -174,95 +190,46 @@ Australia, 3000" value=""></textarea>
                 </div>
               </dd>
 
-              <dt><i class="far fa-rocket"></i> Course code</dt>
+              <dt><i class="far fa-chalkboard-teacher"></i> 
+                Teachers
+                <a class="" data-toggle="tooltip" title="Can manage only their own courses. Click for info." href="#"><i class="fas fa-info-circle"></i></a>
+              </dt>
               <dd>
-                <div class="form-group">
-                  <div class="input-group">
+                <div class="fit_quicksearch">
+
+                  <div class="input-group searchy">
                     <div class="input-group-prepend">
-                      <div class="input-group-text" id=""><i class="fal fa-lock"></i></div>
+                      <span class="input-group-text"><i class="fal fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Course code" maxlength="12" minlength="8">
+                    <input type="text" class="form-control" placeholder="Search for a teacher">
+                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
                   </div>
-                  <small class="form-text text-muted">All courses have a code. 8 - 12 characters, letters and numbers.</small>
-                </div>
-              </dd> 
 
-              <dt><i class="far fa-lock"></i> Visibility</dt>
-              <dd>
-                <div class="form-group">
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="visibility" data-fit-perm-trigger="public"> Public
-                    </label>
-                    <label class="btn btn-outline-secondary ">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="institute"> Institute only
-                    </label>      
-                    <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="code"> Code only
-                    </label>
-                  </div>
-                  <small class="form-text text-muted active" data-fit-perm-type="visibility" data-fit-perm-detail="public">Can be accessed by anyone, appears publicly on the site.</small>
-                  <small class="form-text text-muted" data-fit-perm-type="visibility" data-fit-perm-detail="institute">Can only be found via your institute / school page.</small>
-                  <small class="form-text text-muted" data-fit-perm-type="visibility" data-fit-perm-detail="code">Can only be found via access code.</small>
-                </div>
-              
-              </dd>
+                  <div class="results">
 
-              <dt><i class="far fa-usd-square"></i> Cost</dt>
-              <dd>
-                <div class="form-group">
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="cost" data-fit-perm-trigger="free"> Free
-                    </label>                
-                    <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="cost" data-fit-perm-trigger="paid"> Paid
-                    </label>
-                  </div>
-                  <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
-                </div>
-
-
-                <div class="form-group" data-fit-perm-type="cost" data-fit-perm-detail="paid">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text" id="">$</div>
+                    <!-- DEV: Show quick search results here, fit_btn for each: -->
+                    <div class="fit_btn">
+                      <div class="fit_pic circle"><img src="/assets/stub/homer.png" alt="user"></div>
+                      <a href="#" class="fit_txt">Homer Simpson</a>
+                      <div class="sub buttonset">
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add</a>
+                      </div>
                     </div>
-                    <input type="text" class="form-control" placeholder="e.g. 100">
-                  </div>
-                  <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
-                </div>
-              </dd>
 
-              <div class="active" data-fit-perm-type="cost" data-fit-perm-detail="free">
-                <dt><i class="far fa-eye"></i> Anonymity</dt>
-                <dd>
-                  <div class="form-group">
-                    <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
-                    <label for="">Allow anonymous access</label>
-                    <!-- <small class="form-text text-muted">Users without an account can access this course</small> -->
                   </div>
-                </dd>
-              </div>
-             
 
-            <dt><i class="far fa-file-edit"></i> Draft</dt>
-              <dd>
-                <div class="form-group">
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="draft" id="option1" autocomplete="off" checked data-fit-perm-type="draft" data-fit-perm-trigger="draft"> Draft
-                    </label>                
-                    <label class="btn btn-outline-secondary fit_live_course_btn">
-                      <input type="radio" name="course_permission" value="live" id="option3" autocomplete="off" data-fit-perm-type="draft" data-fit-perm-trigger="live"> <i class="fas fa-exclamation-square"></i> Live
-                    </label>
+                  <div class="teachers">
+
+                    <!-- DEV: for each teacher, this html: -->
+                    <div class="fit_btn">
+                      <div class="fit_pic circle"><img src="/assets/stub/marge.png" alt="user"></div>
+                      <a href="#" class="fit_txt">Marge Simpson</a>
+                      <div class="sub buttonset">
+                        <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
+                      </div>
+                    </div>
+
                   </div>
-                  <small class="form-text text-muted active" data-fit-perm-type="draft" data-fit-perm-detail="draft">Can only be accessed via direct link. Doesn't appear anywhere.</small>
-                  <small class="form-text text-muted" data-fit-perm-type="draft" data-fit-perm-detail="live">
-                    <span class="active" data-fit-perm-type="visibility" data-fit-perm-detail="public">Live on the site for <strong>anyone</strong> as this is a public course.</span>
-                    <span data-fit-perm-type="visibility" data-fit-perm-detail="institute">Live on your <strong>institute page</strong> only.</span>
-                    <span data-fit-perm-type="visibility" data-fit-perm-detail="code">Live, but only accessible via the <strong>course code.</strong></span>
-                  </small>
                 </div>
               </dd>
 
