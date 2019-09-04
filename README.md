@@ -114,21 +114,34 @@ Here's the nomenclature and structure for lessons, in hopefully plain English, f
 
 ## Institute
 
+E.g. "Monash University", or "SHE Investments"
+
 * UID
 * Name
-* Logo (upload)
-* Colour choice
+* Subdomain (unique, i.e. schoolname.fitzroyacademy.com)
+* Wide logo (image upload, for horizontal logos)
+* Square logo (image upload, for links + header)
+* Colour choice (hex code)
 * One or many *Programs*
-* One or many affiliated users with access levels including:
-	* Admin
+* One or many users
+	* Institute admins
+	* Program managers
+	* Teachers (inhereted from programs)
 
 ## Program
 
+E.g. "Global Challenges" or "Leave No-one Behind"
+
 * UID
+* Banner picture
 * One or many *Courses*
-* One or many affiliated users with access levels including admin
+* Program managers
+* Teachers
+
 
 ## Course
+
+E.g. "Accelerator", or "Global Challenges"
 
 * UID
 * Name

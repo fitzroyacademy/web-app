@@ -685,6 +685,22 @@ header .right,
 .fit_vidya_play:hover i{color: #fff; transform: scale(1.1); }
 .fit_vidya_play:hover .txt{opacity: 1; background: $black_50;}
 
+
+// shrink the video if you want, only on big screens
+
+@media (min-width: 576px){
+	.fit_vidya_shrink{position: absolute; top:0; right: 0; width: 4rem; height: 4rem; display: flex; align-items:center; justify-content: center; color: #fff; border-radius: $border_rad_lg;}
+	.fit_vidya_shrink i{font-size: 2rem; position: absolute;}
+	.fit_vidya_shrink .fa-expand-alt{opacity: 0;}
+	.fit_vidya_shrink .fa-compress-alt{opacity: 1;}
+
+	.fit_vidya_shrink:hover{background: $black_50; color:#fff; transform: scale(1.1); }
+
+	// squish!
+	.fit_vidya.squished.squished .fit_vidya_shrink .fa-expand-alt{opacity: 1;}
+	.fit_vidya.squished.squished .fit_vidya_shrink .fa-compress-alt{opacity: 0;}
+}
+
 // ---------------------------------------------------------------------------------
 // hide it up the top!
 .fit_vidya.hideup,
@@ -699,12 +715,18 @@ header .right,
 .fit_vidya.hideup{margin: -35rem 0 2rem;}
 .fit_vidya.hideup:hover{margin-top: -34.5rem;}
 
-.fit_vidya.squished{height: 15rem; margin-bottom: 2rem;}
-.fit_vidya.squished .placeholder{top: -45%}
-// .fit_vidya.squished:hover{height: 15.5rem;}
-// .fit_vidya.squished:hover .placeholder{top:-43%}
+@media (min-width: 576px){
+	.fit_vidya.squished{height: 15rem; margin-bottom: 2rem;}
+	.fit_vidya.squished .placeholder{top: -45%}
+}
 
+// @media (max-width: 767px){
+// 	.fit_vidya.squished .placeholder{top: -25%}
+// }
 
+// @media (max-width: 755px){
+// 	.fit_vidya.squished .placeholder{top: -15%}
+// }
 
 .fit_vidya_controls{position: absolute; top:100%; left: 0; right: 0; padding-left: 1rem; background: $bg; padding: 0.25rem;}
 
@@ -884,6 +906,10 @@ Bleh:;
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
 
 
+// Square upload thing
+.fit_squarelogo{margin-bottom: 1rem; width: 200px; height: 200px; border:1px solid $border_light; border-radius: $border_rad_lg;}
+.fit_squarelogo img{max-width: 100%; border-radius: $border_rad_lg;}
+
 .fit_cta{background: $watermelon; padding: 2rem 0 5rem; margin-top: 3rem;}
 .fit_cta .fit_course h3{color: #fff;}
 
@@ -920,7 +946,6 @@ Bleh:;
 
 h2.fit_avatared{padding-left: 3.5rem;}
 h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
-
 
 // edit form
 form.fit_user_edit{max-width: 30rem;}

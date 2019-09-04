@@ -8,7 +8,7 @@
     <div class="fit_course intro">
 
       <h1>
-        <span class="txt">Edit Program.</span>
+        <span class="txt">Edit Institute.</span>
         <small class="subtxt">
           <button class="btn btn-sm btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
           &nbsp;
@@ -17,7 +17,7 @@
       </h1>
 
       <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="program_name" value="" id="course_name" placeholder="Program name" data-fit-slug-first data-fit-slug-name>
+        <input type="text" class="form-control form-control-lg" name="program_name" value="" id="course_name" placeholder="Institute name" data-fit-slug-first data-fit-slug-name>
       </div>
       <div class="form-group">
         <!-- <label for="lesson_description">Short description</label> -->
@@ -36,7 +36,7 @@
 
 
       <h3>
-        <span class="txt">Courses.</span>
+        <span class="txt">Programs.</span>
       </h3>
 
       <div class="fit_body fit_lessons">
@@ -72,9 +72,9 @@
         </div>
 
         
-        <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
+        <a class="fit_btn solid secondary" href="#">
           <i class="fas fa-plus"></i>
-          <span class="fit_txt">Add a course</span>
+          <span class="fit_txt">Add a program</span>
         </a>
         
       </div>
@@ -83,7 +83,7 @@
       <div class="row">
         <div class="col-md-6">
           <h3>
-            <span class="txt">Program info.</span>
+            <span class="txt">Institute info.</span>
           </h3>
           <div class="fit_pane">
             <dl class="fit_summary_icons">
@@ -167,7 +167,50 @@ Australia, 3000" value=""></textarea>
                   <small class="form-text text-muted">Program link: <a data-fit-slug-url="/program/" href="/program/???">fitzroyacademy.com/program/<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->
                 </div>
-              </dd> 
+              </dd>
+
+              
+              <dt><i class="far fa-user-crown"></i> 
+                Administrators
+                <a class="" data-toggle="tooltip" title="Can manage everything. Click for info." href="#"><i class="fas fa-info-circle"></i></a>
+              </dt>
+              <dd>
+                <div class="fit_quicksearch">
+
+                  <div class="input-group searchy">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fal fa-search"></i></span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Invite via email">
+                  </div>
+
+                  <div class="results">
+
+                    <!-- DEV: Show quick search results here, fit_btn for each: -->
+                    <div class="fit_btn">
+                      <div class="fit_pic circle"><img src="/assets/stub/homer.png" alt="user"></div>
+                      <a href="#" class="fit_txt">Homer Simpson</a>
+                      <div class="sub buttonset">
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add</a>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="teachers">
+
+                    <!-- DEV: for each teacher, this html: -->
+                    <div class="fit_btn">
+                      <div class="fit_pic circle"><img src="/assets/stub/marge.png" alt="user"></div>
+                      <a href="#" class="fit_txt">Marge Simpson</a>
+                      <div class="sub buttonset">
+                        <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </dd>
 
               <dt><i class="far fa-user-crown"></i> 
                 Program managers 
@@ -180,8 +223,7 @@ Australia, 3000" value=""></textarea>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Search for a program manager">
-                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
+                    <input type="text" class="form-control" placeholder="Invite via email">
                   </div>
 
                   <div class="results">
@@ -223,8 +265,7 @@ Australia, 3000" value=""></textarea>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Search for a teacher">
-                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
+                    <input type="text" class="form-control" placeholder="Invite via email">
                   </div>
 
                   <div class="results">
