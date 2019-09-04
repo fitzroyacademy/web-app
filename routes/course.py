@@ -100,7 +100,7 @@ def set_options(user, slug=None, option=None, on_or_off=False):
 
     if option not in ['draft', 'guest_access', 'paid']:
         flash('Unknown option.')
-        return 'Unknown option.'
+        return jsonify({"success": False, "message": "Unknown option setting."})
     if on_or_off in ['ON', 'on']:
         value = True
     elif on_or_off in ['OFF', 'off']:
