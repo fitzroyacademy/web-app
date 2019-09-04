@@ -288,6 +288,9 @@ class Course(Base):
 	def add_instructor(self, user):
 		self.add_user(user, COURSE_ACCESS_TEACHER)
 
+	def options(self, option):
+		return getattr(self,  option, False)
+
 	@property
 	def duration_seconds(self):
 		t = 0

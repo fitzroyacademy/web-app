@@ -71,6 +71,3 @@ class TestModels(unittest.TestCase):
 
         response = s.post('/course/code', data={'course_code': 'ABC123'})
         self.assertEqual(response.status_code, 302)
-
-    def test_course_edit(self):
-        pass

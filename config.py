@@ -17,6 +17,8 @@ class Config(object):
 	MAILGUN_API_URL = environ.get("MAILGUN_API_URL", default=None)
 	MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
 
+	UPLOAD_FOLDER = 'static/uploads'
+
 	@property
 	def DB_URI(self):
 		db_uri = ''
