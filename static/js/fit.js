@@ -565,10 +565,6 @@ $( document ).ready(function() {
     xhr.send(f);
   }
 
-  function autosave(event) {
-    post(event.target.form.action, FormData(event.target.form));
-  }
-
   // Called from the wistia video embed template.
   var _fitz_video = false;
   function fitzVideoReady(video) {
@@ -733,6 +729,23 @@ $( document ).ready(function() {
     } else {
       _fitz_video.play();
     }
+  });
+
+  delegate('input[data-course-edit]', 'change', (e, t) => {
+    let key = e.target.id;
+    let formData = {};
+    if (e.target.files) {
+      formData['file'] = e.target.files[0];
+    }
+    formData[key] = e.target.value;
+    post(e.target.formAction, formData)
+  });
+
+  delegate('[data-course-option-toggle]', 'click', (e, t) => {
+    var value = !t.querySelector('input[type=checkbox]').checked;
+    var tag = t.dataset.courseOptionToggle;
+    var slug = t.dataset.courseSlug;
+    post(`/course/${slug}/edit/options/${tag}/${(value)?'on':'off'}`);
   });
 
   // Load the video dynamically when people hit back so the URLs in their
