@@ -1,12 +1,11 @@
 import os
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, redirect, flash, jsonify, current_app
+from flask import abort, Blueprint, render_template, request, redirect, flash, jsonify, current_app
 
 import datamodels
 from routes.decorators import login_required
 from routes.utils import allowed_file
-from util import InvalidUsage
 
 blueprint = Blueprint('course', __name__, template_folder='templates')
 
@@ -53,8 +52,7 @@ def edit(user, slug=None):
     course = datamodels.get_course_by_slug(slug)
 
     if not course or not user.teaches(course):
-        raise InvalidUsage(
-            'No such course or you don\'t have permissions to edit it')
+        raise abort(404, 'No such course or you don\'t have permissions to edit it')
 
     if request.method == "POST":
         db = datamodels.get_session()
@@ -95,8 +93,7 @@ def set_options(user, slug=None, option=None, on_or_off=False):
     course = datamodels.get_course_by_slug(slug)
 
     if not course or not user.teaches(course):
-        raise InvalidUsage(
-            'No such course or you don\'t have permissions to edit it')
+        raise abort(404, 'No such course or you don\'t have permissions to edit it')
 
     if option not in ['draft', 'guest_access', 'paid']:
         flash('Unknown option.')

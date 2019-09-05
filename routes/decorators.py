@@ -1,5 +1,8 @@
 from functools import wraps
-from util import get_current_user, InvalidUsage
+
+from flask import abort
+
+from util import get_current_user
 
 
 def login_required(function):
@@ -10,7 +13,7 @@ def login_required(function):
     def decorated_function(*args, **kwargs):
         current_user = get_current_user()
         if not current_user:
-            raise InvalidUsage('Unauthorized')
+            raise abort(401, 'Unauthorized')
 
         return function(current_user, *args, **kwargs)
     return decorated_function
