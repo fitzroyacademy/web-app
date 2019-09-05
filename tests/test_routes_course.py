@@ -5,25 +5,6 @@ from app import app
 
 
 class TestModels(unittest.TestCase):
-    standard_course = {
-        'course_code': 'ABC123',
-        'title': 'Foo Course',
-        'slug': 'abc-123'
-    }
-    standard_course_lesson = {
-        'title': 'Lesson',
-        'active': True,
-        'language': 'EN',
-        'slug': 'lesson',
-        'order': 1
-    }
-    standard_course_lesson_segment = {
-        'title': 'Segment',
-        'duration_seconds': 200,
-        'url': 'fitzroyacademy.com',
-        'language': 'EN',
-        'order': 1
-    }
 
     def setUp(self):
         with app.app_context():
@@ -31,6 +12,22 @@ class TestModels(unittest.TestCase):
 
     def tearDown(self):
         datamodels._clear_session_for_tests()
+
+    @staticmethod
+    def make_standard_course(code='ABC123', guest_access=False):
+        course = datamodels.Course(course_code=code, title='Foo Course', slug='abc-123', guest_access=guest_access)
+        return course
+
+    @staticmethod
+    def make_standard_course_lesson(course):
+        lesson = datamodels.Lesson(course=course, title='Lesson', active=True, language='EN', slug='lesson', order=1)
+        return lesson
+
+    @staticmethod
+    def make_segment(lesson, thumbnail='thumbnail_1'):
+        segment = datamodels.Segment(title='Segment', duration_seconds=200, url='fitzroyacademy.com',
+                                     language='EN', order=1, _thumbnail=thumbnail, lesson=lesson)
+        return segment
 
     @staticmethod
     def makeUser(id=1,
@@ -65,23 +62,19 @@ class TestModels(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
         # There is course without lessons
-        course = datamodels.Course(guest_access=True, **self.standard_course)
+        course = self.make_standard_course(guest_access=True)
         self.session.add(course)
 
         with self.assertRaises(IndexError):
             response = s.get('/course/abc-123')
 
-        lesson = datamodels.Lesson(
-            course=course, **self.standard_course_lesson)
+        lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 
         with self.assertRaises(IndexError):  # Lesson without segment
             response = s.get('/course/abc-123')
 
-        segment = datamodels.Segment(
-            lesson=lesson,
-            **self.standard_course_lesson_segment,
-            _thumbnail='thumbnail_1')
+        segment = self.make_segment(lesson, 'thumbnail_1')
         self.session.add(segment)
 
         response = s.get('/course/abc-123')
@@ -89,15 +82,11 @@ class TestModels(unittest.TestCase):
         self.assertTrue(str(response.data).find('Foo Course'))
 
     def test_course_code(self):
-        course = datamodels.Course(guest_access=True, **self.standard_course)
+        course = self.make_standard_course()
         self.session.add(course)
-        lesson = datamodels.Lesson(
-            course=course, **self.standard_course_lesson)
+        lesson = self.make_standard_course_lesson(course)
         self.session.add(lesson)
-        segment = datamodels.Segment(
-            lesson=lesson,
-            **self.standard_course_lesson_segment,
-            _thumbnail='thumbnail_1')
+        segment = self.make_segment(lesson=lesson, thumbnail='thumbnail_1')
         self.session.add(segment)
 
         s = app.test_client()
@@ -116,22 +105,18 @@ class TestModels(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_set_course_options(self):
-        course = datamodels.Course(guest_access=True, **self.standard_course)
+        course = self.make_standard_course()
         self.session.add(course)
-        lesson = datamodels.Lesson(
-            course=course, **self.standard_course_lesson)
+        lesson = self.make_standard_course_lesson(course)
         self.session.add(lesson)
-        segment = datamodels.Segment(
-            lesson=lesson,
-            **self.standard_course_lesson_segment,
-            _thumbnail='thumbnail_1')
+        segment = self.make_segment(lesson=lesson, thumbnail='thumbnail_1')
         self.session.add(segment)
 
         s = app.test_client()
 
         # No permission to set course options
         response = s.post('/course/abc-123/edit/options/paid/on')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 401)
 
         u = self.makeUser(id=1)
         self.session.add(u)
@@ -169,7 +154,7 @@ class TestModels(unittest.TestCase):
         self.assertFalse(response.json['success'])
 
     def test_edit_course(self):
-        course = datamodels.Course(guest_access=True, **self.standard_course)
+        course = self.make_standard_course(guest_access=True)
         self.session.add(course)
 
         user = self.makeUser(
