@@ -377,7 +377,7 @@ class TestModels(unittest.TestCase):
         self.session.add(course)
         self.session.add(course_b)
         lesson = self.make_standard_course_lesson(course=course)
-        lesson_b = self.make_standard_course_lesson(course=course)
+        lesson_b = self.make_standard_course_lesson(course=course_b)
         self.session.add(lesson)
         self.session.add(lesson_b)
         user = self.makeUser()
@@ -392,6 +392,7 @@ class TestModels(unittest.TestCase):
         self.session.add(seg_d)
         course.enroll(user)
         course_b.enroll(user)
+        self.assertEqual(user.course_progress, 0)
 
         self.assertEqual(user.course_progress, 0)
         seg_a.save_user_progress(user, 20)
