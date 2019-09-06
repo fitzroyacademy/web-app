@@ -5,7 +5,6 @@ from app import app
 
 
 class TestModels(unittest.TestCase):
-
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
@@ -14,19 +13,49 @@ class TestModels(unittest.TestCase):
         datamodels._clear_session_for_tests()
 
     @staticmethod
-    def make_standard_course(code='ABC123', guest_access=False):
-        course = datamodels.Course(course_code=code, title='Foo Course', slug='abc-123', guest_access=guest_access)
+    def make_standard_course(
+            code='ABC123',
+            guest_access=False,
+            title='Foo Course',
+            slug='abc-123',
+    ):
+        course = datamodels.Course(
+            course_code=code,
+            title=title,
+            slug=slug,
+            guest_access=guest_access)
         return course
 
     @staticmethod
-    def make_standard_course_lesson(course):
-        lesson = datamodels.Lesson(course=course, title='Lesson', active=True, language='EN', slug='lesson', order=1)
+    def make_standard_course_lesson(course,
+                                    title='Lesson',
+                                    active=True,
+                                    language='EN',
+                                    slug='lesson',
+                                    order=1):
+        lesson = datamodels.Lesson(
+            course=course,
+            title=title,
+            active=active,
+            language=language,
+            slug=slug,
+            order=order)
         return lesson
 
     @staticmethod
-    def make_segment(lesson, thumbnail='thumbnail_1'):
-        segment = datamodels.Segment(title='Segment', duration_seconds=200, url='fitzroyacademy.com',
-                                     language='EN', order=1, _thumbnail=thumbnail, lesson=lesson)
+    def make_segment(lesson,
+                     thumbnail='thumbnail_1',
+                     title='Segment',
+                     duration_seconds=200,
+                     url='fitzroyacademy.com'):
+        segment = datamodels.Segment(
+            title=title,
+            duration_seconds=duration_seconds,
+            url=url,
+            language='EN',
+            order=1,
+            _thumbnail=thumbnail,
+            lesson=lesson)
         return segment
 
     @staticmethod
@@ -167,16 +196,17 @@ class TestModels(unittest.TestCase):
         with s.session_transaction() as sess:
             sess['user_id'] = user.id
 
-        data = {'course_name': 'New title',
-                'course_target': 'English poetry lovers',
-                'course_summary': 'Do not go gentle into that good night',
-                }
+        data = {
+            'course_name': 'New title',
+            'course_target': 'English poetry lovers',
+            'course_summary': 'Do not go gentle into that good night',
+        }
 
         response = s.post('/course/abc-123/edit', data=data)
 
         self.assertEqual(response.status_code, 200)
         course = datamodels.get_course_by_slug('abc-123')
         self.assertEqual(course.title, 'New title')
-        self.assertEqual(course.summary_html, 'Do not go gentle into that good night')
+        self.assertEqual(course.summary_html,
+                         'Do not go gentle into that good night')
         self.assertEqual(course.target_audience, 'English poetry lovers')
-
