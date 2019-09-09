@@ -43,16 +43,17 @@
           
 
           <!-- DEV: Show only when there's no intro video -->
-          <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
+          <!-- <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
             <i class="fas fa-plus"></i>
             <span class="fit_txt">Add an intro video</span>
-          </a>
+          </a> -->
 
           <div>
 
 
             <!-- DEV: This first one is special, just for the intro video: -->
             <!-- Note this one can't be moved from the first position, because it's an intro! -->
+            <!-- 
             <div class="fit_btn">
               <div class="fit_pic vid">
                 <img src="/assets/images/lessons/agile-project-management.jpg" alt="course"> 
@@ -67,7 +68,7 @@
                 
                 <a href="#" class="btn btn-light"><i class="fal fa-ellipsis-v"></i></a>
               </div>
-            </div>
+            </div> -->
 
             <!-- DEV: Put user-added lessons here -->
             <div class="fit_btn">
@@ -118,7 +119,7 @@
           <div class="fit_pane">
             <dl class="fit_summary_icons">
 
-              <dt><i class="far fa-building"></i> Program</dt>
+              <!-- <dt><i class="far fa-building"></i> Program</dt>
               <dd>
                 <div class="form-group">
                   <select class="form-control">
@@ -126,7 +127,7 @@
                     <option>Global challenges</option>
                   </select>
                 </div>
-              </dd>
+              </dd> -->
 
               <dt><i class="far fa-calendar"></i> Year</dt>
               <dd>
@@ -166,16 +167,18 @@
 You'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact..."></textarea>
                 </div>
               </dd>
-              
+              <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
+              <!-- For now, can be comma delimited? -->
+              <!--  
               <dt><i class="far fa-tag"></i> Tags</dt>
               <dd>
                 <div class="form-group">
-                  <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
-                  <!-- For now, can be comma delimited? -->
+                  
                   <input type="text" class="form-control" placeholder="E.g. socent, agile, highschool">
                 </div>
                 <small class="form-text text-muted">Only letters, with commas between tags.</small>
               </dd>
+               -->
             </dl>
 
 
@@ -211,29 +214,21 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 </div>
               </dd> 
 
-              <dt><i class="far fa-chalkboard-teacher"></i> Teacher(s)</dt>
+              <dt>
+                <i class="far fa-chalkboard-teacher"></i> Teacher(s)
+                <a class="" data-toggle="tooltip" title="Invite other users to have teacher access to this course, via email." href="#"><i class="fas fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="fit_quicksearch">
 
                   <div class="input-group searchy">
                     <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fal fa-search"></i></span>
+                      <span class="input-group-text"><i class="fal fa-envelope"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Search for a teacher to add">
-                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
-                  </div>
-
-                  <div class="results">
-
-                    <!-- DEV: Show quick search results here, fit_btn for each: -->
-                    <div class="fit_btn">
-                      <div class="fit_pic circle"><img src="/assets/stub/homer.png" alt="user"></div>
-                      <div class="fit_txt">Homer Simpson</div>
-                      <div class="sub buttonset">
-                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add teacher</a>
-                      </div>
+                    <input type="text" class="form-control" placeholder="example@email.com">
+                    <div class="input-group-append">
+                      <button class="btn btn-link-secondary" type="button">Add</button>
                     </div>
-
                   </div>
 
                   <div class="teachers">
@@ -246,7 +241,6 @@ You'll define your impact model, look into creating behaviour change that lasts,
                         <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </dd>
@@ -271,9 +265,9 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <label class="btn btn-outline-secondary active">
                       <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="visibility" data-fit-perm-trigger="public"> Public
                     </label>
-                    <label class="btn btn-outline-secondary ">
+                    <!-- <label class="btn btn-outline-secondary ">
                       <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="institute"> Institute only
-                    </label>      
+                    </label>  -->     
                     <label class="btn btn-outline-secondary">
                       <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="code"> Code only
                     </label>
@@ -285,7 +279,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
               
               </dd>
 
-              <dt><i class="far fa-usd-square"></i> Cost</dt>
+              <!-- <dt><i class="far fa-usd-square"></i> Cost</dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -310,7 +304,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                   <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
                 </div>
               </dd>
-
+ -->
               <div class="active" data-fit-perm-type="cost" data-fit-perm-detail="free">
                 <dt><i class="far fa-eye"></i> Anonymity</dt>
                 <dd>
