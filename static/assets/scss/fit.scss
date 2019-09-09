@@ -1588,11 +1588,14 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium dd,
 .fit_medium dd p{font-size: 1.05rem;}
 
-.fit_medium .breakbig{margin: 0 0 2rem;}
-.fit_medium .breakbig .row img{margin-bottom: 1rem;} 
+.fit_medium .breakbig,
+.fit_medium .breakbigger{margin: 0 0 2rem;}
+.fit_medium .breakbig .row img,
+.fit_medium .breakbigger .row img{margin-bottom: 1rem;} 
 
 @media (min-width: 992px) {
 	.fit_medium .breakbig{width: 970px; margin-left: -140px;}
+	.fit_medium .breakbigger{width: 1100px; margin-left: -180px;}
 }
 
 // breaking big on a small medium rare friend
@@ -1610,9 +1613,15 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_spicy .fal{color: $text_light;}
 
 
+// medium large is full size
+
+.fit_medium.large{max-width: 1100px;}
+
+.fit_medium.pricing .row .pane{}
+
 // and now the two-bar thing with floaty menu
 
-.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding: 1rem 1rem 2rem}
+.fit_medium_rare .fit_rare{margin: 0 auto 2rem; max-width: 740px; padding: 1rem 1rem 2rem}
 
 .fit_medium_rare .fit_rare a{font-size:1.1rem; color: $text; border-bottom: 3px solid transparent; text-decoration: none; display: table; padding: 0.1rem .5rem; margin: 0 0 0.25rem;}
 .fit_medium_rare .fit_rare a:hover{color:$blue;}
@@ -1740,6 +1749,10 @@ body > .fit_code {margin-top:10rem;}
 
 	.fit_hero .fit_code{margin: 2rem auto 0; max-width: 100%}
 }
+
+// some colours
+.fit_hero.watermelon h1,
+.fit_heartplay .bigboy{color: $watermelon;}
 
 // -----------------------------------------------------------------------------------------
 /* fit header code */
