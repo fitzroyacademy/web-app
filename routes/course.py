@@ -56,12 +56,22 @@ def edit(user, slug=None):
 
     if request.method == "POST":
         db = datamodels.get_session()
-        if 'course_target' in request.form:
-            course.target_audience = request.form['course_target']
+        if 'year' in request.form:
+            pass
+        if 'skill_level' in request.form:
+            course.skill_level = request.form['skill_level']
+        if 'workload' in request.form:
+            course.info = request.form['workload']
+        if 'who_its_for' in request.form:
+            course.target_audience = request.form['who_its_for']
         if 'course_summary' in request.form:
             course.summary_html = request.form['course_summary']
         if 'course_name' in request.form:
             course.title = request.form['course_name']
+        if 'course_slug' in request.form:
+            pass
+        if 'course_code' in request.form:
+            pass
         if 'cover_image' in request.form:
             file = request.files['file']
 
@@ -83,7 +93,7 @@ def edit(user, slug=None):
 
     data = {'course': course}
 
-    return render_template('course_edit.html', **data)
+    return render_template('static/course_edit_temp/index.html', **data)
 
 
 @blueprint.route('/<slug>/edit/options/<option>/<on_or_off>', methods=["POST"])
@@ -91,13 +101,13 @@ def edit(user, slug=None):
 def set_options(user, slug=None, option=None, on_or_off=False):
     """ Set course options. """
     course = datamodels.get_course_by_slug(slug)
-
     if not course or not user.teaches(course):
         raise abort(404, 'No such course or you don\'t have permissions to edit it')
 
     if option not in ['draft', 'guest_access', 'paid']:
         flash('Unknown option.')
         return jsonify({"success": False, "message": "Unknown option setting."})
+
     if on_or_off in ['ON', 'on']:
         value = True
     elif on_or_off in ['OFF', 'off']:

@@ -741,12 +741,23 @@ $( document ).ready(function() {
     post(e.target.formAction, formData)
   });
 
-  delegate('[data-course-option-toggle]', 'click', (e, t) => {
-    var value = !t.querySelector('input[type=checkbox]').checked;
-    var tag = t.dataset.courseOptionToggle;
-    var slug = t.dataset.courseSlug;
-    post(`/course/${slug}/edit/options/${tag}/${(value)?'on':'off'}`);
-  });
+  delegate('[data-fit-perm-group-type]', 'click', (e, t) => {
+    var group = t.dataset.fitGroupName;
+    let value = '';
+    if (group) {
+      let tempValue = t.querySelector(`input[name="${group}"]:checked`).value;
+      if (['paid', 'draft'].includes(tempValue)) {
+        value = 'on'
+      } else {
+        value = 'off'
+      }
+    } else {
+      value = (!t.querySelector('input[type=checkbox]').checked)?'on':'off'
+    }
+    let tag = t.dataset.fitPermGroupType;
+    let slug = t.dataset.courseSlug;
+    post(`/course/${slug}/edit/options/${tag}/${value}`);
+  })
 
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.
