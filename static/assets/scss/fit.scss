@@ -1336,6 +1336,10 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 .fit_sidepanel .panel .content{position: relative;}
 
+// the course list:
+.fit_sidepanel .fit_course{padding: 0;}
+.fit_sidepanel .fit_course .fit_lessons{margin-bottom: 1rem;}
+
 // ------------------------------------------------------------
 // hide and reveals
 
