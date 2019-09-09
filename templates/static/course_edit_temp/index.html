@@ -17,11 +17,11 @@
       </h1>
 
       <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="course_name" value="" id="course_name" placeholder="Name your course" data-fit-slug-first data-fit-slug-name>
+        <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course" data-fit-slug-first data-fit-slug-name data-course-edit>
       </div>
       <div class="form-group">
         <!-- <label for="lesson_description">Short description</label> -->
-        <input type="text" class="form-control" id="course_description" maxlength="140" placeholder="Short description of the lesson. 140 characters max.">
+        <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit>
       </div>
 
       <div class="fit_vidya">
@@ -133,7 +133,7 @@
               <dt><i class="far fa-calendar"></i> Year</dt>
               <dd>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="{{ course.year if course.year }}" data-course-edit>
+                  <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="{{ course.year.year if course.year }}" data-course-edit>
                   <small class="form-text text-muted">Useful if you're running the same course over multiple years.</small>
                 </div>
               </dd>
@@ -207,7 +207,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-fit-slug-set>
+                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-fit-slug-set data-course-edit>
                   </div>
                   <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/{{ course.slug }}<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->

@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from flask import abort, Blueprint, render_template, request, redirect, flash, jsonify, current_app
+from flask import abort, Blueprint, render_template, request, redirect, flash, jsonify, current_app, make_response
 
 import datamodels
 from routes.decorators import login_required
@@ -57,7 +57,12 @@ def edit(user, slug=None):
     if request.method == "POST":
         db = datamodels.get_session()
         if 'year' in request.form:
-            pass
+            try:
+                year = int(request.form['year'])
+            except ValueError:
+                return make_response(jsonify({'success': False, 'message': 'Year must be a number'}), 400)
+            course_year = datetime(year=year, month=12, day=31).date()
+            course.year = course_year
         if 'skill_level' in request.form:
             course.skill_level = request.form['skill_level']
         if 'workload' in request.form:
@@ -68,10 +73,18 @@ def edit(user, slug=None):
             course.summary_html = request.form['course_summary']
         if 'course_name' in request.form:
             course.title = request.form['course_name']
+        if 'course_description' in request.form:
+            course.info = request.form['course_description']
         if 'course_slug' in request.form:
-            pass
+            c = datamodels.Course.find_by_slug(request.form['course_slug'])
+            if c and course.id != c.id:
+                return make_response(jsonify({'success': False, 'message': 'Use different slug for this course.'}), 400)
+            course.slug = request.form['course_slug']
         if 'course_code' in request.form:
-            pass
+            c = datamodels.Course.find_by_code(request.form['course_code'])
+            if c and course.id != c.id:
+                return make_response(jsonify({'success': False, 'message': 'Use different course code.'}), 400)
+            course.course_code = request.form['course_code']
         if 'cover_image' in request.form:
             file = request.files['file']
 
@@ -89,7 +102,7 @@ def edit(user, slug=None):
         db.add(course)
         db.commit()
 
-        return jsonify({"success": True})
+        return jsonify({'success': True})
 
     data = {'course': course}
 

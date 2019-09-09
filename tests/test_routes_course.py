@@ -184,7 +184,9 @@ class TestModels(unittest.TestCase):
 
     def test_edit_course(self):
         course = self.make_standard_course(guest_access=True)
+        course2 = self.make_standard_course(slug='some_other_course', title='Some other course', code='123456')
         self.session.add(course)
+        self.session.add(course2)
 
         user = self.makeUser(
             email='home@teachers.com', id=2, username='the_teacher')
@@ -205,8 +207,58 @@ class TestModels(unittest.TestCase):
         response = s.post('/course/abc-123/edit', data=data)
 
         self.assertEqual(response.status_code, 200)
-        course = datamodels.get_course_by_slug('abc-123')
+        course = datamodels.Course.find_by_slug('abc-123')
         self.assertEqual(course.title, 'New title')
         self.assertEqual(course.summary_html,
                          'Do not go gentle into that good night')
         self.assertEqual(course.target_audience, 'English poetry lovers')
+
+
+        # change slug to a new one
+        data = {
+            'course_slug': 'fancy_slug'
+        }
+        s.post('/course/abc-123/edit', data=data)
+        course = datamodels.Course.find_by_slug('fancy_slug')
+        self.assertEqual(course.title, 'New title')
+
+        # change slug to an existing one
+        data = {
+            'course_slug': 'some_other_course'
+        }
+        response = s.post('/course/fancy_slug/edit', data=data)
+        self.assertEqual(response.status_code, 400)
+        course = datamodels.Course.find_by_slug('fancy_slug')
+        self.assertIsNotNone(course)
+
+        # change code to a new one
+        data = {
+            'course_code': 'AABBCC'
+        }
+        s.post('/course/fancy_slug/edit', data=data)
+        course = datamodels.Course.find_by_code('AABBCC')
+        self.assertEqual(course.title, 'New title')
+
+        # change code to an existing one
+        data = {
+            'course_code': '123456'
+        }
+        response = s.post('/course/fancy_slug/edit', data=data)
+        self.assertEqual(response.status_code, 400)
+        course = datamodels.Course.find_by_code('AABBCC')
+        self.assertIsNotNone(course)
+
+        # change course year
+        data = {
+            'year': 2020
+        }
+        response = s.post('/course/fancy_slug/edit', data=data)
+        course = datamodels.Course.find_by_code('AABBCC')
+        self.assertEqual(course.year.year, 2020)
+
+        # wrong year
+        data = {
+            'year': '123aaa'
+        }
+        response = s.post('/course/fancy_slug/edit', data=data)
+        self.assertEqual(response.status_code, 400)
