@@ -198,7 +198,7 @@ class TestModels(unittest.TestCase):
 
         data = {
             'course_name': 'New title',
-            'course_target': 'English poetry lovers',
+            'who_its_for': 'English poetry lovers',
             'course_summary': 'Do not go gentle into that good night',
         }
 
