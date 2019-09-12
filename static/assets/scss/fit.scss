@@ -109,6 +109,9 @@ footer{z-index: 1500;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
 
+.fit_medium_rare .fit_medium .breakbig:after{z-index: 2210;}
+.fit_medium_rare .fit_medium .breakbig > *{z-index: 2220;}
+
 
 header{z-index: 3000;}
 header .fit_device,
@@ -151,7 +154,13 @@ $nav_left_width_collapsed: 4rem;
 $nav_right_width_flex: 30%;
 $nav_right_width_max: 25rem;
 
-$container_wide: 1100px;
+$container_wide: 70rem;
+$medium_width: 40rem;
+$large_width: 60rem;
+$large_margin: ($large_width - $medium_width) / 2;
+$larger_margin: ($container_wide - $medium_width) / 2;
+$rare_width: 15rem;
+
 
 $header_height: 3.2rem;
 
@@ -892,6 +901,8 @@ Bleh:;
 .fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
 .fit_summary_icons dt > i:first-child{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
 
+.fit_summary_icons.lite dt{font-weight: normal;}
+
 // sub icons
 .fit_summary_icons dt a > i{color: $text_lighter;}
 .fit_summary_icons dt a:hover > i{color: $blue;}
@@ -1389,7 +1400,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 .fit_hero h1{line-height: 130%; font-size: 4.5rem; padding-bottom: 1rem; color:$brand_dark;}
 .fit_hero h1 strong{color:$blue; position: relative; display: inline-block;}
-.fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
+.fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:115%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
 
 .fit_hero h1 small{display: block; font-size: 1.5rem; line-height: 2rem; color:$text_light;}
 
@@ -1408,9 +1419,9 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_heartplay.hover .fa-heart{ transform: scale(1.04); }
 .fit_heartplay.hover .fa-play{transform: scale(1.07); }
 
-.fit_hero.pink .bigboy,
-.fit_hero.pink h1 strong{color:$pink;}
-.fit_hero.pink h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
+.fit_hero.pink_line .bigboy,
+.fit_hero.pink_line h1 strong{color:$pink;}
+.fit_hero.pink_line h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
 
 
 @media (max-width: 767px) {
@@ -1564,7 +1575,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
-.fit_medium{max-width: 740px; margin: 0 auto; padding:0 1rem;}
+.fit_medium{max-width: $medium_width; margin: 0 auto; padding:0 1rem;}
 
 @media (min-width: calc(760px + 2rem)) {
 	.fit_medium{padding: 0;}
@@ -1574,7 +1585,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium .fit_window:first-child{margin-top: 0;}
 .fit_medium p + .fit_window{margin-top: 2rem;}
 
-.fit_medium img{max-width: 100%; border-radius: $border_rad_sm;}
+.fit_medium img{width: 100%; border-radius: $border_rad_sm;}
 .fit_medium .fit_picture img{border-radius: $border_rad_lg;}
 @media (min-width: calc(760px + 2rem)) {
 	.fit_medium .fit_picture img{border-radius: $border_rad_xl;}
@@ -1603,7 +1614,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium p,
 .fit_medium li{font-size: 1.2rem; line-height: 1.7rem;}
 .fit_medium p a:not(.btn),
-.fit_medium li a:not(.btn){text-decoration: underline; color:inherit;}
+.fit_medium li a:not(.btn),
+.fit_medium li a:not(.nav-link){text-decoration: underline; color:inherit;}
 
 .fit_medium p .fa-external-link,
 .fit_medium li .fa-external-link{font-size: 70%; color:$text_light;}
@@ -1623,19 +1635,18 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium .breakbigger .row img{margin-bottom: 1rem;} 
 
 @media (min-width: 992px) {
-	.fit_medium .breakbig{width: 970px; margin-left: -140px;}
-	.fit_medium .breakbigger{width: $container_wide; margin-left: -180px;}
+	.fit_medium .breakbig{width: $large_width; margin-left: -$large_margin;}
+	.fit_medium .breakbigger{width: $container_wide; margin-left: -$larger_margin;}
+
+
+	// breaking big on a small medium rare friend
+	.fit_medium_rare .fit_medium .breakbig{margin-left: -$rare_width; background: #fff; box-shadow: 0 0 50px #fff; position: relative;}
+
+	.fit_medium_rare .fit_medium .breakbig > *{position: relative;}
+
+	// this is some hacky bullshit for making a shadow hide the left nav
+	.fit_medium_rare .fit_medium .breakbig:after{display: block; content: ''; position: absolute; top:-5rem; left: -20px; bottom: -3rem; box-shadow: 0 0 50px #fff; width: $rare_width; background: #fff; box-shadow: 0 0 50px #fff;}
 }
-
-// breaking big on a small medium rare friend
-.fit_medium_rare .fit_medium .breakbig{margin-left: -280px; background: #fff; box-shadow: 0 0 50px #fff; position: relative;}
-
-// this is some hacky bullshit for making a shadow hide the left nav
-.fit_medium_rare .fit_medium .breakbig:before,
-.fit_medium_rare .fit_medium .breakbig:after{display: block; content: ''; position: absolute; top:0; left: -20px; right: -20px; bottom: 0; box-shadow: 0 0 50px #fff}
-.fit_medium_rare .fit_medium .breakbig:before{box-shadow: 0 -30px 50px #fff}
-.fit_medium_rare .fit_medium .breakbig:after{box-shadow: 0 30px 50px #fff}
-
 
 
 .fit_spicy{color:$red; font-size: 2rem;}
@@ -1664,7 +1675,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 @media (min-width: 992px) {
 	.fit_medium_rare{display: flex; align-items:stretch; max-width: $container_wide; position: relative; padding: 0; margin: 0 auto;}
 	.fit_medium_rare .fit_medium{margin: 0; padding: 0; max-width: none}
-	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
+	.fit_medium_rare .fit_rare{ flex: 0 0 $rare_width; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
 
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{display: none;}
 }
@@ -1703,6 +1714,22 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 @media (min-width: 992px) {
 	.fit_iconrow {margin-top: 2rem; margin-bottom: 3rem;}
 }
+
+// square images embedded in medium posts
+$square_size: 22rem;
+
+.fit_squarefeat{position: relative; padding:.5rem 0 0 16rem; margin: 2rem 0;}
+.fit_squarefeat .square{overflow: hidden; min-height: $square_size; width: $square_size; display: block; position: absolute; top:0; left: 0; margin-left: -8rem; border-radius: $border_rad_lg;}
+.fit_squarefeat .square > img{height: 100%;}
+
+
+.fit_partner_logos {margin: 3rem 0;}
+.fit_partner_logos:first-child{margin-top: 0;}
+.fit_partner_logos + .fit_partner_logos {margin-top: -1rem;}
+.fit_partner_logos img{max-height: 70px; margin-bottom: 1rem;}
+
+
+.fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // Login and sign up and whatnot
@@ -1806,9 +1833,29 @@ body > .fit_code {margin-top:10rem;}
 .fit_hero.teal h1,
 .fit_hero.teal .fit_heartplay .bigboy{color:$new_teal}
 
-
 .fit_hero.pink h1,
 .fit_hero.pink .fit_heartplay .bigboy{color:$new_pink}
+
+.fit_hero.apricot h1,
+.fit_hero.apricot .fit_heartplay .bigboy{color:$new_apricot}
+
+.fit_hero.green h1,
+.fit_hero.green .fit_heartplay .bigboy{color:$new_green}
+
+.fit_hero.purple h1,
+.fit_hero.purple .fit_heartplay .bigboy{color:$new_purple}
+
+.fit_hero.cyan h1,
+.fit_hero.cyan .fit_heartplay .bigboy{color:$new_cyan}
+
+
+// leftie mode for more boring pages
+.fit_hero.leftie{text-align: left; padding-left: $rare_width; position: relative; max-width: $container_wide; margin: 2rem auto; padding-top:2.5rem;}
+.fit_hero.leftie .fit_heartplay{position: absolute; top:2rem; left: 0; width: $rare_width;}
+.fit_hero.leftie h1{max-width: none;}
+
+.fit_lawyermode p,
+.fit_lawyermode li{font-size: 0.85rem; line-height: 1.1rem;}
 
 // -----------------------------------------------------------------------------------------
 /* fit header code */
@@ -2014,12 +2061,35 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 // ----------------------------------------------------------------------------------------------------------------
 // Institute mode uses normal hero as much as possible!
 
-.fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;;}
+.fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;}
 
 
+
+
+// ----------------------------------------------------------------------------------------------------------------
 // breezy mode for lessons
-.fit_player.breezy .aside .fit_btn[data-toggle=collapse]{background: #0f0;}
+@media (min-width: 768px) {
+	.fit_player aside .fits{padding: 1rem;}
+	.fit_player aside .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
+	.fit_player aside .fits{border-bottom: 1px solid $border_light;}
+}
 
+.fit_player.breezy aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] > *{}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+
+// on / off
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+
+// re-order buttons:
+.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
+.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
+.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+
+.fit_player.breezy aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
