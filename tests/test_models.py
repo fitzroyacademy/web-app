@@ -1,8 +1,7 @@
-import datamodels
-import unittest
 import datetime
-import string
-import random
+import unittest
+
+import datamodels
 from app import app
 
 

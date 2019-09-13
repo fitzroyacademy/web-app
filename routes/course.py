@@ -64,8 +64,8 @@ def edit(user, slug=None):
             course.year = course_year
         if 'skill_level' in request.form:
             course.skill_level = request.form['skill_level']
-        if 'workload' in request.form:
-            course.info = request.form['workload']
+        if 'workload_summary' in request.form:
+            course.workload_summary = request.form['workload_summary']
         if 'who_its_for' in request.form:
             course.target_audience = request.form['who_its_for']
         if 'course_summary' in request.form:

@@ -268,6 +268,7 @@ class Course(Base):
 	info = sa.Column(sa.String)
 
 	summary_html = sa.Column(sa.String())
+	workload_summary = sa.Column(sa.String())
 
 	program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
 	program = orm.relationship("Program", back_populates="courses")

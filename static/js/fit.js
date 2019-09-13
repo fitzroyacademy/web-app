@@ -731,7 +731,7 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('input[data-course-edit]', 'change', (e, t) => {
+  delegate('[data-course-edit]', 'change', (e, t) => {
     let key = e.target.id;
     let formData = {};
     if (e.target.files) {

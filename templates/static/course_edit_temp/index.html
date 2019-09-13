@@ -141,14 +141,14 @@
               <dt><i class="far fa-users"></i> Who's it for?</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." >{{ course.target_audience }}</textarea>
+                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience }}</textarea>
                 </div>
               </dd>
               
               <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="workload" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.info }}</textarea>
+                  <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary }}</textarea>
                 </div>
               </dd>
 
@@ -321,7 +321,6 @@ You'll define your impact model, look into creating behaviour change that lasts,
                   <div class="form-group" data-fit-perm-group-type="guest_access" data-course-slug="{{ course.slug }}">
                     <input type="checkbox" {{ 'checked' if course.options("guest_access") }} data-toggle="toggle" data-size="sm" data-style="simple" id="guest_access" name="guest_access">
                     <label for="">Allow anonymous access</label>
-                    <!-- <small class="form-text text-muted">Users without an account can access this course</small> -->
                   </div>
                 </dd>
               </div>
@@ -364,15 +363,5 @@ You'll define your impact model, look into creating behaviour change that lasts,
   </article>
 
 </main>
-
-<!--
-              <dd>
-                <div class="form-group">
-                  <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
-                  <label for="permissions_1">Paid lesson.</label>
-                </div>
-              </dd>
--->
-
 
 {% endblock %}
