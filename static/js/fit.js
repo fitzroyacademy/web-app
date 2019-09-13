@@ -731,7 +731,14 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('[data-course-edit]', 'change', (e, t) => {
+  delegate('textarea[data-course-edit]', 'change', (e, t) => {
+    let key = e.target.id;
+    let formData = {};
+    formData[key] = e.target.value;
+    post(e.target.form.action, formData)
+  });
+
+  delegate('input[data-course-edit]', 'change', (e, t) => {
     let key = e.target.id;
     let formData = {};
     if (e.target.files) {
