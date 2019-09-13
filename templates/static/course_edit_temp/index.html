@@ -26,7 +26,7 @@
 
       <div class="fit_vidya">
         <!-- DEV: 16:9 image uploaded in edit view -->
-        <img class="placeholder" src="{%  if course.cover_image %}/uploads/{{ course.cover_image }}{% else %}https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360{% endif %}" alt="video">
+        <img class="placeholder" src="{%  if cover_image %}{{ cover_image }}{% else %}https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360{% endif %}" alt="video">
         <a class="fit_vidya_play" href="#" onclick="document.getElementById('cover_image').click()"><i class="fas fa-upload"></i></a>
         <input id="cover_image" name="cover_image" type="file" style="display: none;" data-course-edit>
       </div>

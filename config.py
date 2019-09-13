@@ -17,11 +17,15 @@ class Config(object):
 	MAILGUN_API_URL = environ.get("MAILGUN_API_URL", default=None)
 	MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
 
+	S3_BUCKET = environ.get("S3_BUCKET_NAME", default=None)
+	S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
+	S3_SECRET = environ.get("S3_SECRET_ACCESS_KEY", default=None)
+	S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+
 	UPLOAD_FOLDER = 'static/uploads'
 
 	@property
 	def DB_URI(self):
-		db_uri = ''
 		if self.DB_DRIVER == 'sqlite':
 			db_uri = '{}:///{}{}'.format(self.DB_DRIVER, self.DB_HOST, self.DB_OPTIONS)
 		elif self.DB_DRIVER == 'postgres':
@@ -45,6 +49,8 @@ class DevelopmentConfig(Config):
 	SECRET_KEY = 'INSECURE_FOR_LOCAL_DEVELOPMENT'
 	DB_HOST = environ.get('DB_HOST', default='dev_db.sqlite')
 	DB_OPTIONS = environ.get('DB_OPTIONS', default='?check_same_thread=False')
+
+	S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
 
 class TestingConfig(Config):
 	DEBUG = False

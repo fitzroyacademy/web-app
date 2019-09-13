@@ -1,11 +1,10 @@
-import os
 from datetime import datetime
 
-from flask import abort, Blueprint, render_template, request, redirect, flash, jsonify, current_app, make_response
+from flask import abort, Blueprint, render_template, request, redirect, flash, jsonify, make_response
 
 import datamodels
 from routes.decorators import login_required
-from routes.utils import allowed_file
+from routes.utils import generate_thumbnail
 
 blueprint = Blueprint('course', __name__, template_folder='templates')
 
@@ -88,23 +87,22 @@ def edit(user, slug=None):
         if 'cover_image' in request.form:
             file = request.files['file']
 
-            if file and allowed_file(file.filename):
-                now = datetime.now()
-                filename = '%s.%s'.format(
-                    now.strftime("%Y-%m-%d-%H-%M-%S-%f"),
-                    file.filename.rsplit('.', 1)[1])
-                file_path = os.path.join(current_app.config['UPLOAD_FOLDER'],
-                                         filename)
-                file.save(file_path)
+            filename = generate_thumbnail(file, 'cover')
+            if not filename:
+                return jsonify({'success': False,
+                                'message': 'Couldn\'t upload picture. Try again or use different file format'}), 400
 
-                course.cover_image = filename
+            course.cover_image = filename
 
         db.add(course)
         db.commit()
 
         return jsonify({'success': True})
 
-    data = {'course': course}
+    data = {'course': course,
+            'cover_image': '/uploads/{}'.format(course.cover_image) if course.cover_image and not
+            course.cover_image.startswith('http') else course.cover_image
+            }
 
     return render_template('static/course_edit_temp/index.html', **data)
 
