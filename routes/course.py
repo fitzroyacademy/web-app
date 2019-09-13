@@ -100,11 +100,48 @@ def edit(user, slug=None):
         return jsonify({'success': True})
 
     data = {'course': course,
+            'teachers': course.instructors,
             'cover_image': '/uploads/{}'.format(course.cover_image) if course.cover_image and not
             course.cover_image.startswith('http') else course.cover_image
             }
 
     return render_template('static/course_edit_temp/index.html', **data)
+
+
+@blueprint.route('/<slug>/edit/remove/teacher/<int:teacher_id>', methods=["POST"])
+@login_required
+def remove_teacher(user, slug=None, teacher_id=None):
+    course = datamodels.get_course_by_slug(slug)
+
+    if not course or not user.teaches(course):
+        raise abort(404, 'No such course or you don\'t have permissions to edit it')
+
+    if user.id == teacher_id:
+        return jsonify({'success': False, 'message': 'You can\'t remove yourself'}), 400
+
+    if not datamodels.get_user(teacher_id):
+        return jsonify({'success': False, 'message': 'No such teacher'}), 400
+
+    removed = course.remove_teacher(teacher_id)
+
+    return jsonify({'success': removed})
+
+@blueprint.route('/<slug>/edit/add/teacher', methods=["POST"])
+@login_required
+def add_teacher(user, slug=None):
+    course = datamodels.get_course_by_slug(slug)
+
+    if not course or not user.teaches(course):
+        raise abort(404, 'No such course or you don\'t have permissions to edit it')
+
+    new_teacher = datamodels.User.find_by_email(request.form['teacher_email'])
+    print(request.form['teacher_email']);
+    if not new_teacher:
+        raise abort(400, 'No such user.')
+
+    course.add_instructor(new_teacher)
+
+    return jsonify({'success': True})
 
 
 @blueprint.route('/<slug>/edit/options/<option>/<on_or_off>', methods=["POST"])

@@ -262,3 +262,79 @@ class TestModels(unittest.TestCase):
         }
         response = s.post('/course/fancy_slug/edit', data=data)
         self.assertEqual(response.status_code, 400)
+
+    def test_remove_teacher(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(
+            email='home@teachers.com', id=1, username='the_teacher')
+        self.session.add(user)
+        course.add_instructor(user)
+
+        user1 = self.makeUser(
+            email='home1@teachers.com', id=2, username='the_teacher1')
+        self.session.add(user1)
+        course.add_instructor(user1)
+
+        user2 = self.makeUser(
+            email='home2@teachers.com', id=3, username='the_teacher3')
+        self.session.add(user2)
+
+        self.session.commit()
+
+        self.assertEqual(len(course.instructors), 2)
+
+        s = app.test_client()
+
+        with s.session_transaction() as sess:
+            sess['user_id'] = user2.id
+
+        # Teacher do not teaches this course
+        response = s.post('/course/abc-123/edit/remove/teacher/{}'.format(user.id))
+        self.assertEqual(response.status_code, 404)
+
+        with s.session_transaction() as sess:
+            sess['user_id'] = user.id
+
+        # Teacher try's to remove herself
+        response = s.post('/course/abc-123/edit/remove/teacher/{}'.format(user.id))
+        self.assertEqual(response.status_code, 400)
+
+        # Teacher try\s to remove nonexisting user
+        response = s.post('/course/abc-123/edit/remove/teacher/999')
+        self.assertEqual(response.status_code, 400)
+
+        # Finally remove teacher
+        response = s.post('/course/abc-123/edit/remove/teacher/{}'.format(user1.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(course.instructors), 1)
+
+    def test_add_teacher(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(
+            email='home@teachers.com', id=1, username='the_teacher')
+        self.session.add(user)
+        course.add_instructor(user)
+
+        user1 = self.makeUser(
+            email='home1@teachers.com', id=2, username='the_teacher1')
+        self.session.add(user1)
+
+        self.session.commit()
+
+        s = app.test_client()
+        with s.session_transaction() as sess:
+            sess['user_id'] = user.id
+
+        # No such email
+        response = s.post('/course/abc-123/edit/add/teacher', data={'teacher_email': 'm@m.com'})
+        self.assertEqual(response.status_code, 400)
+
+        # Add new teacher
+        self.assertEqual(len(course.instructors), 1)
+        response = s.post('/course/abc-123/edit/add/teacher', data={'teacher_email': 'home1@teachers.com'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(course.instructors), 2)

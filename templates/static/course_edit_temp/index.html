@@ -214,42 +214,39 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 </div>
               </dd> 
 
-              <dt><i class="far fa-chalkboard-teacher"></i> Teacher(s)</dt>
+              <dt>
+                <i class="far fa-chalkboard-teacher"></i> Teacher(s)
+                <a class="" data-toggle="tooltip" title="Invite other users to have teacher access to this course, via email." href="#"><i class="fas fa-info-circle"></i></a>
+              </dt>
               <dd>
+                <div class="alert alert-danger">Can't find that email sorry!</div>
+                <div class="alert alert-success">Successfully added!</div>
+
+
                 <div class="fit_quicksearch">
 
                   <div class="input-group searchy">
                     <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fal fa-search"></i></span>
+                      <span class="input-group-text"><i class="fal fa-envelope"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Search for a teacher to add">
-                    <!-- DEV: This will need to be some sort of 'quick lookup' of all user with teacher access. Let's do it dirty for now, haha! https://deuxhuithuit.github.io/quicksearch might work? -->
-                  </div>
-
-                  <div class="results">
-
-                    <!-- DEV: Show quick search results here, fit_btn for each: -->
-                    <div class="fit_btn">
-                      <div class="fit_pic circle"><img src="/assets/stub/homer.png" alt="user"></div>
-                      <div class="fit_txt">Homer Simpson</div>
-                      <div class="sub buttonset">
-                        <a href="#" class="btn btn-sm btn-primary"><i class="fal fa-user-plus"></i> Add teacher</a>
-                      </div>
+                    <input type="text" id="add-teacher-email" class="form-control" placeholder="example@email.com">
+                    <div class="input-group-append">
+                      <button id="add-teacher" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Add</button>
                     </div>
-
                   </div>
 
                   <div class="teachers">
 
                     <!-- DEV: for each teacher, this html: -->
+                    {% for teacher in teachers %}
                     <div class="fit_btn">
-                      <div class="fit_pic circle"><img src="/assets/stub/marge.png" alt="user"></div>
-                      <div class="fit_txt">Marge Simpson</div>
+                      <div class="fit_pic circle"><img src="{% if teacher.profile_picture %}{{ teacher.profile_picture }}{% else %}/assets/stub/marge.png{% endif %}" alt="user"></div>
+                      <div class="fit_txt">{{ teacher.first_name }} {{ teacher.last_name }}</div>
                       <div class="sub buttonset">
-                        <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
+                        <a class="btn btn-sm btn-light" data-teacher-id="{{ teacher.id }}" data-course-slug="{{ course.slug }}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
                       </div>
                     </div>
-
+                    {% endfor %}
                   </div>
                 </div>
               </dd>

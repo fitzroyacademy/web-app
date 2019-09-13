@@ -764,7 +764,21 @@ $( document ).ready(function() {
     let tag = t.dataset.fitPermGroupType;
     let slug = t.dataset.courseSlug;
     post(`/course/${slug}/edit/options/${tag}/${value}`);
-  })
+  });
+
+  delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
+    let teacherId = e.target.dataset.teacherId;
+    let slug = t.dataset.courseSlug;
+    post(`/course/${slug}/edit/remove/teacher/${teacherId}`);
+  });
+
+  delegate('#add-teacher', 'click', (e, t) => {
+    e.preventDefault();
+    let email = document.querySelector('#add-teacher-email');
+    let teacherId = e.target.dataset.teacherId;
+    let slug = t.dataset.courseSlug;
+    post(`/course/${slug}/edit/add/teacher`, {teacher_email: email.value});
+  });
 
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.
