@@ -154,15 +154,15 @@ def set_options(user, slug=None, option=None, on_or_off=False):
 
     if option not in ['draft', 'guest_access', 'paid']:
         flash('Unknown option.')
-        return jsonify({"success": False, "message": "Unknown option setting."})
+        return jsonify({"success": False, "message": "Unknown option setting."}), 400
 
-    if on_or_off in ['ON', 'on']:
+    if on_or_off in ['ON', 'on', 'draft', 'paid']:
         value = True
-    elif on_or_off in ['OFF', 'off']:
+    elif on_or_off in ['OFF', 'off', 'live', 'free']:
         value = False
     else:
         flash('Unknown option setting.')
-        return jsonify({"success": False, "message": "Unknown option setting."})
+        return jsonify({"success": False, "message": "Unknown option setting."}), 400
     setattr(course, option, value)
 
     db = datamodels.get_session()

@@ -51,11 +51,12 @@ $( document ).ready(function() {
     'change': function() {
       var perm = $(this).data('fit-perm-trigger');
       var type = $(this).data('fit-perm-type');
+      var slug = $(this).data('course-slug');
 
       $('[data-fit-perm-detail][data-fit-perm-type="' + type + '"]').removeClass('active');
 
       $('[data-fit-perm-detail=' + perm + ']').addClass('active');
-
+      post(`/course/${slug}/edit/options/${type}/${perm}`);
     }
   });
 
@@ -752,18 +753,14 @@ $( document ).ready(function() {
     var group = t.dataset.fitGroupName;
     let value = '';
     if (group) {
-      let tempValue = t.querySelector(`input[name="${group}"]:checked`).value;
-      if (['paid', 'draft'].includes(tempValue)) {
-        value = 'on'
-      } else {
-        value = 'off'
-      }
     } else {
       value = (!t.querySelector('input[type=checkbox]').checked)?'on':'off'
     }
     let tag = t.dataset.fitPermGroupType;
     let slug = t.dataset.courseSlug;
-    post(`/course/${slug}/edit/options/${tag}/${value}`);
+    if (value) {
+        post(`/course/${slug}/edit/options/${tag}/${value}`);
+    }
   });
 
   delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {

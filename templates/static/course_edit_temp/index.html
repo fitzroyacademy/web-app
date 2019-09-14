@@ -288,13 +288,13 @@ You'll define your impact model, look into creating behaviour change that lasts,
 
               <dt><i class="far fa-usd-square"></i> Cost</dt>
               <dd>
-                <div class="form-group" data-fit-perm-group-type="paid" data-fit-group-name="course_paid" data-course-slug="{{ course.slug }}">
+                <div class="form-group" data-fit-perm-group-type="paid" >
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-secondary {{ 'active' if not course.options("paid") }}">
-                      <input type="radio" name="course_paid" value="free" id="option1" autocomplete="off" {{ 'checked' if not course.options("paid") }} data-fit-perm-type="cost" data-fit-perm-trigger="free"> Free
+                      <input type="radio" name="course_paid" value="free" id="option1" autocomplete="off" {{ 'checked' if not course.options("paid") }} data-fit-perm-type="paid" data-fit-perm-trigger="free" data-course-slug="{{ course.slug }}"> Free
                     </label>                
                     <label class="btn btn-outline-secondary {{ 'active' if course.options("paid") }}">
-                      <input type="radio" name="course_paid" value="paid" id="option3" autocomplete="off" {{ 'checked' if course.options("paid") }} data-fit-perm-type="cost" data-fit-perm-trigger="paid"> Paid
+                      <input type="radio" name="course_paid" value="paid" id="option3" autocomplete="off" {{ 'checked' if course.options("paid") }} data-fit-perm-type="paid" data-fit-perm-trigger="paid" data-course-slug="{{ course.slug }}"> Paid
                     </label>
                   </div>
                   <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
@@ -325,13 +325,13 @@ You'll define your impact model, look into creating behaviour change that lasts,
 
             <dt><i class="far fa-file-edit"></i> Draft</dt>
               <dd>
-                <div class="form-group" data-fit-perm-group-type="draft" data-fit-group-name="course_draft" data-course-slug="{{ course.slug }}">
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div class="form-group">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons" >
                     <label class="btn btn-outline-secondary {{ 'active' if course.options("draft") }}">
-                      <input type="radio" name="course_draft" value="draft" id="option1" autocomplete="off" {{ 'checked' if course.options("draft") }}  data-fit-perm-type="draft" data-fit-perm-trigger="draft"> Draft
+                      <input type="radio" name="course_draft" value="draft" id="option1" autocomplete="off" {{ 'checked' if course.options("draft") }}  data-fit-perm-type="draft" data-fit-perm-trigger="draft" data-course-slug="{{ course.slug }}"> Draft
                     </label>                
                     <label class="btn btn-outline-secondary fit_live_course_btn {{ 'active' if not course.options("draft") }}">
-                      <input type="radio" name="course_draft" value="live" id="option3" autocomplete="off" {{ 'checked' if not course.options("draft") }}  data-fit-perm-type="draft" data-fit-perm-trigger="live"> <i class="fas fa-exclamation-square"></i> Live
+                      <input type="radio" name="course_draft" value="live" id="option3" autocomplete="off" {{ 'checked' if not course.options("draft") }}  data-fit-perm-type="draft" data-fit-perm-trigger="live" data-course-slug="{{ course.slug }}"> <i class="fas fa-exclamation-square"></i> Live
                     </label>
                   </div>
                   <small class="form-text text-muted active" data-fit-perm-type="draft" data-fit-perm-detail="draft">Can only be accessed via direct link. Doesn't appear anywhere.</small>
