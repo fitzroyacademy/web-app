@@ -59,9 +59,7 @@ $( document ).ready(function() {
       post(`/course/${slug}/edit/options/${type}/${perm}`);
     }
   });
-
-
-  
+    $('#sortable-list').sortable({handle: '.handle'});
 
   // things I want when this stuff is made singular:
   // toggle a HTML class
@@ -766,7 +764,21 @@ $( document ).ready(function() {
   delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
     let teacherId = e.target.dataset.teacherId;
     let slug = t.dataset.courseSlug;
-    post(`/course/${slug}/edit/remove/teacher/${teacherId}`);
+    post(`/course/${slug}/edit/remove/teacher/${teacherId}`, {}, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        let alert = $('#add-teacher-alert');
+        if (xhr.status == 200) {
+            let teacherDiv = $(`#teacher-${responseJSON['teacher_id']}`);
+            if (teacherDiv) {
+                teacherDiv.remove()
+            }
+        } else {
+                alert.css("display", "block");
+                alert.removeClass('alert-success');
+                alert.addClass('alert-danger');
+                alert.html(responseJSON.message);
+            }
+    });
   });
 
   delegate('#add-teacher', 'click', (e, t) => {
@@ -774,7 +786,29 @@ $( document ).ready(function() {
     let email = document.querySelector('#add-teacher-email');
     let teacherId = e.target.dataset.teacherId;
     let slug = t.dataset.courseSlug;
-    post(`/course/${slug}/edit/add/teacher`, {teacher_email: email.value});
+    post(`/course/${slug}/edit/add/teacher`, {teacher_email: email.value}, (responseText, xhr) => {
+        let alert = $('#add-teacher-alert');
+        let responseJSON = JSON.parse(xhr.response);
+        alert.css("display", "block");
+        if (xhr.status == 400) {
+            alert.removeClass('alert-success');
+            alert.addClass('alert-danger');
+        } else {
+            alert.addClass('alert-success');
+            alert.removeClass('alert-danger');
+            $('#teachers-list').append(
+                `<div id="teacher-${responseJSON['teacher']['id']}" class="fit_btn">
+                      <div class="fit_pic circle"><img src="${responseJSON['teacher']['picture']}" alt="user"></div>
+                      <div class="fit_txt">${responseJSON['teacher']['first_name']} ${responseJSON['teacher']['last_name']}</div>
+                      <div class="sub buttonset">
+                        <a class="btn btn-sm btn-light" data-teacher-id="${responseJSON['teacher']['id']}" data-course-slug="${responseJSON['teacher']['slug']}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
+                      </div>
+                    </div>`
+
+            )
+        }
+        alert.html(responseJSON.message);
+    });
   });
 
   // Load the video dynamically when people hit back so the URLs in their

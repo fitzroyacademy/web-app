@@ -124,7 +124,7 @@ def remove_teacher(user, slug=None, teacher_id=None):
 
     removed = course.remove_teacher(teacher_id)
 
-    return jsonify({'success': removed})
+    return jsonify({'success': removed, 'teacher_id': teacher_id, 'message': 'Teacher removed'})
 
 @blueprint.route('/<slug>/edit/add/teacher', methods=["POST"])
 @login_required
@@ -135,13 +135,22 @@ def add_teacher(user, slug=None):
         raise abort(404, 'No such course or you don\'t have permissions to edit it')
 
     new_teacher = datamodels.User.find_by_email(request.form['teacher_email'])
-    print(request.form['teacher_email']);
     if not new_teacher:
-        raise abort(400, 'No such user.')
+        return jsonify({'success': False, 'message': 'Can\'t find that email sorry!'}), 400
+
+    if new_teacher.id in [teacher.id for teacher in course.instructors]:
+        return jsonify({'success': False, 'message': 'That user is already a teacher'}), 400
 
     course.add_instructor(new_teacher)
 
-    return jsonify({'success': True})
+    return jsonify({'success': True, 'message': 'Successfully added!',
+                    'teacher': {
+                        'id': new_teacher.id,
+                        'picture': new_teacher.profile_picture,
+                        'first_name': new_teacher.first_name,
+                        'last_name': new_teacher.last_name,
+                        'slug': course.slug,
+                    }})
 
 
 @blueprint.route('/<slug>/edit/options/<option>/<on_or_off>', methods=["POST"])
