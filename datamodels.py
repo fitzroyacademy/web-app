@@ -9,7 +9,7 @@ from flask import current_app as app
 from flask import url_for
 import pprint
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 Base = declarative_base()
 
@@ -447,6 +447,10 @@ class Lesson(Base):
         for seg in self.segments:
             t += seg.duration_seconds
         return t
+
+    @property
+    def strfduration(self):
+        return str(timedelta(seconds=self.duration_seconds))
 
     def user_progress_percent(self, user):
         if len(self.segments) is 0:

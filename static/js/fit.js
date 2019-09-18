@@ -59,7 +59,17 @@ $( document ).ready(function() {
       post(`/course/${slug}/edit/options/${type}/${perm}`);
     }
   });
-    $('#sortable-list').sortable({handle: '.handle'});
+
+  $('#sortable-list').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
+        let lessonsOrder = [];
+        for (i = 0; i < evt.to.children.length; i++) {
+            lessonsOrder.push(evt.to.children[i].dataset['listElId'])
+        }
+        let slug = evt.to.dataset['courseSlug'];
+
+        post(`/course/${slug}/reorder/lessons`, {'lessons_order': lessonsOrder});
+
+    }});
 
   // things I want when this stuff is made singular:
   // toggle a HTML class
