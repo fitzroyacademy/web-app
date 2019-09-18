@@ -53,8 +53,8 @@ def edit(user, slug=None):
     if not course or not user.teaches(course):
         raise abort(404, 'No such course or you don\'t have permissions to edit it')
 
+    db = datamodels.get_session()
     if request.method == "POST":
-        db = datamodels.get_session()
         if 'year' in request.form:
             try:
                 year = int(request.form['year'])
@@ -78,6 +78,8 @@ def edit(user, slug=None):
             c = datamodels.Course.find_by_slug(request.form['course_slug'])
             if c and course.id != c.id:
                 return make_response(jsonify({'success': False, 'message': 'Use different slug for this course.'}), 400)
+            if not request.form['course_slug']:
+                return jsonify({'success': False, 'message': 'Slug can\'t be empty'}), 400
             course.slug = request.form['course_slug']
         if 'course_code' in request.form:
             c = datamodels.Course.find_by_code(request.form['course_code'])
@@ -99,8 +101,11 @@ def edit(user, slug=None):
 
         return jsonify({'success': True})
 
+    lessons = db.query(datamodels.Lesson).filter_by(course_id=course.id)
     data = {'course': course,
             'teachers': course.instructors,
+            'introduction': lessons.filter(datamodels.Lesson.order == 0).first(),
+            'lessons': lessons.filter(datamodels.Lesson.order > 0).order_by(datamodels.Lesson.order),
             'cover_image': '/uploads/{}'.format(course.cover_image) if course.cover_image and not
             course.cover_image.startswith('http') else course.cover_image
             }
@@ -125,6 +130,7 @@ def remove_teacher(user, slug=None, teacher_id=None):
     removed = course.remove_teacher(teacher_id)
 
     return jsonify({'success': removed, 'teacher_id': teacher_id, 'message': 'Teacher removed'})
+
 
 @blueprint.route('/<slug>/edit/add/teacher', methods=["POST"])
 @login_required
@@ -162,7 +168,6 @@ def set_options(user, slug=None, option=None, on_or_off=False):
         raise abort(404, 'No such course or you don\'t have permissions to edit it')
 
     if option not in ['draft', 'guest_access', 'paid']:
-        flash('Unknown option.')
         return jsonify({"success": False, "message": "Unknown option setting."}), 400
 
     if on_or_off in ['ON', 'on', 'draft', 'paid']:
@@ -170,7 +175,6 @@ def set_options(user, slug=None, option=None, on_or_off=False):
     elif on_or_off in ['OFF', 'off', 'live', 'free']:
         value = False
     else:
-        flash('Unknown option setting.')
         return jsonify({"success": False, "message": "Unknown option setting."}), 400
     setattr(course, option, value)
 
@@ -179,3 +183,39 @@ def set_options(user, slug=None, option=None, on_or_off=False):
     db.commit()
 
     return jsonify({"success": True})
+
+
+@blueprint.route('/<slug>/reorder/lessons', methods=["GET", "POST"])
+@login_required
+def reorder_lessons(user, slug=None):
+    course = datamodels.get_course_by_slug(slug)
+
+    if not course or not user.teaches(course):
+        raise abort(404, 'No such course or you don\'t have permissions to edit it')
+
+    if request.method == "POST" and  "lessons_order" in request.form:
+        # we should get ordered list of lessons
+        lessons_order = request.form['lessons_order']
+        if lessons_order:
+            try:
+                lessons_order = [int(e) for e in lessons_order.split(',')]
+            except ValueError:
+                return jsonify({"success": False, "message": "Wrong data format"}), 400
+        else:
+            return jsonify({"success": False, "message": "Expected ordered list of lessons"}), 400
+
+        # Let's check if numbers are correct
+        list_of_lessons = [lesson.id for lesson in course.lessons]
+
+        if set(lessons_order).difference(set(list_of_lessons)) or set(lessons_order).difference(set(list_of_lessons)):
+            return jsonify({"success": False, "message": "Wrong number of lessons"}), 400
+
+
+        lessons_mapping = [{'id': lessons_order[i], 'order': i+1} for i in range(len(lessons_order))]
+        db = datamodels.get_session()
+        db.bulk_update_mappings(datamodels.Lesson, lessons_mapping)
+        db.commit()
+
+        return jsonify({"success": True, "message": "Lessons order updated"})
+
+    return jsonify({"success": False, "message": "No data"}), 400
