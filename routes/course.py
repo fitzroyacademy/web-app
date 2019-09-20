@@ -130,7 +130,7 @@ def edit(user, slug=None):
         else course.cover_image,
     }
 
-    return render_template("static/course_edit_temp/index.html", **data)
+    return render_template("course_edit.html", **data)
 
 
 @blueprint.route("/<slug>/edit/slug", methods=["POST"])
