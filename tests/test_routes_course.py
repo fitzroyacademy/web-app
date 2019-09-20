@@ -213,7 +213,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         # change slug to a new one
         make_authorized_call(
-            url="/course/abc-123/edit",
+            url="/course/abc-123/edit/slug",
             user=user,
             data={"course_slug": "fancy_slug"},
             expected_status_code=200,
@@ -223,7 +223,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         # change slug to an existing one
         make_authorized_call(
-            url="/course/fancy_slug/edit",
+            url="/course/fancy_slug/edit/slug",
             user=user,
             data={"course_slug": "some_other_course"},
             expected_status_code=400,
