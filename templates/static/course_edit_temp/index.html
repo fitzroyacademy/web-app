@@ -210,7 +210,10 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-fit-slug-set data-course-edit>
+                    <input type="text" id="course-slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link">
+                    <div class="input-group-append">
+                      <button id="change-slug" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Change</button>
+                    </div>
                   </div>
                   <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/{{ course.slug }}<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->

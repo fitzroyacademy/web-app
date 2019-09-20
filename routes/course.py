@@ -85,24 +85,6 @@ def edit(user, slug=None):
             course.title = request.form["course_name"]
         if "course_description" in request.form:
             course.info = request.form["course_description"]
-        if "course_slug" in request.form:
-            c = datamodels.Course.find_by_slug(request.form["course_slug"])
-            if c and course.id != c.id:
-                return make_response(
-                    jsonify(
-                        {
-                            "success": False,
-                            "message": "Use different slug for this course.",
-                        }
-                    ),
-                    400,
-                )
-            if not request.form["course_slug"]:
-                return (
-                    jsonify({"success": False, "message": "Slug can't be empty"}),
-                    400,
-                )
-            course.slug = request.form["course_slug"]
         if "course_code" in request.form:
             c = datamodels.Course.find_by_code(request.form["course_code"])
             if c and course.id != c.id:
@@ -149,6 +131,40 @@ def edit(user, slug=None):
     }
 
     return render_template("static/course_edit_temp/index.html", **data)
+
+
+@blueprint.route("/<slug>/edit/slug", methods=["POST"])
+@login_required
+def change_slug(user, slug=None):
+    course = datamodels.get_course_by_slug(slug)
+
+    if not course or not user.teaches(course):
+        raise abort(404, "No such course or you don't have permissions to edit it")
+
+    db = datamodels.get_session()
+    if request.method == "POST":
+        if "course_slug" in request.form:
+            c = datamodels.Course.find_by_slug(request.form["course_slug"])
+            if c and course.id != c.id:
+                return make_response(
+                    jsonify(
+                        {
+                            "success": False,
+                            "message": "Use different slug for this course.",
+                        }
+                    ),
+                    400,
+                )
+            if not request.form["course_slug"]:
+                return (
+                    jsonify({"success": False, "message": "Slug can't be empty"}),
+                    400,
+                )
+            course.slug = request.form["course_slug"]
+            db.add(course)
+            db.commit()
+
+    return jsonify({"slug": course.slug})
 
 
 @blueprint.route("/<slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"])

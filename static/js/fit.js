@@ -771,6 +771,18 @@ $( document ).ready(function() {
     }
   });
 
+  delegate('#change-slug', 'click', (e, t) => {
+    let slug = t.dataset.courseSlug;
+    let value = document.querySelector('#course-slug').value;
+    post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            window.location.href = `/course/${JSON.parse(xhr.response)['slug']}/edit`
+        } else {
+                console.log('DEV: give me some message')
+            }
+    });
+  });
+
   delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
     let teacherId = e.target.dataset.teacherId;
     let slug = t.dataset.courseSlug;
