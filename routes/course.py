@@ -282,12 +282,7 @@ def reorder_lessons(user, course, slug=None):
                 400,
             )
 
-        lessons_mapping = [
-            {"id": lessons_order[i], "order": i + 1} for i in range(len(lessons_order))
-        ]
-        db = datamodels.get_session()
-        db.bulk_update_mappings(datamodels.Lesson, lessons_mapping)
-        db.commit()
+        datamodels.Lesson.reorder_lessons(lessons_order)
 
         return jsonify({"success": True, "message": "Lessons order updated"})
 
@@ -300,13 +295,13 @@ def course_add_lesson(user, slug):
     pass
 
 
-@blueprint.route("/<slug>/lessons/<lesson_id>/edit", methods=["GET", "POST"])
+@blueprint.route("/<slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
 @login_required
 def course_edit_lesson(user, slug, lesson_id):
     pass
 
 
-@blueprint.route("/<slug>/lessons/<lesson_id>/delete", methods=["POST"])
+@blueprint.route("/<slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
 @login_required
 @teacher_required
 def course_delete_lesson(user, course, slug, lesson_id):
@@ -316,6 +311,11 @@ def course_delete_lesson(user, course, slug, lesson_id):
         db = datamodels.get_session()
         db.delete(lesson)
         db.commit()
+
+        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_lessons()]
+        if list_of_lessons:
+            datamodels.Lesson.reorder_lessons(list_of_lessons)
+
         return jsonify({"success_url": "/course/{}/edit".format(slug)})
 
     return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400

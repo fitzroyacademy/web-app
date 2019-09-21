@@ -477,3 +477,84 @@ class TestCourseRoutes(unittest.TestCase):
         self.assertEqual(response.json["message"], "Lessons order updated")
         self.assertEqual(self.session.query(datamodels.Lesson).get(l3.id).order, 1)
         self.assertEqual(self.session.query(datamodels.Lesson).get(l2.id).order, 2)
+
+    def test_delete_lesson(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        course.add_instructor(user)
+
+        l1 = self.make_standard_course_lesson(
+            title="intro", course=course, order=0
+        )  # intro lesson
+        l2 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        l3 = self.make_standard_course_lesson(title="lesson 2", course=course, order=2)
+        l4 = self.make_standard_course_lesson(title="lesson 3", course=course, order=3)
+        self.session.add(l1)
+        self.session.add(l2)
+        self.session.add(l3)
+        self.session.add(l4)
+        self.session.commit()
+
+        self.assertEqual(len(course.lessons), 4)
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/delete".format(l3.id),
+            user=user,
+            data={},
+            expected_status_code=200,
+        )
+
+        self.assertEqual(len(course.lessons), 3)
+        self.assertEqual(response.json["success_url"], "/course/abc-123/edit")
+        lessons = datamodels.Lesson.get_ordered_lessons()
+        self.assertEqual(lessons[0].order, 1)
+        self.assertEqual(lessons[0].title, "lesson 1")
+        self.assertEqual(lessons[1].order, 2)
+        self.assertEqual(lessons[1].title, "lesson 3")
+
+    def test_delete_wrong_lesson_id(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/10000000/delete",
+            user=user,
+            data={},
+            expected_status_code=400,
+        )
+
+        self.assertFalse(response.json["success"])
+
+    def test_delete_lesson_not_in_course(self):
+        course = self.make_standard_course(guest_access=True)
+        course2 = self.make_standard_course(
+            guest_access=True, slug="course-2", code="course2", title="course 2"
+        )
+        self.session.add(course)
+        self.session.add(course2)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+
+        l1 = self.make_standard_course_lesson(title="intro", course=course2, order=0)
+        self.session.add(l1)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/delete".format(l1.id),
+            user=user,
+            data={},
+            expected_status_code=400,
+        )
+
+        self.assertFalse(response.json["success"])

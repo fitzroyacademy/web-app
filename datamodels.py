@@ -483,6 +483,20 @@ class Lesson(Base):
         except:
             return None
 
+    @classmethod
+    def get_ordered_lessons(cls):
+        session = get_session()
+        return session.query(cls).filter(cls.order > 0).order_by(cls.order)
+
+    @classmethod
+    def reorder_lessons(cls, lessons_order):
+        lessons_mapping = [
+            {"id": lessons_order[i], "order": i + 1} for i in range(len(lessons_order))
+            ]
+        db = get_session()
+        db.bulk_update_mappings(cls, lessons_mapping)
+        db.commit()
+
 
 class LessonTranslation(Base):
 
