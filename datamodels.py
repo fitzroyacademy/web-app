@@ -415,6 +415,8 @@ class Lesson(Base):
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
     order = sa.Column(sa.Integer)
+    cover_image = sa.Column(sa.String)  # URL to picture resource
+    description = sa.Column(sa.String(140))
 
     course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
     course = orm.relationship("Course", back_populates="lessons")
@@ -439,7 +441,7 @@ class Lesson(Base):
 
     @property
     def thumbnail(self):
-        return self.segments[0].thumbnail
+        return self.cover_image or self.segments[0].thumbnail
 
     @property
     def duration_seconds(self):
@@ -465,6 +467,15 @@ class Lesson(Base):
         for segment in self.segments:
             output.append(segment.user_progress(user))
         return output
+
+    @property
+    def get_cover(self):
+        if self.cover_image:
+            if self.cover_image.startswith('http'):
+                return self.cover_image
+            else:
+                return "/uploads/{}".format(self.cover_image)
+        return ''
 
     @staticmethod
     def find_by_id(lesson_id):

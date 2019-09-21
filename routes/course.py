@@ -6,7 +6,6 @@ from flask import (
     render_template,
     request,
     redirect,
-    flash,
     jsonify,
     make_response,
 )
@@ -248,74 +247,3 @@ def set_options(user, course, slug=None, option=None, on_or_off=False):
     db.commit()
 
     return jsonify({"success": True})
-
-
-@blueprint.route("/<slug>/lessons/reorder", methods=["GET", "POST"])
-@login_required
-@teacher_required
-def reorder_lessons(user, course, slug=None):
-
-    if request.method == "POST" and "lessons_order" in request.form:
-        # we should get ordered list of lessons
-        lessons_order = request.form["lessons_order"]
-        if lessons_order:
-            try:
-                lessons_order = [int(e) for e in lessons_order.split(",")]
-            except ValueError:
-                return jsonify({"success": False, "message": "Wrong data format"}), 400
-        else:
-            return (
-                jsonify(
-                    {"success": False, "message": "Expected ordered list of lessons"}
-                ),
-                400,
-            )
-
-        # Let's check if numbers are correct
-        list_of_lessons = [lesson.id for lesson in course.lessons if lesson.order != 0]
-
-        if set(lessons_order).difference(set(list_of_lessons)) or set(
-            lessons_order
-        ).difference(set(list_of_lessons)):
-            return (
-                jsonify({"success": False, "message": "Wrong number of lessons"}),
-                400,
-            )
-
-        datamodels.Lesson.reorder_lessons(lessons_order)
-
-        return jsonify({"success": True, "message": "Lessons order updated"})
-
-    return jsonify({"success": False, "message": "No data"}), 400
-
-
-@blueprint.route("/<slug>/lessons/add", methods=["POST"])
-@login_required
-def course_add_lesson(user, slug):
-    pass
-
-
-@blueprint.route("/<slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
-@login_required
-def course_edit_lesson(user, slug, lesson_id):
-    pass
-
-
-@blueprint.route("/<slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
-@login_required
-@teacher_required
-def course_delete_lesson(user, course, slug, lesson_id):
-
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
-    if lesson and lesson.course_id == course.id:
-        db = datamodels.get_session()
-        db.delete(lesson)
-        db.commit()
-
-        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_lessons()]
-        if list_of_lessons:
-            datamodels.Lesson.reorder_lessons(list_of_lessons)
-
-        return jsonify({"success_url": "/course/{}/edit".format(slug)})
-
-    return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400
