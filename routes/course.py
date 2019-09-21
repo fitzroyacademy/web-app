@@ -12,7 +12,7 @@ from flask import (
 )
 
 import datamodels
-from routes.decorators import login_required
+from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail
 
 blueprint = Blueprint("course", __name__, template_folder="templates")
@@ -228,11 +228,9 @@ def add_teacher(user, slug=None):
 
 @blueprint.route("/<slug>/edit/options/<option>/<on_or_off>", methods=["POST"])
 @login_required
-def set_options(user, slug=None, option=None, on_or_off=False):
+@teacher_required
+def set_options(user, course, slug=None, option=None, on_or_off=False):
     """ Set course options. """
-    course = datamodels.get_course_by_slug(slug)
-    if not course or not user.teaches(course):
-        raise abort(404, "No such course or you don't have permissions to edit it")
 
     if option not in ["draft", "guest_access", "paid"]:
         return jsonify({"success": False, "message": "Unknown option setting."}), 400
@@ -252,13 +250,10 @@ def set_options(user, slug=None, option=None, on_or_off=False):
     return jsonify({"success": True})
 
 
-@blueprint.route("/<slug>/reorder/lessons", methods=["GET", "POST"])
+@blueprint.route("/<slug>/lessons/reorder", methods=["GET", "POST"])
 @login_required
-def reorder_lessons(user, slug=None):
-    course = datamodels.get_course_by_slug(slug)
-
-    if not course or not user.teaches(course):
-        raise abort(404, "No such course or you don't have permissions to edit it")
+@teacher_required
+def reorder_lessons(user, course, slug=None):
 
     if request.method == "POST" and "lessons_order" in request.form:
         # we should get ordered list of lessons
@@ -297,3 +292,30 @@ def reorder_lessons(user, slug=None):
         return jsonify({"success": True, "message": "Lessons order updated"})
 
     return jsonify({"success": False, "message": "No data"}), 400
+
+
+@blueprint.route("/<slug>/lessons/add", methods=["POST"])
+@login_required
+def course_add_lesson(user, slug):
+    pass
+
+
+@blueprint.route("/<slug>/lessons/<lesson_id>/edit", methods=["GET", "POST"])
+@login_required
+def course_edit_lesson(user, slug, lesson_id):
+    pass
+
+
+@blueprint.route("/<slug>/lessons/<lesson_id>/delete", methods=["POST"])
+@login_required
+@teacher_required
+def course_delete_lesson(user, course, slug, lesson_id):
+
+    lesson = datamodels.Lesson.find_by_id(lesson_id)
+    if lesson and lesson.course_id == course.id:
+        db = datamodels.get_session()
+        db.delete(lesson)
+        db.commit()
+        return jsonify({"success_url": "/course/{}/edit".format(slug)})
+
+    return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400

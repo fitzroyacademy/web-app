@@ -67,7 +67,7 @@ $( document ).ready(function() {
         }
         let slug = evt.to.dataset['courseSlug'];
 
-        post(`/course/${slug}/reorder/lessons`, {'lessons_order': lessonsOrder});
+        post(`/course/${slug}/lessons/reorder`, {'lessons_order': lessonsOrder});
 
     }});
 
@@ -312,6 +312,7 @@ $( document ).ready(function() {
   }  
 
   */
+
 
   // ------------------------------------------------------------
   $('[data-fit_iconselects]').each(function(e) {
@@ -832,6 +833,21 @@ $( document ).ready(function() {
         alert.html(responseJSON.message);
     });
   });
+
+  $('#fit_modal_delete').on('show.bs.modal', function(event){
+    document.querySelector('#confirm-delete').href = event.relatedTarget.href;
+  });
+
+  delegate('#confirm-delete', 'click', (e, t) => {
+    e.preventDefault();
+    post(t.href, {}, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            window.location.href = JSON.parse(xhr.response)['success_url']
+        } else {
+                console.log(JSON.parse(xhr.response)['message'])
+            }
+    });
+  })
 
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.

@@ -370,7 +370,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         # No data
         response = make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={},
             expected_status_code=400,
@@ -380,7 +380,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         # Empty list
         response = make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={"lessons_order": ""},
             expected_status_code=400,
@@ -390,7 +390,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         # Wong data
         response = make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={"lessons_order": "1,s,0"},
             expected_status_code=400,
@@ -400,7 +400,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         # Wong number of lessons
         response = make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={"lessons_order": "1,2,3,4,5"},
             expected_status_code=400,
@@ -416,7 +416,7 @@ class TestCourseRoutes(unittest.TestCase):
         self.session.add(user)
 
         make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={"lessons_order": "{},{}".format(1, 2)},
             expected_status_code=404,
@@ -441,7 +441,7 @@ class TestCourseRoutes(unittest.TestCase):
         self.session.commit()
 
         response = make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={"lessons_order": "{},{}".format(l2.id, l1.id)},
             expected_status_code=400,
@@ -468,7 +468,7 @@ class TestCourseRoutes(unittest.TestCase):
         self.session.commit()
 
         response = make_authorized_call(
-            url="/course/abc-123/reorder/lessons",
+            url="/course/abc-123/lessons/reorder",
             user=user,
             data={"lessons_order": "{},{}".format(l3.id, l2.id)},
             expected_status_code=200,

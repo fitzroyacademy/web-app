@@ -87,8 +87,8 @@
                       </button>
 
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
-                        <a class="dropdown-item" href="#"><i class="fal fa-edit"></i> Edit</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
+                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit"><i class="fal fa-edit"></i> Edit</a>
+                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/delete" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
                       </div>
                     </div>
 
@@ -107,8 +107,6 @@
       </div>
       <!-- end vid stack -->
 
-
-      
       <div class="row">
         <div class="col-md-6">
           <h3>
@@ -118,6 +116,7 @@
           <div class="fit_pane">
             <dl class="fit_summary_icons">
 
+              <!--
               <dt><i class="far fa-building"></i> Program</dt>
               <dd>
                 <div class="form-group">
@@ -126,7 +125,7 @@
                     <option>Global challenges</option>
                   </select>
                 </div>
-              </dd>
+              </dd>-->
 
               <dt><i class="far fa-calendar"></i> Year</dt>
               <dd>
@@ -172,12 +171,11 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 <div class="form-group">
                   <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
                   <!-- For now, can be comma delimited? -->
-                  <input type="text" class="form-control" placeholder="E.g. socent, agile, highschool">
+                  <input type="text" class="form-control" placeholder="E.g. socent, agile, highschool" disabled>
                 </div>
                 <small class="form-text text-muted">Only letters, with commas between tags.</small>
               </dd>
             </dl>
-
 
 
           </div><!-- pane -->
@@ -197,7 +195,6 @@ You'll define your impact model, look into creating behaviour change that lasts,
             <dl class="fit_summary_icons">
               
               <form action="/course/{{ course.slug }}/edit" method="post">
-              <!-- DEV: We should probably check if this tag is taken while it's being entered? Is that a security hole? Do we care? -->
               <dt><i class="far fa-external-link"></i> Link</dt>
               <dd>
                 <div class="form-group">
@@ -357,5 +354,8 @@ You'll define your impact model, look into creating behaviour change that lasts,
   </article>
 
 </main>
+
+{% include 'partials/modal/_add_lesson.html' %}
+{% include 'partials/modal/_add_segment.html' %}
 
 {% endblock %}
