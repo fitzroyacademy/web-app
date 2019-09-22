@@ -262,14 +262,14 @@ You'll define your impact model, look into creating behaviour change that lasts,
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="visibility" data-fit-perm-trigger="public"> Public
+                    <label class="btn btn-outline-secondary {{ 'active' if course.visibility == "public" }}">
+                      <input type="radio" name="course_visibility" value="public" id="option_publiv" autocomplete="off" checked data-fit-perm-type="visibility" data-fit-perm-trigger="public" data-course-slug="{{ course.slug }}"> Public
                     </label>
-                    <label class="btn btn-outline-secondary ">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="institute"> Institute only
+                    <label class="btn btn-outline-secondary {{ 'active' if course.visibility == "institute" }} ">
+                      <input type="radio" name="course_visibility" value="public" id="option_institute" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="institute" data-course-slug="{{ course.slug }}"> Institute only
                     </label>      
-                    <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="code"> Code only
+                    <label class="btn btn-outline-secondary {{ 'active' if course.visibility == "code" }}">
+                      <input type="radio" name="course_visibility" value="code" id="option_code" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="code" data-course-slug="{{ course.slug }}"> Code only
                     </label>
                   </div>
                   <small class="form-text text-muted active" data-fit-perm-type="visibility" data-fit-perm-detail="public">Can be accessed by anyone, appears publicly on the site.</small>

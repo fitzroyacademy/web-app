@@ -177,6 +177,46 @@ class TestCourseRoutes(unittest.TestCase):
         response = s.post("/course/abc-123/edit/options/paid/offff")
         self.assertFalse(response.json["success"])
 
+    def test_set_course_visibility(self):
+        course = self.make_standard_course()
+        course.visibility = "public"
+        self.session.add(course)
+        lesson = self.make_standard_course_lesson(course)
+        self.session.add(lesson)
+        segment = self.make_segment(lesson=lesson, thumbnail="thumbnail_1")
+        self.session.add(segment)
+
+        s = app.test_client()
+
+        # user has permission to set course options
+        u1 = self.makeUser(email="home@teachers.com", id=2, username="the_teacher")
+        self.session.add(u1)
+        course.add_instructor(u1)
+
+        with s.session_transaction() as sess:
+            sess["user_id"] = 2
+
+        # wrong visibility
+        self.assertEqual(course.visibility, "public")
+        response = s.post("/course/abc-123/edit/options/visibility/thereisnosuch")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(course.visibility, "public")
+
+        # wrong visibility
+        response = s.post("/course/abc-123/edit/options/visibility/institute")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(course.visibility, "institute")
+
+        # wrong visibility
+        response = s.post("/course/abc-123/edit/options/visibility/code")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(course.visibility, "code")
+
+        # wrong visibility
+        response = s.post("/course/abc-123/edit/options/visibility/public")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(course.visibility, "public")
+
     def test_edit_course(self):
         course = self.make_standard_course(guest_access=True)
         course2 = self.make_standard_course(

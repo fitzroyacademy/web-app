@@ -287,6 +287,8 @@ class Course(Base):
     skill_level = sa.Column(sa.String())
     info = sa.Column(sa.String)
 
+    visibility = sa.Column(sa.String(16), default="public")
+
     summary_html = sa.Column(sa.String())
     workload_summary = sa.Column(sa.String())
 

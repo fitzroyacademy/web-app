@@ -228,15 +228,18 @@ def add_teacher(user, slug=None):
 def set_options(user, course, slug=None, option=None, on_or_off=False):
     """ Set course options. """
 
-    if option not in ["draft", "guest_access", "paid"]:
+    if option not in ["draft", "guest_access", "paid", "visibility"]:
         return jsonify({"success": False, "message": "Unknown option setting."}), 400
 
     if on_or_off in ["ON", "on", "draft", "paid"]:
         value = True
     elif on_or_off in ["OFF", "off", "live", "free"]:
         value = False
+    elif on_or_off in ["public", "code", "institute"] and option == "visibility":
+        value = on_or_off
     else:
         return jsonify({"success": False, "message": "Unknown option setting."}), 400
+
     setattr(course, option, value)
 
     db = datamodels.get_session()
