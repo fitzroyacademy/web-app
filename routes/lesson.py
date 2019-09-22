@@ -5,14 +5,14 @@ import datamodels
 import stubs
 from dataforms import AddLessonForm
 from routes.decorators import login_required, teacher_required
-from routes.utils import generate_thumbnail
+from routes.utils import generate_thumbnail, reorder_items
 
 blueprint = Blueprint("lesson", __name__, template_folder="templates")
 
 
 @blueprint.route("/lessons")
 def lessons():
-    return render_template("lesson_chart.html") @ blueprint.route(
+    return render_template("lesson_chart.html") @blueprint.route(
         "/<slug>/lessons/reorder", methods=["GET", "POST"]
     )
 
@@ -21,39 +21,7 @@ def lessons():
 @login_required
 @teacher_required
 def reorder_lessons(user, course, slug=None):
-
-    if request.method == "POST" and "lessons_order" in request.form:
-        # we should get ordered list of lessons
-        lessons_order = request.form["lessons_order"]
-        if lessons_order:
-            try:
-                lessons_order = [int(e) for e in lessons_order.split(",")]
-            except ValueError:
-                return jsonify({"success": False, "message": "Wrong data format"}), 400
-        else:
-            return (
-                jsonify(
-                    {"success": False, "message": "Expected ordered list of lessons"}
-                ),
-                400,
-            )
-
-        # Let's check if numbers are correct
-        list_of_lessons = [lesson.id for lesson in course.lessons if lesson.order != 0]
-
-        if set(lessons_order).difference(set(list_of_lessons)) or set(
-            lessons_order
-        ).difference(set(list_of_lessons)):
-            return (
-                jsonify({"success": False, "message": "Wrong number of lessons"}),
-                400,
-            )
-
-        datamodels.Lesson.reorder_lessons(lessons_order)
-
-        return jsonify({"success": True, "message": "Lessons order updated"})
-
-    return jsonify({"success": False, "message": "No data"}), 400
+    return reorder_items(request, datamodels.Lesson, course.lessons)
 
 
 @blueprint.route("/<slug>/lessons/add", methods=["GET", "POST"])
@@ -93,7 +61,13 @@ def course_add_lesson(user, course, slug):
 def course_edit_lesson(user, course, slug, lesson_id):
     lesson = datamodels.Lesson.find_by_id(lesson_id)
     form = AddLessonForm(request.form, lesson)
-    data = {"course": course, "lesson": lesson, "form": form}
+    data = {
+        "course": course,
+        "lesson": lesson,
+        "form": form,
+        "introduction": lesson.intro_segment,
+        "segments": lesson.normal_segments,
+    }
     return render_template("partials/course/_lesson.html", **data)
 
 
@@ -108,9 +82,9 @@ def course_delete_lesson(user, course, slug, lesson_id):
         db.delete(lesson)
         db.commit()
 
-        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_lessons()]
+        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_items()]
         if list_of_lessons:
-            datamodels.Lesson.reorder_lessons(list_of_lessons)
+            datamodels.Lesson.reorder_items(list_of_lessons)
 
         return jsonify({"success_url": "/course/{}/edit".format(slug)})
 

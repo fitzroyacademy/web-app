@@ -116,14 +116,11 @@ def edit(user, slug=None):
 
         return jsonify({"success": True})
 
-    lessons = db.query(datamodels.Lesson).filter_by(course_id=course.id)
     data = {
         "course": course,
         "teachers": course.instructors,
-        "introduction": lessons.filter(datamodels.Lesson.order == 0).first(),
-        "lessons": lessons.filter(datamodels.Lesson.order > 0).order_by(
-            datamodels.Lesson.order
-        ),
+        "introduction": course.intro_lesson,
+        "lessons": course.normal_lessons,
         "cover_image": "/uploads/{}".format(course.cover_image)
         if course.cover_image and not course.cover_image.startswith("http")
         else course.cover_image,

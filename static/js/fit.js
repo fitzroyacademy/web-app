@@ -61,13 +61,13 @@ $( document ).ready(function() {
   });
 
   $('#sortable-list').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
-        let lessonsOrder = [];
+        let itemsOrder = [];
         for (i = 0; i < evt.to.children.length; i++) {
-            lessonsOrder.push(evt.to.children[i].dataset['listElId'])
+            itemsOrder.push(evt.to.children[i].dataset['listElId'])
         }
-        let slug = evt.to.dataset['courseSlug'];
+        let url = evt.to.dataset['actionUrl'];
 
-        post(`/course/${slug}/lessons/reorder`, {'lessons_order': lessonsOrder});
+        post(url, {'items_order': itemsOrder});
 
     }});
 

@@ -4,7 +4,7 @@ from datetime import datetime
 
 import boto3
 from PIL import Image
-from flask import current_app
+from flask import current_app, jsonify
 
 
 ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "gif"]
@@ -69,3 +69,39 @@ def generate_thumbnail(file, thumbnail_type):
         filename = upload_file_to_s3(b, s3, current_app.config["S3_BUCKET"], filename)
 
     return filename
+
+
+def reorder_items(request, cls, objects):
+
+    if request.method == "POST" and "items_order" in request.form:
+        # we should get ordered list of lessons
+        items_order = request.form["items_order"]
+        if items_order:
+            try:
+                items_order = [int(e) for e in items_order.split(",")]
+            except ValueError:
+                return jsonify({"success": False, "message": "Wrong data format"}), 400
+        else:
+            return (
+                jsonify(
+                    {"success": False, "message": "Expected ordered list of items"}
+                ),
+                400,
+            )
+
+        # Let's check if numbers are correct
+        list_of_objects = [obj.id for obj in objects if obj.order != 0]
+
+        if set(items_order).difference(set(list_of_objects)) or set(
+            items_order
+        ).difference(set(list_of_objects)):
+            return (
+                jsonify({"success": False, "message": "Wrong number of items"}),
+                400,
+            )
+
+        cls.reorder_items(items_order)
+
+        return jsonify({"success": True, "message": "Order updated"})
+
+    return jsonify({"success": False, "message": "No data"}), 400

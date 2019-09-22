@@ -1,15 +1,15 @@
-from sqlalchemy.ext.declarative import declarative_base
-import sqlalchemy.orm as orm
-import sqlalchemy as sa
-from werkzeug.security import generate_password_hash, check_password_hash
 import json
+from datetime import datetime, timedelta
 from os import environ
-from sqlalchemy.ext.hybrid import hybrid_property
+
+import requests
+import sqlalchemy as sa
+import sqlalchemy.orm as orm
 from flask import current_app as app
 from flask import url_for
-import pprint
-import requests
-from datetime import datetime, timedelta
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_property
+from werkzeug.security import generate_password_hash, check_password_hash
 
 Base = declarative_base()
 
@@ -47,6 +47,26 @@ def dump(obj, seen=None):
                     else:
                         fields[f].append(dump(o, seen))
     return fields
+
+
+class OrderedBase(Base):
+    __abstract__ = True
+
+    order = sa.Column(sa.Integer)
+
+    @classmethod
+    def get_ordered_items(cls):
+        session = get_session()
+        return session.query(cls).filter(cls.order > 0).order_by(cls.order)
+
+    @classmethod
+    def reorder_items(cls, items_order):
+        lessons_mapping = [
+            {"id": items_order[i], "order": i + 1} for i in range(len(items_order))
+            ]
+        db = get_session()
+        db.bulk_update_mappings(cls, lessons_mapping)
+        db.commit()
 
 
 class User(Base):
@@ -280,6 +300,8 @@ class Course(Base):
 
     preview_thumbnail = sa.Column(sa.String)
 
+    _lessons_queryset = None
+
     def add_user(self, user, access_level=0):
         association = CourseEnrollment(access_level=access_level)
         association.course = self
@@ -300,6 +322,21 @@ class Course(Base):
 
     def options(self, option):
         return getattr(self,  option, False)
+
+    @property
+    def lessons_queryset(self):
+        if not self._lessons_queryset:
+            session = get_session()
+            self._lessons_queryset = session.query(Lesson).filter_by(course_id=self.id)
+        return self._lessons_queryset
+
+    @property
+    def intro_lesson(self):
+        return self.lessons_queryset.filter(Lesson.order == 0).first()
+
+    @property
+    def normal_lessons(self):
+        return self.lessons_queryset.filter(Lesson.order > 0).order_by(Lesson.order)
 
     @property
     def duration_seconds(self):
@@ -405,7 +442,7 @@ class CourseEnrollment(Base):
             CourseEnrollment.user_id == user_id
         ).all()
 
-class Lesson(Base):
+class Lesson(OrderedBase):
 
     __tablename__ = 'lessons'
 
@@ -414,7 +451,6 @@ class Lesson(Base):
     active = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
-    order = sa.Column(sa.Integer)
     cover_image = sa.Column(sa.String)  # URL to picture resource
     description = sa.Column(sa.String(140))
 
@@ -426,10 +462,27 @@ class Lesson(Base):
 
     translations = orm.relationship("LessonTranslation", back_populates="lesson")
 
+    _segments_queryset = None
+
     @orm.validates('slug')
     def validate_slug(self, key, value):
         """ TODO: Check the parent course for any duplicate lesson slugs """
         return value
+
+    @property
+    def segments_queryset(self):
+        if not self._segments_queryset:
+            session = get_session()
+            self._segments_queryset = session.query(Segment).filter_by(lesson_id=self.id)
+        return self._segments_queryset
+
+    @property
+    def intro_segment(self):
+        return self.segments_queryset.filter(Segment.order == 0).first()
+
+    @property
+    def normal_segments(self):
+        return self.segments_queryset.filter(Segment.order > 0).order_by(Segment.order)
 
     @property
     def permalink(self):
@@ -494,20 +547,6 @@ class Lesson(Base):
         except:
             return None
 
-    @classmethod
-    def get_ordered_lessons(cls):
-        session = get_session()
-        return session.query(cls).filter(cls.order > 0).order_by(cls.order)
-
-    @classmethod
-    def reorder_lessons(cls, lessons_order):
-        lessons_mapping = [
-            {"id": lessons_order[i], "order": i + 1} for i in range(len(lessons_order))
-            ]
-        db = get_session()
-        db.bulk_update_mappings(cls, lessons_mapping)
-        db.commit()
-
 
 class LessonTranslation(Base):
 
@@ -523,7 +562,7 @@ class LessonTranslation(Base):
     lesson = orm.relationship("Lesson", back_populates="translations")
 
 
-class Segment(Base):
+class Segment(OrderedBase):
 
     __tablename__ = 'lesson_segments'
 
@@ -535,7 +574,6 @@ class Segment(Base):
     url = sa.Column(sa.String)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
-    order = sa.Column(sa.Integer)
     _thumbnail = sa.Column(sa.String)  # S3 Link
 
     lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
@@ -551,6 +589,10 @@ class Segment(Base):
     @property
     def duration(self):
         return self.duration_seconds
+
+    @property
+    def strfduration(self):
+        return str(timedelta(seconds=self.duration_seconds))
 
     @property
     def template(self):

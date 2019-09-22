@@ -6,7 +6,7 @@ from app import app
 from .utils import make_authorized_call
 
 
-class TestLessonsRoutes(unittest.TestCase):
+class TestSegmentsRoutes(unittest.TestCase):
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
@@ -44,13 +44,14 @@ class TestLessonsRoutes(unittest.TestCase):
         title="Segment",
         duration_seconds=200,
         url="fitzroyacademy.com",
+        order=0,
     ):
         segment = datamodels.Segment(
             title=title,
             duration_seconds=duration_seconds,
             url=url,
             language="EN",
-            order=1,
+            order=order,
             _thumbnail=thumbnail,
             lesson=lesson,
         )
@@ -80,7 +81,7 @@ class TestLessonsRoutes(unittest.TestCase):
         u.password = password
         return u
 
-    def test_change_order_data_validation(self):
+    def test_change_order_of_intro_segment(self):
         course = self.make_standard_course(guest_access=True)
         self.session.add(course)
 
@@ -88,182 +89,26 @@ class TestLessonsRoutes(unittest.TestCase):
         self.session.add(user)
         course.add_instructor(user)
 
-        l1 = self.make_standard_course_lesson(
-            title="intro", course=course, order=0
-        )  # intro lesson
-        l2 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
-        l3 = self.make_standard_course_lesson(title="lesson 2", course=course, order=2)
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
         self.session.add(l1)
-        self.session.add(l2)
-        self.session.add(l3)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0)
+        s2 = self.make_segment(l1, title="Segment 1", order=1)
+        s3 = self.make_segment(l1, title="Segment 2", order=2)
+        self.session.add(s1)
+        self.session.add(s2)
+        self.session.add(s3)
         self.session.commit()
 
-        # No data
         response = make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
+            url="/course/abc-123/lessons/{}/segments/reorder".format(l1.id),
             user=user,
-            data={},
-            expected_status_code=400,
-        )
-
-        self.assertEqual(response.json["message"], "No data")
-
-        # Empty list
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
-            user=user,
-            data={"items_order": ""},
-            expected_status_code=400,
-        )
-
-        self.assertEqual(response.json["message"], "Expected ordered list of items")
-
-        # Wong data
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
-            user=user,
-            data={"items_order": "1,s,0"},
-            expected_status_code=400,
-        )
-
-        self.assertEqual(response.json["message"], "Wrong data format")
-
-        # Wong number of lessons
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
-            user=user,
-            data={"items_order": "1,2,3,4,5"},
+            data={"items_order": "{},{}".format(s2.id, s1.id)},
             expected_status_code=400,
         )
 
         self.assertEqual(response.json["message"], "Wrong number of items")
 
-    def test_change_order_unauthorized(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-
-        make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
-            user=user,
-            data={"items_order": "{},{}".format(1, 2)},
-            expected_status_code=404,
-        )
-
-    def test_change_order_of_intro_lesson(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        course.add_instructor(user)
-
-        l1 = self.make_standard_course_lesson(
-            title="intro", course=course, order=0
-        )  # intro lesson
-        l2 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
-        l3 = self.make_standard_course_lesson(title="lesson 2", course=course, order=2)
-        self.session.add(l1)
-        self.session.add(l2)
-        self.session.add(l3)
-        self.session.commit()
-
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
-            user=user,
-            data={"items_order": "{},{}".format(l2.id, l1.id)},
-            expected_status_code=400,
-        )
-
-        self.assertEqual(response.json["message"], "Wrong number of items")
-
-    def test_change_lessons_order(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        course.add_instructor(user)
-
-        l1 = self.make_standard_course_lesson(
-            title="intro", course=course, order=0
-        )  # intro lesson
-        l2 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
-        l3 = self.make_standard_course_lesson(title="lesson 2", course=course, order=2)
-        self.session.add(l1)
-        self.session.add(l2)
-        self.session.add(l3)
-        self.session.commit()
-
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/reorder",
-            user=user,
-            data={"items_order": "{},{}".format(l3.id, l2.id)},
-            expected_status_code=200,
-        )
-
-        self.assertEqual(response.json["message"], "Order updated")
-        self.assertEqual(self.session.query(datamodels.Lesson).get(l3.id).order, 1)
-        self.assertEqual(self.session.query(datamodels.Lesson).get(l2.id).order, 2)
-
-    def test_delete_lesson(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        course.add_instructor(user)
-
-        l1 = self.make_standard_course_lesson(
-            title="intro", course=course, order=0
-        )  # intro lesson
-        l2 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
-        l3 = self.make_standard_course_lesson(title="lesson 2", course=course, order=2)
-        l4 = self.make_standard_course_lesson(title="lesson 3", course=course, order=3)
-        self.session.add(l1)
-        self.session.add(l2)
-        self.session.add(l3)
-        self.session.add(l4)
-        self.session.commit()
-
-        self.assertEqual(len(course.lessons), 4)
-
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/delete".format(l3.id),
-            user=user,
-            data={},
-            expected_status_code=200,
-        )
-
-        self.assertEqual(len(course.lessons), 3)
-        self.assertEqual(response.json["success_url"], "/course/abc-123/edit")
-        lessons = datamodels.Lesson.get_ordered_items()
-        self.assertEqual(lessons[0].order, 1)
-        self.assertEqual(lessons[0].title, "lesson 1")
-        self.assertEqual(lessons[1].order, 2)
-        self.assertEqual(lessons[1].title, "lesson 3")
-
-    def test_delete_wrong_lesson_id(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        self.session.commit()
-        course.add_instructor(user)
-
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/10000000/delete",
-            user=user,
-            data={},
-            expected_status_code=400,
-        )
-
-        self.assertFalse(response.json["success"])
-
-    def test_delete_lesson_not_in_course(self):
+    def test_reorder_segments_lesson_not_in_course(self):
         course = self.make_standard_course(guest_access=True)
         course2 = self.make_standard_course(
             guest_access=True, slug="course-2", code="course2", title="course 2"
@@ -273,15 +118,130 @@ class TestLessonsRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
         self.session.add(user)
-        self.session.commit()
         course.add_instructor(user)
 
-        l1 = self.make_standard_course_lesson(title="intro", course=course2, order=0)
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course2, order=1)
         self.session.add(l1)
         self.session.commit()
 
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/delete".format(l1.id),
+            url="/course/abc-123/lessons/{}/segments/reorder".format(l1.id),
+            user=user,
+            data={"items_order": "1,2"},
+            expected_status_code=400,
+        )
+
+        self.assertEqual(response.json["message"], "Course do not match lesson")
+
+    def test_change_segment_order(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        course.add_instructor(user)
+
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0)
+        s2 = self.make_segment(l1, title="Segment 1", order=1)
+        s3 = self.make_segment(l1, title="Segment 2", order=2)
+        self.session.add(s1)
+        self.session.add(s2)
+        self.session.add(s3)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/segments/reorder".format(l1.id),
+            user=user,
+            data={"items_order": "{},{}".format(s3.id, s2.id)},
+            expected_status_code=200,
+        )
+
+        self.assertEqual(response.json["message"], "Order updated")
+        self.assertEqual(self.session.query(datamodels.Segment).get(s3.id).order, 1)
+        self.assertEqual(self.session.query(datamodels.Segment).get(s2.id).order, 2)
+
+    def test_delete_segment(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        course.add_instructor(user)
+
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0)
+        s2 = self.make_segment(l1, title="Segment 1", order=1)
+        s3 = self.make_segment(l1, title="Segment 2", order=2)
+        self.session.add(s1)
+        self.session.add(s2)
+        self.session.add(s3)
+        self.session.commit()
+
+        self.assertEqual(len(l1.segments), 3)
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/segments/{}/delete".format(l1.id, s3.id),
+            user=user,
+            data={},
+            expected_status_code=200,
+        )
+
+        self.assertEqual(len(l1.segments), 2)
+        self.assertEqual(
+            response.json["success_url"],
+            "/course/abc-123/lessons/{}/edit".format(l1.id),
+        )
+        lessons = datamodels.Segment.get_ordered_items()
+        self.assertEqual(lessons[0].order, 1)
+        self.assertEqual(lessons[0].title, "Segment 1")
+
+    def test_delete_wrong_segment_id(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        course.add_instructor(user)
+
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/segments/1000000000/delete".format(l1.id),
+            user=user,
+            data={},
+            expected_status_code=400,
+        )
+
+        self.assertFalse(response.json["success"])
+
+    def test_delete_segment_not_in_course(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+
+        l1 = self.make_standard_course_lesson(title="intro", course=course, order=0)
+        l2 = self.make_standard_course_lesson(
+            title="other lesson", course=course, order=1
+        )
+        self.session.add(l1)
+        self.session.add(l2)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0)
+        s2 = self.make_segment(l2, title="Segment Intro 2", order=0)
+        self.session.add(s1)
+        self.session.add(s2)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/segments/{}/delete".format(l1.id, s2.id),
             user=user,
             data={},
             expected_status_code=400,

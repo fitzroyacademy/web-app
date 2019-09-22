@@ -66,9 +66,9 @@
             </div>
             {% endif %}
 
-            <div id="sortable-list" data-course-slug="{{ course.slug }}">
+            <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/reorder">
                 {% for lesson in lessons %}
-                <div id="lesson_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
+                <div id="item_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
                   <div class="fit_pic vid">
                     <img src="{{ lesson.thumbnail }}" alt="course">
                   </div>
