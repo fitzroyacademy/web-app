@@ -278,6 +278,7 @@ class Course(Base):
     year = sa.Column(sa.Date)
     course_code = sa.Column(sa.String(16), unique=True)
     paid = sa.Column(sa.Boolean)
+    amount = sa.Column(sa.DECIMAL(10,2))
     guest_access = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50), unique=True)

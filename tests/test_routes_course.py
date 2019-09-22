@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 import unittest
 import datamodels
 from app import app
@@ -306,6 +307,25 @@ class TestCourseRoutes(unittest.TestCase):
             data={"year": "123aaa"},
             expected_status_code=400,
         )
+
+        # wrong amount
+        make_authorized_call(
+            url="/course/fancy_slug/edit",
+            user=user,
+            data={"amount": "123aaa"},
+            expected_status_code=400,
+        )
+
+        # proper amount
+        self.assertIsNone(course.amount)
+        make_authorized_call(
+            url="/course/fancy_slug/edit",
+            user=user,
+            data={"amount": "123.12"},
+            expected_status_code=200,
+        )
+
+        self.assertEqual(course.amount, Decimal('123.12'))
 
     def test_remove_teacher(self):
         course = self.make_standard_course(guest_access=True)

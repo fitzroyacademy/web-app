@@ -294,12 +294,12 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 </div>
 
 
-                <div class="form-group" data-fit-perm-type="cost" data-fit-perm-detail="paid">
+                <div class="form-group {{ 'active' if course.options("paid") }}" data-fit-perm-type="cost" data-fit-perm-detail="paid">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text" id="">$</div>
                     </div>
-                    <input type="text" class="form-control" placeholder="e.g. 100">
+                    <input type="number" step="0.01" id="amount" name="amount" class="form-control" placeholder="e.g. 100" value="{% if course.amount %}{{ course.amount }}{% endif %}" data-course-edit>
                   </div>
                   <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
                 </div>

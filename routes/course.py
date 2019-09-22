@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal, InvalidOperation
 
 from flask import (
     abort,
@@ -72,6 +73,13 @@ def edit(user, slug=None):
                 )
             course_year = datetime(year=year, month=12, day=31).date()
             course.year = course_year
+        if "amount" in request.form:
+            try:
+                amount = Decimal(request.form["amount"])
+            except InvalidOperation:
+                return jsonify({"success": False, "message": "Amount is not a valid number"}), 400
+
+            course.amount = amount
         if "skill_level" in request.form:
             course.skill_level = request.form["skill_level"]
         if "workload_summary" in request.form:
