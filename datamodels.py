@@ -494,7 +494,11 @@ class Lesson(OrderedBase):
 
     @property
     def thumbnail(self):
-        return self.cover_image or self.segments[0].thumbnail
+        if self.cover_image:
+            return self.cover_image
+        elif self.segments:
+            return self.segments[0].thumbnail
+        return ''
 
     @property
     def duration_seconds(self):

@@ -7,7 +7,7 @@
 
     <div class="fit_course intro">
 
-    <form action="/course/{{ course.slug }}/lessons/add" method="POST" enctype="multipart/form-data">
+    <form action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
       <h1>
         <span class="txt">{% if not lesson %}Add{% else %}Edit{% endif %} Lesson.</span>
@@ -45,11 +45,12 @@
       <div class="fit_body fit_lessons">
           
 
-          <!-- DEV: Show only when there's no intro video -->
+          {% if not introduction %}
           <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
             <i class="fas fa-plus"></i>
             <span class="fit_txt">Add an intro video</span>
           </a>
+          {% endif %}
 
           <div>
 
@@ -73,7 +74,6 @@
             </div>
             {% endif %}
 
-            <!-- DEV: Put user-added lessons here -->
             <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/reorder">
                 {% for segment in segments %}
                 <div class="fit_btn" id="item_{{ segment.id }}" data-list-el-id="{{ segment.id }}">
