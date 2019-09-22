@@ -212,8 +212,7 @@ class TestModels(unittest.TestCase):
         lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 
-        with self.assertRaises(Exception):
-            thumbnail = lesson.thumbnail
+        self.assertEqual(lesson.thumbnail, "")
 
         s1 = self.make_segment(lesson=lesson)
         s2 = self.make_segment(lesson=lesson, thumbnail="thumbnail_2")

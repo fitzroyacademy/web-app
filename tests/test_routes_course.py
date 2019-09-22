@@ -101,9 +101,6 @@ class TestCourseRoutes(unittest.TestCase):
         lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 
-        with self.assertRaises(IndexError):  # Lesson without segment
-            response = s.get("/course/abc-123")
-
         segment = self.make_segment(lesson, "thumbnail_1")
         self.session.add(segment)
 
