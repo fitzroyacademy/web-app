@@ -61,13 +61,13 @@ $( document ).ready(function() {
   });
 
   $('#sortable-list').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
-        let lessonsOrder = [];
+        let itemsOrder = [];
         for (i = 0; i < evt.to.children.length; i++) {
-            lessonsOrder.push(evt.to.children[i].dataset['listElId'])
+            itemsOrder.push(evt.to.children[i].dataset['listElId'])
         }
-        let slug = evt.to.dataset['courseSlug'];
+        let url = evt.to.dataset['actionUrl'];
 
-        post(`/course/${slug}/reorder/lessons`, {'lessons_order': lessonsOrder});
+        post(url, {'items_order': itemsOrder});
 
     }});
 
@@ -312,6 +312,7 @@ $( document ).ready(function() {
   }  
 
   */
+
 
   // ------------------------------------------------------------
   $('[data-fit_iconselects]').each(function(e) {
@@ -771,6 +772,18 @@ $( document ).ready(function() {
     }
   });
 
+  delegate('#change-slug', 'click', (e, t) => {
+    let slug = t.dataset.courseSlug;
+    let value = document.querySelector('#course-slug').value;
+    post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            window.location.href = `/course/${JSON.parse(xhr.response)['slug']}/edit`
+        } else {
+                console.log('DEV: give me some message')
+            }
+    });
+  });
+
   delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
     let teacherId = e.target.dataset.teacherId;
     let slug = t.dataset.courseSlug;
@@ -820,6 +833,21 @@ $( document ).ready(function() {
         alert.html(responseJSON.message);
     });
   });
+
+  $('#fit_modal_delete').on('show.bs.modal', function(event){
+    document.querySelector('#confirm-delete').href = event.relatedTarget.href;
+  });
+
+  delegate('#confirm-delete', 'click', (e, t) => {
+    e.preventDefault();
+    post(t.href, {}, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            window.location.href = JSON.parse(xhr.response)['success_url']
+        } else {
+                console.log(JSON.parse(xhr.response)['message'])
+            }
+    });
+  })
 
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.

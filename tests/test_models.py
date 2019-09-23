@@ -6,7 +6,6 @@ from app import app
 
 
 class TestModels(unittest.TestCase):
-
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
@@ -15,80 +14,94 @@ class TestModels(unittest.TestCase):
         datamodels._clear_session_for_tests()
 
     @staticmethod
-    def makeUser(id=1, first_name='Homer', last_name='Simpson',
-                 email="homer@simpsons.com", username="homer",
-                 password="password", phone_number="555-444-1234",
-                 dob=None):
+    def makeUser(
+        id=1,
+        first_name="Homer",
+        last_name="Simpson",
+        email="homer@simpsons.com",
+        username="homer",
+        password="password",
+        phone_number="555-444-1234",
+        dob=None,
+    ):
         dob = dob or datetime.datetime.now()
-        u = datamodels.User(id=id, first_name=first_name, last_name=last_name,
-            email=email, username=username, phone_number=phone_number, dob=dob)
-        u.password = 'password'
+        u = datamodels.User(
+            id=id,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            username=username,
+            phone_number=phone_number,
+            dob=dob,
+        )
+        u.password = "password"
         return u
 
     @staticmethod
     def make_standard_course(
-            code='ABC123',
-            guest_access=False,
-            title='Foo Course',
-            slug='abc-123',
+        code="ABC123", guest_access=False, title="Foo Course", slug="abc-123"
     ):
         course = datamodels.Course(
-            course_code=code,
-            title=title,
-            slug=slug,
-            guest_access=guest_access)
+            course_code=code, title=title, slug=slug, guest_access=guest_access
+        )
         return course
 
     @staticmethod
-    def make_standard_course_lesson(course,
-                                    title='Lesson',
-                                    active=True,
-                                    language='EN',
-                                    slug='lesson',
-                                    order=1):
+    def make_standard_course_lesson(
+        course, title="Lesson", active=True, language="EN", slug="lesson", order=1
+    ):
         lesson = datamodels.Lesson(
             course=course,
             title=title,
             active=active,
             language=language,
             slug=slug,
-            order=order)
+            order=order,
+        )
         return lesson
 
     @staticmethod
-    def make_segment(lesson,
-                     thumbnail='thumbnail_1',
-                     title='Segment',
-                     duration_seconds=200,
-                     url='fitzroyacademy.com'):
+    def make_segment(
+        lesson,
+        thumbnail="thumbnail_1",
+        title="Segment",
+        duration_seconds=200,
+        url="fitzroyacademy.com",
+    ):
         segment = datamodels.Segment(
             title=title,
             duration_seconds=duration_seconds,
             url=url,
-            language='EN',
+            language="EN",
             order=1,
             _thumbnail=thumbnail,
-            lesson=lesson)
+            lesson=lesson,
+        )
         return segment
 
     @staticmethod
-    def makeInstitute(obj_id=1, name='University of Super Heroes', slug='university_of_super_heroes',
-                     logo='link_to_fancy_url'):
+    def makeInstitute(
+        obj_id=1,
+        name="University of Super Heroes",
+        slug="university_of_super_heroes",
+        logo="link_to_fancy_url",
+    ):
         institute = datamodels.Institute(name=name, id=obj_id, logo=logo, slug=slug)
         return institute
 
     def test_user_creation(self):
         u = self.makeUser(
             id=1,
-            first_name="Marge", last_name="Simpson",
+            first_name="Marge",
+            last_name="Simpson",
             email="marge@simpsons.com",
-            password="password"
+            password="password",
         )
         self.session.add(u)
         u2 = datamodels.get_user(1)
-        self.assertEqual(u2.full_name, 'Marge Simpson')
-        self.assertEqual(u2.email, 'marge@simpsons.com')
-        self.assertTrue(u2.check_password, 'password')
+        self.assertEqual(u2.full_name, "Marge Simpson")
+        self.assertEqual(u2.email, "marge@simpsons.com")
+        self.assertTrue(u2.check_password, "password")
 
     def test_student_enrollment(self):
         u = self.makeUser(id=1)
@@ -100,8 +113,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(u2.courses), 1)
         self.assertEqual(u2.courses[0].id, 1)
         self.assertEqual(
-            u2.course_enrollments[0].access_level,
-            datamodels.COURSE_ACCESS_STUDENT
+            u2.course_enrollments[0].access_level, datamodels.COURSE_ACCESS_STUDENT
         )
 
     def test_users_teaches(self):
@@ -115,11 +127,10 @@ class TestModels(unittest.TestCase):
         course.enroll(u)
         self.assertFalse(u.teaches(course))
 
-        u2 = self.makeUser(email='home@teachers.com', id=2, username='the_teacher')
+        u2 = self.makeUser(email="home@teachers.com", id=2, username="the_teacher")
         self.session.add(u2)
         course.add_instructor(u2)
         self.assertTrue(u2.teaches(course))
-
 
     def test_user_not_found(self):
         u = datamodels.get_user(1)
@@ -128,22 +139,24 @@ class TestModels(unittest.TestCase):
     def test_course_creation(self):
         c = self.make_standard_course()
         self.session.add(c)
-        c = datamodels.get_course_by_code('ABC123')
+        c = datamodels.get_course_by_code("ABC123")
         c2 = datamodels.get_course_by_slug("abc-123")
         self.assertEqual(c.title, "Foo Course")
         self.assertEqual(c, c2)
 
     def test_public_course_creation(self):
-        c = self.make_standard_course(code="DEF456", title="Bar Course", guest_access=True)
+        c = self.make_standard_course(
+            code="DEF456", title="Bar Course", guest_access=True
+        )
         self.session.add(c)
         c_results = datamodels.get_public_courses()
         for result in c_results:
-            if result.course_code=='DEF456':
+            if result.course_code == "DEF456":
                 c = result
-        self.assertEqual(c.title, 'Bar Course')
+        self.assertEqual(c.title, "Bar Course")
 
     def test_course_not_found(self):
-        u = datamodels.get_course_by_code('ABC123')
+        u = datamodels.get_course_by_code("ABC123")
         self.assertIsNone(u)
 
     def test_lesson_creation(self):
@@ -190,7 +203,7 @@ class TestModels(unittest.TestCase):
         self.assertIsNotNone(lesson2)
 
         # No such lesson
-        lesson2 = datamodels.get_lesson_by_slug(course.slug, 'no_such_lesson')
+        lesson2 = datamodels.get_lesson_by_slug(course.slug, "no_such_lesson")
         self.assertIsNone(lesson2)
 
     def test_get_lesson_thumbnail(self):
@@ -199,65 +212,66 @@ class TestModels(unittest.TestCase):
         lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 
-        with self.assertRaises(Exception):
-            thumbnail = lesson.thumbnail
+        self.assertEqual(lesson.thumbnail, "")
 
         s1 = self.make_segment(lesson=lesson)
-        s2 = self.make_segment(lesson=lesson, thumbnail='thumbnail_2')
+        s2 = self.make_segment(lesson=lesson, thumbnail="thumbnail_2")
         self.session.add(s1, s2)
 
-        self.assertEqual(lesson.thumbnail, 'thumbnail_1')
+        self.assertEqual(lesson.thumbnail, "thumbnail_1")
 
     def test_password(self):
         u = self.makeUser()
         self.session.add(u)
-        self.assertEqual(u.password, '')
+        self.assertEqual(u.password, "")
 
     def test_check_password(self):
         u = self.makeUser()
         self.session.add(u)
-        self.assertTrue(u.check_password('password'))
-        self.assertFalse(u.check_password('wrongpassword'))
+        self.assertTrue(u.check_password("password"))
+        self.assertFalse(u.check_password("wrongpassword"))
 
     def test_preference(self):
         u = self.makeUser()
         self.session.add(u)
 
         # A user do not have particular preference
-        preference = datamodels.UserPreference.get_preference(u, 'emails_from_teachers')
+        preference = datamodels.UserPreference.get_preference(u, "emails_from_teachers")
         self.assertIsNone(preference)
-        user_preference = u.preference('emails_from_teachers')
+        user_preference = u.preference("emails_from_teachers")
         self.assertFalse(user_preference)
 
         # Set a preference for a user
-        u.set_preference('emails_from_teachers', True)
-        user_preference = u.preference('emails_from_teachers')
+        u.set_preference("emails_from_teachers", True)
+        user_preference = u.preference("emails_from_teachers")
         self.assertTrue(user_preference)
 
         # Get preference that do not exists
         with self.assertRaises(Exception):
-            u.preference('there_is_no_such_preference')
+            u.preference("there_is_no_such_preference")
 
     def test_institute_creation(self):
         institute = self.makeInstitute()
         self.session.add(institute)
 
-        institute2 = datamodels.Institute.find_by_slug('university_of_super_heroes')
-        self.assertEqual(institute2.name, 'University of Super Heroes')
-        self.assertEqual(institute2.logo, 'link_to_fancy_url')
+        institute2 = datamodels.Institute.find_by_slug("university_of_super_heroes")
+        self.assertEqual(institute2.name, "University of Super Heroes")
+        self.assertEqual(institute2.logo, "link_to_fancy_url")
 
     def test_add_user_to_institute(self):
         institute = self.makeInstitute()
         self.session.add(institute)
 
-        institute2 = datamodels.Institute.find_by_slug('university_of_super_heroes')
+        institute2 = datamodels.Institute.find_by_slug("university_of_super_heroes")
         self.assertEqual(len(institute2.users), 0)
 
         user = self.makeUser()
         self.session.add(user)
 
         institute2.add_user(user)
-        self.assertEqual(len(self.session.query(datamodels.InstituteEnrollment).all()), 1)
+        self.assertEqual(
+            len(self.session.query(datamodels.InstituteEnrollment).all()), 1
+        )
         self.assertEqual(institute2.users[0].user.id, user.id)
         self.assertEqual(institute2.users[0].institute.id, institute2.id)
         self.assertEqual(institute2.users[0].access_level, 0)
@@ -265,16 +279,20 @@ class TestModels(unittest.TestCase):
     def test_program_creation(self):
         self.assertEqual(len(self.session.query(datamodels.Program).all()), 0)
 
-        program = datamodels.Program(name='Entrepreneurship masters', slug='entrepreneurship')
+        program = datamodels.Program(
+            name="Entrepreneurship masters", slug="entrepreneurship"
+        )
         self.session.add(program)
 
-        program2 = datamodels.get_program_by_slug('entrepreneurship')
-        self.assertEqual(program2.name, 'Entrepreneurship masters')
+        program2 = datamodels.get_program_by_slug("entrepreneurship")
+        self.assertEqual(program2.name, "Entrepreneurship masters")
 
     def test_program_enrollment(self):
-        program = datamodels.Program(name='Entrepreneurship masters', slug='entrepreneurship')
+        program = datamodels.Program(
+            name="Entrepreneurship masters", slug="entrepreneurship"
+        )
         self.session.add(program)
-        program2 = datamodels.get_program_by_slug('entrepreneurship')
+        program2 = datamodels.get_program_by_slug("entrepreneurship")
 
         user = self.makeUser()
         self.session.add(user)
@@ -299,7 +317,9 @@ class TestModels(unittest.TestCase):
         self.assertEqual(segment.user_progress(user), 0)
 
         # User has progress
-        progress = datamodels.SegmentUserProgress(user_id=user.id, segment_id=segment.id, progress=20)
+        progress = datamodels.SegmentUserProgress(
+            user_id=user.id, segment_id=segment.id, progress=20
+        )
         self.session.add(progress)
 
         progress = datamodels.get_segment_progress(segment.id, user.id)
@@ -343,7 +363,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(lesson.user_progress_list(user), [30, 30])
         self.assertEqual(lesson.user_progress_percent(user), 30)
 
-        user_b = self.makeUser(id=2, username='marge', email='marge@example.com')
+        user_b = self.makeUser(id=2, username="marge", email="marge@example.com")
         self.session.add(user_b)
         self.assertEqual(lesson.user_progress_percent(user_b), 0)
         self.assertEqual(lesson.user_progress_list(user_b), [0, 0])
@@ -441,4 +461,3 @@ class TestModels(unittest.TestCase):
 
         resource_a.log_anonymous_view()
         self.assertEqual(resource_a.total_views, 7)
- 

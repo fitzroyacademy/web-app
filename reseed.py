@@ -24,6 +24,7 @@ c = datamodels.Course(
 	course_code="abc123",
 	target_audience="Super early stage social enterprise founders, starting your first business or a new project from scratch.",
 	skill_level="Introduction.",
+	visibility="public",
 	info="Start here! Basic business models and customer discovery, to pitching for investment. ❤️ 🚀",
 	workload_summary="This course will take 20-30 hours on average, and is best done in teams.",
 	summary_html="""

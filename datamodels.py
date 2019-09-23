@@ -1,15 +1,15 @@
-from sqlalchemy.ext.declarative import declarative_base
-import sqlalchemy.orm as orm
-import sqlalchemy as sa
-from werkzeug.security import generate_password_hash, check_password_hash
 import json
+from datetime import datetime, timedelta
 from os import environ
-from sqlalchemy.ext.hybrid import hybrid_property
+
+import requests
+import sqlalchemy as sa
+import sqlalchemy.orm as orm
 from flask import current_app as app
 from flask import url_for
-import pprint
-import requests
-from datetime import datetime, timedelta
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_property
+from werkzeug.security import generate_password_hash, check_password_hash
 
 Base = declarative_base()
 
@@ -47,6 +47,26 @@ def dump(obj, seen=None):
                     else:
                         fields[f].append(dump(o, seen))
     return fields
+
+
+class OrderedBase(Base):
+    __abstract__ = True
+
+    order = sa.Column(sa.Integer)
+
+    @classmethod
+    def get_ordered_items(cls):
+        session = get_session()
+        return session.query(cls).filter(cls.order > 0).order_by(cls.order)
+
+    @classmethod
+    def reorder_items(cls, items_order):
+        lessons_mapping = [
+            {"id": items_order[i], "order": i + 1} for i in range(len(items_order))
+            ]
+        db = get_session()
+        db.bulk_update_mappings(cls, lessons_mapping)
+        db.commit()
 
 
 class User(Base):
@@ -258,6 +278,7 @@ class Course(Base):
     year = sa.Column(sa.Date)
     course_code = sa.Column(sa.String(16), unique=True)
     paid = sa.Column(sa.Boolean)
+    amount = sa.Column(sa.DECIMAL(10,2))
     guest_access = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50), unique=True)
@@ -266,6 +287,8 @@ class Course(Base):
     target_audience = sa.Column(sa.String())
     skill_level = sa.Column(sa.String())
     info = sa.Column(sa.String)
+
+    visibility = sa.Column(sa.String(16), default="public")
 
     summary_html = sa.Column(sa.String())
     workload_summary = sa.Column(sa.String())
@@ -279,6 +302,8 @@ class Course(Base):
     translations = orm.relationship("CourseTranslation", back_populates="course")
 
     preview_thumbnail = sa.Column(sa.String)
+
+    _lessons_queryset = None
 
     def add_user(self, user, access_level=0):
         association = CourseEnrollment(access_level=access_level)
@@ -300,6 +325,21 @@ class Course(Base):
 
     def options(self, option):
         return getattr(self,  option, False)
+
+    @property
+    def lessons_queryset(self):
+        if not self._lessons_queryset:
+            session = get_session()
+            self._lessons_queryset = session.query(Lesson).filter_by(course_id=self.id)
+        return self._lessons_queryset
+
+    @property
+    def intro_lesson(self):
+        return self.lessons_queryset.filter(Lesson.order == 0).first()
+
+    @property
+    def normal_lessons(self):
+        return self.lessons_queryset.filter(Lesson.order > 0).order_by(Lesson.order)
 
     @property
     def duration_seconds(self):
@@ -405,7 +445,7 @@ class CourseEnrollment(Base):
             CourseEnrollment.user_id == user_id
         ).all()
 
-class Lesson(Base):
+class Lesson(OrderedBase):
 
     __tablename__ = 'lessons'
 
@@ -414,7 +454,8 @@ class Lesson(Base):
     active = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
-    order = sa.Column(sa.Integer)
+    cover_image = sa.Column(sa.String)  # URL to picture resource
+    description = sa.Column(sa.String(140))
 
     course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
     course = orm.relationship("Course", back_populates="lessons")
@@ -424,10 +465,27 @@ class Lesson(Base):
 
     translations = orm.relationship("LessonTranslation", back_populates="lesson")
 
+    _segments_queryset = None
+
     @orm.validates('slug')
     def validate_slug(self, key, value):
         """ TODO: Check the parent course for any duplicate lesson slugs """
         return value
+
+    @property
+    def segments_queryset(self):
+        if not self._segments_queryset:
+            session = get_session()
+            self._segments_queryset = session.query(Segment).filter_by(lesson_id=self.id)
+        return self._segments_queryset
+
+    @property
+    def intro_segment(self):
+        return self.segments_queryset.filter(Segment.order == 0).first()
+
+    @property
+    def normal_segments(self):
+        return self.segments_queryset.filter(Segment.order > 0).order_by(Segment.order)
 
     @property
     def permalink(self):
@@ -439,7 +497,11 @@ class Lesson(Base):
 
     @property
     def thumbnail(self):
-        return self.segments[0].thumbnail
+        if self.cover_image:
+            return self.cover_image
+        elif self.segments:
+            return self.segments[0].thumbnail
+        return ''
 
     @property
     def duration_seconds(self):
@@ -465,6 +527,15 @@ class Lesson(Base):
         for segment in self.segments:
             output.append(segment.user_progress(user))
         return output
+
+    @property
+    def get_cover(self):
+        if self.cover_image:
+            if self.cover_image.startswith('http'):
+                return self.cover_image
+            else:
+                return "/uploads/{}".format(self.cover_image)
+        return ''
 
     @staticmethod
     def find_by_id(lesson_id):
@@ -498,7 +569,7 @@ class LessonTranslation(Base):
     lesson = orm.relationship("Lesson", back_populates="translations")
 
 
-class Segment(Base):
+class Segment(OrderedBase):
 
     __tablename__ = 'lesson_segments'
 
@@ -510,7 +581,6 @@ class Segment(Base):
     url = sa.Column(sa.String)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
-    order = sa.Column(sa.Integer)
     _thumbnail = sa.Column(sa.String)  # S3 Link
 
     lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
@@ -526,6 +596,10 @@ class Segment(Base):
     @property
     def duration(self):
         return self.duration_seconds
+
+    @property
+    def strfduration(self):
+        return str(timedelta(seconds=self.duration_seconds))
 
     @property
     def template(self):
