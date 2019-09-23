@@ -1310,8 +1310,8 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_iconselects.high_sub .fit_iconselect:hover{height: 7rem; width: 50%; margin-bottom: 5rem; border:none; text-decoration: none;}
 .fit_iconselects.high_sub .fit_iconselect .sub h4{display: block; font-size:1.1rem; font-weight: bold; color:$brand;}
 
-.fit_iconselects.high_sub .use_fitz i{color:$watermelon;}
-.fit_iconselects.high_sub .make_new i{color:$blue;}
+.fit_iconselects.high_sub .watermelon i{color:$watermelon;}
+.fit_iconselects.high_sub .blue i{color:$blue;}
 
 
 
@@ -1653,8 +1653,10 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 }
 
 // fancy placeholders for inputs
+.form-control::placeholder{color: $text_lighter;}
+
 .fit_fancyplace{position: relative;margin-bottom: 1rem;}
-.fit_fancyplace label{position: absolute; top:0; left: 0;padding: .75rem .75rem; color:$text_lightest; cursor: text;}
+.fit_fancyplace label{position: absolute; top:0; left: 0;padding: .75rem .75rem; color:$text_lighter; cursor: text;}
 .fit_fancyplace .form-control{padding: .75rem; height: calc(2em + .75rem + 2px);}
 
 // for animation:
@@ -1926,6 +1928,9 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 // ----------------------------------------------------------------------------------------------------------------
 // Custom radios for permissions and things
+.fit_radio_icons{}
+.fit_radio_icons.columned{column-count:2;}
+
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
 .fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
 .fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.15rem; left: 0; width: 2rem; text-align: center;}

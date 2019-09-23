@@ -1,0 +1,93 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_resource">
+  <form class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit resource.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+      </div>
+      <div class="modal-body">
+        
+        <div class="fit_fancyplace">
+          <label for="">Link</label>
+          <input type="url" name="url" class="form-control" placeholder="E.g. https://example.com" required data-fit-fancyplace>
+        </div>
+
+        <div class="fit_fancyplace">
+          <label for="">Title</label>
+          <input type="text" name="title" class="form-control" placeholder="E.g. My wonderful template" required data-fit-fancyplace>
+        </div>
+
+        <div class="form-group">
+          <textarea rows="3" type="text" class="form-control" id="???" placeholder="E.g. This link is the best because it has these excellent qualities..." value=""></textarea>
+        </div>
+
+        <label for="">Link type</label>          
+        <div class="form-group fit_radio_icons columned" data-fit-radio-icons>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" checked="checked" id="radio_1" name="radio">
+            <label class="form-check-label" for="radio_1">
+              <i class="fal fa-file-alt"></i> Google doc
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_2" name="radio">
+            <label class="form-check-label" for="radio_2">
+              <i class="fal fa-file-spreadsheet"></i> Google spreadsheet
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_3" name="radio">
+            <label class="form-check-label" for="radio_3">
+              <i class="fal fa-presentation"></i> Google slide
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_4" name="radio">
+            <label class="form-check-label" for="radio_4">
+              <i class="fal fa-image"></i> Google drawing
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_5" name="radio">
+            <label class="form-check-label" for="radio_5">
+              <i class="fab fa-youtube"></i> YouTube Video
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_6" name="radio">
+            <label class="form-check-label" for="radio_6">
+              <i class="fal fa-file-pdf"></i> PDF file
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_7" name="radio">
+            <label class="form-check-label" for="radio_7">
+              <i class="fal fa-file"></i> File (generic)
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio_8" name="radio">
+            <label class="form-check-label" for="radio_8">
+              <i class="fal fa-camera"></i> Image
+            </label>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </form>
+</div>

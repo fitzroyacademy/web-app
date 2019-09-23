@@ -71,7 +71,11 @@
             {% endfor %}
           {% endif %}
         </div>
+        
+        <a href="#?" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus"></i> New course</a>
+
       </div><!-- fit_course -->
+
       <!-- end vid stack -->
 
       <h3>
@@ -81,7 +85,7 @@
       <dl class="fit_summary_icons">
         <dt><i class="far fa-bell"></i> Notifications.</dt>
         <dd>
-          {{ pref_toggle('emails_from_teachers', 'Receieve emails and notifications from your teachers.') }} <!-- DEV: user privacy permissions. Let's talk this through -->
+          {{ pref_toggle('emails_from_teachers', 'Receieve emails and notifications from your teachers.') }} 
           {{ pref_toggle('emails_from_site', 'Receieve emails and notifications from Fitzroy Academy.') }} 
         </dd>
         <dt><i class="far fa-lock"></i> Privacy.</dt>
