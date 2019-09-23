@@ -199,12 +199,24 @@ header .fit_link:hover,
 .fit_alerts > div:first-child{margin-top: 1rem;}
 
 // loading spinner
-$spinner_size: 1.5rem;
+$spinner_size: 1.75rem;
 .fit_loading{position: absolute; top:0; left: 0; background: #fff; width: 2.5rem; height: $header_height; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .25s ease-in-out;}
 .fit_loading .circle{width: $spinner_size; height: $spinner_size; background: $bg_light; border-radius: $border_rad_r; position: relative;}
 .fit_loading .circle i{width: $spinner_size; height: $spinner_size; font-size: $spinner_size; color: $text_light; position: absolute; top:0; left: 0; animation-duration: 1s;}
 
-html.loading_active .fit_loading{opacity: 1;}
+
+.fit_loading.spinner .circle i{}
+
+.fit_loading.check .circle{background: $new_green;}
+.fit_loading.check .circle i,
+.fit_loading.error .circle i{font-size:1rem; display: flex; align-items: center; justify-content: center; color:#fff;}
+
+.fit_loading.error .circle{background: $new_red;}
+.fit_loading.error .circle i{color:#fff;}
+
+html.loading_spinner .fit_loading.spinner{opacity: 1;}
+html.loading_check .fit_loading.check{opacity: 1;}
+html.loading_error .fit_loading.error{opacity: 1;}
 
 // -----------------------------------------------------------------------------------------
 /* overall box */
