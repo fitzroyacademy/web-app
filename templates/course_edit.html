@@ -8,7 +8,7 @@
     <div class="fit_course intro">
 
       <h1>
-        <span class="txt">Edit course.</span>
+        <span class="txt">Course.</span>
         <small class="subtxt">
           <button class="btn btn-sm btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
           &nbsp;
@@ -203,7 +203,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     </div>
                     <input type="text" id="course-slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link">
                     <div class="input-group-append">
-                      <button id="change-slug" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Change</button>
+                      <button id="change-slug" class="btn btn-outline-secondary" type="button" data-course-slug="{{ course.slug }}">Change</button>
                     </div>
                   </div>
                   <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/{{ course.slug }}<strong data-fit-slug-reveal></strong></a></small>
@@ -236,7 +236,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                       <div class="fit_pic circle"><img src="{% if teacher.profile_picture %}{{ teacher.profile_picture }}{% else %}/assets/stub/marge.png{% endif %}" alt="user"></div>
                       <div class="fit_txt">{{ teacher.first_name }} {{ teacher.last_name }}</div>
                       <div class="sub buttonset">
-                        <a class="btn btn-sm btn-light" data-teacher-id="{{ teacher.id }}" data-course-slug="{{ course.slug }}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
+                        <a class="btn btn-sm btn-light" href="#" data-teacher-id="{{ teacher.id }}" data-course-slug="{{ course.slug }}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
                       </div>
                     </div>
                     {% endfor %}
