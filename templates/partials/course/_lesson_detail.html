@@ -48,11 +48,13 @@
   <div class="fit_body collapse" id="fit_lesson_teacher">
     {% for instructor in course.instructors %}
       <div class="fit_body_content">
-        <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button" aria-expanded="fitse" aria-controls="fit_lesson_resources">
+        <div class="fit_btn">
           <span class="fit_pic circle"><img src="{{ instructor.profile_picture }}" alt="user"></span>
-          <span class="fit_txt">{{ instructor.full_name }}</span> 
-        </a>
-        <p>&ldquo;{{ instructor.bio }}&rdquo;</p>
+          <span class="fit_txt">
+            {{ instructor.full_name }}
+            <small>{{ instructor.bio }}</small>
+          </span> 
+        </div>
       </div>
     {% endfor %}
   </div>
