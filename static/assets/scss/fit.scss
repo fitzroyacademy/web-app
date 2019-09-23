@@ -200,8 +200,8 @@ header .fit_link:hover,
 
 // loading spinner
 $spinner_size: 1.75rem;
-.fit_loading{position: absolute; top:0; left: 0; background: #fff; width: 2.5rem; height: $header_height; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .25s ease-in-out;}
-.fit_loading .circle{width: $spinner_size; height: $spinner_size; background: $bg_light; border-radius: $border_rad_r; position: relative;}
+.fit_loading{position: absolute; top:0; left: 0; background: #fff; width: 2.5rem; height: $header_height; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all .25s ease-in-out; display: none;}
+.fit_loading .circle{width: $spinner_size; height: $spinner_size; background: $bg_light; border-radius: $border_rad_r; position: relative; overflow: hidden;}
 .fit_loading .circle i{width: $spinner_size; height: $spinner_size; font-size: $spinner_size; color: $text_light; position: absolute; top:0; left: 0; animation-duration: 1s;}
 
 
@@ -214,9 +214,9 @@ $spinner_size: 1.75rem;
 .fit_loading.error .circle{background: $new_red;}
 .fit_loading.error .circle i{color:#fff;}
 
-html.loading_spinner .fit_loading.spinner{opacity: 1;}
-html.loading_check .fit_loading.check{opacity: 1;}
-html.loading_error .fit_loading.error{opacity: 1;}
+html.loading_spinner .fit_loading.spinner{opacity: 1; display: flex;}
+html.loading_check .fit_loading.check{opacity: 1; display: flex;}
+html.loading_error .fit_loading.error{opacity: 1; display: flex;}
 
 // -----------------------------------------------------------------------------------------
 /* overall box */
@@ -673,7 +673,7 @@ header .right,
 // -----------------------------------------------------------------------------------------
 /* video */
 
-.fit_vidya{position: relative;}
+.fit_vidya{position: relative; background: $blue;}
 .fit_vidya:after{padding-top: $ratio_169; display: block; content: '';}
 .fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0; border-radius: $border_rad_xl;}
 
@@ -1947,8 +1947,11 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_faq_edits{}
 .fit_faq_edit{}
 
-.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem;}
+.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
 .fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
+
+.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .5rem 0;}
+.fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // Custom radios for permissions and things
