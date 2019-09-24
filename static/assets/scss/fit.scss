@@ -989,7 +989,7 @@ Bleh:;
 }
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // user stuff, defaulting for h1
 
 .fit_avatared{position: relative; padding-left: 4rem;}
@@ -1007,7 +1007,7 @@ form.fit_user_edit{max-width: 30rem;}
 dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 // mess with styles for the toggle thingos
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // WD: Figure where this is used lol -->. .fit_summary_icons dd .form-group:first-child{margin-top: 1rem;}
 
 
@@ -1041,13 +1041,13 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 
 // weird forms
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 
 .form-control.fit_coursecode{max-width: 15rem}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // chart stuff
 .fit_chart{}
 
@@ -1109,7 +1109,7 @@ aside .fit_chart{margin: 1rem;}
 .apexcharts-tooltip-title{display: none;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Tables for analyrtics
 
 table.fit_stats{}
@@ -1158,7 +1158,7 @@ table.fit_colhover td:hover{cursor: default;}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // flag
 
 .fit_flag_group{margin-bottom: 2rem;}
@@ -1170,7 +1170,7 @@ table.fit_colhover td:hover{cursor: default;}
 
 .nav-link i{margin-right: .5rem;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // All the hiding and mobile and crap
 
 /* medium boye small sidebar */
@@ -1200,7 +1200,7 @@ table.fit_colhover td:hover{cursor: default;}
   html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
 }
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // the version of the site with the aside below...
 
 @media (min-width: 576px){
@@ -1249,7 +1249,7 @@ html.fit_minright aside .fit_hider{display: block;}
 html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // modals
 
 .modal{background: $white_fade;}
@@ -1281,7 +1281,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Iconselect: Sets of icons that can be selected!
 .fit_iconselects{display: flex; align-items:center; justify-content:space-between; text-align: center;margin-bottom: 2rem;}
 
@@ -1429,7 +1429,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // heroic introductio big texty friend
 
 .fit_hero{padding: 4rem 2rem; position: relative; text-align: center;}
@@ -1481,7 +1481,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_hero .fit_code .fit_entry_buttons .btn{margin: 0;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // some sales stuff like big images and whatever
 
 .fit_hero .fit_picture{max-width: 900px; margin: 0 auto;}
@@ -1502,7 +1502,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // the window for pictures and courses.
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
@@ -1568,7 +1568,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Keep watching, bucko! Get back on that horse, get on track, get it done ya hear.
 
 .fit_keep_watching{background: $blue; padding: 2rem 0; border-radius: 0 !important;}
@@ -1613,7 +1613,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
@@ -1699,7 +1699,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
 .fit_medium_nav .btn:last-child{margin-left: auto;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Login and sign up and whatnot
 
 
@@ -1750,7 +1750,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 /* the thing that makes big course code entry thing */
 /* NB this builds upon fit_fancyplace */
 
@@ -1862,7 +1862,7 @@ header .fit_search_header .results{position: fixed; display: flex; flex-directio
 
 html.fit_search_header_active .fit_search_header{display: flex;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Mobile menu fun
 
 .fit_mobile_menu{}
@@ -1935,7 +1935,7 @@ footer .fit_device svg > path{fill: $watermelon;}
 .fit_michael .fit_medium {text-align: center; max-width: 450px; margin: 0 auto; font-size: 1.2rem; background: $bg; border-radius: $border_rad_xl; padding: 2rem 2rem 1rem; margin-bottom: 10rem;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish
 
 .fit_debug{position: fixed; bottom: 2rem; right:2rem; right: 2rem; background: #fff; padding: 1rem; width: 6rem; height: 6rem; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
@@ -1962,7 +1962,7 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_quote cite a:hover{color: $blue;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // course edit stuff:
 [data-fit-perm-detail]{display: none}
 [data-fit-perm-detail].active{display: block;}
@@ -1986,7 +1986,7 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 .fit_quicksearch .results:empty{background: $bg_dark;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Edit FAQs
 
 .fit_faq_edits{}
@@ -1998,7 +1998,7 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .5rem 0;}
 .fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Custom radios for permissions and things
 .fit_radio_icons{}
 .fit_radio_icons.columned{column-count:2;}
@@ -2013,19 +2013,21 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // snackbar!
 .fit_snackbar{border:1px solid $border_light; border-radius: $border_rad_md;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Institute mode uses normal hero as much as possible!
 
 .fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // breezy mode for lessons
+
+html.course footer{background: $bg;}
 
 
 main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: auto; bottom: auto; padding: 0;}
@@ -2045,8 +2047,8 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 	main.fit_player.breezy .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
 
 
-	.fit_player.breezy aside{border-bottom: 1px solid $border_light;}
-	
+	.fit_player.breezy aside{}
+
 	.fit_player.breezy aside > .fits{padding: 1rem 0;}
 	.fit_player.breezy aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
 
@@ -2095,7 +2097,7 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 	main.fit_player.breezy{margin: 3rem auto 1rem;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // get yo wiggle on!
 
 .fit_wiggle_daddy:hover .fit_wiggle,
@@ -2135,7 +2137,7 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 }
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Other ideas!
 // Pulse thing: https://codepen.io/igorsheg/pen/MBpwGw
 

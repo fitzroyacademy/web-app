@@ -6,3 +6,5 @@ static/uploads
 Pipfile
 Pipfile.lock
 .idea/**
+static/assets/scss/fit.scss
+static/css/fit.css.map
