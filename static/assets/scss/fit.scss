@@ -295,6 +295,7 @@ html.fit_minleft{}
 
 // only show the lesson tooltips in certain modes
 html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
+
 @media (max-width: 900px){
 	html .fit_lesson_tooltip{visibility: visible;}
 }
@@ -2023,7 +2024,76 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;;}
 
 
+// ----------------------------------------------------------------------------------------------------------------
+// breezy mode for lessons
 
+
+main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: auto; bottom: auto; padding: 0;}
+.fit_player.breezy nav{display: none;}
+
+
+.fit_lesson_asider{border:1px solid $border_light; border-radius: $border_rad_md;}
+
+@media (max-width: 899px) {
+	.fit_lesson_asider{margin: .5rem} 
+}
+
+@media (min-width: 900px) {
+	main.fit_player.breezy{margin: 1rem;}
+	
+
+	main.fit_player.breezy .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
+
+
+	.fit_player.breezy aside{border-bottom: 1px solid $border_light;}
+	
+	.fit_player.breezy aside > .fits{padding: 1rem 0;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
+
+	.fit_player.breezy aside > .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] > *{}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] >i:first-child{width: 3rem;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+
+	// on / off
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+
+	// re-order buttons:
+	.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
+	.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
+	.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+
+	.fit_player.breezy aside .fits > .fit_body{order:100; border-top:1px solid $border_light; width: 100%; margin-top: -1px; padding-top:1rem;}
+
+
+
+	// logic for latest and actives
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed,
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$text; height: 3rem;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt:after{display: none;} // weird grad thing
+
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]:hover{background: transparent; color:$blue;}
+
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].active_latest{color:$blue; border-bottom:1px solid $blue;  margin-bottom: -1px;}
+
+
+	// collapsed bodies
+	.fit_player.breezy aside > .fits > .fit_body.collapse,
+	.fit_player.breezy aside > .fits > .fit_body.collapsing,
+	.fit_player.breezy aside > .fits > .fit_body.show{display: none; -webkit-transition: none;transition: none;}
+
+	.fit_player.breezy aside > .fits > .fit_body > .fit_body_content{padding: 1rem 1.5rem;}
+
+	.fit_player.breezy aside > .fits > .fit_body.active_latest{display: block;}
+
+}
+
+@media (min-width: 1200px) {
+	main.fit_player.breezy{margin: 3rem auto 1rem;}
+}
 
 // ----------------------------------------------------------------------------------------------------------------
 // get yo wiggle on!
