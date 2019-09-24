@@ -372,7 +372,7 @@ header .fit_device svg > path{fill:$brand;}
 
 
 // the basics and mods:
-.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem;}
+.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem; align-items:baseline;}
 
 .fit_btn > * {padding: 1rem 0;}
 
@@ -563,6 +563,10 @@ header .fit_btn:hover > .fit_txt:after,
 // make the text have a sneaky overflow
 aside .fit_btn .fit_txt{overflow: hidden; position: relative; white-space: nowrap;}
 aside .fit_btn .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), #fff); display: block; position: absolute; content: ''; height: 100%; top:0; right: 0; width: 1.5rem;}
+
+// hiding the text gradient for now
+aside .fit_btn .fit_txt:after{display: none}
+
 aside .fit_btn:hover .fit_txt:after,
 aside .fit_btn.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
 
@@ -2027,17 +2031,27 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 // ------------------------------------------------------------------------------------
 // breezy mode for lessons
 
-html.course footer{background: $bg;}
+html.course footer{display: none;}
 
 
 main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: auto; bottom: auto; padding: 0;}
 .fit_player.breezy nav{display: none;}
 
+@media (max-width: 575px) {
+	main.fit_player.breezy > article{position: sticky; top:0;}
+}
 
-.fit_lesson_asider{border:1px solid $border_light; border-radius: $border_rad_md;}
+.fit_lesson_asider{border:1px solid $border_light; border-radius: $border_rad_md; background: #fff;}
 
 @media (max-width: 899px) {
-	.fit_lesson_asider{margin: .5rem} 
+	main.fit_player.breezy aside .fits .fit_body.courselist{padding: .5rem; background: $bg;}
+}
+
+@media (max-width: 575px) {
+	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist,
+	main.fit_player.breezy aside .fits .fit_body.courselist{background: $bg;}
+	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist.collapsed{background: #fff;}
+
 }
 
 @media (min-width: 900px) {
