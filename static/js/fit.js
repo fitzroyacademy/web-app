@@ -43,6 +43,22 @@ $( document ).ready(function() {
   });
 
 
+  // snackbar examples
+  $('[data-snackbar-alert]').click(function(e) {
+    e.preventDefault();
+    
+    Snackbar.show({
+      text: $(this).data('snackbar-alert'),
+      pos: 'bottom-center',
+      backgroundColor: '#fff',
+      textColor: '#4f5153',
+      actionTextColor: '#2793f8',
+      customClass: 'fit_snackbar'
+    });
+  });
+
+
+
   // setting course permissions
   // This uses 'trigger' to find a 'detail' of the same 'type', and toggle active classes
   // NB: Show/hide is done via css, aka [data-data-fit-perm-type]{display: none}

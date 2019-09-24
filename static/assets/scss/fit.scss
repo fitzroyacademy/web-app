@@ -231,7 +231,8 @@ body{min-height: 100%;}
 body > header, 
 body > .fit_player nav,
 .fit_sidepanel .panel,
-.fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
+.fit_debug,
+.fit_snackbar{box-shadow: 0 0 1.5rem $box_shadow;}
 
 @media (min-width: 576px){
 	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
@@ -1999,12 +2000,16 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 
 
+// ----------------------------------------------------------------------------------------------------------------
+// snackbar!
+.fit_snackbar{border:1px solid $border_light; border-radius: $border_rad_md;}
 
 
 // ----------------------------------------------------------------------------------------------------------------
 // Institute mode uses normal hero as much as possible!
 
 .fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;;}
+
 
 
 
