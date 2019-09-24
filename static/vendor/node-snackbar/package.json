@@ -1,0 +1,71 @@
+{
+  "_from": "node-snackbar",
+  "_id": "node-snackbar@0.1.15",
+  "_inBundle": false,
+  "_integrity": "sha512-d0dRnIvqNx28lrawdEj91W4vAfz/0lmRmHIr3HHdqjOIGb4zq2vhVoGI/tOnobUFNkNrvlYGVLxsFex02MHmFA==",
+  "_location": "/node-snackbar",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "node-snackbar",
+    "name": "node-snackbar",
+    "escapedName": "node-snackbar",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/node-snackbar/-/node-snackbar-0.1.15.tgz",
+  "_shasum": "e64397b255c88014785037162953ecc30bba07e9",
+  "_spec": "node-snackbar",
+  "_where": "/Users/willdayble/dev/flask-frontend",
+  "author": {
+    "name": "Chris Brame"
+  },
+  "bugs": {
+    "url": "https://github.com/polonel/SnackBar/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Notifications inspired by Google Material Design",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-cssmin": "^0.14.0",
+    "grunt-contrib-jshint": "^0.12.0",
+    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-sass": "^2.1.0",
+    "matchdep": "^1.0.0"
+  },
+  "files": [
+    "src",
+    "dist",
+    "Gruntfile.js",
+    "index.d.ts"
+  ],
+  "homepage": "http://www.polonel.com/snackbar",
+  "keywords": [
+    "snackbar",
+    "matieral-design",
+    "toast"
+  ],
+  "license": "MIT",
+  "main": "src/js/snackbar.js",
+  "name": "node-snackbar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polonel/SnackBar.git"
+  },
+  "scripts": {
+    "test": ""
+  },
+  "types": "index.d.ts",
+  "version": "0.1.15"
+}
