@@ -494,10 +494,12 @@ header .fit_btn:hover > .fit_txt:after,
 
 // weird stuff in resource links
 .fit_pane .fit_btn.resource_link{background: #fff; border-radius: $border_rad_md; flex-wrap:wrap;}
+
 .fit_btn > .fit_txt .fa-external-link{margin-left: .25rem; font-size: 80%;}
 
 .fit_btn.resource_link i.lg{font-size: 2rem;}
-.fit_txt small{display: block; color:#ccd}
+.fit_txt small{display: block; color:$text_light;}
+.fit_pane .fit_btn.resource_link:hover small{color:$text;}
 
 .fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
