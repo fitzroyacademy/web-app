@@ -1617,6 +1617,10 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium li a:not(.btn),
 .fit_medium li a:not(.nav-link){text-decoration: underline; color:inherit;}
 
+.fit_medium p a:not(.btn):hover,
+.fit_medium li a:not(.btn):hover,
+.fit_medium li a:not(.nav-link):hover{color:$blue;}
+
 .fit_medium p .fa-external-link,
 .fit_medium li .fa-external-link{font-size: 70%; color:$text_light;}
 

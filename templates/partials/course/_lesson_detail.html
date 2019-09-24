@@ -1,6 +1,6 @@
 <div id="fit_lesson_detail" class="fits" data-fit-active-lesson="{{ lesson.id }}">
 
-  <a class="fit_btn resources" data-toggle="collapse" href="#fit_lesson_resources" role="button">
+  <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_resources" role="button">
     <i class="fal fa-books"></i>
     <span class="fit_txt">Resources</span> 
     <i class="fas fa-chevron-down"></i>
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <a class="fit_btn teacher collapsed" data-toggle="collapse" href="#fit_lesson_teacher" role="button" aria-expanded="fitse" aria-controls="fit_lesson_teacher">
+  <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_teacher" role="button" aria-expanded="fitse" aria-controls="fit_lesson_teacher">
     <i class="fal fa-chalkboard-teacher"></i>
     <span class="fit_txt">Teacher</span>
     <i class="fas fa-chevron-down"></i>
@@ -50,15 +50,17 @@
       <div class="fit_body_content">
         <div class="fit_btn">
           <span class="fit_pic circle"><img src="{{ instructor.profile_picture }}" alt="user"></span>
-          <span class="fit_txt">{{ instructor.full_name }}</span> 
+          <span class="fit_txt">
+            {{ instructor.full_name }}
+            <small>{{ instructor.bio }}</small>
+          </span> 
         </div>
-        <p>&ldquo;{{ instructor.bio }}&rdquo;</p>
       </div>
     {% endfor %}
   </div>
 
 {% if current_user and current_user.teaches(course) %}
-  <a class="fit_btn manage collapsed" data-toggle="collapse" href="#fit_lesson_manage" role="button" aria-expanded="fitse" aria-controls="fit_lesson_manage">
+  <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_manage" role="button" aria-expanded="fitse" aria-controls="fit_lesson_manage">
     <i class="fal fa-cog"></i>
     <span class="fit_txt">Manage <span href="#" class="badge badge-light">Teacher only</span></span>
     <i class="fas fa-chevron-down"></i>
