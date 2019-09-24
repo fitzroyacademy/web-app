@@ -68,8 +68,11 @@ $text_lightest: #d2d7da;
 
 $text_subtle: #b0b4b7;
 
-$border_lighter: #eff1f1;
 $border_light: #e1e4e5;
+$border_lighter: #eff1f1;
+$border_lightest: #f4f6f6;
+
+
 $border_medium: #d5d8d9;
 $border_dark: #c6cbcc;
 
@@ -854,6 +857,28 @@ a.card.rating h5{color: #f4b115;}
 	.fit_course.intro .fit_vidya{border-radius: 0; margin: 0 -1rem 0;}
 	.fit_course.intro .fit_vidya .placeholder{border-radius: 0;}
 }
+
+
+// fit_seduce makes people want to gobble it up and enrol oh yes...
+.fit_seduce{padding: 3rem 0 1rem; margin-bottom: 1rem; text-align: center; display: block; border-bottom: 3px solid $border_lightest;}
+
+.fit_seduce [class^='col']{position: relative;}
+.fit_seduce [class^='col']:after{content: ''; width: 3px; top:1rem; right:0; bottom: 2rem; display: block; position: absolute; background: $border_lightest;}
+.fit_seduce [class^='col']:last-child:after{background: none;}
+
+@media (max-width: 575px) {
+	.fit_seduce [class^='col']:after{display: none;}
+}
+
+.fit_seduce i.big{font-size: 4.5rem; height: 6rem;}
+.fit_seduce i.green{color: $new_green;}
+.fit_seduce i.blue{color: $blue;}
+.fit_seduce i.watermelon{color: $watermelon;}
+
+.fit_seduce h4{font-size: 1.4rem; font-weight: 900;}
+.fit_seduce p{font-size: 0.9rem; color: $text_light; margin: 0 auto 2rem; max-width: 240px;}
+
+.fit_seduce .btn-block{height: 3rem; margin: 1rem auto 2rem; max-width: 260px;}
 
 // mess with the headers
 
