@@ -63,9 +63,9 @@
                   <img src="{{ course.thumbnail }}" alt="course">
                   <span class="fas fa-check"></span>
                 </div>
-                <span class="fit_txt">{{ course.title }} {{ course.user_progress(current_user) }}%</span>
-                <span class="fit_txt secondary">{{ course.instructors|join_names }}</span>
-                <span class="fit_time">{{ course.duration_seconds|format_time }}</span>
+                <span class="fit_txt">{{ course.title }}</span>
+                <!-- <span class="fit_txt secondary">{{ course.instructors|join_names }}</span> -->
+                <span class="fit_sub">{{ course.duration_seconds|format_time }}</span>
               </a>
             </div>
             {% endfor %}

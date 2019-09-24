@@ -54,6 +54,7 @@ $black_80: rgba(0, 0, 0, .8);
 // possibly a new brand?!
 $watermelon: #f21e55;
 $watermelon_light: #f73c6d;
+$watermelon_lighter: #fa7fa0;
 $watermelon_dark: #c7003c;
 $watermelon_darker: #a90033;
 $watermelon_vibrant: #e6033e;
@@ -565,6 +566,7 @@ aside .fit_btn:hover .fit_txt:after,
 aside .fit_btn.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
 
 aside .fit_btn[data-toggle="collapse"]{border-top:1px solid $border_light;}
+aside .fit_btn[data-toggle="collapse"] .badge-light{color: $text_lighter; text-transform: uppercase;}
 
 // rotate all the chevrons and things
 html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
@@ -1047,6 +1049,10 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 // ----------------------------------------------------------------------------------------------------------------
 // chart stuff
 .fit_chart{}
+
+
+// in the sidebar
+aside .fit_chart{margin: 1rem;}
 
 // hax the chart svg
 .fit_chart_svg{width: 100%;}
@@ -1706,11 +1712,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .form-control::placeholder{color: $text_lighter;}
 
 .fit_fancyplace{position: relative;margin-bottom: 1rem;}
-.fit_fancyplace label{position: absolute; top:0; left: 0; padding: .75rem 1rem; color:$text_lighter; cursor: text;}
+.fit_fancyplace label{position: absolute; top:0; left: 0; padding: .75rem 1rem; color:$text_lighter; cursor: text; transition: all .1s ease-in-out;}
 .fit_fancyplace .form-control{padding: .75rem 1rem; height: calc(2em + .75rem + 2px);}
-
-// for animation:
-.fit_fancyplace label{transition: all .1s ease-in-out;}
 
 // when the label is shown:
 .fit_fancyplace.labelled label{opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .5rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
@@ -1730,7 +1733,16 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_fancyplace.active .form-control:empty::-webkit-input-placeholder { color:$text_light; }
 .fit_fancyplace.active .form-control:empty:-moz-placeholder { color:$text_light; } /* FF 4-18 */
 .fit_fancyplace.active .form-control:empty::-moz-placeholder { color:$text_light; } /* FF 19+ */
-.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$text_light; } /* IE 10+ */.form-control::-webkit-input-placeholder{color:$text_light;}
+.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$text_light; } /* IE 10+ */
+
+
+// when watermelon
+.fit_form_code.fit_fancyplace.active .form-control:empty::-webkit-input-placeholder { color:$watermelon_light; }
+.fit_form_code.fit_fancyplace.active .form-control:empty:-moz-placeholder { color:$watermelon_light; } /* FF 4-18 */
+.fit_form_code.fit_fancyplace.active .form-control:empty::-moz-placeholder { color:$watermelon_light; } /* FF 19+ */
+.fit_form_code.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$watermelon_light; } /* IE 10+ */
+
+
 
 
 // login on its own
@@ -1760,7 +1772,7 @@ body > .fit_code {margin-top:10rem;}
 
 
 // weird label
-.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.6; padding-top: 0.5rem}
+.fit_form_code label{font-size: 2em; color:$watermelon_lighter; opacity: 1; padding-top: 0.5rem}
 
 .fit_form_code.active label,
 .fit_form_code.labelled label{position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
