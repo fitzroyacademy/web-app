@@ -11,6 +11,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from enums import VideoTypeEnum, SegmentPermissionEnum
+
 Base = declarative_base()
 
 def dump(obj, seen=None):
@@ -305,6 +307,9 @@ class Course(Base):
 
     _lessons_queryset = None
 
+    def get_ordered_lessons(self):
+        return Lesson.get_ordered_items().filter(Lesson.course_id == self.id)
+
     def add_user(self, user, access_level=0):
         association = CourseEnrollment(access_level=access_level)
         association.course = self
@@ -354,7 +359,10 @@ class Course(Base):
 
     @property
     def thumbnail(self):
-        return self.lessons[0].thumbnail
+        if self.cover_image:
+            return self.cover_image
+        elif self.lessons:
+            return self.lessons[0].thumbnail
 
     @property
     def instructors(self):
@@ -514,6 +522,9 @@ class Lesson(OrderedBase):
     def strfduration(self):
         return str(timedelta(seconds=self.duration_seconds))
 
+    def get_ordered_segments(self):
+        return Segment.get_ordered_items().filter(Segment.lesson_id == self.id)
+
     def user_progress_percent(self, user):
         if len(self.segments) is 0:
             return 100
@@ -575,7 +586,16 @@ class Segment(OrderedBase):
 
     id = sa.Column(sa.Integer, primary_key=True)
     type = sa.Column(sa.String)
+    video_type = sa.Column(
+        sa.Enum(VideoTypeEnum),
+        nullable=True
+    )
+    permission = sa.Column(
+        sa.Enum(SegmentPermissionEnum),
+        nullable=True
+    )
     title = sa.Column(sa.String)
+    text = sa.Column(sa.String)
     duration_seconds = sa.Column(sa.Integer)
     external_id = sa.Column(sa.String)
     url = sa.Column(sa.String)
@@ -616,8 +636,9 @@ class Segment(OrderedBase):
 
     @property
     def thumbnail(self):
-        if self._thumbnail is None:
+        if not self._thumbnail and self.external_id:
             self._thumbnail = fetch_thumbnail(self.external_id)
+        elif not self._thumbnail:
             return "http://placekitten.com/640/360"
         return self._thumbnail
 

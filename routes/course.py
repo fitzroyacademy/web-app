@@ -54,10 +54,10 @@ def code():
         return render_template("code.html", **data)
 
 
-@blueprint.route("/<slug>/edit", methods=["GET", "POST"])
+@blueprint.route("/<course_slug>/edit", methods=["GET", "POST"])
 @login_required
-def edit(user, slug=None):
-    course = datamodels.get_course_by_slug(slug)
+def edit(user, course_slug=None):
+    course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
@@ -137,10 +137,10 @@ def edit(user, slug=None):
     return render_template("course_edit.html", **data)
 
 
-@blueprint.route("/<slug>/edit/slug", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/slug", methods=["POST"])
 @login_required
-def change_slug(user, slug=None):
-    course = datamodels.get_course_by_slug(slug)
+def change_course_slug(user, course_slug=None):
+    course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
@@ -171,10 +171,10 @@ def change_slug(user, slug=None):
     return jsonify({"slug": course.slug})
 
 
-@blueprint.route("/<slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"])
 @login_required
-def remove_teacher(user, slug=None, teacher_id=None):
-    course = datamodels.get_course_by_slug(slug)
+def remove_teacher(user, course_slug=None, teacher_id=None):
+    course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
@@ -192,10 +192,10 @@ def remove_teacher(user, slug=None, teacher_id=None):
     )
 
 
-@blueprint.route("/<slug>/edit/add/teacher", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/add/teacher", methods=["POST"])
 @login_required
-def add_teacher(user, slug=None):
-    course = datamodels.get_course_by_slug(slug)
+def add_teacher(user, course_slug=None):
+    course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
@@ -230,10 +230,10 @@ def add_teacher(user, slug=None):
     )
 
 
-@blueprint.route("/<slug>/edit/options/<option>/<on_or_off>", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/options/<option>/<on_or_off>", methods=["POST"])
 @login_required
 @teacher_required
-def set_options(user, course, slug=None, option=None, on_or_off=False):
+def set_options(user, course, course_slug=None, option=None, on_or_off=False):
     """ Set course options. """
 
     if option not in ["draft", "guest_access", "paid", "visibility"]:

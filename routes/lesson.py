@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, jsonify
+from flask import Blueprint, render_template, request, redirect, jsonify, flash
 from slugify import slugify
 
 import datamodels
@@ -12,22 +12,22 @@ blueprint = Blueprint("lesson", __name__, template_folder="templates")
 
 @blueprint.route("/lessons")
 def lessons():
-    return render_template("lesson_chart.html") @blueprint.route(
+    return render_template("lesson_chart.html") @ blueprint.route(
         "/<slug>/lessons/reorder", methods=["GET", "POST"]
     )
 
 
-@blueprint.route("/<slug>/lessons/reorder", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"])
 @login_required
 @teacher_required
-def reorder_lessons(user, course, slug=None):
+def reorder_lessons(user, course, course_slug=None):
     return reorder_items(request, datamodels.Lesson, course.lessons)
 
 
-@blueprint.route("/<slug>/lessons/add", methods=["GET", "POST"])
+@blueprint.route("/<course_slug>/lessons/add", methods=["GET", "POST"])
 @login_required
 @teacher_required
-def course_add_lesson(user, course, slug):
+def course_add_lesson(user, course, course_slug):
     form = AddLessonForm(request.form)
     if request.method == "POST":
         if form.validate():
@@ -50,15 +50,19 @@ def course_add_lesson(user, course, slug):
             db.commit()
 
             return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
+        else:
+            for error in form.errors:
+                flash(error)
+            return redirect("/course/{}/edit".format(course.slug))
 
     data = {"course": course, "form": form}
     return render_template("partials/course/_lesson.html", **data)
 
 
-@blueprint.route("/<slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
 @login_required
 @teacher_required
-def course_edit_lesson(user, course, slug, lesson_id):
+def course_edit_lesson(user, course, course_slug, lesson_id):
     lesson = datamodels.Lesson.find_by_id(lesson_id)
     form = AddLessonForm(request.form, lesson)
     data = {
@@ -71,10 +75,10 @@ def course_edit_lesson(user, course, slug, lesson_id):
     return render_template("partials/course/_lesson.html", **data)
 
 
-@blueprint.route("/<slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
 @login_required
 @teacher_required
-def course_delete_lesson(user, course, slug, lesson_id):
+def course_delete_lesson(user, course, course_slug, lesson_id):
 
     lesson = datamodels.Lesson.find_by_id(lesson_id)
     if lesson and lesson.course_id == course.id:
@@ -86,7 +90,7 @@ def course_delete_lesson(user, course, slug, lesson_id):
         if list_of_lessons:
             datamodels.Lesson.reorder_items(list_of_lessons)
 
-        return jsonify({"success_url": "/course/{}/edit".format(slug)})
+        return jsonify({"success_url": "/course/{}/edit".format(course_slug)})
 
     return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400
 

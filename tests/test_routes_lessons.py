@@ -288,3 +288,48 @@ class TestLessonsRoutes(unittest.TestCase):
         )
 
         self.assertFalse(response.json["success"])
+
+    def test_add_lesson(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+
+        self.assertEqual(len(course.lessons), 0)
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/add",
+            user=user,
+            data={
+                "title": "Get out of the building",
+                "description": "Don't be afraid of talking to people.",
+            },
+            expected_status_code=302,
+        )
+
+        self.assertEqual(len(course.lessons), 1)
+
+    def test_add_lesson_without_data(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+
+        self.assertEqual(len(course.lessons), 0)
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/add",
+            user=user,
+            data={"title": "Get out of the building"},
+            expected_status_code=302,
+        )
+
+        self.assertEqual(len(course.lessons), 0)

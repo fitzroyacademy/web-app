@@ -96,9 +96,6 @@ class TestCourseRoutes(unittest.TestCase):
         course = self.make_standard_course(guest_access=True)
         self.session.add(course)
 
-        with self.assertRaises(IndexError):
-            response = s.get("/course/abc-123")
-
         lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 

@@ -872,6 +872,11 @@ $( document ).ready(function() {
     document.querySelector('#confirm-delete').href = event.relatedTarget.href;
   });
 
+  $('#fit_modal_add_segment').on('show.bs.modal', function(event){
+    document.querySelector('#add-video-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addVideo'];
+    document.querySelector('#add-text-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addText'];
+  });
+
   delegate('#confirm-delete', 'click', (e, t) => {
     e.preventDefault();
     post(t.href, {}, (responseText, xhr) => {
@@ -881,7 +886,12 @@ $( document ).ready(function() {
                 console.log(JSON.parse(xhr.response)['message'])
             }
     });
-  })
+  });
+
+  delegate('#text-segment', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_editor').html();
+    $('#text_segment_content').val(mysave);
+  });
 
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.

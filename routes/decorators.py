@@ -29,12 +29,12 @@ def teacher_required(function):
     """
 
     @wraps(function)
-    def decorated_function(user, slug, *args, **kwargs):
-        course = datamodels.get_course_by_slug(slug)
+    def decorated_function(user, course_slug, *args, **kwargs):
+        course = datamodels.get_course_by_slug(course_slug)
 
         if not course or not user.teaches(course):
             raise abort(404, "No such course or you don't have permissions to edit it")
 
-        return function(user, course, slug, *args, **kwargs)
+        return function(user, course, course_slug, *args, **kwargs)
 
     return decorated_function
