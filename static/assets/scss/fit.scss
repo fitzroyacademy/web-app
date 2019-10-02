@@ -379,8 +379,8 @@ header .fit_device svg > path{fill:$brand;}
 nav .fit_btn,
 aside .fit_btn{color: $text;}
 
-.fit_btn:hover,
-.fit_btn.active{text-decoration: none; background: $bg;}
+a.fit_btn:hover,
+a.fit_btn.active{text-decoration: none; background: $bg;}
 a.fit_btn:hover{color:$blue;}
 
 // icons, fixed width
@@ -550,15 +550,19 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_lesson > .collapse.show{border-bottom: 1px solid $border_light;}
 
 // weird hover thingy
-.fit_hovermin{display:none; position: absolute; top:0; width: 4rem; border-radius: 999rem;}
+// removing display:none; for clarity
+.fit_hovermin{ position: absolute; top:0; width: 4rem; border-radius: 999rem; display: block;}
 
 // omg this is some hacky bullshit right here
 // we need the hover to go over the top of the _sub text, so we make a psuedoelement with the chevron in it.
 // it's a circle so it doesn't look weird when rotating. JAYSIS.
-.fit_sub + .fit_hovermin:after{display: block; content: "\f077"; display: flex; align-items: center; justify-content: center; background: $bg; height: 3rem; width: 3rem;  position: absolute; top:0rem; left: 0.5rem; border-radius: $border_rad_r;}
+.fit_sub + .fit_hovermin:after{display: block; content: "\f077"; display: flex; align-items: center; justify-content: center; background: #fff; height: 3rem; width: 3rem;  position: absolute; top:0rem; left: 0.5rem; border-radius: $border_rad_r; color:$text_lighter;}
 .fit_hovermin:last-child{right: 0;}
 .fit_hovermin:first-child{left: 0;}
 .fit_btn:hover .fit_hovermin{display: block;}
+
+// hover is weird
+a.fit_btn:hover .fit_sub + .fit_hovermin:after{background: $bg; color:$blue;}
 
 // make the text have a sneaky overflow
 aside .fit_btn .fit_txt{overflow: hidden; position: relative; white-space: nowrap;}
@@ -570,7 +574,7 @@ aside .fit_btn .fit_txt:after{display: none}
 aside .fit_btn:hover .fit_txt:after,
 aside .fit_btn.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
 
-aside .fit_btn[data-toggle="collapse"]{border-top:1px solid $border_light;}
+// aside .fit_btn[data-toggle="collapse"]{border-top:1px solid $border_light;}
 aside .fit_btn[data-toggle="collapse"] .badge-light{color: $text_lighter; text-transform: uppercase;}
 
 // rotate all the chevrons and things
@@ -581,7 +585,12 @@ html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
 .fit_btn.collapsed > .fit_hovermin{transform: rotate(-180deg);}
 
 .fit_lesson > .fit_btn{border-top: 1px solid $border_light; transition: border-top .2s ease-in-out;}
-.fit_lesson > .fit_btn.collapsed{border-top: 1px solid #fff;}
+.fit_lesson > .fit_btn.collapsed{border-top-color: transparent;}
+
+// remove for first
+.fit_lessons .fit_lesson:first-child > .fit_btn{border-top: none; border-radius: $border_rad_sm $border_rad_sm 0 0}
+.fit_lessons .fit_lesson:last-child > .fit_btn,
+.fit_lessons .fit_lesson:last-child > .collapse.show{border-bottom: none; border-radius: 0 0 $border_rad_sm $border_rad_sm}
 
 
 // subtler colours sometimes
@@ -661,7 +670,7 @@ header .right,
 .fit_lesson > .fit_link{border-top: 1px solid #e1e4e5;}
 .fit_lesson > .fit_link.collapsed{border-top: 1px solid #fff;}
 
-.fit_body .fit_segments{margin:-0.25rem 0 0rem; border-bottom: 1px solid #e1e4e5;}
+.fit_body .fit_segments{margin:-0.25rem 0 0rem;}
 .fit_segments .fit_link{padding-top: 0.75rem; padding-bottom: 0.75rem; min-height: 2.75rem; font-size: 0.9rem; color: #464749;}
 
 .fit_segments .fit_link.complete{color: #aaa;}
@@ -1279,6 +1288,8 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_modal_single .fit_iconselects.high_sub .fit_iconselect, 
 .fit_modal_single .fit_iconselects.high_sub .fit_iconselect:hover{width: 100%}
 
+// lessons in modal
+.modal .modal-body .fit_lessons{margin: -1rem -1rem 0;}
 
 .modal-title{font-weight: 900; font-size: 1.75rem; color:$text;}
 

@@ -76,21 +76,16 @@
             
           <h3>
             <span class="txt">Lesson plan.</span>
-            <small class="subtxt"><span class="fas fa-clock"></span> {{ course.duration_seconds|format_time }}</small>
+            <small class="subtxt">
+              <span class="fas fa-clock"></span> 
+              {{ course.duration_seconds|format_time }}
+            </small>
           </h3>
 
           <div class="fit_body fit_lessons">
 
             {% for lesson in course.lessons %}
-              <a class="fit_btn" href="{{ lesson.permalink }}"> <!-- DEV: This needs to link to the first segment of the relevant lesson -->
-                <div class="fit_pic vid">
-                  <!-- DEV: needs to call the image for this lesson -->
-                  <img src="{{ lesson.thumbnail }}" alt="course"> 
-                  <i class="fas fa-play"></i>
-                </div>
-                <span class="fit_txt">{{ lesson.title }}</span>
-                <span class="fit_sub">{{ lesson.duration }}</span>
-              </a>
+              {% include 'partials/course/_nav_lesson_nolink.html' %}
             {% endfor %}
           </div>
           <!-- end vid stack -->

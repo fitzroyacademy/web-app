@@ -32,9 +32,9 @@
 
       <h3>
         <span class="txt">Lesson plan.</span>
-        <small class="subtxt"><i class="fas fa-clock"></i>
-          <!-- DEV: NEeds to show calculated total lesson length -->
-          45:36
+        <small class="subtxt">
+          <i class="fas fa-clock"></i>
+          {{ course.duration_seconds|format_time }}
         </small>
       </h3>
 
@@ -72,9 +72,9 @@
                   <div class="fit_pic vid">
                     <img src="{{ lesson.thumbnail }}" alt="course">
                   </div>
-                  <div class="fit_txt">
+                  <a class="fit_txt" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit">
                     {{ lesson.title }}
-                  </div>
+                  </a>
 
                   <div class="sub buttonset">
 
@@ -87,6 +87,7 @@
 
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
                         <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit"><i class="fal fa-edit"></i> Edit</a>
+                        <a class="dropdown-item" href="{{ lesson.permalink }}" target="_blank"><i class="fal fa-external-link"></i> View live</a>
                         <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/delete" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
                       </div>
                     </div>
@@ -100,7 +101,7 @@
           
           <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
             <i class="fas fa-plus"></i>
-            <span class="fit_txt">Add a lesson / segment</span>
+            <span class="fit_txt">Add lesson</span>
           </a>
         
       </div>
