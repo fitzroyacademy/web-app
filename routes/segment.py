@@ -174,12 +174,12 @@ def add_edit_segment(user, course, course_slug, lesson_id, content_type, segment
 
     if instance.id:
         data["segment"] = instance
-        data["video_type"] = instance.video_type.value
-        data["permission"] = instance.permission.value
+        data["video_type"] = instance.video_type.value if instance.video_type else ''
+        data["permission"] = instance.permission.value if instance.permission else ''
     else:
         data["segment"] = None
-        data["video_type"] = VideoTypeEnum.standard
-        data["permission"] = SegmentPermissionEnum.normal
+        data["video_type"] = VideoTypeEnum.standard.value
+        data["permission"] = SegmentPermissionEnum.normal.value
 
     return render_template("partials/course/{}".format(template_name), **data)
 
