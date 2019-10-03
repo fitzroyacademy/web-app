@@ -17,12 +17,11 @@ blueprint = Blueprint("segment", __name__, template_folder="templates")
 @login_required
 @teacher_required
 def course_delete_segment(user, course, course_slug, lesson_id, segment_id):
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
     if (
         segment
         and lesson
-        and lesson.course_id == course.id
         and segment.lesson_id == lesson_id
     ):
         db = datamodels.get_session()
@@ -46,8 +45,8 @@ def course_delete_segment(user, course, course_slug, lesson_id, segment_id):
 @login_required
 @teacher_required
 def reorder_segments(user, course, course_slug, lesson_id):
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
-    if lesson and lesson.course_id != course.id:
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    if not lesson:
         return jsonify({"succes": False, "message": "Course do not match lesson"}), 400
 
     return reorder_items(request, datamodels.Segment, lesson.segments)
@@ -57,9 +56,13 @@ def reorder_segments(user, course, course_slug, lesson_id):
     "/<course_slug>/lessons/<int:lesson_id>/segments/add/<string:content_type>",
     methods=["GET", "POST"],
 )
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>/edit/<string:content_type>",
+    methods=["GET", "POST"],
+)
 @login_required
 @teacher_required
-def add_segment(user, course, course_slug, lesson_id, content_type):
+def add_edit_segment(user, course, course_slug, lesson_id, content_type, segment_id=None):
     if content_type not in ["text", "video", "intro_text", "intro_video"]:
         flash("Wrong action")
         return redirect("/course/{}/edit".format(course.slug))
@@ -67,11 +70,20 @@ def add_segment(user, course, course_slug, lesson_id, content_type):
     template_name = (
         "_video.html" if content_type in ["video", "intro_video"] else "_text.html"
     )
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
-    if lesson and lesson.course_id != course.id:
+    if not lesson:
         flash("Lesson do not match course")
         return redirect("/course/{}/edit".format(course.slug))
+
+    if segment_id:
+        instance = datamodels.Segment.find_by_id(segment_id)
+        if not instance or instance.lesson_id != lesson.id:
+            flash("No such segment for this lesson")
+            return redirect("/course/{}/edit".format(course.slug))
+    else:
+        instance = datamodels.Segment()
+        instance.lesson_id = lesson.id
 
     data = {"course": course, "lesson": lesson, "content_type": content_type}
 
@@ -82,27 +94,28 @@ def add_segment(user, course, course_slug, lesson_id, content_type):
         slug = slugify(request.form["segment_name"]) if segment_name else None
         db = datamodels.get_session()
 
+
         if (
-            slug
-            and datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None
+            slug and (datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None or slug == instance.slug)
         ):
-            if content_type in ["intro_text", "intro_video"]:
-                if (
-                    db.query(datamodels.Segment)
-                    .filter(
-                        datamodels.Segment.lesson_id == lesson_id,
-                        datamodels.Segment.order == 0,
-                    )
-                    .first()
-                ):
-                    flash("Intro segment already exists")
-                    return render_template(
-                        "partials/course/{}".format(template_name), **data
-                    )
+            if not instance.id:
+                if content_type in ["intro_text", "intro_video"]:
+                    if (
+                        db.query(datamodels.Segment)
+                        .filter(
+                            datamodels.Segment.lesson_id == lesson_id,
+                            datamodels.Segment.order == 0,
+                        )
+                        .first()
+                    ):
+                        flash("Intro segment already exists")
+                        return render_template(
+                            "partials/course/{}".format(template_name), **data
+                        )
+                    else:
+                        instance.order = 0
                 else:
-                    order = 0
-            else:
-                order = lesson.get_ordered_segments().count() + 1
+                    instance.order = lesson.get_ordered_segments().count() + 1
 
             if content_type in ["text", "intro_text"]:
                 if (
@@ -116,16 +129,12 @@ def add_segment(user, course, course_slug, lesson_id, content_type):
                         )
                     )
 
-                segment = datamodels.Segment(
-                    title=request.form["segment_name"],
-                    text=request.form["text_segment_content"],
-                    slug=slug,
-                    type="text",
-                    lesson_id=lesson.id,
-                    duration_seconds=0,
-                    order=order,
-                    permission=SegmentPermissionEnum.normal,
-                )
+                instance.title = request.form["segment_name"]
+                instance.text = request.form["text_segment_content"]
+                instance.slug = slug
+                instance.type = "text"
+                instance.duration_seconds = 0
+                instance.permission = SegmentPermissionEnum.normal
             else:
                 if "segment_url" not in request.form or not request.form["segment_url"]:
                     flash("Segment URL is required.")
@@ -147,25 +156,30 @@ def add_segment(user, course, course_slug, lesson_id, content_type):
                 )
 
                 # ToDo: validate URL
-                segment = datamodels.Segment(
-                    title=request.form["segment_name"],
-                    url=request.form["segment_url"],
-                    slug=slug,
-                    type="video",
-                    lesson_id=lesson.id,
-                    duration_seconds=0,
-                    order=order,
-                    permission=permission,
-                    video_type=video_type,
-                )
+                instance.title = request.form["segment_name"]
+                instance.url=request.form["segment_url"]
+                instance.slug=slug
+                instance.type = "video"
+                instance.duration_seconds = 0
+                instance.permission = permission
+                instance.video_type = video_type
 
-            db.add(segment)
+            db.add(instance)
             db.commit()
 
-            flash("Segment {} added".format(segment.title))
+            flash("Segment {} added".format(instance.title))
             return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
         else:
             flash("Can't create segment with such name.")
+
+    if instance.id:
+        data["segment"] = instance
+        data["video_type"] = instance.video_type.value
+        data["permission"] = instance.permission.value
+    else:
+        data["segment"] = None
+        data["video_type"] = VideoTypeEnum.standard
+        data["permission"] = SegmentPermissionEnum.normal
 
     return render_template("partials/course/{}".format(template_name), **data)
 
@@ -177,12 +191,11 @@ def add_segment(user, course, course_slug, lesson_id, content_type):
 @login_required
 @teacher_required
 def copy_segment(user, course, course_slug, lesson_id, segment_id):
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
 
     if (
-        lesson
-        and lesson.course_id != course.id
+        not lesson
         or segment
         and segment.lesson_id != lesson.id
     ):

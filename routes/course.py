@@ -57,6 +57,13 @@ def code():
 @blueprint.route("/<course_slug>/edit", methods=["GET", "POST"])
 @login_required
 def edit(user, course_slug=None):
+    """
+    Either retrieve a course edit view for a course given by course_slug parameter or edit a course via Ajax requests.
+
+    :param user: a User instance passed by decorator
+    :param course_slug: a unique course
+    :return: html response for GET method and json response for POST
+    """
     course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):

@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from enums import VideoTypeEnum, SegmentPermissionEnum
+from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum
 
 Base = declarative_base()
 
@@ -565,6 +565,18 @@ class Lesson(OrderedBase):
         except:
             return None
 
+    @staticmethod
+    def find_by_course_slug_and_id(course_slug, lesson_id):
+        session = get_session()
+        q = session.query(Lesson). \
+            join(Lesson.course). \
+            filter(Course.slug == course_slug). \
+            filter(Lesson.id == lesson_id)
+        try:
+            return q.first()
+        except:
+            return None
+
 
 class LessonTranslation(Base):
 
@@ -698,15 +710,17 @@ class SegmentTranslation(Base):
     segment = orm.relationship("Segment", back_populates="translations")
 
 
-class Resource(Base):
+class Resource(OrderedBase):
 
     __tablename__ = 'lesson_resources'
 
     id = sa.Column(sa.Integer, primary_key=True)
     title = sa.Column(sa.String)
     url = sa.Column(sa.String)
-    type = sa.Column(sa.String)
-    order = sa.Column(sa.Integer)
+    type = sa.Column(
+        sa.Enum(ResourceTypeEnum),
+        nullable=True
+    )
     featured = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))

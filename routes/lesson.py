@@ -80,8 +80,8 @@ def course_edit_lesson(user, course, course_slug, lesson_id):
 @teacher_required
 def course_delete_lesson(user, course, course_slug, lesson_id):
 
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
-    if lesson and lesson.course_id == course.id:
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    if lesson:
         db = datamodels.get_session()
         db.delete(lesson)
         db.commit()
@@ -93,6 +93,27 @@ def course_delete_lesson(user, course, course_slug, lesson_id):
         return jsonify({"success_url": "/course/{}/edit".format(course_slug)})
 
     return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400
+
+
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/delete", methods=["POST"])
+@login_required
+@teacher_required
+def delete_resource(user, course, course_slug, lesson_id, resource_id):
+    pass
+
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/resources/add", methods=["POST"])
+@login_required
+@teacher_required
+def add_resource(user, course, course_slug, lesson_id):
+    pass
+
+
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/edit", methods=["POST"])
+@login_required
+@teacher_required
+def edit_resource(user, course, course_slug, lesson_id, resource_id):
+    pass
+
 
 
 @blueprint.route("<course_slug>/<lesson_slug>")

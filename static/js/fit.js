@@ -883,6 +883,7 @@ $( document ).ready(function() {
         if (xhr.status == 200) {
             window.location.href = JSON.parse(xhr.response)['success_url']
         } else {
+                // DEV: add some messaging
                 console.log(JSON.parse(xhr.response)['message'])
             }
     });
