@@ -22,8 +22,19 @@ class ResourceTypeEnum(enum.Enum):
     google_sheet = "Google spreadsheet"
     google_slide = "Google slide"
     google_drawing = "Google drawing"
-    youtube = "YouTube"
-    video = "Video"
+    youtube = "YouTube Video"
     pdf = "PDF file"
     file_generic = "File (generic)"
     image = "Image"
+
+
+RESOURCE_CONTENT_IMG = {
+    "google_doc": "fal fa-file-alt",
+    "google_sheet": "fal fa-file-spreadsheet",
+    "google_slide": "fal fa-presentation",
+    "google_drawing": "fal fa-image",
+    "youtube": "fab fa-youtube",
+    "pdf": "fal fa-file-pdf",
+    "file_generic": "fal fa-file",
+    "image": "fal fa-camera",
+}

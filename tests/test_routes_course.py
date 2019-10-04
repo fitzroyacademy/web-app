@@ -322,7 +322,7 @@ class TestCourseRoutes(unittest.TestCase):
             expected_status_code=200,
         )
 
-        self.assertEqual(course.amount, Decimal('123.12'))
+        self.assertEqual(course.amount, Decimal("123.12"))
 
     def test_remove_teacher(self):
         course = self.make_standard_course(guest_access=True)

@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, jsonify, flash
+from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort
 from slugify import slugify
 
 import datamodels
 import stubs
 from dataforms import AddLessonForm
+from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG
 from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail, reorder_items
 
@@ -63,14 +64,20 @@ def course_add_lesson(user, course, course_slug):
 @login_required
 @teacher_required
 def course_edit_lesson(user, course, course_slug, lesson_id):
-    lesson = datamodels.Lesson.find_by_id(lesson_id)
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    if not lesson:
+        raise abort(404, "No such lesson")
+
     form = AddLessonForm(request.form, lesson)
     data = {
         "course": course,
         "lesson": lesson,
         "form": form,
         "introduction": lesson.intro_segment,
+        "resources": lesson.ordered_resources,
         "segments": lesson.normal_segments,
+        "resource_types": {r.name: r.value for r in ResourceTypeEnum},
+        "resource_images": RESOURCE_CONTENT_IMG,
     }
     return render_template("partials/course/_lesson.html", **data)
 
@@ -93,27 +100,6 @@ def course_delete_lesson(user, course, course_slug, lesson_id):
         return jsonify({"success_url": "/course/{}/edit".format(course_slug)})
 
     return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400
-
-
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/delete", methods=["POST"])
-@login_required
-@teacher_required
-def delete_resource(user, course, course_slug, lesson_id, resource_id):
-    pass
-
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/resources/add", methods=["POST"])
-@login_required
-@teacher_required
-def add_resource(user, course, course_slug, lesson_id):
-    pass
-
-
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/edit", methods=["POST"])
-@login_required
-@teacher_required
-def edit_resource(user, course, course_slug, lesson_id, resource_id):
-    pass
-
 
 
 @blueprint.route("<course_slug>/<lesson_slug>")

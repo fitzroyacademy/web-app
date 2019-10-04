@@ -19,11 +19,7 @@ blueprint = Blueprint("segment", __name__, template_folder="templates")
 def course_delete_segment(user, course, course_slug, lesson_id, segment_id):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
-    if (
-        segment
-        and lesson
-        and segment.lesson_id == lesson_id
-    ):
+    if segment and lesson and segment.lesson_id == lesson_id:
         db = datamodels.get_session()
         db.delete(segment)
         db.commit()
@@ -62,7 +58,9 @@ def reorder_segments(user, course, course_slug, lesson_id):
 )
 @login_required
 @teacher_required
-def add_edit_segment(user, course, course_slug, lesson_id, content_type, segment_id=None):
+def add_edit_segment(
+    user, course, course_slug, lesson_id, content_type, segment_id=None
+):
     if content_type not in ["text", "video", "intro_text", "intro_video"]:
         flash("Wrong action")
         return redirect("/course/{}/edit".format(course.slug))
@@ -94,9 +92,9 @@ def add_edit_segment(user, course, course_slug, lesson_id, content_type, segment
         slug = slugify(request.form["segment_name"]) if segment_name else None
         db = datamodels.get_session()
 
-
-        if (
-            slug and (datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None or slug == instance.slug)
+        if slug and (
+            datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None
+            or slug == instance.slug
         ):
             if not instance.id:
                 if content_type in ["intro_text", "intro_video"]:
@@ -157,8 +155,8 @@ def add_edit_segment(user, course, course_slug, lesson_id, content_type, segment
 
                 # ToDo: validate URL
                 instance.title = request.form["segment_name"]
-                instance.url=request.form["segment_url"]
-                instance.slug=slug
+                instance.url = request.form["segment_url"]
+                instance.slug = slug
                 instance.type = "video"
                 instance.duration_seconds = 0
                 instance.permission = permission
@@ -174,8 +172,8 @@ def add_edit_segment(user, course, course_slug, lesson_id, content_type, segment
 
     if instance.id:
         data["segment"] = instance
-        data["video_type"] = instance.video_type.value if instance.video_type else ''
-        data["permission"] = instance.permission.value if instance.permission else ''
+        data["video_type"] = instance.video_type.value if instance.video_type else ""
+        data["permission"] = instance.permission.value if instance.permission else ""
     else:
         data["segment"] = None
         data["video_type"] = VideoTypeEnum.standard.value
@@ -194,11 +192,7 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
 
-    if (
-        not lesson
-        or segment
-        and segment.lesson_id != lesson.id
-    ):
+    if not lesson or segment and segment.lesson_id != lesson.id:
         flash("Lesson or segment do not match course or lesson")
         return render_template("/course/{}/edit".format(course.slug), course=course)
 

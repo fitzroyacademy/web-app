@@ -70,6 +70,16 @@ class OrderedBase(Base):
         db.bulk_update_mappings(cls, lessons_mapping)
         db.commit()
 
+    @classmethod
+    def delete(cls, instance, parent=None, key=None):
+        if parent:
+            session = get_session()
+            session.delete(instance)
+            session.commit()
+
+            list_of_items = [l.id for l in session.query(cls).filter(getattr(cls, key)==parent.id).order_by(cls.order)]
+            if list_of_items:
+                cls.reorder_items(list_of_items)
 
 class User(Base):
 
@@ -496,6 +506,11 @@ class Lesson(OrderedBase):
         return self.segments_queryset.filter(Segment.order > 0).order_by(Segment.order)
 
     @property
+    def ordered_resources(self):
+        session = get_session()
+        return session.query(Resource).filter_by(lesson_id=self.id).order_by(Resource.order)
+
+    @property
     def permalink(self):
         return url_for(
             'lesson.view',
@@ -724,6 +739,7 @@ class Resource(OrderedBase):
     featured = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))
+    description = sa.Column(sa.String())
     anonymous_views = sa.Column(sa.Integer, default=0)
 
     lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
@@ -755,7 +771,7 @@ class Resource(OrderedBase):
         return 'fa-file'
 
     @property
-    def description(self):
+    def content_type(self):
         stubs = {
             'google_doc': 'Google document',
             'google_sheet': 'Google spreadsheet',
@@ -764,6 +780,18 @@ class Resource(OrderedBase):
         if self.type in stubs:
             return stubs[self.type]
         return 'External file'
+
+    @property
+    def content_img(self):
+        stubs = {
+            'google_sheet': 'fas fa-file-spreadsheet',
+            'google_doc': 'fal fa-file-alt',
+            'youtube': 'fab fa-youtube',
+            'pdf': 'far fa-file-pdf'
+        }
+        if self.type.name in stubs:
+            return stubs[self.type.name]
+        return 'fas fa-file-alt'
 
     @property
     def permalink(self):

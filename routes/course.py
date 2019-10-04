@@ -84,7 +84,12 @@ def edit(user, course_slug=None):
             try:
                 amount = Decimal(request.form["amount"])
             except InvalidOperation:
-                return jsonify({"success": False, "message": "Amount is not a valid number"}), 400
+                return (
+                    jsonify(
+                        {"success": False, "message": "Amount is not a valid number"}
+                    ),
+                    400,
+                )
 
             course.amount = amount
         if "skill_level" in request.form:
@@ -178,7 +183,9 @@ def change_course_slug(user, course_slug=None):
     return jsonify({"slug": course.slug})
 
 
-@blueprint.route("/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"])
+@blueprint.route(
+    "/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"]
+)
 @login_required
 def remove_teacher(user, course_slug=None, teacher_id=None):
     course = datamodels.get_course_by_slug(course_slug)

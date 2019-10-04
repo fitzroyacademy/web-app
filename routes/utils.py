@@ -6,7 +6,6 @@ import boto3
 from PIL import Image
 from flask import current_app, jsonify
 
-
 ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "gif"]
 THUMBNAILS = {
     "cover": {"name": "800x450", "size": (800, 450)},

@@ -94,7 +94,7 @@ $( document ).ready(function() {
     }
   });
 
-  $('#sortable-list').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
+  $('#sortable-list,#sortable-list-resources').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
         let itemsOrder = [];
         for (i = 0; i < evt.to.children.length; i++) {
             itemsOrder.push(evt.to.children[i].dataset['listElId'])
@@ -102,8 +102,8 @@ $( document ).ready(function() {
         let url = evt.to.dataset['actionUrl'];
 
         post(url, {'items_order': itemsOrder});
-
     }});
+
 
   // things I want when this stuff is made singular:
   // toggle a HTML class
@@ -875,6 +875,33 @@ $( document ).ready(function() {
   $('#fit_modal_add_segment').on('show.bs.modal', function(event){
     document.querySelector('#add-video-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addVideo'];
     document.querySelector('#add-text-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addText'];
+  });
+
+  $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){
+    let resourceTitle = $('#resource_title');
+    let resourceDescription = $('#resource_description');
+    let resourceUrl = $('#resource_url');
+    let form = $('#add-edit-resource');
+
+    form.attr("action", event.relatedTarget.href);
+
+    if (event.relatedTarget.dataset['resourceId']) {
+      let res = get(event.relatedTarget.href, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            let res = JSON.parse(xhr.response);
+            resourceTitle.val(res["title"]);
+            resourceDescription.val(res["description"]);
+            resourceUrl.val(res["url"]);
+            $("input[name=resource_type][value="  + res["type"] + "]").prop("checked", true);
+        } else {
+        }
+          });
+    } else {
+      resourceTitle.val("");
+      resourceDescription.val("");
+      resourceUrl.val("");
+      $("input[name=resource_type][value=google_drawing]").prop("checked", true)
+    }
   });
 
   delegate('#confirm-delete', 'click', (e, t) => {
