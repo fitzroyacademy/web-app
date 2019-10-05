@@ -821,7 +821,16 @@ $( document ).ready(function() {
   delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
     let teacherId = e.target.dataset.teacherId;
     let slug = t.dataset.courseSlug;
-    post(`/course/${slug}/edit/remove/teacher/${teacherId}`, {}, (responseText, xhr) => {
+    let lessonId = e.target.dataset.lessonId;
+    let url = "";
+
+    if (lessonId) {
+      url = `/course/${slug}/lessons/${lessonId}/remove/teacher/${teacherId}`;
+    } else {
+      url = `/course/${slug}/edit/remove/teacher/${teacherId}`;
+    }
+
+    post(url, {}, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
         let alert = $('#add-teacher-alert');
         if (xhr.status == 200) {
@@ -841,9 +850,20 @@ $( document ).ready(function() {
   delegate('#add-teacher', 'click', (e, t) => {
     e.preventDefault();
     let email = document.querySelector('#add-teacher-email');
-    let teacherId = e.target.dataset.teacherId;
     let slug = t.dataset.courseSlug;
-    post(`/course/${slug}/edit/add/teacher`, {teacher_email: email.value}, (responseText, xhr) => {
+    let lessonId = e.target.dataset.lessonId;
+    let url = "";
+    console.log(lessonId);
+
+    if (lessonId) {
+      url = `/course/${slug}/lessons/${lessonId}/add/teacher`;
+    } else {
+      url = `/course/${slug}/edit/add/teacher`;
+    }
+
+    console.log(url);
+
+    post(url, {teacher_email: email.value}, (responseText, xhr) => {
         let alert = $('#add-teacher-alert');
         let responseJSON = JSON.parse(xhr.response);
         alert.css("display", "block");

@@ -426,6 +426,12 @@ class CourseTranslation(Base):
     course = orm.relationship("Course", back_populates="translations")
 
 
+lesson_user_enrollment_association_table = sa.Table('_lesson_user_enrollment', Base.metadata,
+    sa.Column('users_courses_id', sa.Integer, sa.ForeignKey('users_courses.id')),
+    sa.Column('lessons_id', sa.Integer, sa.ForeignKey('lessons.id'))
+)
+
+
 class CourseEnrollment(Base):
     __tablename__ = 'users_courses'
     __table_args__ = (sa.UniqueConstraint('course_id', 'user_id', name='_course_user_enrollment'),)
@@ -437,6 +443,7 @@ class CourseEnrollment(Base):
 
     user = orm.relationship("User", back_populates="course_enrollments")
     course = orm.relationship("Course", back_populates="users")
+    lessons = orm.relationship("Lesson", secondary=lesson_user_enrollment_association_table, back_populates="teachers")
 
     @staticmethod
     def find_by_course_and_student(course_id, student_id):
@@ -480,6 +487,9 @@ class Lesson(OrderedBase):
 
     segments = orm.relationship("Segment", back_populates="lesson")
     resources = orm.relationship("Resource", back_populates="lesson")
+    teachers = orm.relationship("CourseEnrollment",
+                                secondary=lesson_user_enrollment_association_table,
+                                back_populates="lessons")
 
     translations = orm.relationship("LessonTranslation", back_populates="lesson")
 
@@ -591,6 +601,13 @@ class Lesson(OrderedBase):
             return q.first()
         except:
             return None
+
+    def remove_teacher(self, user_id):
+        enrollment = CourseEnrollment.find_by_course_and_student(self.course_id, user_id)
+        if enrollment:
+            self.teachers.remove(enrollment)
+            return True
+        return False
 
 
 class LessonTranslation(Base):

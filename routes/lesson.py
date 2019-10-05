@@ -75,6 +75,7 @@ def course_edit_lesson(user, course, course_slug, lesson_id):
         "form": form,
         "introduction": lesson.intro_segment,
         "resources": lesson.ordered_resources,
+        "teachers": [obj.user for obj in lesson.teachers],
         "segments": lesson.normal_segments,
         "resource_types": {r.name: r.value for r in ResourceTypeEnum},
         "resource_images": RESOURCE_CONTENT_IMG,
@@ -122,3 +123,79 @@ def view(course_slug, lesson_slug):
     if course is None:
         return redirect("/404")
     return render_template("course.html", **data)
+
+
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/add/teacher", methods=["POST"])
+@login_required
+@teacher_required
+def add_teacher(user, course, course_slug, lesson_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not lesson:
+        return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
+
+    new_teacher = (
+        datamodels.User.find_by_email(request.form["teacher_email"])
+        if "teacher_email" in request.form
+        else None
+    )
+
+    if not new_teacher:
+        return (
+            jsonify({"success": False, "message": "Can't find that email sorry!"}),
+            400,
+        )
+
+    if new_teacher.id in [teacher.id for teacher in lesson.teachers]:
+        return (jsonify({"success": False, "message": "Teacher already added"}), 400)
+
+    enrolment = datamodels.CourseEnrollment.find_by_course_and_student(
+        course.id, new_teacher.id
+    )
+
+    if enrolment.access_level not in [
+        datamodels.COURSE_ACCESS_ADMIN,
+        datamodels.COURSE_ACCESS_TEACHER,
+    ]:
+        return (jsonify({"success": False, "message": "User must be a teacher"}), 400)
+
+    lesson.teachers.append(enrolment)
+    db = datamodels.get_session()
+    db.add(lesson)
+    db.commit()
+
+    return jsonify(
+        {
+            "success": True,
+            "message": "Successfully added!",
+            "teacher": {
+                "id": new_teacher.id,
+                "picture": new_teacher.profile_picture,
+                "first_name": new_teacher.first_name,
+                "last_name": new_teacher.last_name,
+                "slug": course.slug,
+            },
+        }
+    )
+
+
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/remove/teacher/<int:teacher_id>",
+    methods=["POST"],
+)
+@login_required
+@teacher_required
+def remove_teacher(user, course, course_slug, lesson_id, teacher_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not lesson:
+        return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
+
+    if not datamodels.get_user(teacher_id):
+        return jsonify({"success": False, "message": "No such teacher"}), 400
+
+    removed = lesson.remove_teacher(teacher_id)
+
+    return jsonify(
+        {"success": removed, "teacher_id": teacher_id, "message": "Teacher removed"}
+    )

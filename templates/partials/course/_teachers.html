@@ -1,0 +1,39 @@
+<dt>
+    <i class="far fa-chalkboard-teacher"></i> Teacher(s)
+    <a class="" data-toggle="tooltip" title="Invite other users to have teacher access to this course, via email."
+       href="#"><i class="fas fa-info-circle"></i></a>
+</dt>
+<dd>
+    <div id="add-teacher-alert" class="alert" style="display: none;"></div>
+
+    <div class="fit_quicksearch">
+
+        <div class="input-group searchy">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fal fa-envelope"></i></span>
+            </div>
+            <input type="text" id="add-teacher-email" class="form-control" placeholder="example@email.com">
+            <div class="input-group-append">
+                <button id="add-teacher" class="btn btn-link-secondary" type="button"
+                        data-course-slug="{{ course.slug }}" data-lesson-id="{% if lesson %}{{ lesson.id }}{% endif %}">Add
+                </button>
+            </div>
+        </div>
+
+        <div id="teachers-list" class="teachers">
+            {% for teacher in teachers %}
+                <div id="teacher-{{ teacher.id }}" class="fit_btn">
+                    <div class="fit_pic circle"><img src="
+                            {% if teacher.profile_picture %}{{ teacher.profile_picture }}{% else %}/assets/stub/marge.png{% endif %}"
+                                                     alt="user"></div>
+                    <div class="fit_txt">{{ teacher.first_name }} {{ teacher.last_name }}</div>
+                    <div class="sub buttonset">
+                        <a class="btn btn-sm btn-light" href="#" data-teacher-id="{{ teacher.id }}"
+                           data-course-slug="{{ course.slug }}" data-lesson-id="{% if lesson %}{{ lesson.id }}{% endif %}" data-course-edit-remove-teacher><i
+                                class="fal fa-trash"></i> Remove</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</dd>

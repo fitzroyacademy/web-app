@@ -333,3 +333,206 @@ class TestLessonsRoutes(unittest.TestCase):
         )
 
         self.assertEqual(len(course.lessons), 0)
+
+    def test_add_teacher_without_permission(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/123456789/add/teacher",
+            user=user,
+            data={"teacher_email": "home@teachers.com"},
+            expected_status_code=404,
+        )
+
+    def test_add_teacher_no_such_lesson(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/123456789/add/teacher",
+            user=user,
+            data={"teacher_email": "home@teachers.com"},
+            expected_status_code=400,
+        )
+        self.assertFalse(response.json["success"])
+        self.assertEqual(response.json["message"], "Wrong lesson or course")
+
+    def test_wrong_teacher_email(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.teachers), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            user=user,
+            data={"teacher_email": "wrong_email_address@teachers.com"},
+            expected_status_code=400,
+        )
+        self.assertFalse(response.json["success"])
+        self.assertEqual(response.json["message"], "Can't find that email sorry!")
+
+    def test_add_teacher_to_lesson(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.teachers), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            user=user,
+            data={"teacher_email": "home@teachers.com"},
+            expected_status_code=200,
+        )
+        self.assertEqual(len(l1.teachers), 1)
+
+    def test_teacher_already_added(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+        enrolment = datamodels.CourseEnrollment.find_by_course_and_student(
+            course.id, user.id
+        )
+        l1.teachers.append(enrolment)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.teachers), 1)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            user=user,
+            data={"teacher_email": "home@teachers.com"},
+            expected_status_code=400,
+        )
+        self.assertEqual(len(l1.teachers), 1)
+        self.assertFalse(response.json["success"])
+        self.assertEqual(response.json["message"], "Teacher already added")
+
+    def test_add_user_as_a_teacher(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        user2 = self.makeUser(email="jess@teachers.com", id=2, username="jess_user")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        course.add_user(user2)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.teachers), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            user=user,
+            data={"teacher_email": "jess@teachers.com"},
+            expected_status_code=400,
+        )
+        self.assertEqual(len(l1.teachers), 0)
+        self.assertFalse(response.json["success"])
+        self.assertEqual(response.json["message"], "User must be a teacher")
+
+    def test_remove_teacher(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+        enrolment = datamodels.CourseEnrollment.find_by_course_and_student(
+            course.id, user.id
+        )
+        l1.teachers.append(enrolment)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.teachers), 1)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/remove/teacher/{}".format(l1.id, user.id),
+            user=user,
+            expected_status_code=200,
+        )
+        self.assertEqual(len(l1.teachers), 0)
+
+    def test_remove_teacher_wrong_lesson(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/remove/teacher/{}".format(12345, user.id),
+            user=user,
+            expected_status_code=400,
+        )
+
+        self.assertEqual(response.json["message"], "Wrong lesson or course")
+
+    def test_remove_teacher_no_such_user(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/remove/teacher/{}".format(l1.id, 123),
+            user=user,
+            expected_status_code=400,
+        )
+        self.assertEqual(response.json["message"], "No such teacher")
