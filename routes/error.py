@@ -6,7 +6,7 @@ blueprint = Blueprint('error', __name__, template_folder='templates')
 
 
 @blueprint.route('/404')
-def fourohfour(e):
+def fourohfour(e=None):
     """
     For when the user has made a mistake or the file is not found.
 
