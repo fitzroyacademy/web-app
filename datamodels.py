@@ -62,6 +62,11 @@ class OrderedBase(Base):
         return session.query(cls).filter(cls.order > 0).order_by(cls.order)
 
     @classmethod
+    def ordered_items_for_parent(cls, parent, key):
+        session = get_session()
+        return session.query(cls).filter(getattr(cls, key)==parent.id).order_by(cls.order)
+
+    @classmethod
     def reorder_items(cls, items_order):
         lessons_mapping = [
             {"id": items_order[i], "order": i + 1} for i in range(len(items_order))
@@ -487,6 +492,7 @@ class Lesson(OrderedBase):
 
     segments = orm.relationship("Segment", back_populates="lesson")
     resources = orm.relationship("Resource", back_populates="lesson")
+    questions = orm.relationship("LessonQA", back_populates="lesson")
     teachers = orm.relationship("CourseEnrollment",
                                 secondary=lesson_user_enrollment_association_table,
                                 back_populates="lessons")
@@ -818,6 +824,30 @@ class Resource(OrderedBase):
     def find_by_id(resource_id):
         session = get_session()
         return session.query(Resource).filter(Resource.id == resource_id).first()
+
+
+class LessonQA(OrderedBase):
+
+    __tablename__ = 'lesson_qa'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    question = sa.Column(sa.String)
+    answer = sa.Column(sa.String)
+
+    lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
+    lesson = orm.relationship("Lesson", back_populates="questions")
+
+    @classmethod
+    def find_by_id(cls, qa_id):
+        session = get_session()
+        return session.query(cls).filter(cls.id == qa_id).first()
+
+    @classmethod
+    def find_by_lesson_and_id(cls, lesson_id, qa_id):
+        if not isinstance(lesson_id, int) or not isinstance(qa_id, int):
+            return None
+        session = get_session()
+        return session.query(cls).filter(cls.lesson_id == lesson_id).filter(cls.id == qa_id).first()
 
 
 class LessonResourceUserAccess(Base):

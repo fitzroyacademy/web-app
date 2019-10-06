@@ -343,30 +343,11 @@ class TestLessonsRoutes(unittest.TestCase):
         self.session.commit()
 
         response = make_authorized_call(
-            url="/course/abc-123/lessons/123456789/add/teacher",
+            url="/course/abc-123/lessons/123456789/teacher/add",
             user=user,
             data={"teacher_email": "home@teachers.com"},
             expected_status_code=404,
         )
-
-    def test_add_teacher_no_such_lesson(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        self.session.commit()
-        course.add_instructor(user)
-        self.session.commit()
-
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/123456789/add/teacher",
-            user=user,
-            data={"teacher_email": "home@teachers.com"},
-            expected_status_code=400,
-        )
-        self.assertFalse(response.json["success"])
-        self.assertEqual(response.json["message"], "Wrong lesson or course")
 
     def test_wrong_teacher_email(self):
         course = self.make_standard_course(guest_access=True)
@@ -383,7 +364,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         self.assertEqual(len(l1.teachers), 0)
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            url="/course/abc-123/lessons/{}/teacher/add".format(l1.id),
             user=user,
             data={"teacher_email": "wrong_email_address@teachers.com"},
             expected_status_code=400,
@@ -406,7 +387,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         self.assertEqual(len(l1.teachers), 0)
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            url="/course/abc-123/lessons/{}/teacher/add".format(l1.id),
             user=user,
             data={"teacher_email": "home@teachers.com"},
             expected_status_code=200,
@@ -434,7 +415,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         self.assertEqual(len(l1.teachers), 1)
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            url="/course/abc-123/lessons/{}/teacher/add".format(l1.id),
             user=user,
             data={"teacher_email": "home@teachers.com"},
             expected_status_code=400,
@@ -460,7 +441,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         self.assertEqual(len(l1.teachers), 0)
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/add/teacher".format(l1.id),
+            url="/course/abc-123/lessons/{}/teacher/add".format(l1.id),
             user=user,
             data={"teacher_email": "jess@teachers.com"},
             expected_status_code=400,
@@ -490,32 +471,11 @@ class TestLessonsRoutes(unittest.TestCase):
 
         self.assertEqual(len(l1.teachers), 1)
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/remove/teacher/{}".format(l1.id, user.id),
+            url="/course/abc-123/lessons/{}/teacher/{}/delete".format(l1.id, user.id),
             user=user,
             expected_status_code=200,
         )
         self.assertEqual(len(l1.teachers), 0)
-
-    def test_remove_teacher_wrong_lesson(self):
-        course = self.make_standard_course(guest_access=True)
-        self.session.add(course)
-
-        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        self.session.commit()
-        course.add_instructor(user)
-        self.session.commit()
-        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
-        self.session.add(l1)
-        self.session.commit()
-
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/remove/teacher/{}".format(12345, user.id),
-            user=user,
-            expected_status_code=400,
-        )
-
-        self.assertEqual(response.json["message"], "Wrong lesson or course")
 
     def test_remove_teacher_no_such_user(self):
         course = self.make_standard_course(guest_access=True)
@@ -531,8 +491,279 @@ class TestLessonsRoutes(unittest.TestCase):
         self.session.commit()
 
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/remove/teacher/{}".format(l1.id, 123),
+            url="/course/abc-123/lessons/{}/teacher/{}/delete".format(l1.id, 123),
             user=user,
             expected_status_code=400,
         )
         self.assertEqual(response.json["message"], "No such teacher")
+
+    def test_add_question(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.questions), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/add".format(l1.id, 123),
+            user=user,
+            data={"question": "Be or not to be", "answer": "Depends on your believes"},
+            expected_status_code=200,
+        )
+        self.assertEqual(len(l1.questions), 1)
+        self.assertEqual(response.json["message"], "Question saved")
+        self.assertEqual(l1.questions[0].order, 1)
+        self.assertEqual(l1.questions[0].answer, "Depends on your believes")
+        self.assertEqual(l1.questions[0].question, "Be or not to be")
+
+    def test_add_question_wrong_data(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.questions), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/add".format(l1.id, 123),
+            user=user,
+            data={"question": "", "answer": "Depends on your believes"},
+            expected_status_code=400,
+        )
+        self.assertEqual(len(l1.questions), 0)
+        self.assertEqual(response.json["message"], "Error saving questions")
+
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/add".format(l1.id),
+            user=user,
+            data={"question": "Be or not to be", "answer": ""},
+            expected_status_code=400,
+        )
+        self.assertEqual(len(l1.questions), 0)
+        self.assertEqual(response.json["message"], "Error saving questions")
+
+    def test_edit_question(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+        question = datamodels.LessonQA(
+            lesson=l1, question="Why?", answer="Because you can!"
+        )
+        l1.questions.append(question)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.questions), 1)
+        self.assertEqual(l1.questions[0].question, "Why?")
+        make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/{}/edit".format(l1.id, question.id),
+            user=user,
+            data={"question": "Be or not to be", "answer": "Because you can!"},
+            expected_status_code=200,
+        )
+        self.assertEqual(len(l1.questions), 1)
+        self.assertEqual(l1.questions[0].question, "Be or not to be")
+        self.assertEqual(l1.questions[0].answer, "Because you can!")
+
+    def test_edit_question_from_different_lesson(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        l2 = self.make_standard_course_lesson(title="lesson 2", course=course, order=2)
+        self.session.add(l1)
+        self.session.add(l2)
+        self.session.commit()
+        question = datamodels.LessonQA(
+            lesson=l1, question="Why?", answer="Because you can!"
+        )
+        l1.questions.append(question)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l2.questions), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/{}/edit".format(l2.id, question.id),
+            user=user,
+            data={"question": "Be or not to be", "answer": "Because you can!"},
+            expected_status_code=400,
+        )
+        self.assertEqual(len(l2.questions), 0)
+        self.assertEqual(response.json["message"], "Wrong question or lesson")
+
+    def test_remove_question(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+        q1 = datamodels.LessonQA(
+            lesson=l1, question="Why 1?", answer="Because you can do 1!", order=1
+        )
+        q2 = datamodels.LessonQA(
+            lesson=l1, question="Why 2?", answer="Because you can do 2!", order=2
+        )
+        q3 = datamodels.LessonQA(
+            lesson=l1, question="Why 3?", answer="Because you can do 3!", order=3
+        )
+        l1.questions.append(q1)
+        l1.questions.append(q2)
+        l1.questions.append(q3)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.questions), 3)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/{}/delete".format(l1.id, q1.id),
+            user=user,
+            expected_status_code=200,
+        )
+        self.assertEqual(len(l1.questions), 2)
+        self.assertTrue(response.json["success"])
+        self.assertEqual(response.json["message"], "Question deleted")
+
+        # Check order
+        self.assertEqual(q2.order, 1)
+        self.assertEqual(q3.order, 2)
+
+    def test_remove_wrong_question(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+        question = datamodels.LessonQA(
+            lesson=l1, question="Why?", answer="Because you can!"
+        )
+        l1.questions.append(question)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.questions), 1)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/{}/delete".format(l1.id, 123),
+            user=user,
+            expected_status_code=400,
+        )
+        self.assertEqual(len(l1.questions), 1)
+        self.assertFalse(response.json["success"])
+        self.assertEqual(response.json["message"], "Wrong question or lesson")
+
+    def test_reorder_questions(self):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+        q1 = datamodels.LessonQA(
+            lesson=l1, question="Why 1?", answer="Because you can do 1!", order=1
+        )
+        q2 = datamodels.LessonQA(
+            lesson=l1, question="Why 2?", answer="Because you can do 2!", order=2
+        )
+        q3 = datamodels.LessonQA(
+            lesson=l1, question="Why 3?", answer="Because you can do 3!", order=3
+        )
+        l1.questions.append(q1)
+        l1.questions.append(q2)
+        l1.questions.append(q3)
+        self.session.add(l1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.questions), 3)
+        make_authorized_call(
+            url="/course/abc-123/lessons/{}/qa/reorder".format(l1.id),
+            user=user,
+            data={"items_order": "{},{},{}".format(q3.id, q1.id, q2.id)},
+            expected_status_code=200,
+        )
+
+        self.assertEqual(q1.order, 2)
+        self.assertEqual(q2.order, 3)
+        self.assertEqual(q3.order, 1)
+
+    def validate_wrong_lesson_or_course(self, url):
+        course = self.make_standard_course(guest_access=True)
+        self.session.add(course)
+
+        user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
+        self.session.add(user)
+        self.session.commit()
+        course.add_instructor(user)
+        self.session.commit()
+        l1 = self.make_standard_course_lesson(title="lesson 1", course=course, order=1)
+        self.session.add(l1)
+        self.session.commit()
+
+        response = make_authorized_call(url=url, user=user, expected_status_code=400)
+
+        self.assertEqual(response.json["message"], "Wrong lesson or course")
+
+    def test_add_teacher_no_such_lesson(self):
+        self.validate_wrong_lesson_or_course(
+            url="/course/abc-123/lessons/123456789/teacher/add"
+        )
+
+    def test_remove_teacher_wrong_lesson(self):
+        self.validate_wrong_lesson_or_course(
+            url="/course/abc-123/lessons/{}/teacher/{}/delete".format(12345, 1)
+        )
+
+    def test_add_question_wrong_lesson(self):
+        self.validate_wrong_lesson_or_course(
+            url="/course/abc-123/lessons/{}/qa/add".format(12345)
+        )
+
+    def test_remove_question_wrong_lesson(self):
+        self.validate_wrong_lesson_or_course(
+            url="/course/abc-123/lessons/{}/qa/{}/delete".format(12345, 1)
+        )
+
+    def test_reorder_questions_wrong_lesson(self):
+        self.validate_wrong_lesson_or_course(
+            url="/course/abc-123/lessons/{}/qa/reorder".format(12345, 1)
+        )

@@ -3,7 +3,7 @@ from slugify import slugify
 
 import datamodels
 import stubs
-from dataforms import AddLessonForm
+from dataforms import AddLessonForm, LessonQAForm
 from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG
 from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail, reorder_items
@@ -25,21 +25,31 @@ def reorder_lessons(user, course, course_slug=None):
     return reorder_items(request, datamodels.Lesson, course.lessons)
 
 
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
 @blueprint.route("/<course_slug>/lessons/add", methods=["GET", "POST"])
 @login_required
 @teacher_required
-def course_add_lesson(user, course, course_slug):
-    form = AddLessonForm(request.form)
+def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
+    if lesson_id:
+        lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+        if not lesson:
+            raise abort(404, "No such lesson")
+    else:
+        lesson = None
+
+    if lesson:
+        form = AddLessonForm(request.form, lesson)
+    else:
+        form = AddLessonForm(request.form)
+
     if request.method == "POST":
         if form.validate():
-            lesson = datamodels.Lesson(
-                title=form.title.data,
-                description=form.description.data,
-                course=course,
-                slug=slugify(form.title.data),
-            )
+            if not lesson:
+                lesson = datamodels.Lesson(course=course, order=len(course.lessons))
 
-            lesson.order = len(course.lessons)
+            lesson.title = form.title.data
+            lesson.description = form.description.data
+            lesson.slug = slugify(form.title.data)
 
             if "cover_image" in request.files:
                 cover_image = request.files["cover_image"]
@@ -56,31 +66,35 @@ def course_add_lesson(user, course, course_slug):
                 flash(error)
             return redirect("/course/{}/edit".format(course.slug))
 
-    data = {"course": course, "form": form}
+    if lesson:
+        ordered_questions = datamodels.LessonQA.ordered_items_for_parent(
+            parent=lesson, key="lesson_id"
+        ).all()
+
+        data = {
+            "course": course,
+            "lesson": lesson,
+            "form": form,
+            "introduction": lesson.intro_segment,
+            "resources": lesson.ordered_resources,
+            "teachers": [obj.user for obj in lesson.teachers],
+            "segments": lesson.normal_segments,
+            "questions": [
+                render_question_answer(course, lesson, question)
+                for question in ordered_questions
+            ],
+            "resource_types": {r.name: r.value for r in ResourceTypeEnum},
+            "resource_images": RESOURCE_CONTENT_IMG,
+        }
+    else:
+        data = {"course": course, "form": form}
+
     return render_template("partials/course/_lesson.html", **data)
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
-@login_required
-@teacher_required
-def course_edit_lesson(user, course, course_slug, lesson_id):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
-    if not lesson:
-        raise abort(404, "No such lesson")
-
-    form = AddLessonForm(request.form, lesson)
-    data = {
-        "course": course,
-        "lesson": lesson,
-        "form": form,
-        "introduction": lesson.intro_segment,
-        "resources": lesson.ordered_resources,
-        "teachers": [obj.user for obj in lesson.teachers],
-        "segments": lesson.normal_segments,
-        "resource_types": {r.name: r.value for r in ResourceTypeEnum},
-        "resource_images": RESOURCE_CONTENT_IMG,
-    }
-    return render_template("partials/course/_lesson.html", **data)
+def render_question_answer(course, lesson, question):
+    data = {"course": course, "lesson": lesson, "question": question}
+    return render_template("partials/course/_qa.html", **data)
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
@@ -125,7 +139,7 @@ def view(course_slug, lesson_slug):
     return render_template("course.html", **data)
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/add/teacher", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/teacher/add", methods=["POST"])
 @login_required
 @teacher_required
 def add_teacher(user, course, course_slug, lesson_id):
@@ -180,12 +194,12 @@ def add_teacher(user, course, course_slug, lesson_id):
 
 
 @blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/remove/teacher/<int:teacher_id>",
+    "/<course_slug>/lessons/<int:lesson_id>/teacher/<int:teacher_id>/delete",
     methods=["POST"],
 )
 @login_required
 @teacher_required
-def remove_teacher(user, course, course_slug, lesson_id, teacher_id):
+def delete_teacher(user, course, course_slug, lesson_id, teacher_id):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
@@ -199,3 +213,84 @@ def remove_teacher(user, course, course_slug, lesson_id, teacher_id):
     return jsonify(
         {"success": removed, "teacher_id": teacher_id, "message": "Teacher removed"}
     )
+
+
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/edit", methods=["POST"]
+)
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/add", methods=["POST"])
+@login_required
+@teacher_required
+def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not lesson:
+        return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
+
+    form = LessonQAForm(data=request.form)
+
+    if form.validate():
+        # get instance of LessonQA
+        qa = datamodels.LessonQA.find_by_lesson_and_id(lesson_id, qa_id)
+        if qa is None and qa_id:
+            return (
+                jsonify({"success": False, "message": "Wrong question or lesson"}),
+                400,
+            )
+
+        if not qa:
+            qa = datamodels.LessonQA(lesson=lesson, order=len(lesson.questions) + 1)
+
+        qa.answer = form.answer.data
+        qa.question = form.question.data
+
+        db = datamodels.get_session()
+        db.add(qa)
+        db.commit()
+
+        return jsonify(
+            {
+                "success": True,
+                "message": "Question saved",
+                "html": render_question_answer(course, lesson, qa),
+            }
+        )
+
+    return jsonify({"success": False, "message": "Error saving questions"}), 400
+
+
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/delete", methods=["POST"]
+)
+@login_required
+@teacher_required
+def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not lesson:
+        return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
+
+    qa = datamodels.LessonQA.find_by_lesson_and_id(lesson_id, qa_id)
+    if qa is None and qa_id:
+        return jsonify({"success": False, "message": "Wrong question or lesson"}), 400
+
+    datamodels.LessonQA.delete(qa, lesson, "lesson_id")
+
+    return jsonify(
+        {
+            "success": True,
+            "message": "Question deleted",
+            "success_url": "/course/{}/lessons/{}/edit".format(course_slug, lesson_id),
+        }
+    )
+
+
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/reorder", methods=["POST"])
+@login_required
+@teacher_required
+def reorder_lesson_qa(user, course, course_slug, lesson_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not lesson:
+        return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
+    return reorder_items(request, datamodels.LessonQA, lesson.questions)

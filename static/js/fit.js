@@ -94,7 +94,7 @@ $( document ).ready(function() {
     }
   });
 
-  $('#sortable-list,#sortable-list-resources').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
+  $('#sortable-list,#sortable-list-resources,#sortable-list-questions').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
         let itemsOrder = [];
         for (i = 0; i < evt.to.children.length; i++) {
             itemsOrder.push(evt.to.children[i].dataset['listElId'])
@@ -825,7 +825,7 @@ $( document ).ready(function() {
     let url = "";
 
     if (lessonId) {
-      url = `/course/${slug}/lessons/${lessonId}/remove/teacher/${teacherId}`;
+      url = `/course/${slug}/lessons/${lessonId}/teacher/${teacherId}/delete`;
     } else {
       url = `/course/${slug}/edit/remove/teacher/${teacherId}`;
     }
@@ -853,15 +853,12 @@ $( document ).ready(function() {
     let slug = t.dataset.courseSlug;
     let lessonId = e.target.dataset.lessonId;
     let url = "";
-    console.log(lessonId);
 
     if (lessonId) {
-      url = `/course/${slug}/lessons/${lessonId}/add/teacher`;
+      url = `/course/${slug}/lessons/${lessonId}/teacher/add`;
     } else {
       url = `/course/${slug}/edit/add/teacher`;
     }
-
-    console.log(url);
 
     post(url, {teacher_email: email.value}, (responseText, xhr) => {
         let alert = $('#add-teacher-alert');
@@ -885,6 +882,47 @@ $( document ).ready(function() {
             )
         }
         alert.html(responseJSON.message);
+    });
+  });
+
+  delegate('#save-lesson-question', 'click', (e, t) => {
+    e.preventDefault();
+    let slug = t.dataset.courseSlug;
+    let lessonId = t.dataset.lessonId;
+    let question = document.querySelector('#lesson-question');
+    let answer = document.querySelector('#lesson-question-answer');
+    let url = "";
+
+    url = `/course/${slug}/lessons/${lessonId}/qa/add`;
+
+    post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        if (xhr.status == 400) {
+            // DEV: handle wrong action
+        } else {
+            $('#questions-list').append(responseJSON['html']);
+        }
+    });
+    question.val("");
+    answer.val("");
+  });
+
+  delegate('[data-save-question]', 'click', (e, t) => {
+    e.preventDefault();
+    let slug = t.dataset.courseSlug;
+    let lessonId = t.dataset.lessonId;
+    let qaId = t.dataset.questionId;
+    let question = document.querySelector(`#lesson-question-${qaId}`);
+    let answer = document.querySelector(`#lesson-answer-${qaId}`);
+    let url = `/course/${slug}/lessons/${lessonId}/qa/${qaId}/edit`;
+
+    post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        if (xhr.status == 400) {
+            // DEV: handle wrong action
+        } else {
+            // DEV: handle success. Some nice story for a user
+        }
     });
   });
 

@@ -17,3 +17,10 @@ class AddResourceForm(Form):
         "Content type",
         [validators.required(), validators.AnyOf([e.name for e in ResourceTypeEnum])],
     )
+
+
+class LessonQAForm(Form):
+    question = StringField(
+        "Question", [validators.required(), validators.Length(min=3)]
+    )
+    answer = StringField("Answer", [validators.required(), validators.Length(min=3)])

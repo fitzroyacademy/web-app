@@ -127,38 +127,14 @@
               
               <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt>
 
-              <!-- DEV: Repeat this <dd> for as many FAQs as the user adds. -->
-              <!-- data-fit-faq-edit is just a placeholder, do whatever, smart devs! -->
-              <!-- We can also not do this yet if it's too hard -->
               <!-- Would be cool to have the textareas have VERY simple WYSIWYG and auto-resize boxes? -->
 
               <dd class="fit_faq_edits">
 
-                <div class="fit_faq_edit draggable">
-                  <a href="#" class="btn fit_faq_drag btn-link" data-fit-dragndrop="">
-                    <i class="far fa-arrows-v" aria-hidden="true"></i>
-                  </a>
-
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fal fa-question"></i></span>
-                      </div>
-                      <input type="text" class="form-control" placeholder="Question?" value="What is the deal with my face?">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
-                      </div>
-                      <textarea class="form-control" aria-label="With textarea" placeholder="Answer!">Your face is beautiful, don't feel bad just because you look like an avocado. Avocados are delicious!</textarea>
-                    </div>
-                  </div>
-                  <div class="form-group d-flex justify-content-between">
-                    <button class="btn btn-sm btn-secondary"><i class="fal fa-trash"></i> Remove</button>
-                    <button class="btn btn-sm btn-primary"><i class="fal fa-check"></i> Save</button>
-                  </div>                
+                <div id="sortable-list-questions" data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/qa/reorder">
+                {% for question in questions %}
+                {{ question|safe }}
+                {% endfor %}
                 </div>
 
                 <div class="fit_faq_edit">
@@ -167,7 +143,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fal fa-question"></i></span>
                       </div>
-                      <input type="text" class="form-control" placeholder="Question?">
+                      <input type="text" id="lesson-question" class="form-control" placeholder="Question?">
                     </div>
                   </div>
                   <div class="form-group">
@@ -175,12 +151,12 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
                       </div>
-                      <textarea class="form-control" aria-label="With textarea" placeholder="Answer!"></textarea>
+                      <textarea class="form-control" id="lesson-question-answer" aria-label="With textarea" placeholder="Answer!"></textarea>
                     </div>
                   </div>
                   <div class="form-group d-flex justify-content-between">
                     <span>&nbsp;</span>
-                    <button class="btn btn-sm btn-primary"><i class="fal fa-plus"></i> Add</button>
+                    <button id="save-lesson-question" class="btn btn-sm btn-primary" data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}"><i class="fal fa-plus"></i> Add</button>
                   </div> 
                 </div>
               </dd>
