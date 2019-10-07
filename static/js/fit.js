@@ -2,7 +2,6 @@ $( document ).ready(function() {
 
   // Go team Javascriptz, hack them codez, roxor them boxorz.
 
-
   // standard tooltips
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
