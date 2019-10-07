@@ -49,6 +49,7 @@ def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
 
             lesson.title = form.title.data
             lesson.description = form.description.data
+            lesson.further_reading = form.further_reading.data
             lesson.slug = slugify(form.title.data)
 
             if "cover_image" in request.files:
