@@ -486,6 +486,7 @@ class Lesson(OrderedBase):
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
     cover_image = sa.Column(sa.String)  # URL to picture resource
     description = sa.Column(sa.String(140))
+    further_reading = sa.Column(sa.String)
 
     course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
     course = orm.relationship("Course", back_populates="lessons")

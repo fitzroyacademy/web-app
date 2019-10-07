@@ -6,6 +6,7 @@ from enums import ResourceTypeEnum
 class AddLessonForm(Form):
     title = StringField("Title", [validators.Length(min=4, max=50)])
     description = StringField("Description", [validators.Length(min=6, max=140)])
+    further_reading = StringField("Further reading")
     cover_image = FileField("Cover image")
 
 

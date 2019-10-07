@@ -978,6 +978,11 @@ $( document ).ready(function() {
     $('#text_segment_content').val(mysave);
   });
 
+  delegate('#lesson-edit-form', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_editor').html();
+    $('#further_reading').val(mysave);
+  });
+
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.
   window.addEventListener('popstate', (event) => {
