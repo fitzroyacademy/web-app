@@ -79,7 +79,12 @@ $border_medium: #d5d8d9;
 $border_dark: #c6cbcc;
 
 $google_red: #ea4335;
+$google_slide_yellow: #f6b424;
+$google_drawing_red: #dc4438;
+
+$pdf_red: #ff2016;
 $facebook_blue: #3b5998;
+$youtube_red: #ff0000;
 
 $white_fade: rgba(255,255,255,0.99);
 
@@ -380,7 +385,7 @@ header .fit_device svg > path{fill:$brand;}
 
 
 // the basics and mods:
-.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem; align-items:baseline;}
+.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem; align-items:center;}
 
 .fit_btn > * {padding: 1rem 0;}
 
@@ -519,11 +524,14 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_txt small{display: block; color:$text_light;}
 .fit_pane .fit_btn.resource_link:hover small{color:$text;}
 
-.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize;}
+.fit_btn.resource_link .fit_txt{}
+
+// the short text explainer
+.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize; width: 100%;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
 
 .fit_btn.resource_link .explain:active,
-.fit_btn.resource_link .explain:focus{height: auto;}
+.fit_btn.resource_link .explain:focus{height: auto; overflow: auto}
 
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
@@ -656,9 +664,22 @@ header .right,
 
 /* icon colours */
 .resource_link .fa-file,
-.resource_link .fa-file-alt{color: $blue;}
-.resource_link .fa-file-spreadsheet{color: $green;}
-.resource_link .fa-file-image{color: $watermelon;}
+.resource_link .fa-file-alt,
+.fit_radio_icons input:checked + label > i.fa-file,
+.fit_radio_icons input:checked + label > i.fa-file-alt{color: $blue;}
+.resource_link .fa-file-spreadsheet,
+.fit_radio_icons input:checked + label > i.fa-file-spreadsheet{color: $green;}
+.resource_link .fa-presentation,
+.fit_radio_icons input:checked + label > i.fa-presentation{color: $google_slide_yellow;}
+.resource_link .fa-image,
+.fit_radio_icons input:checked + label > i.fa-image{color: $google_drawing_red;}
+.resource_link .fa-youtube,
+.fit_radio_icons input:checked + label > i.fa-youtube{color: $youtube_red;}
+.resource_link .fa-file-pdf,
+.fit_radio_icons input:checked + label > i.fa-file-pdf{color: $pdf_red;}
+.resource_link .fa-camera,
+.fit_radio_icons input:checked + label > i.fa-camera{color: $pink;}
+
 
 
 
@@ -2030,10 +2051,10 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
 .fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
-.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.15rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
-.fit_radio_icons input:checked + label{color: $blue; font-weight: bold}
+.fit_radio_icons input:checked + label{color: $brand;}
 .fit_radio_icons input:checked + label .form-text{color: $text  !important;}
 
 

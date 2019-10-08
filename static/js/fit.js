@@ -177,7 +177,9 @@ $( document ).ready(function() {
     });
   }
 
-  $('.modal').on('loaded.bs.modal', fancyplace_reset);
+  $('.modal').on('shown.bs.modal', function(index, el) {
+    fancyplace_reset();
+  });
   fancyplace_reset();
 
 
