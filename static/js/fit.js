@@ -900,11 +900,9 @@ $( document ).ready(function() {
         if (xhr.status == 400) {
             // DEV: handle wrong action
         } else {
-            $('#questions-list').append(responseJSON['html']);
+            $('#sortable-list-questions').append(responseJSON['html']);
         }
     });
-    question.val("");
-    answer.val("");
   });
 
   delegate('[data-save-question]', 'click', (e, t) => {
