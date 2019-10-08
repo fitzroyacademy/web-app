@@ -112,7 +112,7 @@
           <h3>
             <span class="txt">Course info.</span>
           </h3>
-          <form action="/course/{{ course.slug }}/edit" method="post">
+          <form action="/course/{{ course.slug }}/edit" method="post" id="course_edit">
           <div class="fit_pane">
             <dl class="fit_summary_icons">
 
@@ -159,22 +159,24 @@
               <dt><i class="far fa-info-square"></i> What you&rsquo;ll learn</dt>
               <dd>
                 <div class="form-group">
-                  <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
-                  <textarea rows="8" id="course_summary" class="form-control" placeholder="From a basic idea to early customers, business models and getting the numbers right.
-
-You'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact...">{{ course.summary_html }}</textarea>
+                  <div class="fit_wysiwyg">
+                    <div id="fit_wysiwyg_editor">{% if course.summary_html %}{{ course.summary_html|safe }}{% endif %}</div>
+                  </div>
+                  <textarea id="course_summary" name="course_summary" style="display: none"></textarea>
                 </div>
               </dd>
               
+<!-- 
+              Not yet, soooon.
               <dt><i class="far fa-tag"></i> Tags</dt>
               <dd>
                 <div class="form-group">
-                  <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
-                  <!-- For now, can be comma delimited? -->
                   <input type="text" class="form-control" placeholder="E.g. socent, agile, highschool" disabled>
                 </div>
                 <small class="form-text text-muted">Only letters, with commas between tags.</small>
               </dd>
+ -->
+
             </dl>
 
 

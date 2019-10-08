@@ -31,6 +31,7 @@ $fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me.
 $bg: #f5f7f8;
 $bg_light: #f7f9fa;
 $bg_dark: #f1f4f5;
+$bg_darker: #ebf0f1;
 
 $brand: #464749;
 $brand_light: #666a71;
@@ -287,6 +288,10 @@ html.fit_minleft{}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
 .container{max-width: 1100px;}
+
+.input-group-text{background: #fff;}
+
+
 
 // no tooltip arrows, ew.
 .tooltip .arrow{display: none;}
@@ -2012,11 +2017,12 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 .fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
 // removed coz we have the adder below now!
-// .fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
+.fit_faq_edit:last-child{border-bottom: none;}
 
 .fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .4rem 0;}
 .fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
+.fit_faq_edit .btn-remove:hover{color:$red; background: #fff;}
 // ------------------------------------------------------------------------------------
 // Custom radios for permissions and things
 .fit_radio_icons{}
@@ -2032,7 +2038,7 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 
 // last one is the adder
-.fit_faq_add{border-bottom: none; margin-bottom: 0;}
+.fit_faq_add{border: none; margin: 0rem -2rem -1.5rem -4.2rem; padding: 1rem 2rem 1rem 4.2rem; border-radius: 0 0 $border_rad_md $border_rad_md; border-top:1px solid $border_light; background: $bg_darker;}
 
 
 // ------------------------------------------------------------------------------------
@@ -2178,7 +2184,7 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 // ------------------------------------------------------------------------------------
 // Medium wysiwyg editor
 
-.fit_wysiwyg{border: 1px solid $border_light; border-radius: $border_rad_sm; padding: 1rem;}
+.fit_wysiwyg{border: 1px solid $border_light; border-radius: $border_rad_sm; padding: 1rem; background: #fff; min-height: 10rem;}
 
 .fit_wysiwyg .medium-editor-element{outline: none !important;}
 .fit_wysiwyg .medium-editor-placeholder-relative:after,
