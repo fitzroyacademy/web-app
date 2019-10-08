@@ -229,11 +229,14 @@ html{height: 100%;}
 body{min-height: 100%;}
 
 
+// Box shadows everywhere, with consistent box_shadow!
+
 body > header, 
 body > .fit_player nav,
 .fit_sidepanel .panel,
 .fit_debug,
-.fit_snackbar{box-shadow: 0 0 1.5rem $box_shadow;}
+.fit_snackbar,
+.medium-editor-toolbar{box-shadow: 0 0 1.5rem $box_shadow;}
 
 @media (min-width: 576px){
 	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
@@ -2008,9 +2011,10 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_faq_edit{}
 
 .fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
-.fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
+// removed coz we have the adder below now!
+// .fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
 
-.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .5rem 0;}
+.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .4rem 0;}
 .fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
 // ------------------------------------------------------------------------------------
@@ -2026,6 +2030,9 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_radio_icons input:checked + label{color: $blue; font-weight: bold}
 .fit_radio_icons input:checked + label .form-text{color: $text  !important;}
 
+
+// last one is the adder
+.fit_faq_add{border-bottom: none; margin-bottom: 0;}
 
 
 // ------------------------------------------------------------------------------------
@@ -2168,10 +2175,33 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 
 
 
+// ------------------------------------------------------------------------------------
+// Medium wysiwyg editor
+
+.fit_wysiwyg{border: 1px solid $border_light; border-radius: $border_rad_sm; padding: 1rem;}
+
+.fit_wysiwyg .medium-editor-element{outline: none !important;}
+.fit_wysiwyg .medium-editor-placeholder-relative:after,
+.fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: $text_light;}
+
+.medium-toolbar-arrow-under:after{}
+
+.fit_wysiwyg blockquote{display: block; font-size: 1.3rem; border-left: 3px solid $border_light; padding: .25rem .5rem .25rem calc(1rem - 3px); margin-left: -1rem;}
 
 
+.medium-editor-toolbar,
+.medium-editor-toolbar-form{border-radius: $border_rad_xl; border:1px solid $border_light; overflow: hidden; height: 3.2rem; background: #fff;}
+.medium-editor-toolbar ul{}
 
+.medium-editor-toolbar ul li button{border: none; font-size: 1rem;}
+.medium-editor-toolbar ul li button:hover{color:$blue;}
+.medium-editor-toolbar ul li button.medium-editor-button-active{background: $bg;}
 
+.medium-editor-toolbar .medium-editor-toolbar-input{font-size: 1rem; padding: .75rem 1rem;}
+.medium-editor-toolbar-form a{margin: 0; padding: 0.5rem 1rem;}
+
+.medium-editor-toolbar ul li:first-child button{border-radius: $border_rad_xl 0 0 $border_rad_xl;}
+.medium-editor-toolbar ul li:last-child button{border-radius: 0 $border_rad_xl $border_rad_xl 0;}
 
 
 

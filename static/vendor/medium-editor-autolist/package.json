@@ -1,0 +1,55 @@
+{
+  "_from": "medium-editor-autolist",
+  "_id": "medium-editor-autolist@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha1-K+QPb3To9LX6fosnTj9QXCrqfN0=",
+  "_location": "/medium-editor-autolist",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "medium-editor-autolist",
+    "name": "medium-editor-autolist",
+    "escapedName": "medium-editor-autolist",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/medium-editor-autolist/-/medium-editor-autolist-1.0.1.tgz",
+  "_shasum": "2be40f6f74e8f4b5fa7e8b274e3f505c2aea7cdd",
+  "_spec": "medium-editor-autolist",
+  "_where": "/Users/willdayble/dev/flask-frontend",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/varun-raj/medium-editor-autolist/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "medium-editor": "^5.23.0"
+  },
+  "deprecated": false,
+  "description": "An extension for medium editor which auto creates list",
+  "directories": {
+    "example": "example"
+  },
+  "homepage": "https://github.com/varun-raj/medium-editor-autolist#readme",
+  "keywords": [
+    "medium-editor",
+    "autolist"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "medium-editor-autolist",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varun-raj/medium-editor-autolist.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.1"
+}

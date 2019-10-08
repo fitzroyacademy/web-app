@@ -152,23 +152,6 @@ $( document ).ready(function() {
     $($(this).attr("href")).toggleClass('active')
   });
 
-  // clipboard!
-  // DEV: Michelle this is apparently clipboard JS but I don't know JS:
-  var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
-
-  fit_clipboard.on('success', function(e) {
-    // console.info('Action:', e.action);
-    // console.info('Text:', e.text);
-    // console.info('Trigger:', e.trigger);
-    alert("go team");
-
-    e.clearSelection();
-  });
-
-  fit_clipboard.on('error', function(e) {
-    // console.error('Action:', e.action);
-    // console.error('Trigger:', e.trigger);
-  });
   
   
   // do fancy placeholders for inputs:
@@ -971,6 +954,20 @@ $( document ).ready(function() {
                 console.log(JSON.parse(xhr.response)['message'])
             }
     });
+  });
+
+  // ------------------------------------------------------------
+  // medium wysiwyg edito stuff
+
+  var autolist = new AutoList();
+  var fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
+      buttonLabels: 'fontawesome',
+      extensions: {
+          'autolist': autolist
+      }, 
+      toolbar: {
+          buttons: ['h2', 'h3', 'bold', 'anchor', 'quote', 'unorderedlist','orderedlist']
+      }
   });
 
   delegate('#text-segment', 'submit', (e,t) => {
