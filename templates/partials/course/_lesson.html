@@ -133,11 +133,13 @@
 
                 <div id="sortable-list-questions" data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/qa/reorder">
                 {% for question in questions %}
-                {{ question|safe }}
+                  {{ question|safe }}
                 {% endfor %}
                 </div>
 
-                <div class="fit_faq_edit">
+                <div class="fit_faq_edit fit_faq_add">
+
+
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -156,7 +158,7 @@
                   </div>
                   <div class="form-group d-flex justify-content-between">
                     <span>&nbsp;</span>
-                    <button id="save-lesson-question" class="btn btn-sm btn-primary" data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}"><i class="fal fa-plus"></i> Add</button>
+                    <button id="save-lesson-question" class="btn btn-sm btn-primary" data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}"><i class="fal fa-plus"></i> Add new</button>
                   </div> 
                 </div>
               </dd>
@@ -179,8 +181,13 @@
             {% for resource in resources %}
             <div class="fit_btn resource_link {{ resource.type.name }} featured" data-list-el-id="{{ resource.id }}">
               <i class="{{ resource.content_img }} lg"></i>
-              <a class="fit_txt" href="{{ resource.url }}">
-                {{ resource.title }} <i class="far fa-external-link"></i>
+              <a class="fit_txt" 
+                href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/edit" 
+                data-toggle="modal" 
+                data-target="#fit_modal_add_resource_link" 
+                data-resource-id="{{ resource.id }}"
+              >
+                {{ resource.title }} <i class="far fa-edit"></i>
                 <small>{{ resource.type.value }}</small>
               </a>
               <div class="sub buttonset">
@@ -191,6 +198,7 @@
                   </button>
                   
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
+                    <a class="dropdown-item" target="_blank" href="{{ resource.url }}"><i class="fal fa-external-link"></i> Open in new window</a>
                     <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/edit" data-toggle="modal" data-target="#fit_modal_add_resource_link" data-resource-id="{{ resource.id }}"><i class="fal fa-edit"></i> Edit</a>
                     <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/delete" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
                     <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/copy"><i class="fal fa-copy"></i> Duplicate</a>
@@ -200,9 +208,9 @@
                 <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
               </div>
               {% if resource.description %}
-              <a class="explain">
-                  {{ resource.description }}
-              </a>
+                <a class="explain">
+                    {{ resource.description }}
+                </a>
               {% endif %}
             </div>
             {% endfor %}
@@ -212,18 +220,13 @@
               <i class="fas fa-plus"></i>
               <span class="fit_txt">Add a resource</span>
             </a>
-
-            <dt><i class="far fa-info-square"></i> Further reading</dt>
-              <dd>
-                <div class="fit_wysiwyg">
-
-                      <div id="fit_wysiwyg_editor">{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
-
-                  </div>
-              </dd>
-              <textarea id="further_reading" name="further_reading" style="display: none"></textarea>
           </div><!-- pane -->
 
+          <h3>Further reading.</h3>
+          <div class="fit_wysiwyg">
+            <div id="fit_wysiwyg_editor">{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
+          </div>
+          <textarea id="further_reading" name="further_reading" style="display: none"></textarea>
 
         </div><!-- col -->
       </div><!-- row -->
@@ -246,15 +249,7 @@
     {% include 'partials/modal/_add_resource.html' %}
 {% endif %}
 
-
-<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-      <script>var editor = new MediumEditor('#fit_wysiwyg_editor');</script>
-      <style type="text/css">
-        .fit_wysiwyg{border: 1px solid #ddd; border-radius: .25rem; padding: 1rem;}
-        .fit_wysiwyg .medium-editor-element{outline: none !important;}
-        .fit_wysiwyg .medium-editor-placeholder-relative:after,
-        .fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: #888;}
-      </style>
-
 {% endblock %}
+
+
+

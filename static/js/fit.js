@@ -2,7 +2,6 @@ $( document ).ready(function() {
 
   // Go team Javascriptz, hack them codez, roxor them boxorz.
 
-
   // standard tooltips
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -153,23 +152,6 @@ $( document ).ready(function() {
     $($(this).attr("href")).toggleClass('active')
   });
 
-  // clipboard!
-  // DEV: Michelle this is apparently clipboard JS but I don't know JS:
-  var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
-
-  fit_clipboard.on('success', function(e) {
-    // console.info('Action:', e.action);
-    // console.info('Text:', e.text);
-    // console.info('Trigger:', e.trigger);
-    alert("go team");
-
-    e.clearSelection();
-  });
-
-  fit_clipboard.on('error', function(e) {
-    // console.error('Action:', e.action);
-    // console.error('Trigger:', e.trigger);
-  });
   
   
   // do fancy placeholders for inputs:
@@ -187,11 +169,18 @@ $( document ).ready(function() {
   });
 
   // and on load
-  $("[data-fit-fancyplace]").each(function(index, el) {
-    if (this.value.trim() != ''){
-      $(this).parents('.fit_fancyplace').addClass('labelled');
-    }
+  function fancyplace_reset(){
+    $("[data-fit-fancyplace]").each(function(index, el) {
+      if (this.value.trim() != ''){
+        $(this).parents('.fit_fancyplace').addClass('labelled');
+      }
+    });
+  }
+
+  $('.modal').on('shown.bs.modal', function(index, el) {
+    fancyplace_reset();
   });
+  fancyplace_reset();
 
 
 
@@ -972,6 +961,20 @@ $( document ).ready(function() {
     });
   });
 
+  // ------------------------------------------------------------
+  // medium wysiwyg edito stuff
+
+  var autolist = new AutoList();
+  var fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
+      buttonLabels: 'fontawesome',
+      extensions: {
+          'autolist': autolist
+      }, 
+      toolbar: {
+          buttons: ['h2', 'h3', 'bold', 'anchor', 'quote', 'unorderedlist','orderedlist']
+      }
+  });
+
   delegate('#text-segment', 'submit', (e,t) => {
     let mysave = $('#fit_wysiwyg_editor').html();
     $('#text_segment_content').val(mysave);
@@ -980,6 +983,11 @@ $( document ).ready(function() {
   delegate('#lesson-edit-form', 'submit', (e,t) => {
     let mysave = $('#fit_wysiwyg_editor').html();
     $('#further_reading').val(mysave);
+  });
+
+  delegate('#course-edit-form', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_editor').html();
+    $('#course_summary').val(mysave);
   });
 
   // Load the video dynamically when people hit back so the URLs in their

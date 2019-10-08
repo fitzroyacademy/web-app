@@ -31,6 +31,7 @@ $fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me.
 $bg: #f5f7f8;
 $bg_light: #f7f9fa;
 $bg_dark: #f1f4f5;
+$bg_darker: #ebf0f1;
 
 $brand: #464749;
 $brand_light: #666a71;
@@ -78,7 +79,12 @@ $border_medium: #d5d8d9;
 $border_dark: #c6cbcc;
 
 $google_red: #ea4335;
+$google_slide_yellow: #f6b424;
+$google_drawing_red: #dc4438;
+
+$pdf_red: #ff2016;
 $facebook_blue: #3b5998;
+$youtube_red: #ff0000;
 
 $white_fade: rgba(255,255,255,0.99);
 
@@ -229,11 +235,14 @@ html{height: 100%;}
 body{min-height: 100%;}
 
 
+// Box shadows everywhere, with consistent box_shadow!
+
 body > header, 
 body > .fit_player nav,
 .fit_sidepanel .panel,
 .fit_debug,
-.fit_snackbar{box-shadow: 0 0 1.5rem $box_shadow;}
+.fit_snackbar,
+.medium-editor-toolbar{box-shadow: 0 0 1.5rem $box_shadow;}
 
 @media (min-width: 576px){
 	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
@@ -284,6 +293,10 @@ html.fit_minleft{}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
 .container{max-width: 1100px;}
+
+.input-group-text{background: #fff;}
+
+
 
 // no tooltip arrows, ew.
 .tooltip .arrow{display: none;}
@@ -372,7 +385,7 @@ header .fit_device svg > path{fill:$brand;}
 
 
 // the basics and mods:
-.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem; align-items:baseline;}
+.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem; align-items:center;}
 
 .fit_btn > * {padding: 1rem 0;}
 
@@ -511,11 +524,14 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_txt small{display: block; color:$text_light;}
 .fit_pane .fit_btn.resource_link:hover small{color:$text;}
 
-.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize;}
+.fit_btn.resource_link .fit_txt{}
+
+// the short text explainer
+.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize; width: 100%;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
 
 .fit_btn.resource_link .explain:active,
-.fit_btn.resource_link .explain:focus{height: auto;}
+.fit_btn.resource_link .explain:focus{height: auto; overflow: auto}
 
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
@@ -648,9 +664,22 @@ header .right,
 
 /* icon colours */
 .resource_link .fa-file,
-.resource_link .fa-file-alt{color: $blue;}
-.resource_link .fa-file-spreadsheet{color: $green;}
-.resource_link .fa-file-image{color: $watermelon;}
+.resource_link .fa-file-alt,
+.fit_radio_icons input:checked + label > i.fa-file,
+.fit_radio_icons input:checked + label > i.fa-file-alt{color: $blue;}
+.resource_link .fa-file-spreadsheet,
+.fit_radio_icons input:checked + label > i.fa-file-spreadsheet{color: $green;}
+.resource_link .fa-presentation,
+.fit_radio_icons input:checked + label > i.fa-presentation{color: $google_slide_yellow;}
+.resource_link .fa-image,
+.fit_radio_icons input:checked + label > i.fa-image{color: $google_drawing_red;}
+.resource_link .fa-youtube,
+.fit_radio_icons input:checked + label > i.fa-youtube{color: $youtube_red;}
+.resource_link .fa-file-pdf,
+.fit_radio_icons input:checked + label > i.fa-file-pdf{color: $pdf_red;}
+.resource_link .fa-camera,
+.fit_radio_icons input:checked + label > i.fa-camera{color: $pink;}
+
 
 
 
@@ -2008,11 +2037,13 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_faq_edit{}
 
 .fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
-.fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
+// removed coz we have the adder below now!
+.fit_faq_edit:last-child{border-bottom: none;}
 
-.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .5rem 0;}
+.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .4rem 0;}
 .fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
+.fit_faq_edit .btn-remove:hover{color:$red; background: #fff;}
 // ------------------------------------------------------------------------------------
 // Custom radios for permissions and things
 .fit_radio_icons{}
@@ -2020,12 +2051,15 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
 .fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
-.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.15rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
-.fit_radio_icons input:checked + label{color: $blue; font-weight: bold}
+.fit_radio_icons input:checked + label{color: $brand;}
 .fit_radio_icons input:checked + label .form-text{color: $text  !important;}
 
+
+// last one is the adder
+.fit_faq_add{border: none; margin: 0rem -2rem -1.5rem -4.2rem; padding: 1rem 2rem 1rem 4.2rem; border-radius: 0 0 $border_rad_md $border_rad_md; border-top:1px solid $border_light; background: $bg_darker;}
 
 
 // ------------------------------------------------------------------------------------
@@ -2168,10 +2202,33 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 
 
 
+// ------------------------------------------------------------------------------------
+// Medium wysiwyg editor
+
+.fit_wysiwyg{border: 1px solid $border_medium; border-radius: $border_rad_sm; padding: 1rem; background: #fff; min-height: 10rem;}
+
+.fit_wysiwyg .medium-editor-element{outline: none !important;}
+.fit_wysiwyg .medium-editor-placeholder-relative:after,
+.fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: $text_light;}
+
+.medium-toolbar-arrow-under:after{}
+
+.fit_wysiwyg blockquote{display: block; font-size: 1.3rem; border-left: 3px solid $border_light; padding: .25rem .5rem .25rem calc(1rem - 3px); margin-left: -1rem;}
 
 
+.medium-editor-toolbar,
+.medium-editor-toolbar-form{border-radius: $border_rad_xl; border:1px solid $border_light; overflow: hidden; height: 3.2rem; background: #fff;}
+.medium-editor-toolbar ul{}
 
+.medium-editor-toolbar ul li button{border: none; font-size: 1rem;}
+.medium-editor-toolbar ul li button:hover{color:$blue;}
+.medium-editor-toolbar ul li button.medium-editor-button-active{background: $bg;}
 
+.medium-editor-toolbar .medium-editor-toolbar-input{font-size: 1rem; padding: .75rem 1rem;}
+.medium-editor-toolbar-form a{margin: 0; padding: 0.5rem 1rem;}
+
+.medium-editor-toolbar ul li:first-child button{border-radius: $border_rad_xl 0 0 $border_rad_xl;}
+.medium-editor-toolbar ul li:last-child button{border-radius: 0 $border_rad_xl $border_rad_xl 0;}
 
 
 
