@@ -143,6 +143,18 @@ def format_time(seconds):
             out += "s"
     return out
 
+@app.template_filter()
+def hhmmss(seconds):
+    out = str(datetime.timedelta(seconds=seconds))
+    if seconds < 3600:
+        out = out[2:]
+    return out
+
+@app.template_filter()
+def hhmm(seconds):
+    out = str(datetime.timedelta(seconds=seconds)).split(":")
+    return "{}:{}".format(out[0], out[1])
+
 def uuid():
     return "{}".format(uuid4().hex)
 app.jinja_env.globals.update(uuid=uuid)

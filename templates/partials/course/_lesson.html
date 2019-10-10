@@ -38,7 +38,7 @@
       <h3>
         <span class="txt">Lesson segments.</span>
         <small class="subtxt"><span class="fas fa-clock"></span>
-          {{ lesson.strfduration }}
+          {{ lesson.duration_seconds|hhmmss }}
         </small>
       </h3>
 
@@ -68,7 +68,7 @@
 
               <div class="sub buttonset">
                 
-                <span class="btn btn-text subtle">{{ introduction.strfduration }}</span>
+                <span class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</span>
                 
                 <a href="#" class="btn btn-light"><i class="fal fa-ellipsis-v"></i></a>
               </div>
@@ -84,7 +84,7 @@
                   <div class="fit_txt">{{ segment.title }}</div>
 
                   <div class="sub buttonset">
-                    <div class="btn btn-text subtle">{{ segment.strfduration }}</div>
+                    <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>
 
                     <div class="dropdown">
                       <button href="#" class="btn btn-light" type="button" id="dropdown_12345" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
