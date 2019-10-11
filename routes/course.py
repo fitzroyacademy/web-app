@@ -214,8 +214,11 @@ def add_teacher(user, course_slug=None):
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
 
-    new_teacher = datamodels.User.find_by_email(request.form["teacher_email"]) if "teacher_email" \
-                                                                                  in request.form else None
+    new_teacher = (
+        datamodels.User.find_by_email(request.form["teacher_email"])
+        if "teacher_email" in request.form
+        else None
+    )
     if not new_teacher:
         return (
             jsonify({"success": False, "message": "Can't find that email sorry!"}),
