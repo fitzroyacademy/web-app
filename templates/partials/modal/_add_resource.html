@@ -19,9 +19,10 @@
         </div>
 
         <div class="form-group">
-          <textarea rows="3" type="text"  class="form-control" name="resource_description" id="resource_description" placeholder="E.g. This link is the best because it has these excellent qualities..." value="">
-          {% if resource %}{{ resource.url }}{% endif %}
-          </textarea>
+          <div class="fit_wysiwyg">
+            <div id="fit_wysiwyg_resource">{% if resource %}{{ resource.description|safe }}{% endif %}</div>
+          </div>
+          <textarea id="resource_description" name="resource_description" style="display: none"></textarea>
         </div>
 
         <label for="">Type</label>

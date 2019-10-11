@@ -209,7 +209,7 @@
               </div>
               {% if resource.description %}
                 <a class="explain">
-                    {{ resource.description }}
+                    {{ resource.description|safe }}
                 </a>
               {% endif %}
             </div>
@@ -249,7 +249,16 @@
     {% include 'partials/modal/_add_resource.html' %}
 {% endif %}
 
+
+<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+<script>var editor = new MediumEditor('#fit_wysiwyg_editor');</script>
+<script>var editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
+<style type="text/css">
+    .fit_wysiwyg{border: 1px solid #ddd; border-radius: .25rem; padding: 1rem;}
+    .fit_wysiwyg .medium-editor-element{outline: none !important;}
+    .fit_wysiwyg .medium-editor-placeholder-relative:after,
+    .fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: #888;}
+</style>
+
 {% endblock %}
-
-
-
