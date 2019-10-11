@@ -262,11 +262,11 @@
                       <input type="radio" name="course_paid" value="paid" id="option3" autocomplete="off" {{ 'checked' if course.options("paid") }} data-fit-perm-type="paid" data-fit-perm-trigger="paid" data-course-slug="{{ course.slug }}"> Paid
                     </label>
                   </div>
-                  <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
+                  <small class="form-text text-muted {{ 'active' if not course.options("paid") }}" data-fit-perm-type="paid" data-fit-perm-detail="free">Anyone can access this course for free.</small>
                 </div>
 
 
-                <div class="form-group {{ 'active' if course.options("paid") }}" data-fit-perm-type="cost" data-fit-perm-detail="paid">
+                <div class="form-group {{ 'active' if course.options("paid") }}" data-fit-perm-type="paid" data-fit-perm-detail="paid">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text" id="">$</div>
