@@ -83,7 +83,7 @@ def add_course(user):
             course = datamodels.Course()
             course.title = form.title.data
             course.info = form.info.data
-            course.code = str(uuid4())[:8]
+            course.course_code = str(uuid4())[:8]
             course.slug = slug
             if "cover_image" in request.files:
                 file = request.files["cover_image"]
@@ -96,9 +96,8 @@ def add_course(user):
 
             db = datamodels.get_session()
             db.add(course)
-            db.commit()
-
             course.add_instructor(user)
+            db.commit()
 
             return redirect("/course/{}/edit".format(slug))
         else:
