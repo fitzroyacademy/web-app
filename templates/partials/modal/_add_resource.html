@@ -1,5 +1,6 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_resource_link">
   <form id="add-edit-resource" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" class="modal-dialog modal-dialog-centered" role="document" method="post">
+    {{ resource_form.csrf_token }}
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Lesson resource.</h5>

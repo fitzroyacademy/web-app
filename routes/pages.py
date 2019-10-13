@@ -4,6 +4,7 @@ from glob import glob
 from flask import Blueprint, render_template, redirect
 
 import datamodels
+from dataforms import LoginForm
 
 blueprint = Blueprint("pages", __name__)
 
@@ -11,7 +12,8 @@ blueprint = Blueprint("pages", __name__)
 @blueprint.route("/")
 def index():
     """ Shows all courses the user has access to. """
-    data = {"public_courses": datamodels.get_public_courses()}
+    data = {"public_courses": datamodels.get_public_courses(),
+            "form": LoginForm()}
     return render_template("welcome.html", **data)
 
 

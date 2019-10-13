@@ -18,14 +18,17 @@
           <span class="fit_txt">Hide</span> 
         </a>
       </div>
+      {% if active_segment %}
       {% for lesson in course.lessons %}
         {% include 'partials/course/_nav_lesson.html' %}
       {% endfor %}
+      {% endif %}
 
     </div>
   </nav>
 
 
+  {% if active_segment %}
   <article>
     <div class="fit_vidya">
       {% include 'partials/course/_active_segment.html' %}
@@ -38,7 +41,11 @@
       {% include 'partials/course/_lesson_detail.html' %}
     {% endwith %}
   </aside>  
-
+  {% else %}
+      <article>
+      No content. :(
+      </article>
+  {% endif %}
   
 </main>
 

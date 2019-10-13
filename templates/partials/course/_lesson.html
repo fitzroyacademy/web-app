@@ -1,4 +1,11 @@
 {% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if ajax_csrf_form.csrf_token %}
+        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
 {% block body %}
 
 <main>

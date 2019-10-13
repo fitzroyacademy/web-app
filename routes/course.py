@@ -11,9 +11,14 @@ from flask import (
     make_response,
 )
 
+from util import get_current_user
+
 import datamodels
+from dataforms import AjaxCSRFTokenForm, LoginForm
 from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail
+
+from routes.render_partials import render_teacher
 
 blueprint = Blueprint("course", __name__, template_folder="templates")
 
@@ -21,7 +26,7 @@ blueprint = Blueprint("course", __name__, template_folder="templates")
 @blueprint.route("/")
 def index():
     """ Shows all courses the user has access to. """
-    data = {"public_courses": datamodels.get_public_courses()}
+    data = {"public_courses": datamodels.get_public_courses(), "form": LoginForm()}
     return render_template("welcome.html", **data)
 
 
@@ -31,13 +36,13 @@ def view(slug):
     Retrieves and displays a course based on course slug.
     """
 
-    # ToDo: handle accessing course that requires login
     # ToDo: course that do not have lessons will raise exception
 
     course = datamodels.get_course_by_slug(slug)
-    if course is None:
+    user = get_current_user()
+    if course is None or course.draft and not (user and user.teaches(course)):
         return redirect("/404")
-    return render_template("course_intro.html", course=course)
+    return render_template("course_intro.html", course=course, form=LoginForm())
 
 
 @blueprint.route("/code", methods=["GET", "POST"])
@@ -45,12 +50,13 @@ def code():
     error = None
     if request.method == "POST":
         c = datamodels.get_course_by_code(request.form["course_code"])
-        if c is None:
+        user = get_current_user()
+        if c is None or c.draft and not (user and user.teaches(c)):
             error = "Course not found."
         else:
             return redirect(c.permalink)
     if request.method == "GET" or error:
-        data = {"errors": [error]}
+        data = {"errors": [error], "form": LoginForm()}
         return render_template("code.html", **data)
 
 
@@ -71,6 +77,9 @@ def edit(user, course_slug=None):
 
     db = datamodels.get_session()
     if request.method == "POST":
+        if not AjaxCSRFTokenForm(request.form).validate():
+            return jsonify({"success": False, "message": "CSRF token required"}), 400
+
         if "year" in request.form:
             try:
                 year = int(request.form["year"])
@@ -138,7 +147,7 @@ def edit(user, course_slug=None):
 
     data = {
         "course": course,
-        "teachers": course.instructors,
+        "teachers": [render_teacher(obj, course) for obj in course.instructors],
         "introduction": course.intro_lesson,
         "lessons": course.normal_lessons,
         "cover_image": "/uploads/{}".format(course.cover_image)
@@ -153,6 +162,9 @@ def edit(user, course_slug=None):
 @login_required
 def change_course_slug(user, course_slug=None):
     course = datamodels.get_course_by_slug(course_slug)
+
+    if not course or not user.teaches(course):
+        raise abort(404, "No such course or you don't have permissions to edit it")
 
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
@@ -214,6 +226,9 @@ def add_teacher(user, course_slug=None):
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
 
+    if not course or not user.teaches(course):
+        raise abort(404, "No such course or you don't have permissions to edit it")
+
     new_teacher = (
         datamodels.User.find_by_email(request.form["teacher_email"])
         if "teacher_email" in request.form
@@ -237,13 +252,7 @@ def add_teacher(user, course_slug=None):
         {
             "success": True,
             "message": "Successfully added!",
-            "teacher": {
-                "id": new_teacher.id,
-                "picture": new_teacher.profile_picture,
-                "first_name": new_teacher.first_name,
-                "last_name": new_teacher.last_name,
-                "slug": course.slug,
-            },
+            "teacher": render_teacher(new_teacher, course),
         }
     )
 
@@ -253,6 +262,8 @@ def add_teacher(user, course_slug=None):
 @teacher_required
 def set_options(user, course, course_slug=None, option=None, on_or_off=False):
     """ Set course options. """
+    if not course or not user.teaches(course):
+        raise abort(404, "No such course or you don't have permissions to edit it")
 
     if option not in ["draft", "guest_access", "paid", "visibility"]:
         return jsonify({"success": False, "message": "Unknown option setting."}), 400

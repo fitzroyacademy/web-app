@@ -17,10 +17,18 @@ class TestCourseRoutes(unittest.TestCase):
 
     @staticmethod
     def make_standard_course(
-        code="ABC123", guest_access=False, title="Foo Course", slug="abc-123"
+        code="ABC123",
+        guest_access=False,
+        title="Foo Course",
+        slug="abc-123",
+        draft=False,
     ):
         course = datamodels.Course(
-            course_code=code, title=title, slug=slug, guest_access=guest_access
+            course_code=code,
+            title=title,
+            slug=slug,
+            guest_access=guest_access,
+            draft=draft,
         )
         return course
 

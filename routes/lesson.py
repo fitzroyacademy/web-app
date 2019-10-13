@@ -3,10 +3,12 @@ from slugify import slugify
 
 import datamodels
 import stubs
-from dataforms import AddLessonForm, LessonQAForm
 from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG
 from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail, reorder_items
+from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
+
+from .render_partials import render_question_answer, render_teacher
 
 blueprint = Blueprint("lesson", __name__, template_folder="templates")
 
@@ -78,7 +80,9 @@ def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
             "form": form,
             "introduction": lesson.intro_segment,
             "resources": lesson.ordered_resources,
-            "teachers": [obj.user for obj in lesson.teachers],
+            "teachers": [
+                render_teacher(obj.user, course, lesson) for obj in lesson.teachers
+            ],
             "segments": lesson.normal_segments,
             "questions": [
                 render_question_answer(course, lesson, question)
@@ -86,16 +90,18 @@ def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
             ],
             "resource_types": {r.name: r.value for r in ResourceTypeEnum},
             "resource_images": RESOURCE_CONTENT_IMG,
+            "ajax_csrf_form": AjaxCSRFTokenForm(),
+            "resource_form": AddResourceForm(),
         }
     else:
-        data = {"course": course, "form": form}
+        data = {
+            "course": course,
+            "form": form,
+            "ajax_csrf_form": AjaxCSRFTokenForm(),
+            "resource_form": AddResourceForm(),
+        }
 
     return render_template("partials/course/_lesson.html", **data)
-
-
-def render_question_answer(course, lesson, question):
-    data = {"course": course, "lesson": lesson, "question": question}
-    return render_template("partials/course/_qa.html", **data)
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
@@ -128,7 +134,7 @@ def view(course_slug, lesson_slug):
     if lesson is None:
         return redirect("/404")
     course = lesson.course
-    segment = lesson.segments[0]
+    segment = lesson.segments[0] if lesson.segments else None
     data = {
         "students": stubs.student_completion,
         "active_lesson": lesson,
@@ -146,6 +152,9 @@ def view(course_slug, lesson_slug):
 def add_teacher(user, course, course_slug, lesson_id):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
+
     if not lesson:
         return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
 
@@ -160,9 +169,14 @@ def add_teacher(user, course, course_slug, lesson_id):
             jsonify({"success": False, "message": "Can't find that email sorry!"}),
             400,
         )
+    elif not new_teacher.teaches(course):
+        return (
+            jsonify({"success": False, "message": "This user is not a teacher."}),
+            400,
+        )
 
     if new_teacher.id in [teacher.id for teacher in lesson.teachers]:
-        return (jsonify({"success": False, "message": "Teacher already added"}), 400)
+        return jsonify({"success": False, "message": "Teacher already added"}), 400
 
     enrolment = datamodels.CourseEnrollment.find_by_course_and_student(
         course.id, new_teacher.id
@@ -172,7 +186,7 @@ def add_teacher(user, course, course_slug, lesson_id):
         datamodels.COURSE_ACCESS_ADMIN,
         datamodels.COURSE_ACCESS_TEACHER,
     ]:
-        return (jsonify({"success": False, "message": "User must be a teacher"}), 400)
+        return jsonify({"success": False, "message": "User must be a teacher"}), 400
 
     lesson.teachers.append(enrolment)
     db = datamodels.get_session()
@@ -183,13 +197,7 @@ def add_teacher(user, course, course_slug, lesson_id):
         {
             "success": True,
             "message": "Successfully added!",
-            "teacher": {
-                "id": new_teacher.id,
-                "picture": new_teacher.profile_picture,
-                "first_name": new_teacher.first_name,
-                "last_name": new_teacher.last_name,
-                "slug": course.slug,
-            },
+            "teacher": render_teacher(new_teacher, course, lesson),
         }
     )
 
@@ -224,6 +232,9 @@ def delete_teacher(user, course, course_slug, lesson_id, teacher_id):
 @teacher_required
 def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
 
     if not lesson:
         return jsonify({"success": False, "message": "Wrong lesson or course"}), 400

@@ -917,7 +917,7 @@ def get_course_by_code(code):
 
 def get_public_courses():
     session = get_session()
-    return session.query(Course).filter(Course.guest_access == True).all()
+    return session.query(Course).filter(Course.guest_access == True, Course.draft == False).all()
 
 def get_program_by_slug(slug):
     return Program.find_by_slug(slug)

@@ -594,7 +594,10 @@ $( document ).ready(function() {
     };
     xhr.open('POST', url);
     var f = new FormData();
-    for (let k in data) f.append(k, data[k]); 
+    for (let k in data) f.append(k, data[k]);
+    if (typeof csrf_token !== 'undefined' && csrf_token) {
+      f.append("csrf_token", csrf_token)
+    };
     xhr.send(f);
   }
 
@@ -859,16 +862,7 @@ $( document ).ready(function() {
         } else {
             alert.addClass('alert-success');
             alert.removeClass('alert-danger');
-            $('#teachers-list').append(
-                `<div id="teacher-${responseJSON['teacher']['id']}" class="fit_btn">
-                      <div class="fit_pic circle"><img src="${responseJSON['teacher']['picture']}" alt="user"></div>
-                      <div class="fit_txt">${responseJSON['teacher']['first_name']} ${responseJSON['teacher']['last_name']}</div>
-                      <div class="sub buttonset">
-                        <a class="btn btn-sm btn-light" data-teacher-id="${responseJSON['teacher']['id']}" data-course-slug="${responseJSON['teacher']['slug']}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
-                      </div>
-                    </div>`
-
-            )
+            $('#teachers-list').append(responseJSON['teacher'])
         }
         alert.html(responseJSON.message);
     });

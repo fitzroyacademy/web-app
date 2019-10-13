@@ -116,7 +116,7 @@ class TestLessonsRoutes(unittest.TestCase):
             expected_status_code=400,
         )
 
-        self.assertEqual(response.json["message"], "Expected ordered list of items")
+        self.assertEqual(response.json["message"], "No data")
 
         # Wong data
         response = make_authorized_call(
@@ -448,7 +448,7 @@ class TestLessonsRoutes(unittest.TestCase):
         )
         self.assertEqual(len(l1.teachers), 0)
         self.assertFalse(response.json["success"])
-        self.assertEqual(response.json["message"], "User must be a teacher")
+        self.assertEqual(response.json["message"], "This user is not a teacher.")
 
     def test_remove_teacher(self):
         course = self.make_standard_course(guest_access=True)
