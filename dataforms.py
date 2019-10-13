@@ -62,6 +62,11 @@ class AddResourceForm(CSRFBaseForm):
     )
 
 
+class AddCourseForm(CSRFBaseForm):
+    title = StringField("Title", [validators.required(), validators.Length(min=4, max=50)])
+    info = StringField("Description", [validators.required(), validators.Length(min=4, max=140)])
+
+
 class LessonQAForm(CSRFBaseForm):
     question = StringField(
         "Question", [validators.required(), validators.Length(min=3)]

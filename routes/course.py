@@ -1,6 +1,9 @@
+from uuid import uuid4
+
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
+from slugify import slugify
 from flask import (
     abort,
     Blueprint,
@@ -9,12 +12,13 @@ from flask import (
     redirect,
     jsonify,
     make_response,
+    flash
 )
 
 from util import get_current_user
 
 import datamodels
-from dataforms import AjaxCSRFTokenForm, LoginForm
+from dataforms import AddCourseForm, AjaxCSRFTokenForm, LoginForm
 from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail
 
@@ -42,6 +46,8 @@ def view(slug):
     user = get_current_user()
     if course is None or course.draft and not (user and user.teaches(course)):
         return redirect("/404")
+    elif course.draft and len(course.lessons) == 0:
+        return redirect("/course/{}/edit".format(course.slug))
     return render_template("course_intro.html", course=course, form=LoginForm())
 
 
@@ -58,6 +64,49 @@ def code():
     if request.method == "GET" or error:
         data = {"errors": [error], "form": LoginForm()}
         return render_template("code.html", **data)
+
+
+@blueprint.route("/add", methods=["GET", "POST"])
+@login_required
+def add_course(user):
+
+    form = AddCourseForm(request.form)
+    data = {"form": form}
+
+    if request.method == "POST":
+        if form.validate():
+            slug = slugify(form.title.data)
+
+            if datamodels.Course.find_by_slug(slug):
+                slug = slug[:46] + "-" + str(uuid4())[:3]
+
+            course = datamodels.Course()
+            course.title = form.title.data
+            course.info = form.info.data
+            course.code = str(uuid4())[:8]
+            course.slug = slug
+
+            if "cover_image" in request.form:
+                file = request.files["file"]
+
+                filename = generate_thumbnail(file, "cover")
+                if not filename:
+                    flash("Couldn\'t save cover image")
+                else:
+                    course.cover_image = filename
+
+            db = datamodels.get_session()
+            db.add(course)
+            db.commit()
+
+            course.add_instructor(user)
+
+            return redirect("/course/{}/edit".format(slug))
+        else:
+            for key, value in form.errors.items():
+                flash("Field {}: {}".format(key, ",".join(value)))
+            data["errors"] = form.errors
+    return render_template("course_add.html", **data)
 
 
 @blueprint.route("/<course_slug>/edit", methods=["GET", "POST"])
@@ -273,6 +322,8 @@ def set_options(user, course, course_slug=None, option=None, on_or_off=False):
         value = True
     elif on_or_off in ["OFF", "off", "live", "free"]:
         value = False
+        if on_or_off == "live" and len(course.lessons) == 0:
+            return jsonify({"success": False, "message": "Add lessons first."}), 400
     elif on_or_off in ["public", "code", "institute"] and option == "visibility":
         value = on_or_off
     else:
