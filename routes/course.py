@@ -85,9 +85,8 @@ def add_course(user):
             course.info = form.info.data
             course.code = str(uuid4())[:8]
             course.slug = slug
-
-            if "cover_image" in request.form:
-                file = request.files["file"]
+            if "cover_image" in request.files:
+                file = request.files["cover_image"]
 
                 filename = generate_thumbnail(file, "cover")
                 if not filename:
