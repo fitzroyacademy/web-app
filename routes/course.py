@@ -150,6 +150,7 @@ def edit(user, course_slug=None):
         "teachers": [render_teacher(obj, course) for obj in course.instructors],
         "introduction": course.intro_lesson,
         "lessons": course.normal_lessons,
+        "ajax_csrf_form": AjaxCSRFTokenForm(),
         "cover_image": "/uploads/{}".format(course.cover_image)
         if course.cover_image and not course.cover_image.startswith("http")
         else course.cover_image,
