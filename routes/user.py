@@ -114,8 +114,7 @@ def enroll(course_slug):
 @blueprint.route("/login", methods=["GET", "POST"])
 def login():
     """ Validiate login and save current user to session. """
-    data = {"errors": [],
-            "form": LoginForm()}
+    data = {"errors": [], "form": LoginForm()}
     if request.method == "POST":
         form = LoginForm(request.form)
         data["form"] = form

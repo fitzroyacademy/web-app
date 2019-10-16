@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from datetime import datetime
-from decimal import Decimal, InvalidOperation
 
 from slugify import slugify
 from flask import (
@@ -138,8 +137,8 @@ def edit(user, course_slug=None):
         course.year = course_year
     if "amount" in request.form:
         try:
-            amount = Decimal(request.form["amount"])
-        except InvalidOperation:
+            amount = int(float(request.form["amount"]) * 100)
+        except ValueError:
             return (
                 jsonify({"success": False, "message": "Amount is not a valid number"}),
                 400,

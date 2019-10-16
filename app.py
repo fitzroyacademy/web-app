@@ -126,6 +126,10 @@ def join_names(users):
     return ", ".join(names)
 
 @app.template_filter()
+def cents_to_dolars(amount):
+    return amount/100.0
+
+@app.template_filter()
 def format_time(seconds):
     t = str(datetime.timedelta(seconds=seconds)).split(':')
     hours = int(t[0])

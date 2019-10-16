@@ -279,7 +279,7 @@
                     <div class="input-group-prepend">
                       <div class="input-group-text" id="">$</div>
                     </div>
-                    <input type="number" step="0.01" id="amount" name="amount" class="form-control" placeholder="e.g. 100" value="{% if course.amount %}{{ course.amount }}{% endif %}" data-course-edit>
+                    <input type="number" step="0.01" id="amount" name="amount" class="form-control" placeholder="e.g. 100" value="{% if course.amount %}{{ course.amount|cents_to_dolars }}{% endif %}" data-course-edit>
                   </div>
                   <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
                 </div>
