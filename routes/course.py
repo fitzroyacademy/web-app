@@ -12,7 +12,7 @@ from flask import (
     redirect,
     jsonify,
     make_response,
-    flash
+    flash,
 )
 
 from util import get_current_user
@@ -90,7 +90,7 @@ def add_course(user):
 
                 filename = generate_thumbnail(file, "cover")
                 if not filename:
-                    flash("Couldn\'t save cover image")
+                    flash("Couldn't save cover image")
                 else:
                     course.cover_image = filename
 
@@ -107,7 +107,7 @@ def add_course(user):
     return render_template("course_add.html", **data)
 
 
-@blueprint.route("/<course_slug>/edit", methods=["GET", "POST"])
+@blueprint.route("/<course_slug>/edit", methods=["POST"])
 @login_required
 def edit(user, course_slug=None):
     """
@@ -115,7 +115,7 @@ def edit(user, course_slug=None):
 
     :param user: a User instance passed by decorator
     :param course_slug: a unique course
-    :return: html response for GET method and json response for POST
+    :return: json response
     """
     course = datamodels.get_course_by_slug(course_slug)
 
@@ -123,74 +123,85 @@ def edit(user, course_slug=None):
         raise abort(404, "No such course or you don't have permissions to edit it")
 
     db = datamodels.get_session()
-    if request.method == "POST":
-        if not AjaxCSRFTokenForm(request.form).validate():
-            return jsonify({"success": False, "message": "CSRF token required"}), 400
 
-        if "year" in request.form:
-            try:
-                year = int(request.form["year"])
-            except ValueError:
-                return make_response(
-                    jsonify({"success": False, "message": "Year must be a number"}), 400
-                )
-            course_year = datetime(year=year, month=12, day=31).date()
-            course.year = course_year
-        if "amount" in request.form:
-            try:
-                amount = Decimal(request.form["amount"])
-            except InvalidOperation:
-                return (
-                    jsonify(
-                        {"success": False, "message": "Amount is not a valid number"}
-                    ),
-                    400,
-                )
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
 
-            course.amount = amount
-        if "skill_level" in request.form:
-            course.skill_level = request.form["skill_level"]
-        if "workload_summary" in request.form:
-            course.workload_summary = request.form["workload_summary"]
-        if "who_its_for" in request.form:
-            course.target_audience = request.form["who_its_for"]
-        if "course_summary" in request.form:
-            course.summary_html = request.form["course_summary"]
-        if "course_name" in request.form:
-            course.title = request.form["course_name"]
-        if "course_description" in request.form:
-            course.info = request.form["course_description"]
-        if "course_code" in request.form:
-            c = datamodels.Course.find_by_code(request.form["course_code"])
-            if c and course.id != c.id:
-                return make_response(
-                    jsonify(
-                        {"success": False, "message": "Use different course code."}
-                    ),
-                    400,
-                )
-            course.course_code = request.form["course_code"]
-        if "cover_image" in request.form:
-            file = request.files["file"]
+    if "year" in request.form:
+        try:
+            year = int(request.form["year"])
+        except ValueError:
+            return make_response(
+                jsonify({"success": False, "message": "Year must be a number"}), 400
+            )
+        course_year = datetime(year=year, month=12, day=31).date()
+        course.year = course_year
+    if "amount" in request.form:
+        try:
+            amount = Decimal(request.form["amount"])
+        except InvalidOperation:
+            return (
+                jsonify({"success": False, "message": "Amount is not a valid number"}),
+                400,
+            )
 
-            filename = generate_thumbnail(file, "cover")
-            if not filename:
-                return (
-                    jsonify(
-                        {
-                            "success": False,
-                            "message": "Couldn't upload picture. Try again or use different file format",
-                        }
-                    ),
-                    400,
-                )
+        course.amount = amount
+    if "skill_level" in request.form:
+        course.skill_level = request.form["skill_level"]
+    if "workload_summary" in request.form:
+        course.workload_summary = request.form["workload_summary"]
+    if "who_its_for" in request.form:
+        course.target_audience = request.form["who_its_for"]
+    if "course_summary" in request.form:
+        course.summary_html = request.form["course_summary"]
+    if "course_name" in request.form:
+        course.title = request.form["course_name"]
+    if "course_description" in request.form:
+        course.info = request.form["course_description"]
+    if "course_code" in request.form:
+        c = datamodels.Course.find_by_code(request.form["course_code"])
+        if c and course.id != c.id:
+            return make_response(
+                jsonify({"success": False, "message": "Use different course code."}),
+                400,
+            )
+        course.course_code = request.form["course_code"]
+    if "cover_image" in request.form:
+        file = request.files["file"]
 
-            course.cover_image = filename
+        filename = generate_thumbnail(file, "cover")
+        if not filename:
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "message": "Couldn't upload picture. Try again or use different file format",
+                    }
+                ),
+                400,
+            )
 
-        db.add(course)
-        db.commit()
+        course.cover_image = filename
 
-        return jsonify({"success": True})
+    db.add(course)
+    db.commit()
+
+    return jsonify({"success": True})
+
+
+@blueprint.route("/<course_slug>/edit", methods=["GET"])
+@login_required
+def retrieve(user, course_slug=None):
+    """
+    Either retrieve a course edit view for a course given by course_slug parameter or edit a course via Ajax requests.
+
+    :param user: a User instance passed by decorator
+    :param course_slug: a unique course
+    :return: html response
+    """
+    course = datamodels.get_course_by_slug(course_slug)
+    if not course or not user.teaches(course):
+        raise abort(404, "No such course or you don't have permissions to edit it")
 
     data = {
         "course": course,
