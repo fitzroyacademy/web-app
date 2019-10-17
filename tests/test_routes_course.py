@@ -178,9 +178,10 @@ class TestCourseRoutes(unittest.TestCase):
         response = s.post("/course/abc-123/edit/options/be_or_not_to_be/off")
         self.assertFalse(response.json["success"])
 
-        # Wrong switcher
+        # Wrong switcher / by default option is set to false
         response = s.post("/course/abc-123/edit/options/paid/offff")
-        self.assertFalse(response.json["success"])
+        self.assertTrue(response.json["success"])
+        self.assertFalse(course.paid)
 
     def test_set_course_visibility(self):
         course = self.make_standard_course()

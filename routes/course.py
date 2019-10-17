@@ -323,18 +323,18 @@ def set_options(user, course, course_slug=None, option=None, on_or_off=False):
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
 
-    if option not in ["draft", "guest_access", "paid", "visibility"]:
-        return jsonify({"success": False, "message": "Unknown option setting."}), 400
+    value = None
 
-    if on_or_off in ["ON", "on", "draft", "paid"]:
-        value = True
-    elif on_or_off in ["OFF", "off", "live", "free"]:
-        value = False
+    if option == "draft":
         if on_or_off == "live" and len(course.lessons) == 0:
             return jsonify({"success": False, "message": "Add lessons first."}), 400
-    elif on_or_off in ["public", "code", "institute"] and option == "visibility":
+        value = on_or_off == "draft"
+    elif option in ["guest_access", "paid"]:
+        value = on_or_off in ["ON", "on"]
+    elif option == "visibility" and on_or_off in ["public", "code", "institute"]:
         value = on_or_off
-    else:
+
+    if value is None:
         return jsonify({"success": False, "message": "Unknown option setting."}), 400
 
     setattr(course, option, value)
