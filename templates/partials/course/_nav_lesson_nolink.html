@@ -1,0 +1,25 @@
+<div class="fit_lesson" data-fit-lesson="{{ lesson.id }}">
+  <a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_{{ lesson.id }}" role="button" aria-controls="fit_lesson_{{ lesson.id }}">
+    <div class="fit_pic vid">
+      <img src="{{ lesson.thumbnail }}" alt="course">
+    </div>
+    <span class="fit_txt">{{ lesson.title }}</span>
+    <span class="fit_sub">{{ lesson.duration }}</span>
+    <i class="fit_hovermin fas fa-chevron-up"></i>
+  </a>
+  <div class="collapse" id="fit_lesson_{{ lesson.id }}">
+    <div class="fit_body fit_segments">
+      {% for segment in lesson.segments %}
+        <div 
+          class="fit_btn" 
+          data-fit-segment="{{ segment.id }}" 
+          data-fit-parent="{{ segment.lesson_id }}"
+        >
+          <i class="fas fa-circle"></i>
+          <span class="fit_txt">{{ segment.title }}</span> 
+          <span class="fit_sub">{{ segment.duration }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

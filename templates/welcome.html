@@ -13,7 +13,7 @@
     <!-- DEV: repeat this "row" for every course the user is enrolled in -->
     <div class="row">
       <div class="col-sm-4">
-        <a href="lessons" class="vid">
+        <a href="{{ last_segment.permalink }}?t={{ last_segment_place }}" class="vid">
           <img src="{{ last_segment.lesson.thumbnail }}" alt="image"> <!-- DEV: course.lesson picture (not course.image) -->
           {#
             <div class="bar">
@@ -73,7 +73,9 @@
       <p class="tagline">
         <span class="tag"><i class="fal fa-info-square"></i> {{ course.info }}</span>
         <span class="tag"><i class="fal fa-calendar"></i> {{ course.lessons|length }} lessons over 12 weeks.</span>
+        {% if not course.paid %}
         <span class="tag"><i class="fal fa-tag"></i> Free forever.</span>
+        {% endif %}
         <span class="tag"><i class="fal fa-university"></i> {{ course.skill_level }}</span>
       </p>
     </div>

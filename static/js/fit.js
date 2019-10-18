@@ -2,7 +2,6 @@ $( document ).ready(function() {
 
   // Go team Javascriptz, hack them codez, roxor them boxorz.
 
-
   // standard tooltips
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -43,6 +42,40 @@ $( document ).ready(function() {
   });
 
 
+  // snackbar examples
+  $('[data-snackbar-alert]').click(function(e) {
+    e.preventDefault();
+    
+    Snackbar.show({
+      text: $(this).data('snackbar-alert'),
+      pos: 'bottom-center',
+      backgroundColor: '#fff',
+      textColor: '#4f5153',
+      actionTextColor: '#2793f8',
+      customClass: 'fit_snackbar'
+    });
+  });
+
+
+  // Will does a hacky "last hit" thing
+  $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
+    // remove the active classes
+    $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').removeClass('active_latest');
+    $('.fit_player.breezy aside > .fits > .fit_body.collapse').removeClass('active_latest');
+    
+    // add just one
+    $(this).addClass('active_latest');
+    $($(this).attr('href')).addClass('active_latest');
+  });
+
+  // get first valid one and show it
+  var first_active_latest = $('.fit_player.breezy aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
+  $(first_active_latest).addClass('active_latest');
+  $($(first_active_latest).attr('href')).addClass('active_latest');
+
+
+
+
   // setting course permissions
   // This uses 'trigger' to find a 'detail' of the same 'type', and toggle active classes
   // NB: Show/hide is done via css, aka [data-data-fit-perm-type]{display: none}
@@ -51,16 +84,25 @@ $( document ).ready(function() {
     'change': function() {
       var perm = $(this).data('fit-perm-trigger');
       var type = $(this).data('fit-perm-type');
+      var slug = $(this).data('course-slug');
 
       $('[data-fit-perm-detail][data-fit-perm-type="' + type + '"]').removeClass('active');
 
       $('[data-fit-perm-detail=' + perm + ']').addClass('active');
-
+      post(`/course/${slug}/edit/options/${type}/${perm}`);
     }
   });
 
+  $('#sortable-list,#sortable-list-resources,#sortable-list-questions').sortable({handle: '.handle', onEnd: function (/**Event*/evt) {
+        let itemsOrder = [];
+        for (i = 0; i < evt.to.children.length; i++) {
+            itemsOrder.push(evt.to.children[i].dataset['listElId'])
+        }
+        let url = evt.to.dataset['actionUrl'];
 
-  
+        post(url, {'items_order': itemsOrder});
+    }});
+
 
   // things I want when this stuff is made singular:
   // toggle a HTML class
@@ -110,23 +152,6 @@ $( document ).ready(function() {
     $($(this).attr("href")).toggleClass('active')
   });
 
-  // clipboard!
-  // DEV: Michelle this is apparently clipboard JS but I don't know JS:
-  var fit_clipboard = new ClipboardJS('[data-fit_clipboard]');
-
-  fit_clipboard.on('success', function(e) {
-    // console.info('Action:', e.action);
-    // console.info('Text:', e.text);
-    // console.info('Trigger:', e.trigger);
-    alert("go team");
-
-    e.clearSelection();
-  });
-
-  fit_clipboard.on('error', function(e) {
-    // console.error('Action:', e.action);
-    // console.error('Trigger:', e.trigger);
-  });
   
   
   // do fancy placeholders for inputs:
@@ -144,11 +169,18 @@ $( document ).ready(function() {
   });
 
   // and on load
-  $("[data-fit-fancyplace]").each(function(index, el) {
-    if (this.value.trim() != ''){
-      $(this).parents('.fit_fancyplace').addClass('labelled');
-    }
+  function fancyplace_reset(){
+    $("[data-fit-fancyplace]").each(function(index, el) {
+      if (this.value.trim() != ''){
+        $(this).parents('.fit_fancyplace').addClass('labelled');
+      }
+    });
+  }
+
+  $('.modal').on('shown.bs.modal', function(index, el) {
+    fancyplace_reset();
   });
+  fancyplace_reset();
 
 
 
@@ -303,6 +335,7 @@ $( document ).ready(function() {
   }  
 
   */
+
 
   // ------------------------------------------------------------
   $('[data-fit_iconselects]').each(function(e) {
@@ -561,7 +594,10 @@ $( document ).ready(function() {
     };
     xhr.open('POST', url);
     var f = new FormData();
-    for (let k in data) f.append(k, data[k]); 
+    for (let k in data) f.append(k, data[k]);
+    if (typeof csrf_token !== 'undefined' && csrf_token) {
+      f.append("csrf_token", csrf_token)
+    };
     xhr.send(f);
   }
 
@@ -729,6 +765,228 @@ $( document ).ready(function() {
     } else {
       _fitz_video.play();
     }
+  });
+
+  delegate('textarea[data-course-edit]', 'change', (e, t) => {
+    let key = e.target.id;
+    let formData = {};
+    formData[key] = e.target.value;
+    post(e.target.form.action, formData)
+  });
+
+  delegate('input[data-course-edit]', 'change', (e, t) => {
+    let key = e.target.id;
+    let formData = {};
+    if (e.target.files) {
+      formData['file'] = e.target.files[0];
+    }
+    formData[key] = e.target.value;
+    post(e.target.formAction, formData)
+  });
+
+  delegate('[data-fit-perm-group-type]', 'click', (e, t) => {
+    var group = t.dataset.fitGroupName;
+    let value = '';
+    if (group) {
+    } else {
+      value = (!t.querySelector('input[type=checkbox]').checked)?'on':'off'
+    }
+    let tag = t.dataset.fitPermGroupType;
+    let slug = t.dataset.courseSlug;
+    if (value) {
+        post(`/course/${slug}/edit/options/${tag}/${value}`);
+    }
+  });
+
+  delegate('#change-slug', 'click', (e, t) => {
+    let slug = t.dataset.courseSlug;
+    let value = document.querySelector('#course-slug').value;
+    post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            window.location.href = `/course/${JSON.parse(xhr.response)['slug']}/edit`
+        } else {
+                console.log('DEV: give me some message')
+            }
+    });
+  });
+
+  delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
+    let teacherId = e.target.dataset.teacherId;
+    let slug = t.dataset.courseSlug;
+    let lessonId = e.target.dataset.lessonId;
+    let url = "";
+
+    if (lessonId) {
+      url = `/course/${slug}/lessons/${lessonId}/teacher/${teacherId}/delete`;
+    } else {
+      url = `/course/${slug}/edit/remove/teacher/${teacherId}`;
+    }
+
+    post(url, {}, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        let alert = $('#add-teacher-alert');
+        if (xhr.status == 200) {
+            let teacherDiv = $(`#teacher-${responseJSON['teacher_id']}`);
+            if (teacherDiv) {
+                teacherDiv.remove()
+            }
+        } else {
+                alert.css("display", "block");
+                alert.removeClass('alert-success');
+                alert.addClass('alert-danger');
+                alert.html(responseJSON.message);
+            }
+    });
+  });
+
+  delegate('#add-teacher', 'click', (e, t) => {
+    e.preventDefault();
+    let email = document.querySelector('#add-teacher-email');
+    let slug = t.dataset.courseSlug;
+    let lessonId = e.target.dataset.lessonId;
+    let url = "";
+
+    if (lessonId) {
+      url = `/course/${slug}/lessons/${lessonId}/teacher/add`;
+    } else {
+      url = `/course/${slug}/edit/add/teacher`;
+    }
+
+    post(url, {teacher_email: email.value}, (responseText, xhr) => {
+        let alert = $('#add-teacher-alert');
+        let responseJSON = JSON.parse(xhr.response);
+        alert.css("display", "block");
+        if (xhr.status == 400) {
+            alert.removeClass('alert-success');
+            alert.addClass('alert-danger');
+        } else {
+            alert.addClass('alert-success');
+            alert.removeClass('alert-danger');
+            $('#teachers-list').append(responseJSON['teacher'])
+        }
+        alert.html(responseJSON.message);
+    });
+  });
+
+  delegate('#save-lesson-question', 'click', (e, t) => {
+    e.preventDefault();
+    let slug = t.dataset.courseSlug;
+    let lessonId = t.dataset.lessonId;
+    let question = document.querySelector('#lesson-question');
+    let answer = document.querySelector('#lesson-question-answer');
+    let url = "";
+
+    url = `/course/${slug}/lessons/${lessonId}/qa/add`;
+
+    post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        if (xhr.status == 400) {
+            // DEV: handle wrong action
+        } else {
+            $('#sortable-list-questions').append(responseJSON['html']);
+        }
+    });
+  });
+
+  delegate('[data-save-question]', 'click', (e, t) => {
+    e.preventDefault();
+    let slug = t.dataset.courseSlug;
+    let lessonId = t.dataset.lessonId;
+    let qaId = t.dataset.questionId;
+    let question = document.querySelector(`#lesson-question-${qaId}`);
+    let answer = document.querySelector(`#lesson-answer-${qaId}`);
+    let url = `/course/${slug}/lessons/${lessonId}/qa/${qaId}/edit`;
+
+    post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        if (xhr.status == 400) {
+            // DEV: handle wrong action
+        } else {
+            // DEV: handle success. Some nice story for a user
+        }
+    });
+  });
+
+  $('#fit_modal_delete').on('show.bs.modal', function(event){
+    document.querySelector('#confirm-delete').href = event.relatedTarget.href;
+  });
+
+  $('#fit_modal_add_segment').on('show.bs.modal', function(event){
+    document.querySelector('#add-video-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addVideo'];
+    document.querySelector('#add-text-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addText'];
+  });
+
+  $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){
+    let resourceTitle = $('#resource_title');
+    let resourceDescription = $('#fit_wysiwyg_resource');
+    let resourceUrl = $('#resource_url');
+    let form = $('#add-edit-resource');
+
+    form.attr("action", event.relatedTarget.href);
+
+    if (event.relatedTarget.dataset['resourceId']) {
+      let res = get(event.relatedTarget.href, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            let res = JSON.parse(xhr.response);
+            resourceTitle.val(res["title"]);
+            resourceDescription.html(res["description"]);
+            resourceUrl.val(res["url"]);
+            $("input[name=resource_type][value="  + res["type"] + "]").prop("checked", true);
+        } else {
+        }
+          });
+    } else {
+      resourceTitle.val("");
+      resourceDescription.html("");
+      resourceUrl.val("");
+      $("input[name=resource_type][value=google_drawing]").prop("checked", true)
+    }
+  });
+
+  delegate('#confirm-delete', 'click', (e, t) => {
+    e.preventDefault();
+    post(t.href, {}, (responseText, xhr) => {
+        if (xhr.status == 200) {
+            window.location.href = JSON.parse(xhr.response)['success_url']
+        } else {
+                // DEV: add some messaging
+                console.log(JSON.parse(xhr.response)['message'])
+            }
+    });
+  });
+
+  // ------------------------------------------------------------
+  // medium wysiwyg edito stuff
+
+  var autolist = new AutoList();
+  var fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
+      buttonLabels: 'fontawesome',
+      extensions: {
+          'autolist': autolist
+      }, 
+      toolbar: {
+          buttons: ['h2', 'h3', 'bold', 'anchor', 'quote', 'unorderedlist','orderedlist']
+      }
+  });
+
+  delegate('#text-segment', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_editor').html();
+    $('#text_segment_content').val(mysave);
+  });
+
+  delegate('#lesson-edit-form', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_editor').html();
+    $('#further_reading').val(mysave);
+  });
+
+  delegate('#course-edit-form', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_editor').html();
+    $('#course_summary').val(mysave);
+  });
+
+  delegate('#add-edit-resource', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_resource').html();
+    $('#resource_description').val(mysave);
   });
 
   // Load the video dynamically when people hit back so the URLs in their

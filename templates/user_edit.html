@@ -19,6 +19,7 @@
 			    <dt><i class="far fa-user"></i> About you.</dt>
 			    <dd>
 			      <form class="fit_user_edit" method="post" action="/edit">
+                      {{ form.csrf_token }}
 							<div class="row">
 			          <div class="col">
 			            <div class="fit_fancyplace">

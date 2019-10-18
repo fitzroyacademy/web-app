@@ -31,6 +31,7 @@ $fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me.
 $bg: #f5f7f8;
 $bg_light: #f7f9fa;
 $bg_dark: #f1f4f5;
+$bg_darker: #ebf0f1;
 
 $brand: #464749;
 $brand_light: #666a71;
@@ -54,6 +55,7 @@ $black_80: rgba(0, 0, 0, .8);
 // possibly a new brand?!
 $watermelon: #f21e55;
 $watermelon_light: #f73c6d;
+$watermelon_lighter: #fa7fa0;
 $watermelon_dark: #c7003c;
 $watermelon_darker: #a90033;
 $watermelon_vibrant: #e6033e;
@@ -68,13 +70,21 @@ $text_lightest: #d2d7da;
 
 $text_subtle: #b0b4b7;
 
-$border_lighter: #eff1f1;
 $border_light: #e1e4e5;
+$border_lighter: #eff1f1;
+$border_lightest: #f4f6f6;
+
+
 $border_medium: #d5d8d9;
 $border_dark: #c6cbcc;
 
 $google_red: #ea4335;
+$google_slide_yellow: #f6b424;
+$google_drawing_red: #dc4438;
+
+$pdf_red: #ff2016;
 $facebook_blue: #3b5998;
+$youtube_red: #ff0000;
 
 $white_fade: rgba(255,255,255,0.99);
 
@@ -125,6 +135,7 @@ header .fit_btn > .fit_txt:after{z-index: 3330;}
 header .fit_mobile_menu_dropdown,
 header .fit_search_header{z-index: 3500;}
 
+header .fit_loading{z-index: 3600;}
 
 .fit_sidepanel{z-index: 4000;}
 .fit_sidepanel .panel .content{z-index: 4010;}
@@ -188,7 +199,7 @@ $border_rad_r: 9999em;
 
 header{height: $header_height; background: #fff; position: fixed; top:0; left: 0; right: 0; display: flex;}
 
-header .container{display: flex;}
+header .container{display: flex; position: relative;}
 
 header .fit_link:hover,
 .fit_sidepanel .panel .head .fit_link:hover{background: none;}
@@ -206,8 +217,25 @@ header .fit_link:hover,
 .fit_alerts{max-width: $container_wide; margin: 0 auto; padding: 0 1rem; box-sizing:border-box;}
 .fit_alerts > div:first-child{margin-top: 1rem;}
 
-// border roundndess
+// loading spinner
+$spinner_size: 1.75rem;
+.fit_loading{position: absolute; top:0; left: 0; background: #fff; width: 2.5rem; height: $header_height; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all .25s ease-in-out; display: none;}
+.fit_loading .circle{width: $spinner_size; height: $spinner_size; background: $bg_light; border-radius: $border_rad_r; position: relative; overflow: hidden;}
+.fit_loading .circle i{width: $spinner_size; height: $spinner_size; font-size: $spinner_size; color: $text_light; position: absolute; top:0; left: 0; animation-duration: 1s;}
 
+
+.fit_loading.spinner .circle i{}
+
+.fit_loading.check .circle{background: $new_green;}
+.fit_loading.check .circle i,
+.fit_loading.error .circle i{font-size:1rem; display: flex; align-items: center; justify-content: center; color:#fff;}
+
+.fit_loading.error .circle{background: $new_red;}
+.fit_loading.error .circle i{color:#fff;}
+
+html.loading_spinner .fit_loading.spinner{opacity: 1; display: flex;}
+html.loading_check .fit_loading.check{opacity: 1; display: flex;}
+html.loading_error .fit_loading.error{opacity: 1; display: flex;}
 
 // -----------------------------------------------------------------------------------------
 /* overall box */
@@ -216,10 +244,14 @@ html{height: 100%;}
 body{min-height: 100%;}
 
 
-body > header, 
+// Box shadows everywhere, with consistent box_shadow!
+
+body > header,
 body > .fit_player nav,
 .fit_sidepanel .panel,
-.fit_debug{box-shadow: 0 0 1.5rem $box_shadow;}
+.fit_debug,
+.fit_snackbar,
+.medium-editor-toolbar{box-shadow: 0 0 1.5rem $box_shadow;}
 
 @media (min-width: 576px){
 	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
@@ -271,6 +303,10 @@ html.fit_minleft{}
 
 .container{max-width: $container_wide;}
 
+.input-group-text{background: #fff;}
+
+
+
 // no tooltip arrows, ew.
 .tooltip .arrow{display: none;}
 .tooltip .tooltip-inner{background: $blue;}
@@ -281,6 +317,7 @@ html.fit_minleft{}
 
 // only show the lesson tooltips in certain modes
 html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
+
 @media (max-width: 900px){
 	html .fit_lesson_tooltip{visibility: visible;}
 }
@@ -294,6 +331,10 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 .btn-facebook,
 .btn-facebook:hover {color: white; background-color: $facebook_blue;}
 .btn-facebook:hover{background-color: darken($facebook_blue, 15%);}
+
+.btn-watermelon,
+.btn-watermelon:hover {color: white; background-color: $watermelon;}
+.btn-watermelon:hover{background-color: darken($watermelon, 15%);}
 
 
 // -----------------------------------------------------------------------------------------
@@ -353,15 +394,15 @@ header .fit_device svg > path{fill:$brand;}
 
 
 // the basics and mods:
-.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem;}
+.fit_btn{display: flex; text-decoration: none; position: relative; font-size: 1rem; align-items:center;}
 
 .fit_btn > * {padding: 1rem 0;}
 
 nav .fit_btn,
 aside .fit_btn{color: $text;}
 
-.fit_btn:hover,
-.fit_btn.active{text-decoration: none; background: $bg;}
+a.fit_btn:hover,
+a.fit_btn.active{text-decoration: none; background: $bg;}
 a.fit_btn:hover{color:$blue;}
 
 // icons, fixed width
@@ -485,16 +526,21 @@ header .fit_btn:hover > .fit_txt:after,
 
 // weird stuff in resource links
 .fit_pane .fit_btn.resource_link{background: #fff; border-radius: $border_rad_md; flex-wrap:wrap;}
+
 .fit_btn > .fit_txt .fa-external-link{margin-left: .25rem; font-size: 80%;}
 
 .fit_btn.resource_link i.lg{font-size: 2rem;}
-.fit_txt small{display: block; color:#ccd}
+.fit_txt small{display: block; color:$text_light;}
+.fit_pane .fit_btn.resource_link:hover small{color:$text;}
 
-.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize;}
+.fit_btn.resource_link .fit_txt{}
+
+// the short text explainer
+.fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize; width: 100%;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
 
 .fit_btn.resource_link .explain:active,
-.fit_btn.resource_link .explain:focus{height: auto;}
+.fit_btn.resource_link .explain:focus{height: auto; overflow: auto}
 
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
@@ -529,23 +575,32 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_lesson > .collapse.show{border-bottom: 1px solid $border_light;}
 
 // weird hover thingy
-.fit_hovermin{display:none; position: absolute; top:0; width: 4rem; border-radius: 999rem;}
+// removing display:none; for clarity
+.fit_hovermin{ position: absolute; top:0; width: 4rem; border-radius: 999rem; display: block;}
 
 // omg this is some hacky bullshit right here
 // we need the hover to go over the top of the _sub text, so we make a psuedoelement with the chevron in it.
 // it's a circle so it doesn't look weird when rotating. JAYSIS.
-.fit_sub + .fit_hovermin:after{display: block; content: "\f077"; display: flex; align-items: center; justify-content: center; background: $bg; height: 3rem; width: 3rem;  position: absolute; top:0rem; left: 0.5rem; border-radius: $border_rad_r;}
+.fit_sub + .fit_hovermin:after{display: block; content: "\f077"; display: flex; align-items: center; justify-content: center; background: #fff; height: 3rem; width: 3rem;  position: absolute; top:0rem; left: 0.5rem; border-radius: $border_rad_r; color:$text_lighter;}
 .fit_hovermin:last-child{right: 0;}
 .fit_hovermin:first-child{left: 0;}
 .fit_btn:hover .fit_hovermin{display: block;}
 
+// hover is weird
+a.fit_btn:hover .fit_sub + .fit_hovermin:after{background: $bg; color:$blue;}
+
 // make the text have a sneaky overflow
 aside .fit_btn .fit_txt{overflow: hidden; position: relative; white-space: nowrap;}
 aside .fit_btn .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), #fff); display: block; position: absolute; content: ''; height: 100%; top:0; right: 0; width: 1.5rem;}
+
+// hiding the text gradient for now
+aside .fit_btn .fit_txt:after{display: none}
+
 aside .fit_btn:hover .fit_txt:after,
 aside .fit_btn.active .fit_txt:after{background: linear-gradient(90deg, rgba(255,255,255,0), $bg);}
 
-aside .fit_btn[data-toggle="collapse"]{border-top:1px solid $border_light;}
+// aside .fit_btn[data-toggle="collapse"]{border-top:1px solid $border_light;}
+aside .fit_btn[data-toggle="collapse"] .badge-light{color: $text_lighter; text-transform: uppercase;}
 
 // rotate all the chevrons and things
 html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
@@ -555,7 +610,12 @@ html.fit_minleft [data-fit-minleft] i{transform: rotate(180deg);}
 .fit_btn.collapsed > .fit_hovermin{transform: rotate(-180deg);}
 
 .fit_lesson > .fit_btn{border-top: 1px solid $border_light; transition: border-top .2s ease-in-out;}
-.fit_lesson > .fit_btn.collapsed{border-top: 1px solid #fff;}
+.fit_lesson > .fit_btn.collapsed{border-top-color: transparent;}
+
+// remove for first
+.fit_lessons .fit_lesson:first-child > .fit_btn{border-top: none; border-radius: $border_rad_sm $border_rad_sm 0 0}
+.fit_lessons .fit_lesson:last-child > .fit_btn,
+.fit_lessons .fit_lesson:last-child > .collapse.show{border-bottom: none; border-radius: 0 0 $border_rad_sm $border_rad_sm}
 
 
 // subtler colours sometimes
@@ -613,9 +673,22 @@ header .right,
 
 /* icon colours */
 .resource_link .fa-file,
-.resource_link .fa-file-alt{color: $blue;}
-.resource_link .fa-file-spreadsheet{color: $green;}
-.resource_link .fa-file-image{color: $watermelon;}
+.resource_link .fa-file-alt,
+.fit_radio_icons input:checked + label > i.fa-file,
+.fit_radio_icons input:checked + label > i.fa-file-alt{color: $blue;}
+.resource_link .fa-file-spreadsheet,
+.fit_radio_icons input:checked + label > i.fa-file-spreadsheet{color: $green;}
+.resource_link .fa-presentation,
+.fit_radio_icons input:checked + label > i.fa-presentation{color: $google_slide_yellow;}
+.resource_link .fa-image,
+.fit_radio_icons input:checked + label > i.fa-image{color: $google_drawing_red;}
+.resource_link .fa-youtube,
+.fit_radio_icons input:checked + label > i.fa-youtube{color: $youtube_red;}
+.resource_link .fa-file-pdf,
+.fit_radio_icons input:checked + label > i.fa-file-pdf{color: $pdf_red;}
+.resource_link .fa-camera,
+.fit_radio_icons input:checked + label > i.fa-camera{color: $pink;}
+
 
 
 
@@ -635,7 +708,7 @@ header .right,
 .fit_lesson > .fit_link{border-top: 1px solid #e1e4e5;}
 .fit_lesson > .fit_link.collapsed{border-top: 1px solid #fff;}
 
-.fit_body .fit_segments{margin:-0.25rem 0 0rem; border-bottom: 1px solid #e1e4e5;}
+.fit_body .fit_segments{margin:-0.25rem 0 0rem;}
 .fit_segments .fit_link{padding-top: 0.75rem; padding-bottom: 0.75rem; min-height: 2.75rem; font-size: 0.9rem; color: #464749;}
 
 .fit_segments .fit_link.complete{color: #aaa;}
@@ -664,7 +737,7 @@ header .right,
 // -----------------------------------------------------------------------------------------
 /* video */
 
-.fit_vidya{position: relative;}
+.fit_vidya{position: relative; background: $blue;}
 .fit_vidya:after{padding-top: $ratio_169; display: block; content: '';}
 .fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0; border-radius: $border_rad_xl;}
 
@@ -840,6 +913,28 @@ a.card.rating h5{color: #f4b115;}
 	.fit_course.intro .fit_vidya .placeholder{border-radius: 0;}
 }
 
+
+// fit_seduce makes people want to gobble it up and enrol oh yes...
+.fit_seduce{padding: 3rem 0 1rem; margin-bottom: 1rem; text-align: center; display: block; border-bottom: 3px solid $border_lightest;}
+
+.fit_seduce [class^='col']{position: relative;}
+.fit_seduce [class^='col']:after{content: ''; width: 3px; top:1rem; right:0; bottom: 2rem; display: block; position: absolute; background: $border_lightest;}
+.fit_seduce [class^='col']:last-child:after{background: none;}
+
+@media (max-width: 575px) {
+	.fit_seduce [class^='col']:after{display: none;}
+}
+
+.fit_seduce i.big{font-size: 4.5rem; height: 6rem;}
+.fit_seduce i.green{color: $new_green;}
+.fit_seduce i.blue{color: $blue;}
+.fit_seduce i.watermelon{color: $watermelon;}
+
+.fit_seduce h4{font-size: 1.4rem; font-weight: 900;}
+.fit_seduce p{font-size: 0.9rem; color: $text_light; margin: 0 auto 2rem; max-width: 240px;}
+
+.fit_seduce .btn-block{height: 3rem; margin: 1rem auto 2rem; max-width: 260px;}
+
 // mess with the headers
 
 .fit_course h1{display: flex; align-items: initial; padding-bottom: 1rem;}
@@ -947,7 +1042,7 @@ Bleh:;
 }
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // user stuff, defaulting for h1
 
 .fit_avatared{position: relative; padding-left: 4rem;}
@@ -965,7 +1060,7 @@ form.fit_user_edit{max-width: 30rem;}
 dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 // mess with styles for the toggle thingos
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // WD: Figure where this is used lol -->. .fit_summary_icons dd .form-group:first-child{margin-top: 1rem;}
 
 
@@ -999,15 +1094,19 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 
 // weird forms
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 
 .form-control.fit_coursecode{max-width: 15rem}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // chart stuff
 .fit_chart{}
+
+
+// in the sidebar
+aside .fit_chart{margin: 1rem;}
 
 // hax the chart svg
 .fit_chart_svg{width: 100%;}
@@ -1063,7 +1162,7 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 .apexcharts-tooltip-title{display: none;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Tables for analyrtics
 
 table.fit_stats{}
@@ -1112,7 +1211,7 @@ table.fit_colhover td:hover{cursor: default;}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // flag
 
 .fit_flag_group{margin-bottom: 2rem;}
@@ -1124,7 +1223,7 @@ table.fit_colhover td:hover{cursor: default;}
 
 .nav-link i{margin-right: .5rem;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // All the hiding and mobile and crap
 
 /* medium boye small sidebar */
@@ -1154,7 +1253,7 @@ table.fit_colhover td:hover{cursor: default;}
   html.fit_mobilenav [fit-course_mobilenav_trigger] i{transform: rotate(-180deg);}
 }
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // the version of the site with the aside below...
 
 @media (min-width: 576px){
@@ -1203,7 +1302,7 @@ html.fit_minright aside .fit_hider{display: block;}
 html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // modals
 
 .modal{background: $white_fade;}
@@ -1229,13 +1328,15 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_modal_single .fit_iconselects.high_sub .fit_iconselect, 
 .fit_modal_single .fit_iconselects.high_sub .fit_iconselect:hover{width: 100%}
 
+// lessons in modal
+.modal .modal-body .fit_lessons{margin: -1rem -1rem 0;}
 
 .modal-title{font-weight: 900; font-size: 1.75rem; color:$text;}
 
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Iconselect: Sets of icons that can be selected!
 .fit_iconselects{display: flex; align-items:center; justify-content:space-between; text-align: center;margin-bottom: 2rem;}
 
@@ -1321,8 +1422,8 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_iconselects.high_sub .fit_iconselect:hover{height: 7rem; width: 50%; margin-bottom: 5rem; border:none; text-decoration: none;}
 .fit_iconselects.high_sub .fit_iconselect .sub h4{display: block; font-size:1.1rem; font-weight: bold; color:$brand;}
 
-.fit_iconselects.high_sub .use_fitz i{color:$watermelon;}
-.fit_iconselects.high_sub .make_new i{color:$blue;}
+.fit_iconselects.high_sub .watermelon i{color:$watermelon;}
+.fit_iconselects.high_sub .blue i{color:$blue;}
 
 
 
@@ -1387,7 +1488,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // heroic introductio big texty friend
 
 .fit_hero{padding: 4rem 2rem; position: relative; text-align: center;}
@@ -1439,7 +1540,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_hero .fit_code .fit_entry_buttons .btn{margin: 0;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // some sales stuff like big images and whatever
 
 .fit_hero .fit_picture{max-width: 900px; margin: 0 auto;}
@@ -1460,7 +1561,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // the window for pictures and courses.
 
 .fit_window{border-radius: $border_rad_lg; margin:0 auto; overflow: hidden; position: relative;}
@@ -1526,7 +1627,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_course_sell p.tagline{margin-bottom: 0;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Keep watching, bucko! Get back on that horse, get on track, get it done ya hear.
 
 .fit_keep_watching{background: $blue; padding: 2rem 0; border-radius: 0 !important;}
@@ -1571,7 +1672,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
@@ -1636,7 +1737,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium .breakbig,
 .fit_medium .breakbigger{margin: 0 0 2rem;}
 .fit_medium .breakbig .row img,
-.fit_medium .breakbigger .row img{margin-bottom: 1rem;} 
+.fit_medium .breakbigger .row img{margin-bottom: 1rem;}
 
 @media (min-width: 992px) {
 	.fit_medium .breakbig{width: $large_width; margin-left: -$large_margin;}
@@ -1746,33 +1847,47 @@ $square_size: 22rem;
 }
 
 // fancy placeholders for inputs
-.fit_fancyplace{position: relative;margin-bottom: 1rem;}
-.fit_fancyplace label{position: absolute; top:0; left: 0;padding: .75rem .75rem; color:$text_lightest; cursor: text;}
-.fit_fancyplace .form-control{padding: .75rem; height: calc(2em + .75rem + 2px);}
+.form-control::placeholder{color: $text_lighter;}
 
-// for animation:
-.fit_fancyplace label{transition: all .1s ease-in-out;}
+.fit_fancyplace{position: relative;margin-bottom: 1rem;}
+.fit_fancyplace label{position: absolute; top:0; left: 0; padding: .75rem 1rem; color:$text_lighter; cursor: text; transition: all .1s ease-in-out;}
+.fit_fancyplace .form-control{padding: .75rem 1rem; height: calc(2em + .75rem + 2px);}
 
 // when the label is shown:
-.fit_fancyplace.labelled label{opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .65rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
+.fit_fancyplace.labelled label{opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .5rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
 
 
 // when it's active
 .fit_fancyplace.active .form-control{border-color: $blue;}
 .fit_fancyplace.active.labelled label{color:$text;}
 
-// transparent the placeholder on focus
+// transparent the placeholder
 .fit_fancyplace .form-control::-webkit-input-placeholder { color:transparent; }
 .fit_fancyplace .form-control:-moz-placeholder { color:transparent; } /* FF 4-18 */
 .fit_fancyplace .form-control::-moz-placeholder { color:transparent; } /* FF 19+ */
 .fit_fancyplace .form-control:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+
+// when active
+.fit_fancyplace.active .form-control:empty::-webkit-input-placeholder { color:$text_light; }
+.fit_fancyplace.active .form-control:empty:-moz-placeholder { color:$text_light; } /* FF 4-18 */
+.fit_fancyplace.active .form-control:empty::-moz-placeholder { color:$text_light; } /* FF 19+ */
+.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$text_light; } /* IE 10+ */
+
+
+// when watermelon
+.fit_form_code.fit_fancyplace.active .form-control:empty::-webkit-input-placeholder { color:$watermelon_light; }
+.fit_form_code.fit_fancyplace.active .form-control:empty:-moz-placeholder { color:$watermelon_light; } /* FF 4-18 */
+.fit_form_code.fit_fancyplace.active .form-control:empty::-moz-placeholder { color:$watermelon_light; } /* FF 19+ */
+.fit_form_code.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$watermelon_light; } /* IE 10+ */
+
+
 
 
 // login on its own
 body > .fit_auth{padding-top: 8rem; /* border:0.1rem solid $border_light; border-radius: $border_rad_xl; */}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 /* the thing that makes big course code entry thing */
 /* NB this builds upon fit_fancyplace */
 
@@ -1795,7 +1910,7 @@ body > .fit_code {margin-top:10rem;}
 
 
 // weird label
-.fit_form_code label{font-size: 2em; color:#fff; opacity: 0.6; padding-top: 0.5rem}
+.fit_form_code label{font-size: 2em; color:$watermelon_lighter; opacity: 1; padding-top: 0.5rem}
 
 .fit_form_code.active label,
 .fit_form_code.labelled label{position: absolute; top:-0.75rem; left: 0.65rem; color: #fff; background: $watermelon_dark; padding: 0 0.5rem; font-size: 0.85rem; border-radius: $border_rad_md;}
@@ -1915,7 +2030,7 @@ header .fit_search_header .results{position: fixed; display: flex; flex-directio
 
 html.fit_search_header_active .fit_search_header{display: flex;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Mobile menu fun
 
 .fit_mobile_menu{}
@@ -1988,7 +2103,7 @@ footer .fit_device svg > path{fill: $watermelon;}
 .fit_michael .fit_medium {text-align: center; max-width: 450px; margin: 0 auto; font-size: 1.2rem; background: $bg; border-radius: $border_rad_xl; padding: 2rem 2rem 1rem; margin-bottom: 10rem;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish
 
 .fit_debug{position: fixed; bottom: 2rem; right:2rem; right: 2rem; background: #fff; padding: 1rem; width: 6rem; height: 6rem; opacity: 0.1; overflow: hidden; overflow-y: scroll; cursor: pointer; transition: all .1s ease-in-out;}
@@ -2015,7 +2130,7 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 .fit_quote cite a:hover{color: $blue;}
 
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // course edit stuff:
 [data-fit-perm-detail]{display: none}
 [data-fit-perm-detail].active{display: block;}
@@ -2039,30 +2154,44 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 .fit_quicksearch .results:empty{background: $bg_dark;}
 
-// ----------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // Edit FAQs
 
 .fit_faq_edits{}
 .fit_faq_edit{}
 
-.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem;}
-.fit_faq_edit:last-child{border-bottom: none; margin-bottom: 0;}
+.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
+// removed coz we have the adder below now!
+.fit_faq_edit:last-child{border-bottom: none;}
 
-// ----------------------------------------------------------------------------------------------------------------
+.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .4rem 0;}
+.fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
+
+.fit_faq_edit .btn-remove:hover{color:$red; background: #fff;}
+// ------------------------------------------------------------------------------------
 // Custom radios for permissions and things
+.fit_radio_icons{}
+.fit_radio_icons.columned{column-count:2;}
+
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
 .fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
-.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.15rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
-.fit_radio_icons input:checked + label{color: $blue; font-weight: bold}
+.fit_radio_icons input:checked + label{color: $brand;}
 .fit_radio_icons input:checked + label .form-text{color: $text  !important;}
 
 
+// last one is the adder
+.fit_faq_add{border: none; margin: 0rem -2rem -1.5rem -4.2rem; padding: 1rem 2rem 1rem 4.2rem; border-radius: 0 0 $border_rad_md $border_rad_md; border-top:1px solid $border_light; background: $bg_darker;}
 
 
+// ------------------------------------------------------------------------------------
+// snackbar!
+.fit_snackbar{border:1px solid $border_light; border-radius: $border_rad_md;}
 
-// ----------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------
 // Institute mode uses normal hero as much as possible!
 
 .fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;}
@@ -2095,7 +2224,87 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 
 .fit_player.breezy aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
 
-// ----------------------------------------------------------------------------------------------------------------
+html.course footer{display: none;}
+
+
+main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: auto; bottom: auto; padding: 0;}
+.fit_player.breezy nav{display: none;}
+
+@media (max-width: 575px) {
+	main.fit_player.breezy > article{position: sticky; top:0;}
+}
+
+.fit_lesson_asider{border:1px solid $border_light; border-radius: $border_rad_md; background: #fff;}
+
+@media (max-width: 899px) {
+	main.fit_player.breezy aside .fits .fit_body.courselist{padding: .5rem; background: $bg;}
+}
+
+@media (max-width: 575px) {
+	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist,
+	main.fit_player.breezy aside .fits .fit_body.courselist{background: $bg;}
+	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist.collapsed{background: #fff;}
+
+}
+
+@media (min-width: 900px) {
+	main.fit_player.breezy{margin: 1rem;}
+
+
+	main.fit_player.breezy .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
+
+
+	.fit_player.breezy aside{}
+
+	.fit_player.breezy aside > .fits{padding: 1rem 0;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
+
+	.fit_player.breezy aside > .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] > *{}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] >i:first-child{width: 3rem;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+
+	// on / off
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+
+	// re-order buttons:
+	.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
+	.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
+	.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+
+	.fit_player.breezy aside .fits > .fit_body{order:100; border-top:1px solid $border_light; width: 100%; margin-top: -1px; padding-top:1rem;}
+
+
+
+	// logic for latest and actives
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed,
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$text; height: 3rem;}
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt:after{display: none;} // weird grad thing
+
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]:hover{background: transparent; color:$blue;}
+
+	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].active_latest{color:$blue; border-bottom:1px solid $blue;  margin-bottom: -1px;}
+
+
+	// collapsed bodies
+	.fit_player.breezy aside > .fits > .fit_body.collapse,
+	.fit_player.breezy aside > .fits > .fit_body.collapsing,
+	.fit_player.breezy aside > .fits > .fit_body.show{display: none; -webkit-transition: none;transition: none;}
+
+	.fit_player.breezy aside > .fits > .fit_body > .fit_body_content{padding: 1rem 1.5rem;}
+
+	.fit_player.breezy aside > .fits > .fit_body.active_latest{display: block;}
+
+}
+
+@media (min-width: 1200px) {
+	main.fit_player.breezy{margin: 3rem auto 1rem;}
+}
+
+// ------------------------------------------------------------------------------------
 // get yo wiggle on!
 
 .fit_wiggle_daddy:hover .fit_wiggle,
@@ -2133,6 +2342,59 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
   75% {transform: rotate(-5deg);}
   100% {transform: rotate(0deg);}
 }
+
+
+// ------------------------------------------------------------------------------------
+// Other ideas!
+// Pulse thing: https://codepen.io/igorsheg/pen/MBpwGw
+
+
+
+// ------------------------------------------------------------------------------------
+// Medium wysiwyg editor
+
+.fit_wysiwyg{border: 1px solid $border_medium; border-radius: $border_rad_sm; padding: 1rem; background: #fff; min-height: 10rem;}
+
+.fit_wysiwyg .medium-editor-element{outline: none !important;}
+.fit_wysiwyg .medium-editor-placeholder-relative:after,
+.fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: $text_light;}
+
+.medium-toolbar-arrow-under:after{}
+
+.fit_wysiwyg blockquote{display: block; font-size: 1.3rem; border-left: 3px solid $border_light; padding: .25rem .5rem .25rem calc(1rem - 3px); margin-left: -1rem;}
+
+
+.medium-editor-toolbar,
+.medium-editor-toolbar-form{border-radius: $border_rad_xl; border:1px solid $border_light; overflow: hidden; height: 3.2rem; background: #fff;}
+.medium-editor-toolbar ul{}
+
+.medium-editor-toolbar ul li button{border: none; font-size: 1rem;}
+.medium-editor-toolbar ul li button:hover{color:$blue;}
+.medium-editor-toolbar ul li button.medium-editor-button-active{background: $bg;}
+
+.medium-editor-toolbar .medium-editor-toolbar-input{font-size: 1rem; padding: .75rem 1rem;}
+.medium-editor-toolbar-form a{margin: 0; padding: 0.5rem 1rem;}
+
+.medium-editor-toolbar ul li:first-child button{border-radius: $border_rad_xl 0 0 $border_rad_xl;}
+.medium-editor-toolbar ul li:last-child button{border-radius: 0 $border_rad_xl $border_rad_xl 0;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

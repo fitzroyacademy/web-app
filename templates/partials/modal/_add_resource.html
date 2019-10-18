@@ -1,0 +1,48 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_resource_link">
+  <form id="add-edit-resource" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" class="modal-dialog modal-dialog-centered" role="document" method="post">
+    {{ resource_form.csrf_token }}
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Lesson resource.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+      </div>
+      <div class="modal-body">
+        <div class="fit_fancyplace">
+          <label for="">Link</label>
+          <input type="url" value="{% if resource %}{{ resource.url }}{% endif %}" name="resource_url" id="resource_url" class="form-control" placeholder="E.g. https://example.com" required data-fit-fancyplace>
+        </div>
+
+        <div class="fit_fancyplace">
+          <label for="">Title</label>
+          <input type="text" id="resource_title" value="{% if resource %}{{ resource.title }}{% endif %}" name="resource_title" class="form-control" placeholder="E.g. My wonderful template" required data-fit-fancyplace>
+        </div>
+
+        <div class="form-group">
+          <div class="fit_wysiwyg">
+            <div id="fit_wysiwyg_resource">{% if resource %}{{ resource.description|safe }}{% endif %}</div>
+          </div>
+          <textarea id="resource_description" name="resource_description" style="display: none"></textarea>
+        </div>
+
+        <label for="">Type</label>
+        <div class="form-group fit_radio_icons columned" data-fit-radio-icons>
+
+          {% for key, value in resource_types.items() %}
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="{{ key }}" value="{{ key }}" name="resource_type">
+            <label class="form-check-label" for="{{ key }}">
+              <i class="{{ resource_images[key] }}"></i> {{ value }}
+            </label>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="submit-add-resource" type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </form>
+</div>

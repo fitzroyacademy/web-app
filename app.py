@@ -147,6 +147,10 @@ def join_names(users):
     return ", ".join(names)
 
 @app.template_filter()
+def cents_to_dolars(amount):
+    return amount/100.0
+
+@app.template_filter()
 def format_time(seconds):
     t = str(datetime.timedelta(seconds=seconds)).split(':')
     hours = int(t[0])
@@ -163,6 +167,18 @@ def format_time(seconds):
         if minutes > 1:
             out += "s"
     return out
+
+@app.template_filter()
+def hhmmss(seconds):
+    out = str(datetime.timedelta(seconds=seconds))
+    if seconds < 3600:
+        out = out[2:]
+    return out
+
+@app.template_filter()
+def hhmm(seconds):
+    out = str(datetime.timedelta(seconds=seconds)).split(":")
+    return "{}:{}".format(out[0], out[1])
 
 def uuid():
     return "{}".format(uuid4().hex)

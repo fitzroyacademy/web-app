@@ -12,24 +12,23 @@
         <small class="subtxt">
           <button class="btn btn-sm btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
           &nbsp;
-          <button class="btn btn-sm btn-outline-primary"><i class="fal fa-check"></i>  Save changes</button>
+          <button class="btn btn-sm btn-outline-primary"><i class="fal fa-check"></i> Save changes</button>
         </small>
       </h1>
 
       <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="course_name" value="" id="course_name" placeholder="Name your course" data-fit-slug-first data-fit-slug-name>
+        <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course" data-fit-slug-first data-fit-slug-name data-course-edit>
       </div>
       <div class="form-group">
         <!-- <label for="lesson_description">Short description</label> -->
-        <input type="text" class="form-control" id="course_description" maxlength="140" placeholder="Short description of the lesson. 140 characters max.">
+        <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit>
       </div>
 
       <div class="fit_vidya">
-        <!-- DEV: 16:9 image uploaded in edit view -->
-        <img class="placeholder" src="https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360" alt="video"> 
-        <a class="fit_vidya_play" href="/course/fitzroy-academy/how-to-have-good-ideas"><i class="fas fa-upload"></i></a>
+        <img class="placeholder" src="{%  if cover_image %}{{ cover_image }}{% else %}https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360{% endif %}" alt="video">
+        <a class="fit_vidya_play" href="#" onclick="document.getElementById('cover_image').click()"><i class="fas fa-upload"></i></a>
+        <input id="cover_image" name="cover_image" type="file" style="display: none;" data-course-edit>
       </div>
-
 
       <h3>
         <span class="txt">Lesson plan.</span>
@@ -43,61 +42,63 @@
           
 
           <!-- DEV: Show only when there's no intro video -->
-          <!-- <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
+          <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
             <i class="fas fa-plus"></i>
             <span class="fit_txt">Add an intro video</span>
-          </a> -->
+          </a>
 
           <div>
-
-
             <!-- DEV: This first one is special, just for the intro video: -->
             <!-- Note this one can't be moved from the first position, because it's an intro! -->
-            <!-- 
+
+            {% if introduction %}
             <div class="fit_btn">
               <div class="fit_pic vid">
-                <img src="/assets/images/lessons/agile-project-management.jpg" alt="course"> 
+                <img src="{{ introduction.thumbnail }}" alt="course">
               </div>
               <div class="fit_txt">
                 Introduction
               </div>
 
               <div class="sub buttonset">
-                
-                <div class="btn btn-text subtle">1:29</div>
-                
+
+                <div class="btn btn-text subtle">{{ introduction.strfduration }}</div>
+
                 <a href="#" class="btn btn-light"><i class="fal fa-ellipsis-v"></i></a>
               </div>
-            </div> -->
+            </div>
+            {% endif %}
 
             <!-- DEV: Put user-added lessons here -->
-            <div class="fit_btn">
-              <div class="fit_pic vid">
-                <img src="https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360" alt="course"> 
-              </div>
-              <div class="fit_txt">
-                How to have good ideas
-                &#9702; 
-                Judah Pollack
-              </div>
+            <div id="sortable-list" data-course-slug="{{ course.slug }}">
+                {% for lesson in lessons %}
+                <div id="lesson_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
+                  <div class="fit_pic vid">
+                    <img src="{{ lesson.thumbnail }}" alt="course">
+                  </div>
+                  <div class="fit_txt">
+                    {{ lesson.title }}
+                  </div>
 
-              <div class="sub buttonset">
-                
-                <div class="btn btn-text subtle">45:36</div>
+                  <div class="sub buttonset">
 
-                <div class="dropdown">
-                  <button href="#" class="btn btn-light" type="button" id="dropdown_123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fal fa-ellipsis-v"></i>
-                  </button>
-                  
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
-                    <a class="dropdown-item" href="#"><i class="fal fa-edit"></i> Edit</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
+                    <div class="btn btn-text subtle">{{ lesson.strfduration }}</div>
+
+                    <div class="dropdown">
+                      <button href="#" class="btn btn-light" type="button" id="dropdown_123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fal fa-ellipsis-v"></i>
+                      </button>
+
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
+                        <a class="dropdown-item" href="#"><i class="fal fa-edit"></i> Edit</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
+                      </div>
+                    </div>
+
+                    <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
                   </div>
                 </div>
-                
-                <a href="#" class="btn btn-light" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
-              </div>
+                {% endfor %}
             </div>
           </div>
           
@@ -116,10 +117,11 @@
           <h3>
             <span class="txt">Course info.</span>
           </h3>
+          <form action="/course/{{ course.slug }}/edit" method="post">
           <div class="fit_pane">
             <dl class="fit_summary_icons">
 
-              <!-- <dt><i class="far fa-building"></i> Program</dt>
+              <dt><i class="far fa-building"></i> Program</dt>
               <dd>
                 <div class="form-group">
                   <select class="form-control">
@@ -127,12 +129,12 @@
                     <option>Global challenges</option>
                   </select>
                 </div>
-              </dd> -->
+              </dd>
 
               <dt><i class="far fa-calendar"></i> Year</dt>
               <dd>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="">
+                  <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="{{ course.year.year if course.year }}" data-course-edit>
                   <small class="form-text text-muted">Useful if you're running the same course over multiple years.</small>
                 </div>
               </dd>
@@ -140,21 +142,21 @@
               <dt><i class="far fa-users"></i> Who's it for?</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." value=""></textarea>
+                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience }}</textarea>
                 </div>
               </dd>
               
               <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="workload" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." value=""></textarea>
+                  <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary }}</textarea>
                 </div>
               </dd>
 
               <dt><i class="far fa-university"></i> Skill level</dt>
               <dd>
                 <div class="form-group">
-                  <input  type="text" class="form-control" id="skill_level" placeholder="E.g. Introductory to intermediate." value="">
+                  <input  type="text" class="form-control" id="skill_level" placeholder="E.g. Introductory to intermediate." value="{{ course.skill_level }}" data-course-edit>
                 </div>
               </dd>
 
@@ -162,31 +164,30 @@
               <dd>
                 <div class="form-group">
                   <!-- DEV: This stuff below is from a WYSIWYG-lite (probably just basic formatting and images) input on course edit -->
-                  <textarea rows="8" class="form-control" placeholder="From a basic idea to early customers, business models and getting the numbers right. 
+                  <textarea rows="8" id="course_summary" class="form-control" placeholder="From a basic idea to early customers, business models and getting the numbers right.
 
-You'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact..."></textarea>
+You'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact...">{{ course.summary_html }}</textarea>
                 </div>
               </dd>
-              <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
-              <!-- For now, can be comma delimited? -->
-              <!--  
+              
               <dt><i class="far fa-tag"></i> Tags</dt>
               <dd>
                 <div class="form-group">
-                  
+                  <!-- DEV: Let's use this? https://bootsnipp.com/snippets/exqd3 -->
+                  <!-- For now, can be comma delimited? -->
                   <input type="text" class="form-control" placeholder="E.g. socent, agile, highschool">
                 </div>
                 <small class="form-text text-muted">Only letters, with commas between tags.</small>
               </dd>
-               -->
             </dl>
 
 
 
           </div><!-- pane -->
-
+          </form>
 
         </div><!-- col -->
+
 
         <div class="col-md-6">
             
@@ -198,7 +199,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
           <div class="fit_pane">
             <dl class="fit_summary_icons">
               
-
+              <form action="/course/{{ course.slug }}/edit" method="post">
               <!-- DEV: We should probably check if this tag is taken while it's being entered? Is that a security hole? Do we care? -->
               <dt><i class="far fa-external-link"></i> Link</dt>
               <dd>
@@ -207,9 +208,12 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course_slug" class="form-control" maxlength="20" name="course_slug" value="" placeholder="short link" data-fit-slug-set>
+                    <input type="text" id="course-slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link">
+                    <div class="input-group-append">
+                      <button id="change-slug" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Change</button>
+                    </div>
                   </div>
-                  <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/???">fitzroyacademy.com/course/<strong data-fit-slug-reveal></strong></a></small>
+                  <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/{{ course.slug }}<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->
                 </div>
               </dd> 
@@ -219,9 +223,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                 <a class="" data-toggle="tooltip" title="Invite other users to have teacher access to this course, via email." href="#"><i class="fas fa-info-circle"></i></a>
               </dt>
               <dd>
-                <div class="alert alert-danger">Can't find that email sorry!</div>
-                <div class="alert alert-success">Successfully added!</div>
-  
+                <div id="add-teacher-alert" class="alert" style="display: none;"></div>
 
                 <div class="fit_quicksearch">
 
@@ -229,22 +231,24 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-envelope"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="example@email.com">
+                    <input type="text" id="add-teacher-email" class="form-control" placeholder="example@email.com">
                     <div class="input-group-append">
-                      <button class="btn btn-link-secondary" type="button">Add</button>
+                      <button id="add-teacher" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Add</button>
                     </div>
                   </div>
 
-                  <div class="teachers">
+                  <div id="teachers-list" class="teachers">
 
                     <!-- DEV: for each teacher, this html: -->
-                    <div class="fit_btn">
-                      <div class="fit_pic circle"><img src="/assets/stub/marge.png" alt="user"></div>
-                      <div class="fit_txt">Marge Simpson</div>
+                    {% for teacher in teachers %}
+                    <div id="teacher-{{ teacher.id }}" class="fit_btn">
+                      <div class="fit_pic circle"><img src="{% if teacher.profile_picture %}{{ teacher.profile_picture }}{% else %}/assets/stub/marge.png{% endif %}" alt="user"></div>
+                      <div class="fit_txt">{{ teacher.first_name }} {{ teacher.last_name }}</div>
                       <div class="sub buttonset">
-                        <a href="#" class="btn btn-sm btn-light"><i class="fal fa-trash"></i> Remove</a>
+                        <a class="btn btn-sm btn-light" data-teacher-id="{{ teacher.id }}" data-course-slug="{{ course.slug }}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
                       </div>
                     </div>
+                    {% endfor %}
                   </div>
                 </div>
               </dd>
@@ -256,11 +260,12 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <div class="input-group-prepend">
                       <div class="input-group-text" id=""><i class="fal fa-lock"></i></div>
                     </div>
-                    <input type="text" class="form-control" placeholder="Course code" maxlength="12" minlength="8">
+                    <input type="text" class="form-control" id="course_code" placeholder="Course code" maxlength="12" minlength="8" value="{{ course.course_code }}" data-course-edit>
                   </div>
                   <small class="form-text text-muted">All courses have a code. 8 - 12 characters, letters and numbers.</small>
                 </div>
-              </dd> 
+              </dd>
+              </form>
 
               <dt><i class="far fa-lock"></i> Visibility</dt>
               <dd>
@@ -269,9 +274,9 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     <label class="btn btn-outline-secondary active">
                       <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="visibility" data-fit-perm-trigger="public"> Public
                     </label>
-                    <!-- <label class="btn btn-outline-secondary ">
+                    <label class="btn btn-outline-secondary ">
                       <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="institute"> Institute only
-                    </label>  -->     
+                    </label>      
                     <label class="btn btn-outline-secondary">
                       <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="visibility" data-fit-perm-trigger="code"> Code only
                     </label>
@@ -283,15 +288,15 @@ You'll define your impact model, look into creating behaviour change that lasts,
               
               </dd>
 
-              <!-- <dt><i class="far fa-usd-square"></i> Cost</dt>
+              <dt><i class="far fa-usd-square"></i> Cost</dt>
               <dd>
-                <div class="form-group">
+                <div class="form-group" data-fit-perm-group-type="paid" >
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="public" id="option1" autocomplete="off" checked data-fit-perm-type="cost" data-fit-perm-trigger="free"> Free
+                    <label class="btn btn-outline-secondary {{ 'active' if not course.options("paid") }}">
+                      <input type="radio" name="course_paid" value="free" id="option1" autocomplete="off" {{ 'checked' if not course.options("paid") }} data-fit-perm-type="paid" data-fit-perm-trigger="free" data-course-slug="{{ course.slug }}"> Free
                     </label>                
-                    <label class="btn btn-outline-secondary">
-                      <input type="radio" name="course_permission" value="code" id="option3" autocomplete="off" data-fit-perm-type="cost" data-fit-perm-trigger="paid"> Paid
+                    <label class="btn btn-outline-secondary {{ 'active' if course.options("paid") }}">
+                      <input type="radio" name="course_paid" value="paid" id="option3" autocomplete="off" {{ 'checked' if course.options("paid") }} data-fit-perm-type="paid" data-fit-perm-trigger="paid" data-course-slug="{{ course.slug }}"> Paid
                     </label>
                   </div>
                   <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
@@ -308,14 +313,13 @@ You'll define your impact model, look into creating behaviour change that lasts,
                   <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
                 </div>
               </dd>
- -->
-              <div class="active" data-fit-perm-type="cost" data-fit-perm-detail="free">
+
+              <div class="active" data-fit-perm-detail="free">
                 <dt><i class="far fa-eye"></i> Anonymity</dt>
                 <dd>
-                  <div class="form-group">
-                    <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
+                  <div class="form-group" data-fit-perm-group-type="guest_access" data-course-slug="{{ course.slug }}">
+                    <input type="checkbox" {{ 'checked' if course.options("guest_access") }} data-toggle="toggle" data-size="sm" data-style="simple" id="guest_access" name="guest_access">
                     <label for="">Allow anonymous access</label>
-                    <!-- <small class="form-text text-muted">Users without an account can access this course</small> -->
                   </div>
                 </dd>
               </div>
@@ -324,15 +328,14 @@ You'll define your impact model, look into creating behaviour change that lasts,
             <dt><i class="far fa-file-edit"></i> Draft</dt>
               <dd>
                 <div class="form-group">
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                      <input type="radio" name="course_permission" value="draft" id="option1" autocomplete="off" checked data-fit-perm-type="draft" data-fit-perm-trigger="draft"> Draft
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons" >
+                    <label class="btn btn-outline-secondary {{ 'active' if course.options("draft") }}">
+                      <input type="radio" name="course_draft" value="draft" id="option1" autocomplete="off" {{ 'checked' if course.options("draft") }}  data-fit-perm-type="draft" data-fit-perm-trigger="draft" data-course-slug="{{ course.slug }}"> Draft
                     </label>                
-                    <label class="btn btn-outline-secondary fit_live_course_btn">
-                      <input type="radio" name="course_permission" value="live" id="option3" autocomplete="off" data-fit-perm-type="draft" data-fit-perm-trigger="live"> <i class="fas fa-exclamation-square"></i> Live
+                    <label class="btn btn-outline-secondary fit_live_course_btn {{ 'active' if not course.options("draft") }}">
+                      <input type="radio" name="course_draft" value="live" id="option3" autocomplete="off" {{ 'checked' if not course.options("draft") }}  data-fit-perm-type="draft" data-fit-perm-trigger="live" data-course-slug="{{ course.slug }}"> <i class="fas fa-exclamation-square"></i> Live
                     </label>
                   </div>
-                  
                   <small class="form-text text-muted active" data-fit-perm-type="draft" data-fit-perm-detail="draft">Can only be accessed via direct link. Doesn't appear anywhere.</small>
                   <small class="form-text text-muted" data-fit-perm-type="draft" data-fit-perm-detail="live">
                     <span class="active" data-fit-perm-type="visibility" data-fit-perm-detail="public">Live on the site for <strong>anyone</strong> as this is a public course.</span>
@@ -359,15 +362,5 @@ You'll define your impact model, look into creating behaviour change that lasts,
   </article>
 
 </main>
-
-<!--
-              <dd>
-                <div class="form-group">
-                  <input type="checkbox" data-toggle="toggle" data-size="sm" data-style="simple" id="12341234" name="paid">
-                  <label for="permissions_1">Paid lesson.</label>
-                </div>
-              </dd>
--->
-
 
 {% endblock %}

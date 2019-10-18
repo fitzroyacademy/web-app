@@ -13,14 +13,15 @@
     <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
       {% include 'partials/form/_errors.html' %}
       <form class="form" action="{{ url_for('user.login') }}" method="post">
+        {{ form.csrf_token }}
         <div class="fit_fancyplace">
-          <label for="inputEmail">Email address</label>
-          <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required data-fit-fancyplace>
+          <label for="email_or_username">Email address</label>
+          <input type="email" id="email_or_username" name="email" class="form-control" placeholder="Email address" required data-fit-fancyplace>
         </div>
 
         <div class="fit_fancyplace">
-          <label for="inputPassword">Password</label>
-          <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
+          <label for="login_password">Password</label>
+          <input type="password" id="login_password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
 
         <input type="hidden" name="last_page" data-fit-lastpage value="{{ request.full_path }}" />
@@ -31,6 +32,7 @@
 
     <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
       <form class="form" action="{{ url_for('user.create') }}" method="post">
+          {{ form.csrf_token }}
         <div class="row">
           <div class="col-sm-6">
             <div class="fit_fancyplace">

@@ -24,14 +24,17 @@ c = datamodels.Course(
 	course_code="abc123",
 	target_audience="Super early stage social enterprise founders, starting your first business or a new project from scratch.",
 	skill_level="Introduction.",
+	visibility="public",
 	info="Start here! Basic business models and customer discovery, to pitching for investment. ❤️ 🚀",
+	workload_summary="This course will take 20-30 hours on average, and is best done in teams.",
 	summary_html="""
 <p><strong>Go from zero to one:</strong> From a basic idea to early customers, business models and getting the numbers right.</p>
 <p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
 <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
 """,
 	preview_thumbnail="/assets/images/lessons/customer-interviews.jpg",
-	guest_access = True
+	guest_access=True,
+	draft=False
 )
 c.add_instructor(datamodels.get_user(1))  # Homer
 c.add_instructor(datamodels.get_user(2))  # Marge

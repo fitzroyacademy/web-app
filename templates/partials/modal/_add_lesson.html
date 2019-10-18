@@ -1,4 +1,4 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_lesson" data-fit_iconselect_parent>
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_lesson">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,14 +9,14 @@
       </div>
       <div class="modal-body">
         <div class="fit_iconselects high_sub">
-          <a class="fit_iconselect use_fitz" href="#">
+          <a class="fit_iconselect watermelon" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson_fitz">
             <i class="fal fa-copy"></i>
             <div class="sub">
               <h4>Use a Fitzroy lesson.</h4>
               Choose from the 30+ lessons<br>in the video lesson library.
             </div>
           </a>      
-          <a class="fit_iconselect make_new" href="/course_edit_temp/lesson">
+          <a class="fit_iconselect blue" href="/course/{{ course.slug }}/lessons/add">
             <i class="fal fa-file-plus"></i>
             <div class="sub">
               <h4>Make your own.</h4>

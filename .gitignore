@@ -1,7 +1,10 @@
 *.DS_Store*
 *__pycache__*
 static/css/fit.css
+static/uploads
 *.sqlite
 Pipfile
 Pipfile.lock
 .idea/**
+static/assets/scss/fit.scss
+static/css/fit.css.map

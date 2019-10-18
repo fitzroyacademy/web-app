@@ -1,9 +1,6 @@
 {% extends "/layout.html" %}
 {% block body %}
-
-<!-- add .breezy to .fit_player for the attempt at tabs layout -->
-
-<main class="fit_player">
+<main class="fit_player breezy">
   <nav>
 
     <div class="fit_mobilenav_trigger" fit-course_mobilenav_trigger>
@@ -21,53 +18,20 @@
           <span class="fit_txt">Hide</span> 
         </a>
       </div>
+      {% if active_segment %}
       {% for lesson in course.lessons %}
-        <div class="fit_lesson {{ 'active' if lesson.id == active_segment.lesson.id }}" data-fit-lesson="{{ lesson.id }}">
-          <a class="fit_btn" data-toggle="collapse" href="#fit_lesson_{{ lesson.id }}" role="button" aria-expanded="fit_lesson_2" aria-controls="fit_lesson_{{ lesson.id }}">
-            <div class="fit_pic vid">
-              <!-- DEV: needs to call the image for this lesson -->
-              <img src="{{ lesson.thumbnail }}" alt="course">
-              <i class="fas fa-play"></i>
-            </div>
-            <span class="fit_txt">{{ lesson.title }}</span>
-            <span class="fit_sub">{{ lesson.duration }}</span>
-            <i class="fit_hovermin fas fa-chevron-up"></i>
-          </a>
-          <div class="collapse {{'show' if lesson.id == active_lesson.id }}" id="fit_lesson_{{ lesson.id }}">
-            <div class="fit_body fit_segments">
-              {% for segment in lesson.segments %}
-                <a 
-                  class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}" 
-                  href="{{ segment.permalink }}" 
-                  data-fit-segment="{{ segment.id }}" 
-                  data-fit-parent="{{ segment.lesson_id }}"
-                >
-                  <i 
-                    class="fas fa-circle"
-                    data-fit_lesson_tooltip
-                    title="{{ segment.title }}"
-                  ></i>
-                  <span class="fit_txt">{{ segment.title }}</span> 
-                  <span class="fit_sub">{{ segment.duration }}</span>
-                </a>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
+        {% include 'partials/course/_nav_lesson.html' %}
       {% endfor %}
+      {% endif %}
 
     </div>
   </nav>
 
 
+  {% if active_segment %}
   <article>
     <div class="fit_vidya">
       {% include 'partials/course/_active_segment.html' %}
-    </div>
-    
-    <div class="fit_subvidya fit_completion d-none">
-      <a href="#" class="fit_closepanel"><i class="fas fa-times"></i></a>
-      {% include 'partials/course/_completion_chart.html' %}
     </div>
 
   </article>
@@ -77,7 +41,11 @@
       {% include 'partials/course/_lesson_detail.html' %}
     {% endwith %}
   </aside>  
-
+  {% else %}
+      <article>
+      No content. :(
+      </article>
+  {% endif %}
   
 </main>
 

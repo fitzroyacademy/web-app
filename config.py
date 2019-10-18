@@ -18,9 +18,18 @@ class Config(object):
 	MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
 	S3_BUCKET = environ.get("S3_BUCKET", default=None)
 
+	S3_BUCKET = environ.get("S3_BUCKET_NAME", default=None)
+	S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
+	S3_SECRET = environ.get("S3_SECRET_ACCESS_KEY", default=None)
+	S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+
+	UPLOAD_FOLDER = 'static/uploads'
+
+	WTF_CSRF_ENABLED = True
+	WTF_CSRF_SECRET = environ.get("WTF_CSRF_SECRET", "").encode()
+
 	@property
 	def DB_URI(self):
-		db_uri = ''
 		if self.DB_DRIVER == 'sqlite':
 			db_uri = '{}:///{}{}'.format(self.DB_DRIVER, self.DB_HOST, self.DB_OPTIONS)
 		elif self.DB_DRIVER == 'postgres':
@@ -35,7 +44,7 @@ class Config(object):
 
 		log_msg = "Using {} driver with URI {}".format(self.DB_DRIVER, db_uri)
 		if self.DB_PASSWORD:
-			log_msg.replace(self.DB_PASSWORD,"*****", 2)
+			log_msg.replace(self.DB_PASSWORD, "*****", 2)
 		logging.info(log_msg)
 		return db_uri
 
@@ -44,10 +53,15 @@ class DevelopmentConfig(Config):
 	SECRET_KEY = 'INSECURE_FOR_LOCAL_DEVELOPMENT'
 	DB_HOST = environ.get('DB_HOST', default='dev_db.sqlite')
 	DB_OPTIONS = environ.get('DB_OPTIONS', default='?check_same_thread=False')
+	WTF_CSRF_SECRET = "qZeimuCyYqo27CqndJetJHx".encode()
+
+	S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
 
 class TestingConfig(Config):
 	DEBUG = False
 	TESTING = True
+	WTF_CSRF_ENABLED = False
+	WTF_CSRF_SECRET = "qZeimuCyYqo27CqndJetJHx".encode()
 
 class ProductionConfig(Config):
 	DEBUG = False
