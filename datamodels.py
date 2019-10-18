@@ -101,6 +101,7 @@ class User(Base):
     password_hash = sa.Column(sa.String(128))
     profile_picture = sa.Column(sa.String)
     bio = sa.Column(sa.String)
+    super_admin = sa.Column(sa.Boolean, default=False)
 
     institutes = orm.relationship("InstituteEnrollment", back_populates="user")
     programs = orm.relationship("ProgramEnrollment", back_populates="user")
