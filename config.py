@@ -16,6 +16,7 @@ class Config(object):
 	DB_OPTIONS = environ.get("DB_OPTIONS", default='')
 	MAILGUN_API_URL = environ.get("MAILGUN_API_URL", default=None)
 	MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
+	S3_BUCKET = environ.get("S3_BUCKET", default=None)
 
 	S3_BUCKET = environ.get("S3_BUCKET_NAME", default=None)
 	S3_KEY = environ.get("S3_ACCESS_KEY", default=None)

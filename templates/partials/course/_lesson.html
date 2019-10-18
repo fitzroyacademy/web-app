@@ -131,7 +131,7 @@
             <dl class="fit_summary_icons">
               
               {% include "partials/course/_teachers.html" %}
-              
+
               <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt>
 
               <!-- Would be cool to have the textareas have VERY simple WYSIWYG and auto-resize boxes? -->
@@ -188,10 +188,10 @@
             {% for resource in resources %}
             <div class="fit_btn resource_link {{ resource.type.name }} featured" data-list-el-id="{{ resource.id }}">
               <i class="{{ resource.content_img }} lg"></i>
-              <a class="fit_txt" 
-                href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/edit" 
-                data-toggle="modal" 
-                data-target="#fit_modal_add_resource_link" 
+              <a class="fit_txt"
+                href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/edit"
+                data-toggle="modal"
+                data-target="#fit_modal_add_resource_link"
                 data-resource-id="{{ resource.id }}"
               >
                 {{ resource.title }} <i class="far fa-edit"></i>
@@ -211,7 +211,7 @@
                     <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/copy"><i class="fal fa-copy"></i> Duplicate</a>
                   </div>
                 </div>
-                
+
                 <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
               </div>
               {% if resource.description %}

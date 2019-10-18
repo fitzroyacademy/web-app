@@ -22,6 +22,7 @@ import routes.error
 import config
 import requests
 import click
+import boto3
 
 app = Flask('FitzroyFrontend', static_url_path='')
 
@@ -69,6 +70,26 @@ def send_email(email_to, email_from, subject, body):
     data=message_data)
     response.raise_for_status()
     return response
+
+@app.cli.command("test-s3")
+@click.argument("file_name")
+def test_s3(file_name):
+    upload_to_s3(file_name)
+
+def upload_to_s3(file_name, object_name=None):
+    bucket_name = app.config.get('S3_BUCKET')
+    if object_name is None:
+        object_name = file_name
+    if bucket_name is None:
+        app.logger.warn('No S3_BUCKET specified in environment variables. File name to upload: {}'.format(object_name))
+        return True
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, bucket_name, object_name)
+    except ClientError as e:
+        app.logger.error(e)
+        return False
+    return True
 
 @app.route('/')
 def index():
