@@ -150,9 +150,9 @@ def edit(user, course_slug=None):
     if "workload_summary" in request.form:
         course.workload_summary = request.form["workload_summary"]
     if "workload_title" in request.form:
-        course.workload_summary = request.form["workload_title"]
+        course.workload_title = request.form["workload_title"]
     if "workload_subtitle" in request.form:
-        course.workload_summary = request.form["workload_subtitle"]
+        course.workload_subtitle = request.form["workload_subtitle"]
     if "who_its_for" in request.form:
         course.target_audience = request.form["who_its_for"]
     if "course_summary" in request.form:
