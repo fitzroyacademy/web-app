@@ -23,8 +23,8 @@
         <div class="row">
           <div class="col-sm-4">
             <i class="fal big fa-film green"></i>
-            <h4>32 hours, 12 weeks.</h4>
-            <p>4 hours study per week on average, best done with friends!</p>
+            <h4>{{ course.workload_title|default("") }}</h4>
+            <p>{{ course.workload_subtitle|default("") }}</p>
           </div>
           <div class="col-sm-4">
             <i class="fal big fa-file-alt blue"></i>

@@ -146,14 +146,24 @@
               <dt><i class="far fa-users"></i> Who's it for?</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience }}</textarea>
+                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience|default("") }}</textarea>
                 </div>
               </dd>
               
               <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary }}</textarea>
+                  <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary|default("") }}</textarea>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 32 hours, 12 weeks" data-course-edit>{{ course.workload_title|default("") }}</textarea>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="workload_subtitle" placeholder="E.g. 4 hours of study per week on average, best done with friends!" data-course-edit>{{ course.workload_subtitle|default("") }}</textarea>
                 </div>
               </dd>
 
