@@ -147,7 +147,6 @@ def login():
 def logout(user):
     """ Clear session data, logging the current user out. """
     session.clear()
-    data = {"form": LoginForm()}
     return redirect(url_for("index"))
 
 

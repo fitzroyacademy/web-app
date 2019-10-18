@@ -33,13 +33,13 @@ def get_static_paths(relative_path):
     Do a glob on static template files and organize them by section.
     """
     paths = {}
-    for l in glob("{}/**/*.html".format(relative_path)):
-        l = re.sub(r"^{}\/".format(relative_path), "", l)  # Base path
-        l = re.sub(r"\.html$", "", l)  # Strip file extension
-        l = l.split("/")
-        if l[0] not in paths:
-            paths[l[0]] = []
-        paths[l[0]].append(l[1])
+    for line in glob("{}/**/*.html".format(relative_path)):
+        line = re.sub(r"^{}\/".format(relative_path), "", line)  # Base path
+        line = re.sub(r"\.html$", "", line)  # Strip file extension
+        line = line.split("/")
+        if line[0] not in paths:
+            paths[line[0]] = []
+        paths[line[0]].append(line[1])
     return paths
 
 
