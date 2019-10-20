@@ -662,6 +662,8 @@ class Segment(OrderedBase):
 
     translations = orm.relationship("SegmentTranslation", back_populates="segment")
 
+    __table_args__ = (sa.UniqueConstraint('lesson_id', 'slug', name='_lesson_sement_uc'),)
+
     @orm.validates('slug')
     def validate_slug(self, key, value):
         """ TODO: Check the parent lesson for any duplicate segment slugs """

@@ -4,11 +4,11 @@ import datamodels
 from app import app
 import re
 
-from .utils import make_authorized_call
+from .utils import make_authorized_call, make_call, ObjectsGenerator
 from enums import VideoTypeEnum, SegmentPermissionEnum
 
 
-class TestSegmentsRoutes(unittest.TestCase):
+class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
@@ -25,83 +25,14 @@ class TestSegmentsRoutes(unittest.TestCase):
     def tearDown(self):
         datamodels._clear_session_for_tests()
 
-    @staticmethod
-    def make_standard_course(
-        code="ABC123", guest_access=False, title="Foo Course", slug="abc-123"
-    ):
-        course = datamodels.Course(
-            course_code=code, title=title, slug=slug, guest_access=guest_access
-        )
-        return course
-
-    @staticmethod
-    def make_standard_course_lesson(
-        course, title="Lesson", active=True, language="EN", slug="lesson", order=1
-    ):
-        lesson = datamodels.Lesson(
-            course=course,
-            title=title,
-            active=active,
-            language=language,
-            slug=slug,
-            order=order,
-        )
-        return lesson
-
-    @staticmethod
-    def make_segment(
-        lesson,
-        thumbnail="thumbnail_1",
-        title="Segment",
-        slug="segment",
-        duration_seconds=200,
-        url="fitzroyacademy.com",
-        order=0,
-    ):
-        segment = datamodels.Segment(
-            title=title,
-            duration_seconds=duration_seconds,
-            url=url,
-            language="EN",
-            slug=slug,
-            order=order,
-            _thumbnail=thumbnail,
-            lesson=lesson,
-        )
-        return segment
-
-    @staticmethod
-    def makeUser(
-        id=1,
-        first_name="Homer",
-        last_name="Simpson",
-        email="homer@simpsons.com",
-        username="homer",
-        password="password",
-        phone_number="555-444-1234",
-        dob=None,
-    ):
-        dob = dob or datetime.datetime.now()
-        u = datamodels.User(
-            id=id,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            username=username,
-            phone_number=phone_number,
-            dob=dob,
-        )
-        u.password = password
-        return u
-
     def test_change_order_of_intro_segment(self):
         l1 = self.make_standard_course_lesson(
             title="lesson 1", course=self.course, order=1
         )
         self.session.add(l1)
-        s1 = self.make_segment(l1, title="Segment Intro", order=0)
-        s2 = self.make_segment(l1, title="Segment 1", order=1)
-        s3 = self.make_segment(l1, title="Segment 2", order=2)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0, slug="segment-intro")
+        s2 = self.make_segment(l1, title="Segment 1", order=1, slug="segment-1")
+        s3 = self.make_segment(l1, title="Segment 2", order=2, slug="segment-2")
         self.session.add(s1)
         self.session.add(s2)
         self.session.add(s3)
@@ -140,9 +71,9 @@ class TestSegmentsRoutes(unittest.TestCase):
             title="lesson 1", course=self.course, order=1
         )
         self.session.add(l1)
-        s1 = self.make_segment(l1, title="Segment Intro", order=0)
-        s2 = self.make_segment(l1, title="Segment 1", order=1)
-        s3 = self.make_segment(l1, title="Segment 2", order=2)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0, slug="segment-intro")
+        s2 = self.make_segment(l1, title="Segment 1", order=1, slug="segment-1")
+        s3 = self.make_segment(l1, title="Segment 2", order=2, slug="segment-2")
         self.session.add(s1)
         self.session.add(s2)
         self.session.add(s3)
@@ -164,9 +95,9 @@ class TestSegmentsRoutes(unittest.TestCase):
             title="lesson 1", course=self.course, order=1
         )
         self.session.add(l1)
-        s1 = self.make_segment(l1, title="Segment Intro", order=0)
-        s2 = self.make_segment(l1, title="Segment 1", order=1)
-        s3 = self.make_segment(l1, title="Segment 2", order=2)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0, slug="segment-intro")
+        s2 = self.make_segment(l1, title="Segment 1", order=1, slug="segment-1")
+        s3 = self.make_segment(l1, title="Segment 2", order=2, slug="segment-2")
         self.session.add(s1)
         self.session.add(s2)
         self.session.add(s3)
@@ -216,8 +147,10 @@ class TestSegmentsRoutes(unittest.TestCase):
         )
         self.session.add(l1)
         self.session.add(l2)
-        s1 = self.make_segment(l1, title="Segment Intro", order=0)
-        s2 = self.make_segment(l2, title="Segment Intro 2", order=0)
+        s1 = self.make_segment(l1, title="Segment Intro", order=0, slug="segment-intro")
+        s2 = self.make_segment(
+            l2, title="Segment Intro 2", order=0, slug="segment-intro-2"
+        )
         self.session.add(s1)
         self.session.add(s2)
         self.session.commit()
@@ -475,8 +408,12 @@ class TestSegmentsRoutes(unittest.TestCase):
         )
         self.session.add(l1)
         self.session.commit()
-        s1 = self.make_segment(title="The first segment", lesson=l1, order=1)
-        s2 = self.make_segment(title="The second segment", lesson=l1, order=2)
+        s1 = self.make_segment(
+            title="The first segment", lesson=l1, order=1, slug="segment-1"
+        )
+        s2 = self.make_segment(
+            title="The second segment", lesson=l1, order=2, slug="segment-2"
+        )
         self.session.add(s1)
         self.session.add(s2)
         self.session.commit()
@@ -499,3 +436,165 @@ class TestSegmentsRoutes(unittest.TestCase):
         )
         self.assertIsNotNone(segment)
         self.assertEqual(segment.order, 3)
+
+    def test_add_segment_same_slug_same_lesson(self):
+        l1 = self.make_standard_course_lesson(
+            title="intro", course=self.course, order=0
+        )
+        self.session.add(l1)
+        self.session.commit()
+        title = "This is the life"
+        s1 = self.make_segment(title=title, lesson=l1, order=1)
+        self.session.add(s1)
+        self.session.commit()
+
+        data = {
+            "segment_name": title,
+            "text_segment_content": "This is the second segment. The one after our brilliant intro.",
+        }
+
+        self.assertEqual(len(l1.segments), 1)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
+            user=self.user,
+            data=data,
+            expected_status_code=200,
+            follow_redirects=True,
+        )
+        self.assertEqual(len(l1.segments), 1)
+        # Can't create segment with such name
+        self.assertTrue(
+            re.search(
+                "t create segment with such name.", response.get_data(as_text=True)
+            )
+        )
+
+    def test_add_segment_same_slug_different_lesson(self):
+        l1 = self.make_standard_course_lesson(
+            title="intro", course=self.course, order=0, slug="intro"
+        )
+        l2 = self.make_standard_course_lesson(
+            title="some lesson", course=self.course, order=1, slug="some-lesson"
+        )
+        self.session.add(l1)
+        self.session.add(l2)
+        self.session.commit()
+        title = "This is the life"
+        s1 = self.make_segment(title=title, lesson=l1, order=1)
+        self.session.add(s1)
+        self.session.commit()
+
+        data = {
+            "segment_name": title,
+            "text_segment_content": "This is the second segment. The one after our brilliant intro.",
+        }
+
+        self.assertEqual(len(l1.segments), 1)
+        self.assertEqual(len(l2.segments), 0)
+        response = make_authorized_call(
+            url="/course/abc-123/lessons/{}/segments/add/text".format(l2.id),
+            user=self.user,
+            data=data,
+            expected_status_code=200,
+            follow_redirects=True,
+        )
+        self.assertEqual(len(l1.segments), 1)
+        self.assertEqual(len(l2.segments), 1)
+
+    def test_copy_segment_wrong_lesson(self):
+        l1 = self.make_standard_course_lesson(
+            title="intro", course=self.course, order=0, slug="intro"
+        )
+        l2 = self.make_standard_course_lesson(
+            title="some lesson", course=self.course, order=1, slug="some-lesson"
+        )
+        self.session.add(l1)
+        self.session.commit()
+        s1 = self.make_segment(title="This is the life", lesson=l1, order=1)
+        self.session.add(s1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.segments), 1)
+        self.assertEqual(len(l2.segments), 0)
+        response = make_call(
+            url="/course/abc-123/lessons/{}/segments/{}/copy".format(l2.id, s1.id),
+            user=self.user,
+            expected_status_code=200,
+            follow_redirects=True,
+        )
+        self.assertEqual(len(l1.segments), 1)
+        self.assertEqual(len(l2.segments), 0)
+        self.assertTrue(
+            re.search(
+                "Lesson or segment do not match course or lesson",
+                response.get_data(as_text=True),
+            )
+        )
+
+    def test_copy_text_segment(self):
+        l1 = self.make_standard_course_lesson(
+            title="intro", course=self.course, order=0, slug="intro"
+        )
+        self.session.add(l1)
+        self.session.commit()
+        s1 = self.make_segment(title="This is the life", lesson=l1, order=1)
+        self.session.add(s1)
+        self.session.commit()
+
+        self.assertEqual(len(l1.segments), 1)
+        response = make_call(
+            url="/course/abc-123/lessons/{}/segments/{}/copy".format(l1.id, s1.id),
+            user=self.user,
+            expected_status_code=200,
+            follow_redirects=True,
+        )
+        self.assertEqual(len(l1.segments), 2)
+        s2 = l1.segments[1]
+        self.assertTrue(s2.id != s1.id)
+        self.assertEqual(s1.duration_seconds, s2.duration_seconds)
+        self.assertEqual(s1.title + "_copy", s2.title)
+        self.assertEqual(s2.order, 2)
+        self.assertEqual(s1.text, s2.text)
+        self.assertEqual(s1.type, s2.type)
+        self.assertEqual(s1.permission, s2.permission)
+        self.assertTrue(
+            re.search("Segment duplicated", response.get_data(as_text=True))
+        )
+
+    def test_get_segment_veiw(self):
+        l1 = self.make_standard_course_lesson(
+            title="intro", course=self.course, order=0, slug="intro"
+        )
+        l2 = self.make_standard_course_lesson(
+            title="some lesson", course=self.course, order=1, slug="some-lesson"
+        )
+        self.session.add(l1)
+        self.session.commit()
+        s1 = self.make_segment(title="This is the life", lesson=l1, order=1)
+        self.session.add(s1)
+        self.session.commit()
+
+        make_call(
+            url="/course/{}/{}/{}".format("wrong-slug", l1.slug, s1.slug),
+            user=self.user,
+            expected_status_code=404,
+        )
+
+        make_call(
+            url="/course/abc-123/{}/{}".format("wrong-slug", s1.slug),
+            user=self.user,
+            expected_status_code=404,
+        )
+
+        make_call(
+            url="/course/abc-123/{}/{}".format(l1.slug, "wrong-slug"),
+            user=self.user,
+            expected_status_code=404,
+        )
+
+        make_call(
+            url="/course/abc-123/{}/{}".format(l1.slug, s1.slug),
+            user=self.user,
+            expected_status_code=200,
+            follow_redirects=True,
+        )
