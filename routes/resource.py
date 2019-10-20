@@ -59,8 +59,7 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None):
     if resource_id:
         instance = datamodels.Resource.find_by_id(resource_id)
         if not lesson or instance and instance.lesson_id != lesson.id:
-            flash("Wrong resource")
-            return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
+            return abort(404)
     else:
         instance = datamodels.Resource(lesson=lesson, order=len(lesson.resources) + 1)
 

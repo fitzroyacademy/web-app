@@ -520,7 +520,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             user=self.user,
             expected_status_code=200,
             follow_redirects=True,
-            method="get"
+            method="get",
         )
         self.assertEqual(len(l1.segments), 1)
         self.assertEqual(len(l2.segments), 0)
@@ -547,7 +547,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             user=self.user,
             expected_status_code=200,
             follow_redirects=True,
-            method="get"
+            method="get",
         )
         self.assertEqual(len(l1.segments), 2)
         s2 = l1.segments[1]
@@ -579,21 +579,21 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/{}/{}/{}".format("wrong-slug", l1.slug, s1.slug),
             user=self.user,
             expected_status_code=404,
-            method="get"
+            method="get",
         )
 
         make_authorized_call(
             url="/course/abc-123/{}/{}".format("wrong-slug", s1.slug),
             user=self.user,
             expected_status_code=404,
-            method="get"
+            method="get",
         )
 
         make_authorized_call(
             url="/course/abc-123/{}/{}".format(l1.slug, "wrong-slug"),
             user=self.user,
             expected_status_code=404,
-            method="get"
+            method="get",
         )
 
         make_authorized_call(
@@ -601,5 +601,5 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             user=self.user,
             expected_status_code=200,
             follow_redirects=True,
-            method="get"
+            method="get",
         )

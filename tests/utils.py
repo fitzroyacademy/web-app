@@ -88,7 +88,7 @@ class ObjectsGenerator(object):
     def make_resource(
             lesson,
             title="Resource 1",
-            url="fitzroyacademy.com",
+            url="https://fitzroyacademy.com/blah-blah-blah",
             featured=False,
             language="EN",
             description="Some long text describing this resource which is optional",
