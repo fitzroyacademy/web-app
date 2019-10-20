@@ -54,8 +54,7 @@ def reorder_resources(user, course, course_slug, lesson_id):
 def add_resource(user, course, course_slug, lesson_id, resource_id=None):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
-        flash("Lesson not found")
-        return redirect("/course/{}/edit".format(course.slug))
+        return abort(404)
 
     if resource_id:
         instance = datamodels.Resource.find_by_id(resource_id)
@@ -116,13 +115,13 @@ def edit_resource(user, course, course_slug, lesson_id, resource_id):
 )
 @login_required
 @teacher_required
-def copy_segment(user, course, course_slug, lesson_id, resource_id):
+def copy_resource(user, course, course_slug, lesson_id, resource_id):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
 
     if not lesson or resource and resource.lesson_id != lesson.id:
         flash("Lesson or resource do not match course or lesson")
-        return render_template("/course/{}/edit".format(course.slug), course=course)
+        return redirect("/course/{}/edit".format(course.slug))
 
     resource_copy = clone_model(resource)
     resource_copy.title = resource.title + "_copy"

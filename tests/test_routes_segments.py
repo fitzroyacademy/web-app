@@ -1,10 +1,9 @@
-import datetime
 import unittest
 import datamodels
 from app import app
 import re
 
-from .utils import make_authorized_call, make_call, ObjectsGenerator
+from .utils import make_authorized_call, ObjectsGenerator
 from enums import VideoTypeEnum, SegmentPermissionEnum
 
 
@@ -516,11 +515,12 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
 
         self.assertEqual(len(l1.segments), 1)
         self.assertEqual(len(l2.segments), 0)
-        response = make_call(
+        response = make_authorized_call(
             url="/course/abc-123/lessons/{}/segments/{}/copy".format(l2.id, s1.id),
             user=self.user,
             expected_status_code=200,
             follow_redirects=True,
+            method="get"
         )
         self.assertEqual(len(l1.segments), 1)
         self.assertEqual(len(l2.segments), 0)
@@ -542,11 +542,12 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.session.commit()
 
         self.assertEqual(len(l1.segments), 1)
-        response = make_call(
+        response = make_authorized_call(
             url="/course/abc-123/lessons/{}/segments/{}/copy".format(l1.id, s1.id),
             user=self.user,
             expected_status_code=200,
             follow_redirects=True,
+            method="get"
         )
         self.assertEqual(len(l1.segments), 2)
         s2 = l1.segments[1]
@@ -574,27 +575,31 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.session.add(s1)
         self.session.commit()
 
-        make_call(
+        make_authorized_call(
             url="/course/{}/{}/{}".format("wrong-slug", l1.slug, s1.slug),
             user=self.user,
             expected_status_code=404,
+            method="get"
         )
 
-        make_call(
+        make_authorized_call(
             url="/course/abc-123/{}/{}".format("wrong-slug", s1.slug),
             user=self.user,
             expected_status_code=404,
+            method="get"
         )
 
-        make_call(
+        make_authorized_call(
             url="/course/abc-123/{}/{}".format(l1.slug, "wrong-slug"),
             user=self.user,
             expected_status_code=404,
+            method="get"
         )
 
-        make_call(
+        make_authorized_call(
             url="/course/abc-123/{}/{}".format(l1.slug, s1.slug),
             user=self.user,
             expected_status_code=200,
             follow_redirects=True,
+            method="get"
         )

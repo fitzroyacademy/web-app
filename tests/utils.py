@@ -3,28 +3,20 @@ import datetime
 from slugify import slugify
 
 import datamodels
-from enums import SegmentPermissionEnum
+from enums import SegmentPermissionEnum, ResourceTypeEnum
 from app import app
 
 
 def make_authorized_call(
-    url, user, data=None, expected_status_code=200, follow_redirects=False
+    url, user, data=None, expected_status_code=200, follow_redirects=False, method="post"
 ):
     s = app.test_client()
     with s.session_transaction() as sess:
         sess["user_id"] = user.id
-    response = s.post(url, data=data, follow_redirects=follow_redirects)
-    assert response.status_code == expected_status_code
-
-    return response
-
-
-def make_call(url, user, expected_status_code=200, follow_redirects=False):
-    s = app.test_client()
-    with s.session_transaction() as sess:
-        sess["user_id"] = user.id
-    response = s.get(url, follow_redirects=follow_redirects)
-    print(response.status_code, expected_status_code)
+    if method == "post":
+        response = s.post(url, data=data, follow_redirects=follow_redirects)
+    else:
+        response = s.get(url, follow_redirects=follow_redirects)
     assert response.status_code == expected_status_code
 
     return response
@@ -91,6 +83,35 @@ class ObjectsGenerator(object):
             permission=permission,
         )
         return segment
+
+    @staticmethod
+    def make_resource(
+            lesson,
+            title="Resource 1",
+            url="fitzroyacademy.com",
+            featured=False,
+            language="EN",
+            description="Some long text describing this resource which is optional",
+            order=1,
+            slug=None,
+            resource_type=None,
+    ):
+        if resource_type is None:
+            resource_type = ResourceTypeEnum.google_doc
+        if slug is None:
+            slug = slugify(title)
+        resource = datamodels.Resource(
+            title=title,
+            url=url,
+            featured=featured,
+            language=language,
+            description=description,
+            order=order,
+            lesson=lesson,
+            slug=slug,
+            type=resource_type
+        )
+        return resource
 
     @staticmethod
     def makeUser(
