@@ -981,24 +981,11 @@ $( document ).ready(function() {
       }
   });
 
-  delegate('#text-segment', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_editor').html();
-    $('#text_segment_content').val(mysave);
-  });
-
-  delegate('#lesson-edit-form', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_editor').html();
-    $('#further_reading').val(mysave);
-  });
-
-  delegate('#course-edit-form', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_editor').html();
-    $('#course_summary').val(mysave);
-  });
-
-  delegate('#add-edit-resource', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_resource').html();
-    $('#resource_description').val(mysave);
+  delegate('[data-fit-wysiwyg]', 'submit', (e,t) => {
+    let wysiwygId = t.dataset.fitWysiwygId;
+    let mysave = $(`[data-fit-wysiwyg-div-${wysiwygId}]`).html();
+    let testarea = $(`[data-textarea-wysiwyg-${wysiwygId}]`);
+    testarea.val(mysave);
   });
 
   // Load the video dynamically when people hit back so the URLs in their

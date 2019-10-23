@@ -14,7 +14,7 @@
 
     <div class="fit_course intro">
 
-    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data">
+    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data" data-fit-wysiwyg data-fit-wysiwyg-id="further_reading">
     {{ form.csrf_token }}
       <h1>
         <span class="txt">{% if not lesson %}Add{% else %}Edit{% endif %} Lesson.</span>
@@ -231,9 +231,9 @@
 
           <h3>Further reading.</h3>
           <div class="fit_wysiwyg">
-            <div id="fit_wysiwyg_editor">{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
+            <div id="fit_wysiwyg_editor" data-fit-wysiwyg-div-further_reading>{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
           </div>
-          <textarea id="further_reading" name="further_reading" style="display: none"></textarea>
+          <textarea id="further_reading" name="further_reading" style="display: none" data-textarea-wysiwyg-further_reading></textarea>
 
         </div><!-- col -->
       </div><!-- row -->
