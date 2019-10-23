@@ -133,7 +133,7 @@ class TestSegmentsRoutes(unittest.TestCase):
             expected_status_code=400,
         )
 
-        self.assertEqual(response.json["message"], "Course do not match lesson")
+        self.assertEqual(response.json["message"], "Course does not match lesson")
 
     def test_change_segment_order(self):
         l1 = self.make_standard_course_lesson(

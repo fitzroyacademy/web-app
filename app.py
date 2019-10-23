@@ -22,6 +22,7 @@ import routes.error
 import config
 import requests
 import click
+import boto3
 
 app = Flask('FitzroyFrontend', static_url_path='')
 
@@ -69,6 +70,26 @@ def send_email(email_to, email_from, subject, body):
     data=message_data)
     response.raise_for_status()
     return response
+
+@app.cli.command("test-s3")
+@click.argument("file_name")
+def test_s3(file_name):
+    upload_to_s3(file_name)
+
+def upload_to_s3(file_name, object_name=None):
+    bucket_name = app.config.get('S3_BUCKET')
+    if object_name is None:
+        object_name = file_name
+    if bucket_name is None:
+        app.logger.warn('No S3_BUCKET specified in environment variables. File name to upload: {}'.format(object_name))
+        return True
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, bucket_name, object_name)
+    except ClientError as e:
+        app.logger.error(e)
+        return False
+    return True
 
 @app.route('/')
 def index():
@@ -126,6 +147,10 @@ def join_names(users):
     return ", ".join(names)
 
 @app.template_filter()
+def cents_to_dolars(amount):
+    return amount/100.0
+
+@app.template_filter()
 def format_time(seconds):
     t = str(datetime.timedelta(seconds=seconds)).split(':')
     hours = int(t[0])
@@ -142,6 +167,18 @@ def format_time(seconds):
         if minutes > 1:
             out += "s"
     return out
+
+@app.template_filter()
+def hhmmss(seconds):
+    out = str(datetime.timedelta(seconds=seconds))
+    if seconds < 3600:
+        out = out[2:]
+    return out
+
+@app.template_filter()
+def hhmm(seconds):
+    out = str(datetime.timedelta(seconds=seconds)).split(":")
+    return "{}:{}".format(out[0], out[1])
 
 def uuid():
     return "{}".format(uuid4().hex)

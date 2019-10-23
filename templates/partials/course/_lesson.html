@@ -1,4 +1,11 @@
 {% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if ajax_csrf_form.csrf_token %}
+        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
 {% block body %}
 
 <main>
@@ -38,7 +45,7 @@
       <h3>
         <span class="txt">Lesson segments.</span>
         <small class="subtxt"><span class="fas fa-clock"></span>
-          {{ lesson.strfduration }}
+          {{ lesson.duration_seconds|hhmmss }}
         </small>
       </h3>
 
@@ -68,7 +75,7 @@
 
               <div class="sub buttonset">
                 
-                <span class="btn btn-text subtle">{{ introduction.strfduration }}</span>
+                <span class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</span>
                 
                 <a href="#" class="btn btn-light"><i class="fal fa-ellipsis-v"></i></a>
               </div>
@@ -84,7 +91,7 @@
                   <div class="fit_txt">{{ segment.title }}</div>
 
                   <div class="sub buttonset">
-                    <div class="btn btn-text subtle">{{ segment.strfduration }}</div>
+                    <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>
 
                     <div class="dropdown">
                       <button href="#" class="btn btn-light" type="button" id="dropdown_12345" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -124,7 +131,7 @@
             <dl class="fit_summary_icons">
               
               {% include "partials/course/_teachers.html" %}
-              
+
               <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt>
 
               <!-- Would be cool to have the textareas have VERY simple WYSIWYG and auto-resize boxes? -->
@@ -181,10 +188,10 @@
             {% for resource in resources %}
             <div class="fit_btn resource_link {{ resource.type.name }} featured" data-list-el-id="{{ resource.id }}">
               <i class="{{ resource.content_img }} lg"></i>
-              <a class="fit_txt" 
-                href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/edit" 
-                data-toggle="modal" 
-                data-target="#fit_modal_add_resource_link" 
+              <a class="fit_txt"
+                href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/edit"
+                data-toggle="modal"
+                data-target="#fit_modal_add_resource_link"
                 data-resource-id="{{ resource.id }}"
               >
                 {{ resource.title }} <i class="far fa-edit"></i>
@@ -204,12 +211,12 @@
                     <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/{{ resource.id }}/copy"><i class="fal fa-copy"></i> Duplicate</a>
                   </div>
                 </div>
-                
+
                 <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
               </div>
               {% if resource.description %}
                 <a class="explain">
-                    {{ resource.description }}
+                    {{ resource.description|safe }}
                 </a>
               {% endif %}
             </div>
@@ -249,7 +256,16 @@
     {% include 'partials/modal/_add_resource.html' %}
 {% endif %}
 
+
+<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+<script>var editor = new MediumEditor('#fit_wysiwyg_editor');</script>
+<script>var editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
+<style type="text/css">
+    .fit_wysiwyg{border: 1px solid #ddd; border-radius: .25rem; padding: 1rem;}
+    .fit_wysiwyg .medium-editor-element{outline: none !important;}
+    .fit_wysiwyg .medium-editor-placeholder-relative:after,
+    .fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: #888;}
+</style>
+
 {% endblock %}
-
-
-

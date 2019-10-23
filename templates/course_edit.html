@@ -1,4 +1,12 @@
 {% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if ajax_csrf_form.csrf_token %}
+        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
+
 {% block body %}
 
 <main>
@@ -138,14 +146,24 @@
               <dt><i class="far fa-users"></i> Who's it for?</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience }}</textarea>
+                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience|default("") }}</textarea>
                 </div>
               </dd>
               
               <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary }}</textarea>
+                  <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary|default("") }}</textarea>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 32 hours, 12 weeks" data-course-edit>{{ course.workload_title|default("") }}</textarea>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="workload_subtitle" placeholder="E.g. 4 hours of study per week on average, best done with friends!" data-course-edit>{{ course.workload_subtitle|default("") }}</textarea>
                 </div>
               </dd>
 
@@ -262,16 +280,16 @@
                       <input type="radio" name="course_paid" value="paid" id="option3" autocomplete="off" {{ 'checked' if course.options("paid") }} data-fit-perm-type="paid" data-fit-perm-trigger="paid" data-course-slug="{{ course.slug }}"> Paid
                     </label>
                   </div>
-                  <small class="form-text text-muted active" data-fit-perm-type="cost" data-fit-perm-detail="free">Anyone can access this course for free.</small>
+                  <small class="form-text text-muted {{ 'active' if not course.options("paid") }}" data-fit-perm-type="paid" data-fit-perm-detail="free">Anyone can access this course for free.</small>
                 </div>
 
 
-                <div class="form-group {{ 'active' if course.options("paid") }}" data-fit-perm-type="cost" data-fit-perm-detail="paid">
+                <div class="form-group {{ 'active' if course.options("paid") }}" data-fit-perm-type="paid" data-fit-perm-detail="paid">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text" id="">$</div>
                     </div>
-                    <input type="number" step="0.01" id="amount" name="amount" class="form-control" placeholder="e.g. 100" value="{% if course.amount %}{{ course.amount }}{% endif %}" data-course-edit>
+                    <input type="number" step="0.01" id="amount" name="amount" class="form-control" placeholder="e.g. 100" value="{% if course.amount %}{{ course.amount|cents_to_dolars }}{% endif %}" data-course-edit>
                   </div>
                   <small class="form-text text-muted">One-time cost per student, in US Dollars.</small>
                 </div>

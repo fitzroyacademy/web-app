@@ -21,17 +21,7 @@
 
         <div id="teachers-list" class="teachers">
             {% for teacher in teachers %}
-                <div id="teacher-{{ teacher.id }}" class="fit_btn">
-                    <div class="fit_pic circle"><img src="
-                            {% if teacher.profile_picture %}{{ teacher.profile_picture }}{% else %}/assets/stub/marge.png{% endif %}"
-                                                     alt="user"></div>
-                    <div class="fit_txt">{{ teacher.first_name }} {{ teacher.last_name }}</div>
-                    <div class="sub buttonset">
-                        <a class="btn btn-sm btn-light" href="#" data-teacher-id="{{ teacher.id }}"
-                           data-course-slug="{{ course.slug }}" data-lesson-id="{% if lesson %}{{ lesson.id }}{% endif %}" data-course-edit-remove-teacher><i
-                                class="fal fa-trash"></i> Remove</a>
-                    </div>
-                </div>
+                {{ teacher|safe }}
             {% endfor %}
         </div>
     </div>

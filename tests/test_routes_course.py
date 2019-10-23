@@ -1,5 +1,4 @@
 import datetime
-from decimal import Decimal
 import unittest
 import datamodels
 from app import app
@@ -17,10 +16,18 @@ class TestCourseRoutes(unittest.TestCase):
 
     @staticmethod
     def make_standard_course(
-        code="ABC123", guest_access=False, title="Foo Course", slug="abc-123"
+        code="ABC123",
+        guest_access=False,
+        title="Foo Course",
+        slug="abc-123",
+        draft=False,
     ):
         course = datamodels.Course(
-            course_code=code, title=title, slug=slug, guest_access=guest_access
+            course_code=code,
+            title=title,
+            slug=slug,
+            guest_access=guest_access,
+            draft=draft,
         )
         return course
 
@@ -171,9 +178,10 @@ class TestCourseRoutes(unittest.TestCase):
         response = s.post("/course/abc-123/edit/options/be_or_not_to_be/off")
         self.assertFalse(response.json["success"])
 
-        # Wrong switcher
+        # Wrong switcher / by default option is set to false
         response = s.post("/course/abc-123/edit/options/paid/offff")
-        self.assertFalse(response.json["success"])
+        self.assertTrue(response.json["success"])
+        self.assertFalse(course.paid)
 
     def test_set_course_visibility(self):
         course = self.make_standard_course()
@@ -322,7 +330,7 @@ class TestCourseRoutes(unittest.TestCase):
             expected_status_code=200,
         )
 
-        self.assertEqual(course.amount, Decimal("123.12"))
+        self.assertEqual(course.amount, 12312)
 
     def test_remove_teacher(self):
         course = self.make_standard_course(guest_access=True)

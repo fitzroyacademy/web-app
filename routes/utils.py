@@ -6,6 +6,9 @@ import boto3
 from PIL import Image
 from flask import current_app, jsonify
 
+from dataforms import ReorderForm
+
+
 ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "gif"]
 THUMBNAILS = {
     "cover": {"name": "800x450", "size": (800, 450)},
@@ -72,7 +75,9 @@ def generate_thumbnail(file, thumbnail_type):
 
 def reorder_items(request, cls, objects):
 
-    if request.method == "POST" and "items_order" in request.form:
+    form = ReorderForm(request.form)
+
+    if request.method == "POST" and form.validate():
         # we should get ordered list of lessons
         items_order = request.form["items_order"]
         if items_order:

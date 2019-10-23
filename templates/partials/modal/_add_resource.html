@@ -1,5 +1,6 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_resource_link">
   <form id="add-edit-resource" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" class="modal-dialog modal-dialog-centered" role="document" method="post">
+    {{ resource_form.csrf_token }}
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Lesson resource.</h5>
@@ -19,9 +20,10 @@
         </div>
 
         <div class="form-group">
-          <textarea rows="3" type="text"  class="form-control" name="resource_description" id="resource_description" placeholder="E.g. This link is the best because it has these excellent qualities..." value="">
-          {% if resource %}{{ resource.url }}{% endif %}
-          </textarea>
+          <div class="fit_wysiwyg">
+            <div id="fit_wysiwyg_resource">{% if resource %}{{ resource.description|safe }}{% endif %}</div>
+          </div>
+          <textarea id="resource_description" name="resource_description" style="display: none"></textarea>
         </div>
 
         <label for="">Type</label>

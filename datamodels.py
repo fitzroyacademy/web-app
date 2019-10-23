@@ -101,6 +101,7 @@ class User(Base):
     password_hash = sa.Column(sa.String(128))
     profile_picture = sa.Column(sa.String)
     bio = sa.Column(sa.String)
+    super_admin = sa.Column(sa.Boolean, default=False)
 
     institutes = orm.relationship("InstituteEnrollment", back_populates="user")
     programs = orm.relationship("ProgramEnrollment", back_populates="user")
@@ -295,7 +296,7 @@ class Course(Base):
     year = sa.Column(sa.Date)
     course_code = sa.Column(sa.String(16), unique=True)
     paid = sa.Column(sa.Boolean)
-    amount = sa.Column(sa.DECIMAL(10,2))
+    amount = sa.Column(sa.Integer)
     guest_access = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50), unique=True)
@@ -309,6 +310,8 @@ class Course(Base):
 
     summary_html = sa.Column(sa.String())
     workload_summary = sa.Column(sa.String())
+    workload_title = sa.Column(sa.String())
+    workload_subtitle = sa.Column(sa.String())
 
     program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
     program = orm.relationship("Program", back_populates="courses")
@@ -939,7 +942,7 @@ def get_course_by_code(code):
 
 def get_public_courses():
     session = get_session()
-    return session.query(Course).filter(Course.guest_access == True).all()
+    return session.query(Course).filter(Course.guest_access == True, Course.draft == False).all()
 
 def get_program_by_slug(slug):
     return Program.find_by_slug(slug)

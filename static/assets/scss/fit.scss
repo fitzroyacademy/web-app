@@ -11,7 +11,7 @@ change .fas to [class^='fa'] or <i> ?
 // New palette?
 
 $new_cyan: #16b7ff;
-$new_teal: #1dd4cc;
+$new_teal: #08c9c2;
 $new_purple: #7f3eff;
 $new_pink: #ff0bba;
 $new_red: #f72555;
@@ -119,6 +119,9 @@ footer{z-index: 1500;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
 
+.fit_medium_rare .fit_medium .breakbig:after{z-index: 2210;}
+.fit_medium_rare .fit_medium .breakbig > *{z-index: 2220;}
+
 
 header{z-index: 3000;}
 header .fit_device,
@@ -162,7 +165,13 @@ $nav_left_width_collapsed: 4rem;
 $nav_right_width_flex: 30%;
 $nav_right_width_max: 25rem;
 
-$sensible_width: 1100px;
+$container_wide: 70rem;
+$medium_width: 40rem;
+$large_width: 60rem;
+$large_margin: ($large_width - $medium_width) / 2;
+$larger_margin: ($container_wide - $medium_width) / 2;
+$rare_width: 15rem;
+
 
 $header_height: 3.2rem;
 
@@ -205,7 +214,7 @@ header .fit_link:hover,
 }
 
 // alerts 
-.fit_alerts{max-width: $sensible_width; margin: 0 auto; padding: 0 1rem; box-sizing:border-box;}
+.fit_alerts{max-width: $container_wide; margin: 0 auto; padding: 0 1rem; box-sizing:border-box;}
 .fit_alerts > div:first-child{margin-top: 1rem;}
 
 // loading spinner
@@ -237,7 +246,7 @@ body{min-height: 100%;}
 
 // Box shadows everywhere, with consistent box_shadow!
 
-body > header, 
+body > header,
 body > .fit_player nav,
 .fit_sidepanel .panel,
 .fit_debug,
@@ -292,7 +301,7 @@ html.fit_minleft{}
 // .btn-sm [class^='fa']:first-child{margin: 0 0.1rem;}
 // .btn-lg [class^='fa']:first-child{margin: 0 0.5rem;}
 
-.container{max-width: 1100px;}
+.container{max-width: $container_wide;}
 
 .input-group-text{background: #fff;}
 
@@ -458,7 +467,7 @@ a.fit_btn:hover{color:$blue;}
 
 // mess with the container, when it's there
 header .container > .fit_btn.left:first-child,
-header .container > .fit_device:first-child{margin-left: -15px;}
+header .container > .fit_device:first-child{margin-left: -.75rem;}
 header .container > .right:last-child {margin-right: -15px;}
 
 header .fit_btn{color:$text;}
@@ -870,7 +879,7 @@ a.card.rating h5{color: #f4b115;}
 
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
-.fit_course{max-width: $sensible_width; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem; position: relative;}
+.fit_course{max-width: $container_wide; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem; position: relative;}
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 
@@ -986,6 +995,8 @@ Bleh:;
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
 .fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
 .fit_summary_icons dt > i:first-child{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
+
+.fit_summary_icons.lite dt{font-weight: normal;}
 
 // sub icons
 .fit_summary_icons dt a > i{color: $text_lighter;}
@@ -1437,6 +1448,10 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 .fit_sidepanel .panel .content{position: relative;}
 
+// the course list:
+.fit_sidepanel .fit_course{padding: 0;}
+.fit_sidepanel .fit_course .fit_lessons{margin-bottom: 1rem;}
+
 // ------------------------------------------------------------
 // hide and reveals
 
@@ -1486,7 +1501,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 
 .fit_hero h1{line-height: 130%; font-size: 4.5rem; padding-bottom: 1rem; color:$brand_dark;}
 .fit_hero h1 strong{color:$blue; position: relative; display: inline-block;}
-.fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:100%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
+.fit_hero h1 strong:after{content: ''; display: block; background: url(../assets/images/svg/underline_1_blue.svg) no-repeat top; background-size: contain; position: absolute; width: 108%; top:115%; left: 0; padding: 25% 0 0; margin: -7% 0 0 -5%;}
 
 .fit_hero h1 small{display: block; font-size: 1.5rem; line-height: 2rem; color:$text_light;}
 
@@ -1494,7 +1509,7 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_hero p a{color:inherit; border-bottom: 0.15rem solid $border_light;}
 .fit_hero p a:hover{color: $blue; text-decoration: none; border-color: $border_medium;}
 
-.fit_heartplay{position: relative; height: 10rem; width: 10rem; margin: 0 auto; display: block; text-decoration: none;}
+.fit_heartplay{position: relative; height: 10rem; width: 15rem; margin: 0 auto; display: block; text-decoration: none;}
 .fit_heartplay i{ height: 10rem; position: absolute; top:0; left: 0; width: 100%;}
 
 .fit_heartplay .bigboy{color:$brand_dark; font-size: 10rem; transition: all .45s ease-in-out;}
@@ -1505,9 +1520,9 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_heartplay.hover .fa-heart{ transform: scale(1.04); }
 .fit_heartplay.hover .fa-play{transform: scale(1.07); }
 
-.fit_hero.pink .bigboy,
-.fit_hero.pink h1 strong{color:$pink;}
-.fit_hero.pink h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
+.fit_hero.pink_line .bigboy,
+.fit_hero.pink_line h1 strong{color:$pink;}
+.fit_hero.pink_line h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
 
 
 @media (max-width: 767px) {
@@ -1661,20 +1676,54 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
-.fit_medium{max-width: 740px; margin: 0 auto; padding:0 1rem;}
-.fit_medium .fit_window{margin-bottom: 2rem;}
+.fit_medium{max-width: $medium_width; margin: 0 auto; padding:0 1rem;}
 
-.fit_medium img{max-width: 100%; border-radius: $border_rad_sm;}
+@media (min-width: calc(760px + 2rem)) {
+	.fit_medium{padding: 0;}
+}
+
+.fit_medium .fit_window{margin-top:1rem; margin-bottom: 2rem;}
+.fit_medium .fit_window:first-child{margin-top: 0;}
+.fit_medium p + .fit_window{margin-top: 2rem;}
+
+.fit_medium img{width: 100%; border-radius: $border_rad_sm;}
+.fit_medium .fit_picture img{border-radius: $border_rad_lg;}
+@media (min-width: calc(760px + 2rem)) {
+	.fit_medium .fit_picture img{border-radius: $border_rad_xl;}
+}
 
 .fit_medium h1,
 .fit_medium h2,
 .fit_medium h3,
-.fit_medium h4{margin-bottom: 1rem; max-width: 600px;}
+.fit_medium h4{margin-bottom: 1rem; max-width: 600px; position: relative;}
 
 .fit_medium h4{font-weight: 900;}
 
-.fit_medium p{font-size: 1.2rem; line-height: 1.7rem;}
-.fit_medium p a:not(.btn){text-decoration: underline; color:inherit;}
+// iconz
+.fit_medium h1 > i:first-child,
+.fit_medium h2 > i:first-child,
+.fit_medium h3 > i:first-child,
+.fit_medium h4 > i:first-child{margin-right: .5rem;}
+
+@media (min-width: 992px) {
+	.fit_medium h1 > i:first-child,
+	.fit_medium h2 > i:first-child,
+	.fit_medium h3 > i:first-child,
+	.fit_medium h4 > i:first-child{position: absolute; top:0; right: 100%; margin-right: 1.5rem; font-size: 110%;}
+}
+
+.fit_medium p,
+.fit_medium li{font-size: 1.2rem; line-height: 1.7rem;}
+.fit_medium p a:not(.btn),
+.fit_medium li a:not(.btn),
+.fit_medium li a:not(.nav-link){text-decoration: underline; color:inherit;}
+
+.fit_medium p a:not(.btn):hover,
+.fit_medium li a:not(.btn):hover,
+.fit_medium li a:not(.nav-link):hover{color:$blue;}
+
+.fit_medium p .fa-external-link,
+.fit_medium li .fa-external-link{font-size: 70%; color:$text_light;}
 
 .fit_medium hr{margin: 3.5rem 0; height: 0; background: transparent; border-color: transparent;}
 .fit_medium hr.dots:after{display: block; content: '...'; letter-spacing: 2rem; font-size: 2rem; color: $text_light; text-align: center; position: relative; top: -2rem;}
@@ -1685,65 +1734,109 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium dd,
 .fit_medium dd p{font-size: 1.05rem;}
 
-.fit_medium .breakbig{margin: 0 0 2rem;}
-.fit_medium .breakbig .row img{margin-bottom: 1rem;} 
+.fit_medium .breakbig,
+.fit_medium .breakbigger{margin: 0 0 2rem;}
+.fit_medium .breakbig .row img,
+.fit_medium .breakbigger .row img{margin-bottom: 1rem;}
 
 @media (min-width: 992px) {
-	.fit_medium .breakbig{width: 970px; margin-left: -140px;}
+	.fit_medium .breakbig{width: $large_width; margin-left: -$large_margin;}
+	.fit_medium .breakbigger{width: $container_wide; margin-left: -$larger_margin;}
+
+
+	// breaking big on a small medium rare friend
+	.fit_medium_rare .fit_medium .breakbig{margin-left: -$rare_width; background: #fff; box-shadow: 0 0 50px #fff; position: relative;}
+
+	.fit_medium_rare .fit_medium .breakbig > *{position: relative;}
+
+	// this is some hacky bullshit for making a shadow hide the left nav
+	.fit_medium_rare .fit_medium .breakbig:after{display: block; content: ''; position: absolute; top:-5rem; left: -20px; bottom: -3rem; box-shadow: 0 0 50px #fff; width: $rare_width; background: #fff; box-shadow: 0 0 50px #fff;}
 }
-
-// breaking big on a small medium rare friend
-.fit_medium_rare .fit_medium .breakbig{margin-left: -280px; background: #fff; box-shadow: 0 0 50px #fff; position: relative;}
-
-// this is some hacky bullshit for making a shadow hide the left nav
-.fit_medium_rare .fit_medium .breakbig:before,
-.fit_medium_rare .fit_medium .breakbig:after{display: block; content: ''; position: absolute; top:0; left: -20px; right: -20px; bottom: 0; box-shadow: 0 0 50px #fff}
-.fit_medium_rare .fit_medium .breakbig:before{box-shadow: 0 -30px 50px #fff}
-.fit_medium_rare .fit_medium .breakbig:after{box-shadow: 0 30px 50px #fff}
-
 
 
 .fit_spicy{color:$red; font-size: 2rem;}
 .fit_spicy .fal{color: $text_light;}
 
 
+// medium large is full size
+
+.fit_medium.large{max-width: $container_wide;}
+
+.fit_medium.pricing .row .pane{}
+
 // and now the two-bar thing with floaty menu
 
-.fit_medium_rare .fit_rare{margin: 0 auto; max-width: 740px; padding: 1rem 1rem 2rem}
+.fit_medium_rare .fit_rare{margin: 0 auto 2rem; max-width: 740px; padding: 1rem 1rem 2rem}
 
 .fit_medium_rare .fit_rare a{font-size:1.1rem; color: $text; border-bottom: 3px solid transparent; text-decoration: none; display: table; padding: 0.1rem .5rem; margin: 0 0 0.25rem;}
-.fit_medium_rare .fit_rare a:hover{color:$blue;}
+.fit_medium_rare .fit_rare a:hover{color:$blue; border-bottom-color: $border_light;}
+.fit_medium_rare .fit_rare a.active{background: $bg; border-radius: $border_rad_sm}
 
 .fit_medium_rare .fit_rare a .fa-external-link{font-size: 0.9rem; margin-left: .25rem; color:$text_lighter;}
 .fit_medium_rare .fit_rare a:hover .fa-external-link{color:$blue;}
 
 // big version
-/*
+
 @media (min-width: 992px) {
-	.fit_medium_rare{display: flex; align-items:stretch; max-width: 1000px; position: relative; padding: 0 1rem; margin: 0 auto;}
-	.fit_medium_rare .fit_medium{margin: 0; padding: 0;}
-	.fit_medium_rare .fit_rare{ flex: 0 0 18rem; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
+	.fit_medium_rare{display: flex; align-items:stretch; max-width: $container_wide; position: relative; padding: 0; margin: 0 auto;}
+	.fit_medium_rare .fit_medium{margin: 0; padding: 0; max-width: none}
+	.fit_medium_rare .fit_rare{ flex: 0 0 $rare_width; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
 
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{display: none;}
 }
 
-@media (max-width: 991px) {}
-*/
+@media (max-width: 991px) {
 
-	.fit_medium_rare .fit_rare{background: $bg; padding: .5rem; border:1rem solid #fff;border-radius: $border_rad_lg;}
+
+	.fit_medium_rare .fit_rare{background: $bg; padding: .5rem; border-radius: $border_rad_lg;}
 
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{color: $text; font-size: 0.9rem; margin: 0; display: block; }
+	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger:hover{border-color: transparent;}
+	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger:hover i{ transform: rotate(90deg);}
 	.fit_medium_rare .fit_rare .fit_rare_dropdown{display: none;}
 	.fit_medium_rare .fit_rare.active .fit_rare_dropdown{display: block; padding: .5rem;}
 
+	.fit_medium_rare .fit_rare.active .fit_rare_dropdown_trigger i{border-color: transparent; transform: rotate(-90deg);}
 
 
+	// .fit_medium_rare .fit_rare a.active{background: $bg; color:$blue;}
 
+}
 
 .fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
 .fit_medium_nav .btn:last-child{margin-left: auto;}
 
-// ------------------------------------------------------------------------------------
+.fit_iconrow {text-align: center;}
+.fit_iconrow i{display: block; font-size: 4rem; text-align: center; padding:2rem 0 .75rem;}
+.fit_iconrow small{color:$text_light; font-size: 0.75rem; display: block; margin: .5rem 0;}
+
+// colour
+.fit_iconrow i.fa-table{color:$new_apricot;}
+.fit_iconrow i.fa-file-spreadsheet{color:$new_green;}
+.fit_iconrow i.fa-file-image{color:$new_pink;}
+.fit_iconrow i.fa-file-chart-pie{color:$new_teal;}
+
+@media (min-width: 992px) {
+	.fit_iconrow {margin-top: 2rem; margin-bottom: 3rem;}
+}
+
+// square images embedded in medium posts
+$square_size: 22rem;
+
+.fit_squarefeat{position: relative; padding:.5rem 0 0 16rem; margin: 2rem 0;}
+.fit_squarefeat .square{overflow: hidden; min-height: $square_size; width: $square_size; display: block; position: absolute; top:0; left: 0; margin-left: -8rem; border-radius: $border_rad_lg;}
+.fit_squarefeat .square > img{height: 100%;}
+
+
+.fit_partner_logos {margin: 3rem 0;}
+.fit_partner_logos:first-child{margin-top: 0;}
+.fit_partner_logos + .fit_partner_logos {margin-top: -1rem;}
+.fit_partner_logos img{max-height: 70px; margin-bottom: 1rem;}
+
+
+.fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
+
+// ----------------------------------------------------------------------------------------------------------------
 // Login and sign up and whatnot
 
 
@@ -1851,6 +1944,37 @@ body > .fit_code {margin-top:10rem;}
 
 	.fit_hero .fit_code{margin: 2rem auto 0; max-width: 100%}
 }
+
+// some colours
+.fit_hero.watermelon h1,
+.fit_hero.watermelon .fit_heartplay .bigboy{color: $watermelon;}
+
+.fit_hero.teal h1,
+.fit_hero.teal .fit_heartplay .bigboy{color:$new_teal}
+
+.fit_hero.pink h1,
+.fit_hero.pink .fit_heartplay .bigboy{color:$new_pink}
+
+.fit_hero.apricot h1,
+.fit_hero.apricot .fit_heartplay .bigboy{color:$new_apricot}
+
+.fit_hero.green h1,
+.fit_hero.green .fit_heartplay .bigboy{color:$new_green}
+
+.fit_hero.purple h1,
+.fit_hero.purple .fit_heartplay .bigboy{color:$new_purple}
+
+.fit_hero.cyan h1,
+.fit_hero.cyan .fit_heartplay .bigboy{color:$new_cyan}
+
+
+// leftie mode for more boring pages
+.fit_hero.leftie{text-align: left; padding-left: $rare_width; position: relative; max-width: $container_wide; margin: 2rem auto; padding-top:2.5rem;}
+.fit_hero.leftie .fit_heartplay{position: absolute; top:2rem; left: 0; width: $rare_width;}
+.fit_hero.leftie h1{max-width: none;}
+
+.fit_lawyermode p,
+.fit_lawyermode li{font-size: 0.85rem; line-height: 1.1rem;}
 
 // -----------------------------------------------------------------------------------------
 /* fit header code */
@@ -2070,11 +2194,35 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 // ------------------------------------------------------------------------------------
 // Institute mode uses normal hero as much as possible!
 
-.fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;;}
+.fit_hero .logo{max-width: 14rem; display: block; margin: 0 auto 1rem; text-align: center;}
 
 
-// ------------------------------------------------------------------------------------
+
+
+// ----------------------------------------------------------------------------------------------------------------
 // breezy mode for lessons
+@media (min-width: 768px) {
+	.fit_player aside .fits{padding: 1rem;}
+	.fit_player aside .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
+	.fit_player aside .fits{border-bottom: 1px solid $border_light;}
+}
+
+.fit_player.breezy aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] > *{}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+
+// on / off
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+
+// re-order buttons:
+.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
+.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
+.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+
+.fit_player.breezy aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
 
 html.course footer{display: none;}
 
@@ -2101,7 +2249,7 @@ main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: au
 
 @media (min-width: 900px) {
 	main.fit_player.breezy{margin: 1rem;}
-	
+
 
 	main.fit_player.breezy .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
 

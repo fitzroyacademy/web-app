@@ -1,0 +1,44 @@
+{% extends "/layout.html" %}
+
+{% block body %}
+
+<main>
+
+  <article>
+
+    <div class="fit_course intro">
+      <form action="/course/add" method="post" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+      <h1>
+        <span class="txt">Course.</span>
+        <small class="subtxt">
+          <button class="btn btn-sm btn-outline-primary" type="submit"><i class="fal fa-check"></i> Save changes</button>
+        </small>
+      </h1>
+
+      <div class="form-group">
+        <input type="text" class="form-control form-control-lg" name="title" value="" id="title" placeholder="Name your course">
+      </div>
+      <div class="form-group">
+        <!-- <label for="lesson_description">Short description</label> -->
+        <input type="text" class="form-control" id="info" name="info" value="" maxlength="140" placeholder="Short description of the lesson. 140 characters max.">
+      </div>
+
+      <div class="fit_vidya">
+        <a class="fit_vidya_play" href="#" onclick="document.getElementById('cover_image').click()"><i class="fas fa-upload"></i></a>
+        <input id="cover_image" name="cover_image" type="file" style="display: none;">
+      </div>
+
+
+      <div class="fit_pane d-flex justify-content-between">
+        <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save changes</button>
+      </div>
+
+      </form>
+    </div>
+
+  </article>
+
+</main>
+
+{% endblock %}

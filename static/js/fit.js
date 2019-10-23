@@ -594,7 +594,10 @@ $( document ).ready(function() {
     };
     xhr.open('POST', url);
     var f = new FormData();
-    for (let k in data) f.append(k, data[k]); 
+    for (let k in data) f.append(k, data[k]);
+    if (typeof csrf_token !== 'undefined' && csrf_token) {
+      f.append("csrf_token", csrf_token)
+    };
     xhr.send(f);
   }
 
@@ -859,16 +862,7 @@ $( document ).ready(function() {
         } else {
             alert.addClass('alert-success');
             alert.removeClass('alert-danger');
-            $('#teachers-list').append(
-                `<div id="teacher-${responseJSON['teacher']['id']}" class="fit_btn">
-                      <div class="fit_pic circle"><img src="${responseJSON['teacher']['picture']}" alt="user"></div>
-                      <div class="fit_txt">${responseJSON['teacher']['first_name']} ${responseJSON['teacher']['last_name']}</div>
-                      <div class="sub buttonset">
-                        <a class="btn btn-sm btn-light" data-teacher-id="${responseJSON['teacher']['id']}" data-course-slug="${responseJSON['teacher']['slug']}" data-course-edit-remove-teacher><i class="fal fa-trash"></i> Remove</a>
-                      </div>
-                    </div>`
-
-            )
+            $('#teachers-list').append(responseJSON['teacher'])
         }
         alert.html(responseJSON.message);
     });
@@ -924,7 +918,7 @@ $( document ).ready(function() {
 
   $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){
     let resourceTitle = $('#resource_title');
-    let resourceDescription = $('#resource_description');
+    let resourceDescription = $('#fit_wysiwyg_resource');
     let resourceUrl = $('#resource_url');
     let form = $('#add-edit-resource');
 
@@ -935,7 +929,7 @@ $( document ).ready(function() {
         if (xhr.status == 200) {
             let res = JSON.parse(xhr.response);
             resourceTitle.val(res["title"]);
-            resourceDescription.val(res["description"]);
+            resourceDescription.html(res["description"]);
             resourceUrl.val(res["url"]);
             $("input[name=resource_type][value="  + res["type"] + "]").prop("checked", true);
         } else {
@@ -943,7 +937,7 @@ $( document ).ready(function() {
           });
     } else {
       resourceTitle.val("");
-      resourceDescription.val("");
+      resourceDescription.html("");
       resourceUrl.val("");
       $("input[name=resource_type][value=google_drawing]").prop("checked", true)
     }
@@ -988,6 +982,11 @@ $( document ).ready(function() {
   delegate('#course-edit-form', 'submit', (e,t) => {
     let mysave = $('#fit_wysiwyg_editor').html();
     $('#course_summary').val(mysave);
+  });
+
+  delegate('#add-edit-resource', 'submit', (e,t) => {
+    let mysave = $('#fit_wysiwyg_resource').html();
+    $('#resource_description').val(mysave);
   });
 
   // Load the video dynamically when people hit back so the URLs in their

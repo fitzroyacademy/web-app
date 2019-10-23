@@ -43,7 +43,10 @@ def course_delete_segment(user, course, course_slug, lesson_id, segment_id):
 def reorder_segments(user, course, course_slug, lesson_id):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
-        return jsonify({"succes": False, "message": "Course do not match lesson"}), 400
+        return (
+            jsonify({"success": False, "message": "Course does not match lesson"}),
+            400,
+        )
 
     return reorder_items(request, datamodels.Segment, lesson.segments)
 

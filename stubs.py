@@ -33,6 +33,7 @@ students = [
         'last_name': 'Simpson',
         'password': 'homer',
         'username': 'homer',
+        'super_admin': True,
         'email': 'homer@simpsons.com',
         'profile_picture': '/assets/stub/homer.png',
         'bio': 'Homer is the Chief Safety Inspector and former power plant operator at the Springfield Nuclear Power Plant',
