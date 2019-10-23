@@ -753,17 +753,29 @@ $( document ).ready(function() {
   });
 
   // Pause/resume video on sidebar and after interacting with sidepanel forms.
+  var __sidebar_video_paused = false;
   delegate('[data-fit-userpanel]', 'click', (e, t) => {
     if (!_fitz_video) return;
-    if (document.documentElement.classList.contains('fit_revealuserpanel')) {
-      _fitz_video.pause();
+    // The class hasn't changed to its toggled state yet, so the class
+    // is kind of flipped.
+    var closed = document
+                  .documentElement
+                  .classList
+                  .contains('fit_revealuserpanel');
+    if (closed) {
+      if (_fitz_video.state() == "playing") {
+        _fitz_video.pause();
+        __sidebar_video_paused = true;
+      }
+      // Pop the video time into the form so we can get redirected back.
       let lastpages = document.querySelectorAll('[data-fit-lastpage]');
       let t = Math.floor(_fitz_video.time());
       for (let l of lastpages) {
         l.value = l.value.split('?')[0] + `?t=${t}`;
       }
-    } else {
+    } else if (__sidebar_video_paused) {
       _fitz_video.play();
+      __sidebar_video_paused = false;
     }
   });
 
