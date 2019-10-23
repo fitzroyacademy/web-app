@@ -106,15 +106,32 @@ class TestModels(unittest.TestCase):
     def test_student_enrollment(self):
         u = self.makeUser(id=1)
         self.session.add(u)
-        c = self.make_standard_course()
+        c = self.make_standard_course(slug='abc')
         self.session.add(c)
         c.enroll(u)
         u2 = datamodels.get_user(1)
+        u3 = self.makeUser(id=2, email="marge@simpsons.com", username="marge")
+        self.session.add(u3)
+        c.enroll(u3)
         self.assertEqual(len(u2.courses), 1)
         self.assertEqual(u2.courses[0].id, 1)
         self.assertEqual(
             u2.course_enrollments[0].access_level, datamodels.COURSE_ACCESS_STUDENT
         )
+        c2 = datamodels.get_course_by_slug('abc')
+        self.assertEqual(len(c2.students), 2)
+
+    def test_student_progress(self):
+        u1 = self.makeUser(id=1)
+        u2 = self.makeUser(id=2, email="marge@simpsons.com", username="marge")
+        self.session.add(u1)
+        self.session.add(u2)
+        c = self.make_standard_course(slug='abc')
+        self.session.add(c)
+        c.enroll(u1)
+        c.enroll(u2)
+        l1 = self.make_standard_course_lesson(course=c, slug="l1", order=1)
+        l2 = self.make_standard_course_lesson(course=c, slug="l2", order=2)
 
     def test_users_teaches(self):
         u = self.makeUser(id=1)

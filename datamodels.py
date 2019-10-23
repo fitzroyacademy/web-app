@@ -389,6 +389,16 @@ class Course(Base):
             users.append(ass.user)
         return users
 
+    @property
+    def students(self):
+        """ A unique list of users associated with this course that
+        have studet-level access."""
+        associations = CourseEnrollment.find_students_for_course(self.id)
+        users = []
+        for ass in associations:
+            users.append(ass.user)
+        return users
+    
     def user_progress(self, user):
         if len(self.lessons) is 0:
             return 100
@@ -396,6 +406,9 @@ class Course(Base):
         for lesson in self.lessons:
             total = total + lesson.user_progress_percent(user)
         return int(total/len(self.lessons))
+
+    def class_progress(self):
+        pass
 
     def enroll(self, student):
         """ Adds a user to a course with student-level access. """
@@ -458,6 +471,15 @@ class CourseEnrollment(Base):
         .filter(
             CourseEnrollment.user_id == student_id
         ).first()
+
+    @staticmethod
+    def find_students_for_course(course_id):
+        session = get_session()
+        return session.query(CourseEnrollment).filter(
+            CourseEnrollment.course_id == course_id)\
+        .filter(
+            CourseEnrollment.access_level == COURSE_ACCESS_STUDENT
+        ).all()
 
     @staticmethod
     def find_teachers_for_course(course_id):
