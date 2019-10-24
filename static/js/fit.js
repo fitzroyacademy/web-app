@@ -42,6 +42,44 @@ $( document ).ready(function() {
   });
 
 
+
+  // fail list sorter:
+
+  $('[data-fit_fail_list]').click(function(e) {
+    
+    var set = $(this).data('fit_fail_list');
+
+    $('[data-fit_fail_list]').removeClass('active');
+    $(this).addClass('active');
+
+
+    if (set == "all")
+    {
+      $('[data-fit_fail_type]').removeClass('faded'); 
+    }
+    else 
+    {
+
+      // mess with them all
+      $('[data-fit_fail_type]').each(function(e) {
+        type = $(this).data('fit_fail_type');
+        
+        // if it matches:
+        if (set == type)
+        {
+          $(this).removeClass('faded');
+          // $(this).find('.fit_body').collapse('show');
+        }
+        else
+        {
+          $(this).addClass('faded');
+          $(this).find('.fit_body').collapse('hide');
+        }
+
+      });
+    }
+  });
+
   // snackbar examples
   $('[data-snackbar-alert]').click(function(e) {
     e.preventDefault();
