@@ -705,6 +705,7 @@ header .right,
 
 
 
+
 /* hovers */
 .fit_link:hover{background: $bg; text-decoration: none;}
 .fit_link:hover .fit_video .fa-check{background: #6ad91f}
@@ -1023,6 +1024,11 @@ Bleh:;
 
 // move it around if we're 2 deep
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
+
+
+// crop saving thing
+
+.fit_save_crop{position: absolute; top:1rem; right: 1rem; color:#fff !important;}
 
 
 // Square upload thing
@@ -1776,7 +1782,9 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium_rare .fit_medium .breakbig:after,
 	.fit_medium_rare .fit_medium .breakbigger:after,
 	.fit_medium_rare .fit_medium .breakbig:before,
-	.fit_medium_rare .fit_medium .breakbigger:before{z-index: 2200; display: block; content: ''; position: absolute; top:-4rem; left: -20px; bottom: -4rem; box-shadow: 0 0 50px #fff; width: $rare_width; background: #fff; box-shadow: 0 0 50px #fff;}
+	.fit_medium_rare .fit_medium .breakbigger:before{z-index: 2200; display: block; content: ''; position: absolute; top:-4rem; left: -20px; bottom: -4rem; box-shadow: 0 0 50px #fff; width: $rare_width; background: #fff; box-shadow: 0 40px 30px #fff;}
+	.fit_medium_rare .fit_medium .breakbig:before,
+	.fit_medium_rare .fit_medium .breakbigger:before{box-shadow: 0 -40px 30px #fff;}
 }
 
 
@@ -1842,6 +1850,11 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_iconrow i.fa-file-image{color:$new_pink;}
 .fit_iconrow i.fa-file-chart-pie{color:$new_teal;}
 
+.fit_iconrow i.apricot{color:$new_apricot;}
+.fit_iconrow i.pink{color:$pink;}
+.fit_iconrow i.teal{color:$new_teal;}
+.fit_iconrow i.blue{color:$blue;}
+
 @media (min-width: 992px) {
 	.fit_iconrow {margin-top: 2rem; margin-bottom: 3rem;}
 }
@@ -1857,7 +1870,7 @@ $square_size: 22rem;
 .fit_partner_logos {margin: 3rem 0;}
 .fit_partner_logos:first-child{margin-top: 0;}
 .fit_partner_logos + .fit_partner_logos {margin-top: -1rem;}
-.fit_partner_logos img{max-height: 70px; margin-bottom: 1rem; width: auto;}
+.fit_partner_logos img{max-height: 70px; margin:2rem 0 1rem; width: auto;}
 
 
 .fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
@@ -1867,6 +1880,14 @@ $square_size: 22rem;
 .fit_advisor{display: block; margin:0 0 1.75rem; padding-left: 4rem; position: relative;}
 .fit_advisor .flag{display: block; position: absolute; top:.4rem; left: 0; width: 2.75rem; height: 2rem;}
 .fit_advisor small{display: block; color: $text_light;}
+
+
+// give the rows a bit more room in general
+.fit_medium > p + .row{margin-top: 2rem;}
+
+
+
+
 
 
 // ----------------------------------------------------------------------------------------------------------------

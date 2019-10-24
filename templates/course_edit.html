@@ -16,7 +16,7 @@
     <div class="fit_course intro">
 
       <h1>
-        <span class="txt">Course.</span>
+        <span class="txt">Edit Course.</span>
         <small class="subtxt">
           <button class="btn btn-sm btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
           &nbsp;
@@ -38,6 +38,7 @@
         <form action="/course/{{ course.slug }}/edit" method="post" style="display:none;">
           <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input data-course-edit>
         </form>
+        <a class="btn btn-lg btn-primary fit_save_crop"><i class="fal fa-check"></i> Save</a>
       </div>
 
       <h3>
