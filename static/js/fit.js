@@ -1033,7 +1033,16 @@ $( document ).ready(function() {
             let form = input.closest('form');
             formData['file'] = blob;
             formData[input.name] = `a:/b/c/d/e.f.${ext}`;
-            post(form.action, formData)
+            post(form.action, formData);
+            p.classList.remove('fit_upload_cropping');
+            var reader = new FileReader();
+            reader.onload = (e) => {
+              img.src = e.target.result;
+              // cropper.destroy() doesn't seem to clean this up?
+              p.querySelector('.cropper-container').remove();
+              img.classList.remove('cropper-hidden');
+            };
+            reader.readAsDataURL(blob);
           }, `image/${ext}`);
         }
         // Just here for debugging until we hook up a UI to this
