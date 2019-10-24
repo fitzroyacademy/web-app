@@ -1,6 +1,6 @@
 {% extends "/layout.html" %}
 {% block body %}
-
+<!-- 
 <main>
 
   <article>
@@ -41,7 +41,96 @@
         </div>          
       </div>
 
-    </div><!-- medium -->
+    </div>
+  </article>
+
+</main>
+ -->
+
+<main>
+
+  <article>
+
+    <div class="fit_hero leftie cyan">
+      <a class="fit_heartplay">
+        <i class="bigboy fal fa-money-bill-wave"></i>
+      </a>
+      <h1>Pricing
+        <small>Pay by the course, or buy it for your whole school.</small>
+      </h1>
+      
+    </div>
+
+    <div class="fit_medium_rare">
+
+      <div class="fit_rare" id="rare_nav">
+        <div class="nav nav-pills flex-column">
+          <a class="nav-item nav-link fit_rare_dropdown_trigger" data-fit_active_trigger href="#rare_nav">
+            <i class="fal fa-chevron-down"></i> Articles in this section:
+          </a>
+          <div class="fit_rare_dropdown">
+            <div class="fit_rare_dropdown">
+              {% include 'partials/static_menus/_product.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fit_medium">
+
+        <h2><i class="fal fa-photo-video"></i> Public courses have a one-time fee.</h2>
+
+        <p><strong>Students pay once,</strong> and get lifetime access to that course. Easy! 🥰</p>
+
+        <hr class="blunt">
+
+
+        <h2><i class="fal fa-university"></i> Institute pricing for schools, accelerators and fellowships.</h2>
+
+        <p>If you want to use our tech for your program, <a href="/about/contact">get in touch!</a></p>
+
+        <div class="row fit_iconrow">
+          <div class="col">
+            <a>
+              <i class="fal pink fa-photo-video"></i>
+              Full lesson library
+              <small>30+ full length lessons.</small>
+            </a>
+          </div>
+          <div class="col">
+            <a>
+              <i class="fal fa-tag"></i>
+              White-labelled
+              <small>Bring your own branding.</small>
+            </a>
+          </div>
+          <div class="col">
+            <a>
+              <i class="fal teal fa-users-crown"></i>
+              Admin controls
+              <small>Admins, teachers and students.</small>
+            </a>
+          </div>
+          <div class="col">
+            <a>
+              <i class="fal apricot fa-lock"></i>
+              Completely secure
+              <small>Built for universities.</small>
+            </a>
+          </div>
+        </div>
+        
+
+        <!-- <div class="fit_medium_nav">
+          <a href="/about/" class="btn btn-outline-secondary "><i class="fal fa-arrow-left"></i> About us</a>
+          <a href="/product/pricing" class="btn btn-outline-primary">Pricing <i class="fal fa-arrow-right"></i></a>
+        </div> -->
+
+      </div>
+
+
+    </div>
+
   </article>
 
 </main>

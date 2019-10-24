@@ -29,6 +29,7 @@ $old_blue_light: #21adf5;
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me. */
 
 $bg: #f5f7f8;
+$bg_grey: #f7f7f7;
 $bg_light: #f7f9fa;
 $bg_dark: #f1f4f5;
 $bg_darker: #ebf0f1;
@@ -44,7 +45,8 @@ $blue_alt: #139ddd;
 $blue_dark: #0a6da2;
 $red: #e8151f;
 $green: #65ae48;
-$pink: #e809db;
+$pink: #F42069;
+$fuscia: #e90bd7;
 $yellow: #f4b115;
 $aqua: #66b3b7;
 $aqua_80: rgba(102, 179, 183, .8);
@@ -52,7 +54,8 @@ $aqua_50: rgba(102, 179, 183, .5);
 $black_50: rgba(0, 0, 0, .5);
 $black_80: rgba(0, 0, 0, .8);
 
-// possibly a new brand?!
+// $watermelon: #f21e55;
+
 $watermelon: #f21e55;
 $watermelon_light: #f73c6d;
 $watermelon_lighter: #fa7fa0;
@@ -207,6 +210,7 @@ header .fit_link:hover,
 
 // this subheader appears below the main sticky nav sometimes
 .fit_subhead{background: #fff; padding: 1rem; margin: 0 -1rem; border-bottom: 1px solid $border_light;}
+.fit_subhead li a{text-decoration: none !important;}
 .fit_subhead.sticky-top{top:$header_height;}
 
 @media (max-width: 575px) {
@@ -515,6 +519,15 @@ header .fit_btn:hover > .fit_txt:after,
 
 .fit_pane .fit_btn[data-toggle="collapse"] .fa-chevron-down{padding: 1rem;}
 
+// move the content over a bit
+.fit_pane[data-fit_fail_type] .fit_summary_icons{margin: 1rem 0 0 1rem;}
+.fit_pane[data-fit_fail_type] .fit_summary_icons dt > i:first-child{left: 0.2rem;}
+
+
+// fade them out of the selector thing
+.fit_pane.faded{background: $bg_grey;}
+.fit_pane.faded .fit_btn[data-toggle="collapse"].collapsed{color: $text_lighter;}
+
 // small screens
 @media (max-width: 767px) {
 	.fit_pane{margin: 0 -1rem 1rem !important;}
@@ -688,6 +701,7 @@ header .right,
 .fit_radio_icons input:checked + label > i.fa-file-pdf{color: $pdf_red;}
 .resource_link .fa-camera,
 .fit_radio_icons input:checked + label > i.fa-camera{color: $pink;}
+
 
 
 
@@ -1012,6 +1026,11 @@ Bleh:;
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
 
 
+// crop saving thing
+
+.fit_save_crop{position: absolute; top:1rem; right: 1rem; color:#fff !important;}
+
+
 // Square upload thing
 .fit_squarelogo{margin-bottom: 1rem; width: 200px; height: 200px; border:1px solid $border_light; border-radius: $border_rad_lg;}
 .fit_squarelogo img{max-width: 100%; border-radius: $border_rad_lg;}
@@ -1216,7 +1235,8 @@ table.fit_colhover td:hover{cursor: default;}
 
 .fit_flag_group{margin-bottom: 2rem;}
 
-.flag{}
+.flag{ display: inline-block; box-shadow: 0 1px 5px rgba(82,63,105,0.3);}
+.caption .flag{width: 1rem; height:.75rem; border-radius: $border_rad_xs; margin-right: .35rem}
 
 .btn .flag,
 .nav-link .flag{width: 1.2rem; height: 0.9rem; margin-right: 0.25rem; display: inline-block;}
@@ -1524,6 +1544,10 @@ html.fit_revealuserpanel .fit_sidepanel .panel .head{opacity: 1; right:0; min-wi
 .fit_hero.pink_line h1 strong{color:$pink;}
 .fit_hero.pink_line h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
 
+.fit_hero.fuscia_line .bigboy,
+.fit_hero.fuscia_line h1 strong{color:$fuscia;}
+.fit_hero.fuscia_line h1 strong:after{background-image: url(../assets/images/svg/underline_1_pink.svg);}
+
 
 @media (max-width: 767px) {
 	.fit_hero{padding: 2rem 1rem 1rem;}
@@ -1676,7 +1700,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
-.fit_medium{max-width: $medium_width; margin: 0 auto; padding:0 1rem;}
+.fit_medium{max-width: $medium_width; margin: 0 auto; padding:0 1rem; position: relative;}
 
 @media (min-width: calc(760px + 2rem)) {
 	.fit_medium{padding: 0;}
@@ -1718,6 +1742,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium li a:not(.btn),
 .fit_medium li a:not(.nav-link){text-decoration: underline; color:inherit;}
 
+.fit_medium li a.nav-link.active:hover{color: #fff;}
+
 .fit_medium p a:not(.btn):hover,
 .fit_medium li a:not(.btn):hover,
 .fit_medium li a:not(.nav-link):hover{color:$blue;}
@@ -1740,8 +1766,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium .breakbigger .row img{margin-bottom: 1rem;}
 
 @media (min-width: 992px) {
-	.fit_medium .breakbig{width: $large_width; margin-left: -$large_margin;}
-	.fit_medium .breakbigger{width: $container_wide; margin-left: -$larger_margin;}
+	.fit_medium .breakbig{width: $large_width; margin-left: -$large_margin; position: relative;}
+	.fit_medium .breakbigger{width: $container_wide; margin-left: -$larger_margin; background: #fff; position: relative;}
 
 
 	// breaking big on a small medium rare friend
@@ -1750,7 +1776,15 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium_rare .fit_medium .breakbig > *{position: relative;}
 
 	// this is some hacky bullshit for making a shadow hide the left nav
-	.fit_medium_rare .fit_medium .breakbig:after{display: block; content: ''; position: absolute; top:-5rem; left: -20px; bottom: -3rem; box-shadow: 0 0 50px #fff; width: $rare_width; background: #fff; box-shadow: 0 0 50px #fff;}
+	
+	.fit_medium_rare .fit_medium .breakbig > *,
+	.fit_medium_rare .fit_medium .breakbigger  > *{z-index: 2250; position: relative; }
+	.fit_medium_rare .fit_medium .breakbig:after,
+	.fit_medium_rare .fit_medium .breakbigger:after,
+	.fit_medium_rare .fit_medium .breakbig:before,
+	.fit_medium_rare .fit_medium .breakbigger:before{z-index: 2200; display: block; content: ''; position: absolute; top:-4rem; left: -20px; bottom: -4rem; box-shadow: 0 0 50px #fff; width: $rare_width; background: #fff; box-shadow: 0 40px 30px #fff;}
+	.fit_medium_rare .fit_medium .breakbig:before,
+	.fit_medium_rare .fit_medium .breakbigger:before{box-shadow: 0 -40px 30px #fff;}
 }
 
 
@@ -1778,7 +1812,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // big version
 
 @media (min-width: 992px) {
-	.fit_medium_rare{display: flex; align-items:stretch; max-width: $container_wide; position: relative; padding: 0; margin: 0 auto;}
+	.fit_medium_rare{display: flex; align-items:stretch; max-width: $container_wide; position: relative; padding: 0 0 0 .5rem; margin: 0 auto;}
 	.fit_medium_rare .fit_medium{margin: 0; padding: 0; max-width: none}
 	.fit_medium_rare .fit_rare{ flex: 0 0 $rare_width; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
 
@@ -1816,6 +1850,11 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_iconrow i.fa-file-image{color:$new_pink;}
 .fit_iconrow i.fa-file-chart-pie{color:$new_teal;}
 
+.fit_iconrow i.apricot{color:$new_apricot;}
+.fit_iconrow i.pink{color:$pink;}
+.fit_iconrow i.teal{color:$new_teal;}
+.fit_iconrow i.blue{color:$blue;}
+
 @media (min-width: 992px) {
 	.fit_iconrow {margin-top: 2rem; margin-bottom: 3rem;}
 }
@@ -1831,10 +1870,25 @@ $square_size: 22rem;
 .fit_partner_logos {margin: 3rem 0;}
 .fit_partner_logos:first-child{margin-top: 0;}
 .fit_partner_logos + .fit_partner_logos {margin-top: -1rem;}
-.fit_partner_logos img{max-height: 70px; margin-bottom: 1rem;}
+.fit_partner_logos img{max-height: 70px; margin:2rem 0 1rem; width: auto;}
 
 
 .fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
+
+// advisory:
+.fit_advisors{margin-top: 2.5rem;}
+.fit_advisor{display: block; margin:0 0 1.75rem; padding-left: 4rem; position: relative;}
+.fit_advisor .flag{display: block; position: absolute; top:.4rem; left: 0; width: 2.75rem; height: 2rem;}
+.fit_advisor small{display: block; color: $text_light;}
+
+
+// give the rows a bit more room in general
+.fit_medium > p + .row{margin-top: 2rem;}
+
+
+
+
+
 
 // ----------------------------------------------------------------------------------------------------------------
 // Login and sign up and whatnot
@@ -1849,7 +1903,7 @@ $square_size: 22rem;
 // fancy placeholders for inputs
 .form-control::placeholder{color: $text_lighter;}
 
-.fit_fancyplace{position: relative;margin-bottom: 1rem;}
+.fit_fancyplace{position: relative; margin-bottom: 1rem;}
 .fit_fancyplace label{position: absolute; top:0; left: 0; padding: .75rem 1rem; color:$text_lighter; cursor: text; transition: all .1s ease-in-out;}
 .fit_fancyplace .form-control{padding: .75rem 1rem; height: calc(2em + .75rem + 2px);}
 
@@ -2206,6 +2260,9 @@ html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; opacity: 1; c
 	.fit_player aside .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
 	.fit_player aside .fits{border-bottom: 1px solid $border_light;}
 }
+
+.fit_player.breezy aside .fits
+html.fit_dispref-breezy .fit_player aside .fits{}
 
 .fit_player.breezy aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
 .fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}

@@ -8,20 +8,18 @@ from flask import current_app, jsonify
 
 from dataforms import ReorderForm
 
+import hashlib
 
-ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "gif"]
-THUMBNAILS = {
-    "cover": {"name": "800x450", "size": (800, 450)},
-    "square_s": {"name": "128x128", "size": (128, 128)},
-    "square_m": {"name": "256x256", "size": (256, 256)},
-    "square_l": {"name": "512x512", "size": (512, 512)},
+
+ALLOWED_MIMETYPES = ["png", "jpg", "jpeg", "gif"]
+THUMBNAIL_SIZES = {
+    "cover": (800, 450),
+    "square_s": (128, 128),
+    "square_m": (256, 256),
+    "square_l": (512, 512),
 }
 
 CLOUD_FRONT_URL = "http://assets.alpha.new.fitzroyacademy.com/"
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1] in ALLOWED_EXTENSIONS
 
 
 def upload_file_to_s3(file, s3, bucket_name, filename=None):
@@ -42,17 +40,23 @@ def upload_file_to_s3(file, s3, bucket_name, filename=None):
 
 
 def generate_thumbnail(file, thumbnail_type):
-    if not file or not allowed_file(file.filename):
+
+    if not file:
+        return None
+
+    ext = file.content_type.split('/')[-1]
+    if ext not in ALLOWED_MIMETYPES:
         return ""
 
     now = datetime.now()
     im = Image.open(file)
-    im.thumbnail(THUMBNAILS[thumbnail_type]["size"])
+    im.thumbnail(THUMBNAIL_SIZES[thumbnail_type])
 
-    filename = "{}_thumb_{}.{}".format(
+    filename = "{}_{}_thumb_{}.{}".format(
         now.strftime("%Y-%m-%d-%H-%M-%S-%f"),
-        THUMBNAILS["cover"]["name"],
-        file.filename.rsplit(".", 1)[1],
+        hashlib.md5(file.read()).hexdigest(),
+        "x".join('{}'.format(n) for n in THUMBNAIL_SIZES[thumbnail_type]),
+        ext,
     )
 
     if current_app.config["DEBUG"] or current_app.config["TESTING"]:
