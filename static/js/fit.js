@@ -1001,10 +1001,89 @@ $( document ).ready(function() {
     $('#resource_description').val(mysave);
   });
 
+/* Image upload widget code. */
+
+  function handleImageUpload(t, blob) {
+    // We can convert to whatever ext we like, but preserving the original
+    // makes things look nicer.
+    var ext = ((blob.type || "").indexOf('/') !== -1) ?
+            blob.type.split('/').pop() : 'jpeg';
+    if (['jpeg', 'jpg', 'png', 'gif'].indexOf(ext) === -1) {
+      return false; // Some weird file, we don't want it, whatever.
+    }
+    var p = t.closest('[data-fit-image-uploader]');
+    p.classList.add('fit_upload_cropping');
+    var dropzone = p.querySelector('[data-fit-image-dropzone]');
+    dropzone.style.display = 'none';
+    var input = p.querySelector('[data-fit-image-input]');
+    var img = p.querySelector('img');
+    var oheight = p.offsetHeight;
+    p.style.maxHeight = `${oheight}px`;
+    var reader = new FileReader();
+    reader.onload = (e) => {
+      img.onload = () => {
+        var cropper = new Cropper(img, {
+          viewMode: 3,
+          aspectRatio: dropzone.offsetHeight / dropzone.offsetWidth,
+          dragMode: 'move'
+        });
+        function saveCroppedImage() {
+          cropper.getCroppedCanvas().toBlob((blob) => {
+            let formData = {};
+            let form = input.closest('form');
+            formData['file'] = blob;
+            formData[input.name] = `a:/b/c/d/e.f.${ext}`;
+            post(form.action, formData)
+          }, `image/${ext}`);
+        }
+        // Just here for debugging until we hook up a UI to this
+        // niche "saving" feature.
+        window.saveCroppedImage = saveCroppedImage;
+      }
+      img.src = e.target.result;
+    }
+    reader.readAsDataURL(blob);
+  }
+
+  delegate('[data-fit-image-dropzone]', 'click', (e, t) => {
+    e.preventDefault();
+    var p = t.closest('[data-fit-image-uploader]');
+    var input = p.querySelector('[data-fit-image-input]')
+    input.click();
+  });
+
+  delegate('[data-fit-image-dropzone]', 'dragenter', (e, t) => {
+    e.dataTransfer.setData("text", "somedata");
+    var p = t.closest('[data-fit-image-uploader]');
+    p.classList.add('fit_upload_dragging');
+  });
+
+  delegate('[data-fit-image-dropzone]', 'dragleave', (e, t) => {
+    var p = t.closest('[data-fit-image-uploader]');
+    p.classList.remove('fit_upload_dragging');
+  });
+
+  delegate('[data-fit-image-dropzone]', 'dragover', (e, t) => {
+    e.preventDefault();
+    var p = t.closest('[data-fit-image-uploader]');
+    p.classList.remove('fit_upload_dragging');
+  });
+
+  delegate('[data-fit-image-input]', 'change', (e, t) => {
+    handleImageUpload(t, t.files[0]);
+  })
+
+  delegate('[data-fit-image-dropzone]', 'drop', (e, t) => {
+    e.preventDefault();
+    var p = t.closest('[data-fit-image-uploader]');
+    p.classList.remove('fit_upload_dragging');
+    handleImageUpload(t, e.dataTransfer.files[0]);
+  });
+
   // Load the video dynamically when people hit back so the URLs in their
   // URL bar match up with what they're looking at.
   window.addEventListener('popstate', (event) => {
-    if (document.location.pathname.match(/^\/course\/\w+/)) {
+    if (document.location.pathname.match(/^\/course\/\w+\/?$/)) {
       loadSegment(event.state.segment_id);
     }
   });
