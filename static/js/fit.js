@@ -982,10 +982,11 @@ $( document ).ready(function() {
   });
 
   delegate('[data-fit-wysiwyg]', 'submit', (e,t) => {
-    let wysiwygId = t.dataset.fitWysiwygId;
-    let mysave = $(`[data-fit-wysiwyg-div-${wysiwygId}]`).html();
-    let testarea = $(`[data-textarea-wysiwyg-${wysiwygId}]`);
-    testarea.val(mysave);
+    let p = t.closest('[data-fit-wysiwyg]');
+    let preview = p.querySelector('[data-fit-wysiwyg-preview]');
+    let testarea = p.querySelector('[data-fit-wysiwyg-textarea]');
+    let mysave = preview.innerHTML;
+    testarea.value = mysave;
   });
 
   // Load the video dynamically when people hit back so the URLs in their

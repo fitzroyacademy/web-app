@@ -6,7 +6,7 @@
   <article>
 
     <div class="fit_course intro">
-    <form id="text-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/{{ content_type }}" method="POST" data-fit-wysiwyg data-fit-wysiwyg-id="text_segment">
+    <form id="text-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/{{ content_type }}" method="POST" data-fit-wysiwyg>
       <h1>
         <span class="txt">Text segment.</span>
         <small class="subtxt">
@@ -25,11 +25,11 @@
 
       <div class="fit_wysiwyg">
 
-          <div id="fit_wysiwyg_editor" data-fit-wysiwyg-div-text_segment>{% if segment %}{{ segment.text|safe }}{% endif %}</div>
+          <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if segment %}{{ segment.text|safe }}{% endif %}</div>
 
       </div>
 
-      <textarea id="text_segment_content" name="text_segment_content" style="display: none" data-textarea-wysiwyg-text_segment></textarea>
+      <textarea id="text_segment_content" name="text_segment_content" style="display: none" data-fit-wysiwyg-textarea></textarea>
 
       <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
       <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
