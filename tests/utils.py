@@ -25,7 +25,7 @@ def make_authorized_call(
 class ObjectsGenerator(object):
     @staticmethod
     def make_standard_course(
-        code="ABC123", guest_access=False, title="ABC 123", slug=None, draft=False
+        code="ABC123", guest_access=False, title="ABC 123", slug=None, draft=False, visibility="public", paid=False
     ):
         if slug is None:
             slug = slugify(title)
@@ -35,6 +35,8 @@ class ObjectsGenerator(object):
             slug=slug,
             guest_access=guest_access,
             draft=draft,
+            paid=paid,
+            visibility=visibility
         )
         return course
 

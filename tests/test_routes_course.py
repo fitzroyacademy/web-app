@@ -322,7 +322,7 @@ class TestCourseRoutes(unittest.TestCase):
         )
 
         # proper amount
-        self.assertIsNone(course.amount)
+        self.assertEqual(course.amount, 0)
         make_authorized_call(
             url="/course/fancy_slug/edit",
             user=user,
