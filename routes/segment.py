@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, abort
 from slugify import slugify
 
 import datamodels
@@ -197,7 +197,7 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id):
 
     if not lesson or segment and segment.lesson_id != lesson.id:
         flash("Lesson or segment do not match course or lesson")
-        return render_template("/course/{}/edit".format(course.slug), course=course)
+        return redirect("/course/{}/edit".format(course.slug))
 
     segment_copy = clone_model(segment)
     segment_copy.title = segment.title + "_copy"
@@ -222,19 +222,19 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id):
 
 
 @blueprint.route("<course_slug>/<lesson_slug>/<segment_slug>")
-def view(course_slug, lesson_slug=None, segment_slug=None):
+def view(course_slug, lesson_slug, segment_slug):
     """
     Retrieves and displays a particular course, with the specified lesson
     and segment set to be active.
     """
-    if lesson_slug is None:
-        course = datamodels.get_course_by_slug(course_slug)
-        lesson = course.lessons[0]
-        segment = lesson.segments[0]
-    else:
-        segment = datamodels.get_segment_by_slug(course_slug, lesson_slug, segment_slug)
-        lesson = segment.lesson
-        course = lesson.course
+
+    segment = datamodels.get_segment_by_slug(course_slug, lesson_slug, segment_slug)
+    if not segment:
+        return abort(404)
+
+    course = datamodels.get_course_by_slug(course_slug)
+    lesson = datamodels.Lesson.find_by_slug(course_slug, lesson_slug)
+
     data = {
         "students": stubs.student_completion,
         "active_lesson": lesson,
