@@ -13,24 +13,26 @@
     		</a>
     		<span class="fit_txt">{{ current_user.full_name }}.</span>
     	</h1> 
-    		{% include 'partials/form/_errors.html' %}
+
+    	{% include 'partials/form/_errors.html' %}
+
 			<div class="fit_pane">
 			  <dl class="fit_summary_icons">
 			    <dt><i class="far fa-user"></i> About you.</dt>
 			    <dd>
 			      <form class="fit_user_edit" method="post" action="/edit">
-                      {{ form.csrf_token }}
+            	{{ form.csrf_token }}
 							<div class="row">
 			          <div class="col">
 			            <div class="fit_fancyplace">
 			              <label for="firstname">Given name</label>
-			              <input type="text" id="firstname" name="first_name" class="form-control" value="{{ current_user.first_name }}" placeholder="Given name" required data-fit-fancyplace data-fit-slug-first>
+			              <input type="text" id="firstname" name="first_name" class="form-control" value="{{ current_user.first_name }}" placeholder="Given name" required data-fit-fancyplace data-fit-slug-name data-fit-slug-first>
 			            </div>
 			          </div>
 			          <div class="col">
 			            <div class="fit_fancyplace">
 			              <label for="lastname">Last name</label>
-			              <input type="text" id="lastname" name="last_name" class="form-control" value="{{ current_user.last_name }}" placeholder="Last name" required data-fit-fancyplace data-fit-slug-last>
+			              <input type="text" id="lastname" name="last_name" class="form-control" value="{{ current_user.last_name }}" placeholder="Last name" required data-fit-fancyplace data-fit-slug-name data-fit-slug-last>
 			            </div>
 			          </div>
 			        </div>
@@ -64,7 +66,7 @@
 								  </div>
 								  <input type="text" id="username" class="form-control" maxlength="20" name="username" value="{{ current_user.username }}" placeholder="username" aria-label="username" aria-describedby="user_at" data-fit-slug-set>
 								</div>
-								<small id="emailHelp" class="form-text text-muted">Your personal link will be: <a href="/user/{{ current_user.username }}">fitzroyacademy.com/user/<strong data-fit-slug-reveal>{{ current_user.username }}</strong></a></small>
+								<small id="sluglink" class="form-text text-muted">Your personal link will be: <span class="fit_sluglabel">fitzroyacademy.com/user/<strong data-fit-slug-reveal>{{ current_user.username }}</strong></span></small>
 								<input type="hidden" value="{{ current_user.username }}" id="secretslug" name="secretslug" data-fit-slug-reveal-secret> <!-- DEV: store this input as username, it strips off weird characters -->
 							</div>
 

@@ -228,7 +228,7 @@ $( document ).ready(function() {
   var slug_ugly = '';
   var slug_pretty = '';
   var slug_userset = false;
-  var slug_maxlength = 15;
+  var slug_maxlength = 20;
   var slug_url = '';
 
   // slugification

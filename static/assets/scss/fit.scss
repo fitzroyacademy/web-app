@@ -206,6 +206,11 @@ header{height: $header_height; background: #fff; position: fixed; top:0; left: 0
 
 header .container{display: flex; position: relative;}
 
+
+@media (min-width: 70rem) {
+	header .container{padding: 0;}
+}
+
 header .fit_link:hover,
 .fit_sidepanel .panel .head .fit_link:hover{background: none;}
 
@@ -1919,10 +1924,10 @@ $square_size: 22rem;
 .fit_fancyplace.active.labelled label{color:$text;}
 
 // transparent the placeholder
-.fit_fancyplace .form-control::-webkit-input-placeholder { color:transparent; }
-.fit_fancyplace .form-control:-moz-placeholder { color:transparent; } /* FF 4-18 */
-.fit_fancyplace .form-control::-moz-placeholder { color:transparent; } /* FF 19+ */
-.fit_fancyplace .form-control:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+.fit_fancyplace .form-control::-webkit-input-placeholder { color:transparent; text-transform: none;}
+.fit_fancyplace .form-control:-moz-placeholder { color:transparent;  text-transform: none;} /* FF 4-18 */
+.fit_fancyplace .form-control::-moz-placeholder { color:transparent;  text-transform: none;} /* FF 19+ */
+.fit_fancyplace .form-control:-ms-input-placeholder { color:transparent;  text-transform: none;} /* IE 10+ */
 
 // when active
 .fit_fancyplace.active .form-control:empty::-webkit-input-placeholder { color:$text_light; }
@@ -1955,7 +1960,7 @@ $fit_code_width: 25rem;
 // on its own
 body > .fit_code {margin-top:10rem;}
 
-.fit_form_code{position: relative; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl;}
+.fit_form_code{position: relative; background: $watermelon; padding: 1.75rem; border-radius: $border_rad_xl; max-width: $fit_code_width;}
 .fit_form_code .form-group{position: relative;}
 
 .fit_form_code .form-control{border:3px solid $watermelon_dark; height: 2em; -webkit-appearance: none;}
@@ -2056,7 +2061,7 @@ body > .fit_code {margin-top:10rem;}
 .fit_form_code_head .form-control:focus{padding:0.25rem 0.75rem; width: 4rem; transition: all .1s ease-in-out; -webkit-appearance: none; text-transform: uppercase;}
 
 .fit_form_code_head .form-control::placeholder,
-.fit_form_code_head .form-control:focus::placeholder{text-transform: none;}
+.fit_form_code_head .form-control:focus::placeholder{text-transform: none !important;}
 
 
 .fit_form_code_head .input-group-append{ width: 2.5rem;}
@@ -2134,7 +2139,7 @@ html.fit_search_header_active .fit_search_header{display: flex;}
 
 // footer navs
 
-footer{padding: 3rem 0 5rem; position: relative;}
+footer{padding: 5rem 0 7rem; position: relative;}
 
 .fit_footer_nav a{font-size:0.95rem; color: $text_light; border-bottom: 3px solid transparent; text-decoration: none; font-weight: 400; display: table; padding: 0.1rem 0; margin: 0 0 0.25rem;}
 
@@ -2163,9 +2168,9 @@ footer .fit_device svg > path{fill: $watermelon;}
 // ------------------------------------------------------------------------------------
 // DEBUG the BUG, squish squish
 
-.fit_debug{position: fixed; bottom: 2rem; right:2rem; right: 2rem; background: #fff; padding: 0; box-sizing:border-box; width: 6rem; height: 6rem; opacity: 0.25; overflow: hidden; transition: all .1s ease-in-out;}
+.fit_debug{position: fixed; bottom: 2rem; right:2rem; right: 2rem; background: #fff; padding: 0; box-sizing:border-box; width: 4rem; height: 4rem; opacity: 0.25; overflow: hidden; transition: all .1s ease-in-out;}
 
-.fit_debug .clicky{font-size: 2rem; position: absolute; top: 0; right:0; color: $blue; background: #fff; display: flex; width: 6rem; height: 6rem; align-items: center; justify-content: center;}
+.fit_debug .clicky{font-size: 2rem; position: absolute; top: 0; right:0; color: $blue; background: #fff; display: flex; width: 4rem; height: 4rem; align-items: center; justify-content: center;}
 .fit_debug .clicky:hover{background: $blue !important; color: #fff !important;}
 
 .fit_debug:hover{opacity: 1;}
@@ -2173,7 +2178,7 @@ footer .fit_device svg > path{fill: $watermelon;}
 html.fit_debug_on .fit_debug{height: 50%; left: 2rem; width: auto; padding: 2rem 6rem 1rem 2rem; opacity: 1;}
 html .fit_debug ul{width: 100%; height: 100%; overflow: none; overflow-y: scroll; }
 
-html.fit_debug_on .fit_debug .clicky{width: 4rem; height: 4rem; background: $bg; cursor: s-resize;}
+html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 
 
 .fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 5px 0 100px; border:2px solid $border_medium; position: relative;}
@@ -2305,7 +2310,7 @@ html.fit_dispref-breezy .fit_player aside .fits{}
 html.course footer{display: none;}
 
 
-main.fit_player.breezy{position: relative; max-width: 1200px; top:auto; left: auto; bottom: auto; padding: 0;}
+main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto; left: auto; bottom: auto; padding: 0;}
 .fit_player.breezy nav{display: none;}
 
 @media (max-width: 575px) {
