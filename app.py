@@ -123,7 +123,7 @@ def get_vars(c):
     if app.debug != True:
         return ""
     methods = []
-    methods['endpoint'] = request.endpoint
+    methods.append({'name': 'endpont', 'dump': request.endpoint})
     for k, v in c.items():
         if callable(v):
             continue
