@@ -40,6 +40,8 @@
         
         {%  if cover_image %}
           <img class="placeholder" src="{{ cover_image }}" alt="video">
+        {% else %}
+          <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
         {% endif %}
 
         <a class="fit_vidya_play" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
