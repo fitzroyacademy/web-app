@@ -50,10 +50,6 @@
 {% include 'partials/modal/_text.html' %}
 {% include 'partials/modal/_delete.html' %}
 
-<!-- adding things -->
-{% include 'partials/modal/_add_lesson_fitz.html' %}
-{% include 'partials/modal/_add_intro.html' %}
-
 
 <!-- Other fool's JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -77,9 +73,8 @@
 {% block CSRFtoken %}{% endblock %}
 <script src="/js/fit.js"></script>
 
-<div id="debugTemplates" class="fit_debug" data-fit_debug>
-  {% include 'partials/_debug_template_vars.html' %}
-</div>
+
+{% include 'partials/_debug_template_vars.html' %}
 
 </body>
 </html>

@@ -12,7 +12,6 @@
       
       <p><span>Curated by <strong> {{ course.instructors|join_names }}</strong>.</span></p>
       
-
       <div class="fit_vidya">
         <!-- DEV: 16:9 image uploaded in edit view -->
         <img class="placeholder" src="{{ course.thumbnail }}" alt="video"> 
@@ -28,7 +27,7 @@
           </div>
           <div class="col-sm-4">
             <i class="fal big fa-file-alt blue"></i>
-            <h4>18+ resources.</h4>
+            <h4>18+ resources.</h4> <!-- DEV: Needs total resources in lesson -->
             <p>Purpose-built templates and links that you can use forever.</p>
           </div>
           <div class="col-sm-4">
@@ -53,7 +52,7 @@
                 <dd>{{ course.target_audience }}</dd>
               {% endif %}
               <dt><i class="far fa-clock"></i> Course length &amp; workload:</dt>
-              <dd>{{ course.lessons|length }}</dd>
+              <dd>{{ course.workload_summary|default("") }}</dd>
               <dt><i class="far fa-tag"></i> Cost:</dt>
               <dd>Free forever!</dd> <!-- DEV: select from (free | paid | funded) -->
               {% if course.skill_level %}
@@ -95,55 +94,53 @@
 
     </div>  
 
-    <!-- DEV: this version is for a free-access course with no code/etc -->
+  {% if not course.guest_access and not current_user %}
+    <div class="fit_cta">
+      <div class="fit_course">
+        <h3>Ready to begin?</h3>
+        <a href="#" data-fit-userpanel class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-user"></i> Create an account</a>
+        <p class="fit_cta_tnc">You need to make a free account to continue.</p>
+      </div>
+    </div>
+  {% elif not course.paid and course.visibility == "public" %}
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
         <form method="post" action="/enroll/{{ course.slug }}">
           <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course
           </button>
-          <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+          <p class="fit_cta_tnc">This course is <a href="/product/pricing">completely free</a> forever!</p>
         </form>
       </div>
     </div>
-
-
-{#
-    
-    <!-- DEV: this version is for a course that requires login, but user isn't logged in -->
+  {% elif not course.paid and course.visibility == "code" %}
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
-        <a href="#DEV" data-fit-userpanel class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-user"></i> Create an account</a>
-        <p class="fit_cta_tnc">You need to make a free account to continue.</p>
-      </div>
-    </div>   
-
-    <!-- DEV: wheras, this version is for courses locked by a code -->
-    <div class="fit_cta">
-      <div class="fit_course">
-        <h3>Ready to begin?</h3>
-        <form class="fit_form_code fit_fancyplace fit_wiggle_daddy" method="post" action="#">
+        <form class="fit_form_code fit_fancyplace fit_wiggle_daddy" method="post" action="/enroll/{{ course.slug }}">
           <div class="form-group">
             <input type="text" class="form-control" name="course_code" id="course_code" placeholder="Course code" required data-fit-fancyplace>
             <label for="course_code">Course code</label>
             <button type="submit" class="btn btn-text fit_wiggle"><i class="fas fa-rocket"></i></button>
           </div>
         </form>
-        <p class="fit_cta_tnc">This course is <a href="#">completely free</a> forever!</p>
+        <p class="fit_cta_tnc">This course is <a href="/product/pricing">completely free</a> forever!</p>
       </div>
     </div>
+  {% endif %}
 
-    <!-- DEV: this version is for a course that requires explicit user invites from the teacher -->
-    <div class="fit_cta">
-      <div class="fit_course">
-        <h3>Ready to begin?</h3>
-        <a href="#" class="btn btn-light btn-hg btn-drop" disabled role="button"><i class="fas fa-lock"></i> Requires invite</a>
-        <p class="fit_cta_tnc">You need to be invited by <strong>teacher.name</strong> to join this course.</p>
+  {#
+
+      <!-- DEV: this version is for a course that requires explicit user invites from the teacher. Not used yet! -->
+      <div class="fit_cta">
+        <div class="fit_course">
+          <h3>Ready to begin?</h3>
+          <a href="#" class="btn btn-light btn-hg btn-drop" disabled role="button"><i class="fas fa-lock"></i> Requires invite</a>
+          <p class="fit_cta_tnc">You need to be invited by <strong>teacher.name</strong> to join this course.</p>
+        </div>
       </div>
-    </div>
-    
-#}
+      
+  #}
 
   </article>
 

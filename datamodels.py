@@ -15,6 +15,7 @@ from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum
 
 Base = declarative_base()
 
+
 def dump(obj, seen=None):
     if not isinstance(obj, Base):
         if isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], Base):
@@ -28,7 +29,7 @@ def dump(obj, seen=None):
     seen.append(id(obj))
     ignored = ["metadata"]
     fields = {}
-    for f in [x for x in dir(obj) if x.startswith('_') is False and x not in ignored]:
+    for f in [x for x in dir(obj) if x.startswith("_") is False and x not in ignored]:
         data = getattr(obj, f)
         try:
             json.dumps(data)
@@ -39,8 +40,8 @@ def dump(obj, seen=None):
                     fields[f] = None
                 else:
                     fields[f] = dump(data, seen)
-            elif callable(data) and f.startswith('get_'):
-                    fields[f[4:]] = dump(data(), seen)
+            elif callable(data) and f.startswith("get_"):
+                fields[f[4:]] = dump(data(), seen)
             elif isinstance(data, list):
                 fields[f] = []
                 for o in data:
@@ -51,7 +52,24 @@ def dump(obj, seen=None):
     return fields
 
 
-class OrderedBase(Base):
+class BaseModel(Base):
+    __abstract__ = True
+
+    @classmethod
+    def find_by_id(cls, obj_id):
+        session = get_session()
+        return session.query(cls).filter(cls.id == obj_id).first()
+
+    @classmethod
+    def find_by_slug(cls, slug):
+        session = get_session()
+        if hasattr(cls, "slug"):
+            return session.query(cls).filter(cls.slug == slug).first()
+        else:
+            raise AttributeError("Object do not has attribute slug")
+
+
+class OrderedBase(BaseModel):
     __abstract__ = True
 
     order = sa.Column(sa.Integer)
@@ -64,13 +82,17 @@ class OrderedBase(Base):
     @classmethod
     def ordered_items_for_parent(cls, parent, key):
         session = get_session()
-        return session.query(cls).filter(getattr(cls, key)==parent.id).order_by(cls.order)
+        return (
+            session.query(cls)
+            .filter(getattr(cls, key) == parent.id)
+            .order_by(cls.order)
+        )
 
     @classmethod
     def reorder_items(cls, items_order):
         lessons_mapping = [
             {"id": items_order[i], "order": i + 1} for i in range(len(items_order))
-            ]
+        ]
         db = get_session()
         db.bulk_update_mappings(cls, lessons_mapping)
         db.commit()
@@ -82,14 +104,18 @@ class OrderedBase(Base):
             session.delete(instance)
             session.commit()
 
-            list_of_items = [l.id for l in session.query(cls).filter(getattr(cls, key)==parent.id).order_by(cls.order)]
+            list_of_items = [
+                l.id
+                for l in session.query(cls)
+                .filter(getattr(cls, key) == parent.id)
+                .order_by(cls.order)
+            ]
             if list_of_items:
                 cls.reorder_items(list_of_items)
 
-class User(Base):
 
-    __tablename__ = 'users'
-
+class User(BaseModel):
+    __tablename__ = "users"
 
     id = sa.Column(sa.Integer, primary_key=True)
     username = sa.Column(sa.String(50), unique=True)
@@ -109,7 +135,7 @@ class User(Base):
 
     @hybrid_property
     def password(self):
-        return ''
+        return ""
 
     @password.setter
     def password(self, password):
@@ -137,7 +163,7 @@ class User(Base):
         total = 0
         for course in courses:
             total = total + course.user_progress(self)
-        return int(total/len(courses))
+        return int(total / len(courses))
 
     def set_preference(self, tag, boolean):
         UserPreference.set_preference(self, tag, boolean)
@@ -161,30 +187,25 @@ class User(Base):
         return False
 
     @staticmethod
-    def find_by_id(user_id):
-        session = get_session()
-        return session.query(User).filter(User.id == user_id).first()
-
-    @staticmethod
     def find_by_email(email):
         session = get_session()
         return session.query(User).filter(User.email == email).first()
 
 
 PreferenceTags = [
-    'emails_from_teachers',
-    'emails_from_site',
-    'data_research',
-    'data_show_name',
-    'data_show_email'
+    "emails_from_teachers",
+    "emails_from_site",
+    "data_research",
+    "data_show_name",
+    "data_show_email",
 ]
 
-class UserPreference(Base):
 
-    __tablename__ = 'users_preferences'
+class UserPreference(BaseModel):
+    __tablename__ = "users_preferences"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    user_id = sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id'))
+    user_id = sa.Column("user_id", sa.Integer, sa.ForeignKey("users.id"))
     # Corresponds to PreferenceTags list for now.
     preference = sa.Column(sa.Integer)
     toggled = sa.Column(sa.Boolean)
@@ -195,10 +216,12 @@ class UserPreference(Base):
             raise Exception("Preference Unknown: {}".format(preference_tag))
         i = PreferenceTags.index(preference_tag)
         session = get_session()
-        return session.query(UserPreference).\
-            filter(UserPreference.user_id == user.id).\
-            filter(UserPreference.preference == i).\
-            first()
+        return (
+            session.query(UserPreference)
+            .filter(UserPreference.user_id == user.id)
+            .filter(UserPreference.preference == i)
+            .first()
+        )
 
     @staticmethod
     def set_preference(user, preference_tag, boolean):
@@ -206,14 +229,14 @@ class UserPreference(Base):
         if pref is None:
             i = PreferenceTags.index(preference_tag)
             session = get_session()
-            pref = UserPreference(user_id = user.id, preference=i, toggled=boolean)
+            pref = UserPreference(user_id=user.id, preference=i, toggled=boolean)
         pref.boolean = boolean
         session.add(pref)
         session.commit()
 
-class Institute(Base):
 
-    __tablename__ = 'institutes'
+class Institute(BaseModel):
+    __tablename__ = "institutes"
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String)
@@ -228,27 +251,21 @@ class Institute(Base):
         association.user = user
         self.users.append(association)
 
-    @staticmethod
-    def find_by_slug(slug):
-        session = get_session()
-        return session.query(Institute).filter(Institute.slug == slug).first()
 
-
-class InstituteEnrollment(Base):
-    __tablename__ = 'users_institutes'
+class InstituteEnrollment(BaseModel):
+    __tablename__ = "users_institutes"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    user_id = sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id'))
-    institute_id = sa.Column('institute_id', sa.Integer, sa.ForeignKey('institutes.id'))
-    access_level = sa.Column('access_level', sa.Integer)
+    user_id = sa.Column("user_id", sa.Integer, sa.ForeignKey("users.id"))
+    institute_id = sa.Column("institute_id", sa.Integer, sa.ForeignKey("institutes.id"))
+    access_level = sa.Column("access_level", sa.Integer)
 
     user = orm.relationship("User", back_populates="institutes")
     institute = orm.relationship("Institute", back_populates="users")
 
 
-class Program(Base):
-
-    __tablename__ = 'programs'
+class Program(BaseModel):
+    __tablename__ = "programs"
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String)
@@ -263,17 +280,12 @@ class Program(Base):
         association.user = user
         self.users.append(association)
 
-    @classmethod
-    def find_by_slug(cls, slug):
-        session = get_session()
-        return session.query(cls).filter(cls.slug == slug).first()
 
+class ProgramEnrollment(BaseModel):
+    __tablename__ = "users_programs"
 
-class ProgramEnrollment(Base):
-    __tablename__ = 'users_programs'
-
-    user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'), primary_key=True)
-    program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'), primary_key=True)
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), primary_key=True)
+    program_id = sa.Column(sa.Integer, sa.ForeignKey("programs.id"), primary_key=True)
     access_level = sa.Column(sa.Integer)
 
     user = orm.relationship("User", back_populates="programs")
@@ -284,9 +296,9 @@ COURSE_ACCESS_STUDENT = 1
 COURSE_ACCESS_TEACHER = 2
 COURSE_ACCESS_ADMIN = 3
 
-class Course(Base):
 
-    __tablename__ = 'courses'
+class Course(BaseModel):
+    __tablename__ = "courses"
 
     id = sa.Column(sa.Integer, primary_key=True)
     title = sa.Column(sa.String)
@@ -295,25 +307,25 @@ class Course(Base):
     order = sa.Column(sa.Integer)
     year = sa.Column(sa.Date)
     course_code = sa.Column(sa.String(16), unique=True)
-    paid = sa.Column(sa.Boolean)
-    amount = sa.Column(sa.Integer)
-    guest_access = sa.Column(sa.Boolean)
-    language = sa.Column(sa.String(2))
+    paid = sa.Column(sa.Boolean, default=False)
+    amount = sa.Column(sa.Integer, default=0)
+    guest_access = sa.Column(sa.Boolean, default=True)
+    language = sa.Column(sa.String(2), default="EN")
     slug = sa.Column(sa.String(50), unique=True)
     draft = sa.Column(sa.Boolean, default=True)
 
-    target_audience = sa.Column(sa.String())
-    skill_level = sa.Column(sa.String())
+    target_audience = sa.Column(sa.String(), default="")
+    skill_level = sa.Column(sa.String(), default="")
     info = sa.Column(sa.String)
 
     visibility = sa.Column(sa.String(16), default="public")
 
     summary_html = sa.Column(sa.String())
-    workload_summary = sa.Column(sa.String())
-    workload_title = sa.Column(sa.String())
-    workload_subtitle = sa.Column(sa.String())
+    workload_summary = sa.Column(sa.String(), default="")
+    workload_title = sa.Column(sa.String(), default="")
+    workload_subtitle = sa.Column(sa.String(), default="")
 
-    program_id = sa.Column(sa.Integer, sa.ForeignKey('programs.id'))
+    program_id = sa.Column(sa.Integer, sa.ForeignKey("programs.id"))
     program = orm.relationship("Program", back_populates="courses")
 
     lessons = orm.relationship("Lesson", back_populates="course")
@@ -324,6 +336,17 @@ class Course(Base):
     preview_thumbnail = sa.Column(sa.String)
 
     _lessons_queryset = None
+
+    @classmethod
+    def list_public_courses(cls):
+        session = get_session()
+        return (
+            session.query(cls)
+            .filter(
+                cls.guest_access == True, cls.visibility == "public", cls.draft == False
+            )
+            .all()
+        )
 
     def get_ordered_lessons(self):
         return Lesson.get_ordered_items().filter(Lesson.course_id == self.id)
@@ -347,7 +370,10 @@ class Course(Base):
         self.add_user(user, COURSE_ACCESS_TEACHER)
 
     def options(self, option):
-        return getattr(self,  option, False)
+        return getattr(self, option, False)
+
+    def is_student(self, user_id):
+        return CourseEnrollment.find_by_course_and_student(self.id, user_id) is not None
 
     @property
     def lessons_queryset(self):
@@ -373,7 +399,7 @@ class Course(Base):
 
     @property
     def permalink(self):
-        return url_for('course.view', slug=self.slug)
+        return url_for("course.view", slug=self.slug)
 
     @property
     def thumbnail(self):
@@ -401,14 +427,14 @@ class Course(Base):
         for ass in associations:
             users.append(ass.user)
         return users
-    
+
     def user_progress(self, user):
         if len(self.lessons) is 0:
             return 100
         total = 0
         for lesson in self.lessons:
             total = total + lesson.user_progress_percent(user)
-        return int(total/len(self.lessons))
+        return int(total / len(self.lessons))
 
     def class_progress(self):
         pass
@@ -417,17 +443,13 @@ class Course(Base):
         """ Adds a user to a course with student-level access. """
         if get_enrollment(self.id, student.id) is None:
             enrollment = CourseEnrollment(
-                course_id=self.id, user_id=student.id,
-                access_level=COURSE_ACCESS_STUDENT
+                course_id=self.id,
+                user_id=student.id,
+                access_level=COURSE_ACCESS_STUDENT,
             )
             s = get_session()
             s.add(enrollment)
             s.commit()
-
-    @staticmethod
-    def find_by_slug(slug):
-        session = get_session()
-        return session.query(Course).filter(Course.slug == slug).first()
 
     @staticmethod
     def find_by_code(code):
@@ -436,73 +458,85 @@ class Course(Base):
 
 
 class CourseTranslation(Base):
-
-    __tablename__ = 'courses_translated'
+    __tablename__ = "courses_translated"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
+    course_id = sa.Column(sa.Integer, sa.ForeignKey("courses.id"))
     title = sa.Column(sa.String)
     language = sa.Column(sa.String(2))
 
     course = orm.relationship("Course", back_populates="translations")
 
 
-lesson_user_enrollment_association_table = sa.Table('_lesson_user_enrollment', Base.metadata,
-    sa.Column('users_courses_id', sa.Integer, sa.ForeignKey('users_courses.id')),
-    sa.Column('lessons_id', sa.Integer, sa.ForeignKey('lessons.id'))
+lesson_user_enrollment_association_table = sa.Table(
+    "_lesson_user_enrollment",
+    Base.metadata,
+    sa.Column("users_courses_id", sa.Integer, sa.ForeignKey("users_courses.id")),
+    sa.Column("lessons_id", sa.Integer, sa.ForeignKey("lessons.id")),
 )
 
 
-class CourseEnrollment(Base):
-    __tablename__ = 'users_courses'
-    __table_args__ = (sa.UniqueConstraint('course_id', 'user_id', name='_course_user_enrollment'),)
+class CourseEnrollment(BaseModel):
+    __tablename__ = "users_courses"
+    __table_args__ = (
+        sa.UniqueConstraint("course_id", "user_id", name="_course_user_enrollment"),
+    )
 
     id = sa.Column(sa.Integer, primary_key=True)
-    user_id = sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id'))
-    course_id = sa.Column('course_id', sa.Integer, sa.ForeignKey('courses.id'))
-    access_level = sa.Column('access_level', sa.Integer)
+    user_id = sa.Column("user_id", sa.Integer, sa.ForeignKey("users.id"))
+    course_id = sa.Column("course_id", sa.Integer, sa.ForeignKey("courses.id"))
+    access_level = sa.Column("access_level", sa.Integer)
 
     user = orm.relationship("User", back_populates="course_enrollments")
     course = orm.relationship("Course", back_populates="users")
-    lessons = orm.relationship("Lesson", secondary=lesson_user_enrollment_association_table, back_populates="teachers")
+    lessons = orm.relationship(
+        "Lesson",
+        secondary=lesson_user_enrollment_association_table,
+        back_populates="teachers",
+    )
 
     @staticmethod
     def find_by_course_and_student(course_id, student_id):
         session = get_session()
-        return session.query(CourseEnrollment).filter(
-            CourseEnrollment.course_id == course_id)\
-        .filter(
-            CourseEnrollment.user_id == student_id
-        ).first()
+        return (
+            session.query(CourseEnrollment)
+            .filter(CourseEnrollment.course_id == course_id)
+            .filter(CourseEnrollment.user_id == student_id)
+            .first()
+        )
 
     @staticmethod
     def find_students_for_course(course_id):
         session = get_session()
-        return session.query(CourseEnrollment).filter(
-            CourseEnrollment.course_id == course_id)\
-        .filter(
-            CourseEnrollment.access_level == COURSE_ACCESS_STUDENT
-        ).all()
+        return (
+            session.query(CourseEnrollment)
+            .filter(CourseEnrollment.course_id == course_id)
+            .filter(CourseEnrollment.access_level == COURSE_ACCESS_STUDENT)
+            .all()
+        )
 
     @staticmethod
     def find_teachers_for_course(course_id):
         session = get_session()
-        return session.query(CourseEnrollment).filter(
-            CourseEnrollment.course_id == course_id)\
-        .filter(
-            CourseEnrollment.access_level == COURSE_ACCESS_TEACHER
-        ).all()
+        return (
+            session.query(CourseEnrollment)
+            .filter(CourseEnrollment.course_id == course_id)
+            .filter(CourseEnrollment.access_level == COURSE_ACCESS_TEACHER)
+            .all()
+        )
 
     @staticmethod
     def find_by_user(user_id):
         session = get_session()
-        return session.query(CourseEnrollment).filter(
-            CourseEnrollment.user_id == user_id
-        ).all()
+        return (
+            session.query(CourseEnrollment)
+            .filter(CourseEnrollment.user_id == user_id)
+            .all()
+        )
+
 
 class Lesson(OrderedBase):
-
-    __tablename__ = 'lessons'
+    __tablename__ = "lessons"
 
     id = sa.Column(sa.Integer, primary_key=True)
     title = sa.Column(sa.String)
@@ -513,21 +547,23 @@ class Lesson(OrderedBase):
     description = sa.Column(sa.String(140))
     further_reading = sa.Column(sa.String)
 
-    course_id = sa.Column(sa.Integer, sa.ForeignKey('courses.id'))
+    course_id = sa.Column(sa.Integer, sa.ForeignKey("courses.id"))
     course = orm.relationship("Course", back_populates="lessons")
 
     segments = orm.relationship("Segment", back_populates="lesson")
     resources = orm.relationship("Resource", back_populates="lesson")
     questions = orm.relationship("LessonQA", back_populates="lesson")
-    teachers = orm.relationship("CourseEnrollment",
-                                secondary=lesson_user_enrollment_association_table,
-                                back_populates="lessons")
+    teachers = orm.relationship(
+        "CourseEnrollment",
+        secondary=lesson_user_enrollment_association_table,
+        back_populates="lessons",
+    )
 
     translations = orm.relationship("LessonTranslation", back_populates="lesson")
 
     _segments_queryset = None
 
-    @orm.validates('slug')
+    @orm.validates("slug")
     def validate_slug(self, key, value):
         """ TODO: Check the parent course for any duplicate lesson slugs """
         return value
@@ -536,7 +572,9 @@ class Lesson(OrderedBase):
     def segments_queryset(self):
         if not self._segments_queryset:
             session = get_session()
-            self._segments_queryset = session.query(Segment).filter_by(lesson_id=self.id)
+            self._segments_queryset = session.query(Segment).filter_by(
+                lesson_id=self.id
+            )
         return self._segments_queryset
 
     @property
@@ -550,14 +588,16 @@ class Lesson(OrderedBase):
     @property
     def ordered_resources(self):
         session = get_session()
-        return session.query(Resource).filter_by(lesson_id=self.id).order_by(Resource.order)
+        return (
+            session.query(Resource)
+            .filter_by(lesson_id=self.id)
+            .order_by(Resource.order)
+        )
 
     @property
     def permalink(self):
         return url_for(
-            'lesson.view',
-            course_slug=self.course.slug,
-            lesson_slug=self.slug
+            "lesson.view", course_slug=self.course.slug, lesson_slug=self.slug
         )
 
     @property
@@ -566,7 +606,7 @@ class Lesson(OrderedBase):
             return self.cover_image
         elif self.segments:
             return self.segments[0].thumbnail
-        return ''
+        return ""
 
     @property
     def duration_seconds(self):
@@ -588,7 +628,7 @@ class Lesson(OrderedBase):
         total = 0
         for segment in self.segments:
             total = total + segment.user_progress(user)
-        return int(total/len(self.segments))
+        return int(total / len(self.segments))
 
     def user_progress_list(self, user):
         output = []
@@ -599,24 +639,21 @@ class Lesson(OrderedBase):
     @property
     def get_cover(self):
         if self.cover_image:
-            if self.cover_image.startswith('http'):
+            if self.cover_image.startswith("http"):
                 return self.cover_image
             else:
                 return "/uploads/{}".format(self.cover_image)
-        return ''
-
-    @staticmethod
-    def find_by_id(lesson_id):
-        session = get_session()
-        return session.query(Lesson).filter(Lesson.id == lesson_id).first()
+        return ""
 
     @staticmethod
     def find_by_slug(course_slug, lesson_slug):
         session = get_session()
-        q = session.query(Lesson).\
-            join(Lesson.course).\
-            filter(Course.slug == course_slug).\
-            filter(Lesson.slug == lesson_slug)
+        q = (
+            session.query(Lesson)
+            .join(Lesson.course)
+            .filter(Course.slug == course_slug)
+            .filter(Lesson.slug == lesson_slug)
+        )
         try:
             return q.first()
         except:
@@ -625,17 +662,21 @@ class Lesson(OrderedBase):
     @staticmethod
     def find_by_course_slug_and_id(course_slug, lesson_id):
         session = get_session()
-        q = session.query(Lesson). \
-            join(Lesson.course). \
-            filter(Course.slug == course_slug). \
-            filter(Lesson.id == lesson_id)
+        q = (
+            session.query(Lesson)
+            .join(Lesson.course)
+            .filter(Course.slug == course_slug)
+            .filter(Lesson.id == lesson_id)
+        )
         try:
             return q.first()
         except:
             return None
 
     def remove_teacher(self, user_id):
-        enrollment = CourseEnrollment.find_by_course_and_student(self.course_id, user_id)
+        enrollment = CourseEnrollment.find_by_course_and_student(
+            self.course_id, user_id
+        )
         if enrollment:
             self.teachers.remove(enrollment)
             return True
@@ -643,11 +684,10 @@ class Lesson(OrderedBase):
 
 
 class LessonTranslation(Base):
-
-    __tablename__ = 'lessons_translated'
+    __tablename__ = "lessons_translated"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
+    lesson_id = sa.Column(sa.Integer, sa.ForeignKey("lessons.id"))
     title = sa.Column(sa.String)
     duration_seconds = sa.Column(sa.Integer)
     url = sa.Column(sa.String)
@@ -657,19 +697,12 @@ class LessonTranslation(Base):
 
 
 class Segment(OrderedBase):
-
-    __tablename__ = 'lesson_segments'
+    __tablename__ = "lesson_segments"
 
     id = sa.Column(sa.Integer, primary_key=True)
     type = sa.Column(sa.String)
-    video_type = sa.Column(
-        sa.Enum(VideoTypeEnum),
-        nullable=True
-    )
-    permission = sa.Column(
-        sa.Enum(SegmentPermissionEnum),
-        nullable=True
-    )
+    video_type = sa.Column(sa.Enum(VideoTypeEnum), nullable=True)
+    permission = sa.Column(sa.Enum(SegmentPermissionEnum), nullable=True)
     title = sa.Column(sa.String)
     text = sa.Column(sa.String)
     duration_seconds = sa.Column(sa.Integer)
@@ -679,12 +712,14 @@ class Segment(OrderedBase):
     slug = sa.Column(sa.String(50))  # Unique in relation to parent
     _thumbnail = sa.Column(sa.String)  # S3 Link
 
-    lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
+    lesson_id = sa.Column(sa.Integer, sa.ForeignKey("lessons.id"))
     lesson = orm.relationship("Lesson", back_populates="segments")
 
     translations = orm.relationship("SegmentTranslation", back_populates="segment")
 
-    @orm.validates('slug')
+    __table_args__ = (sa.UniqueConstraint("lesson_id", "slug", name="_lesson_sement_uc"),)
+
+    @orm.validates("slug")
     def validate_slug(self, key, value):
         """ TODO: Check the parent lesson for any duplicate segment slugs """
         return value
@@ -707,7 +742,7 @@ class Segment(OrderedBase):
             "segment.view",
             segment_slug=self.slug,
             lesson_slug=self.lesson.slug,
-            course_slug=self.lesson.course.slug
+            course_slug=self.lesson.course.slug,
         )
 
     @property
@@ -730,30 +765,29 @@ class Segment(OrderedBase):
         return save_segment_progress(self.id, user.id, percent)
 
     @staticmethod
-    def find_by_id(segment_id):
-        session = get_session()
-        return session.query(Segment).filter(Segment.id == segment_id).first()
-
-    @staticmethod
     def find_user_progress(segment_id, user_id):
         session = get_session()
-        q = session.query(SegmentUserProgress).\
-            filter(SegmentUserProgress.segment_id == segment_id).\
-            filter(SegmentUserProgress.user_id == user_id)
+        q = (
+            session.query(SegmentUserProgress)
+            .filter(SegmentUserProgress.segment_id == segment_id)
+            .filter(SegmentUserProgress.user_id == user_id)
+        )
         try:
             return q.first()
         except:
             return None
 
-    @staticmethod
-    def find_by_slug(course_slug, lesson_slug, segment_slug):
+    @classmethod
+    def find_by_slug(cls, course_slug, lesson_slug, segment_slug):
         session = get_session()
-        q = session.query(Segment).\
-            join(Lesson.segments).\
-            join(Lesson.course).\
-            filter(Course.slug == course_slug).\
-            filter(Lesson.slug == lesson_slug).\
-            filter(Segment.slug == segment_slug)
+        q = (
+            session.query(cls)
+            .join(Lesson.segments)
+            .join(Lesson.course)
+            .filter(Course.slug == course_slug)
+            .filter(Lesson.slug == lesson_slug)
+            .filter(cls.slug == segment_slug)
+        )
         try:
             return q.first()
         except:
@@ -761,11 +795,10 @@ class Segment(OrderedBase):
 
 
 class SegmentTranslation(Base):
-
-    __tablename__ = 'lesson_segments_translated'
+    __tablename__ = "lesson_segments_translated"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    segment_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_segments.id'))
+    segment_id = sa.Column(sa.Integer, sa.ForeignKey("lesson_segments.id"))
     title = sa.Column(sa.String)
     duration_seconds = sa.Column(sa.Integer)
     url = sa.Column(sa.String)
@@ -775,29 +808,24 @@ class SegmentTranslation(Base):
 
 
 class Resource(OrderedBase):
-
-    __tablename__ = 'lesson_resources'
+    __tablename__ = "lesson_resources"
 
     id = sa.Column(sa.Integer, primary_key=True)
     title = sa.Column(sa.String)
     url = sa.Column(sa.String)
-    type = sa.Column(
-        sa.Enum(ResourceTypeEnum),
-        nullable=True
-    )
+    type = sa.Column(sa.Enum(ResourceTypeEnum), nullable=True)
     featured = sa.Column(sa.Boolean)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))
     description = sa.Column(sa.String())
     anonymous_views = sa.Column(sa.Integer, default=0)
 
-    lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
+    lesson_id = sa.Column(sa.Integer, sa.ForeignKey("lessons.id"))
     lesson = orm.relationship("Lesson", back_populates="resources")
 
     @property
     def total_views(self):
-        return LessonResourceUserAccess.count_access(self.id) \
-               + self.anonymous_views
+        return LessonResourceUserAccess.count_access(self.id) + self.anonymous_views
 
     def views_by_user(self, user):
         return LessonResourceUserAccess.count_access(self.id, user.id)
@@ -811,83 +839,78 @@ class Resource(OrderedBase):
     @property
     def icon(self):
         stubs = {
-            'google_doc': 'fa-file-alt',
-            'google_sheet': 'fa-file-spreadsheet',
-            'google_slides': 'fa-file-image'
+            "google_doc": "fa-file-alt",
+            "google_sheet": "fa-file-spreadsheet",
+            "google_slides": "fa-file-image",
         }
         if self.type in stubs:
             return stubs[self.type]
-        return 'fa-file'
+        return "fa-file"
 
     @property
     def content_type(self):
         stubs = {
-            'google_doc': 'Google document',
-            'google_sheet': 'Google spreadsheet',
-            'google_slides': 'Google slides'
+            "google_doc": "Google document",
+            "google_sheet": "Google spreadsheet",
+            "google_slides": "Google slides",
         }
         if self.type in stubs:
             return stubs[self.type]
-        return 'External file'
+        return "External file"
 
     @property
     def content_img(self):
         stubs = {
-            'google_sheet': 'fas fa-file-spreadsheet',
-            'google_doc': 'fal fa-file-alt',
-            'youtube': 'fab fa-youtube',
-            'pdf': 'far fa-file-pdf'
+            "google_sheet": "fas fa-file-spreadsheet",
+            "google_doc": "fal fa-file-alt",
+            "youtube": "fab fa-youtube",
+            "pdf": "far fa-file-pdf",
         }
         if self.type.name in stubs:
             return stubs[self.type.name]
-        return 'fas fa-file-alt'
+        return "fas fa-file-alt"
 
     @property
     def permalink(self):
-        return url_for('resource.view', resource_id=self.id)
-
-    @staticmethod
-    def find_by_id(resource_id):
-        session = get_session()
-        return session.query(Resource).filter(Resource.id == resource_id).first()
+        return url_for("resource.view", resource_id=self.id)
 
 
 class LessonQA(OrderedBase):
-
-    __tablename__ = 'lesson_qa'
+    __tablename__ = "lesson_qa"
 
     id = sa.Column(sa.Integer, primary_key=True)
     question = sa.Column(sa.String)
     answer = sa.Column(sa.String)
 
-    lesson_id = sa.Column(sa.Integer, sa.ForeignKey('lessons.id'))
+    lesson_id = sa.Column(sa.Integer, sa.ForeignKey("lessons.id"))
     lesson = orm.relationship("Lesson", back_populates="questions")
-
-    @classmethod
-    def find_by_id(cls, qa_id):
-        session = get_session()
-        return session.query(cls).filter(cls.id == qa_id).first()
 
     @classmethod
     def find_by_lesson_and_id(cls, lesson_id, qa_id):
         if not isinstance(lesson_id, int) or not isinstance(qa_id, int):
             return None
         session = get_session()
-        return session.query(cls).filter(cls.lesson_id == lesson_id).filter(cls.id == qa_id).first()
+        return (
+            session.query(cls)
+            .filter(cls.lesson_id == lesson_id)
+            .filter(cls.id == qa_id)
+            .first()
+        )
 
 
 class LessonResourceUserAccess(Base):
     __tablename__ = "resource_user_access"
     id = sa.Column(sa.Integer, primary_key=True)
-    resource_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_resources.id'))
-    user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
+    resource_id = sa.Column(sa.Integer, sa.ForeignKey("lesson_resources.id"))
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"))
     access_date = sa.Column(sa.DateTime, default=datetime.utcnow)
 
     @staticmethod
     def count_access(resource_id, user_id=None):
         session = get_session()
-        q = session.query(sa.func.count(LessonResourceUserAccess.id)).\
-            filter(LessonResourceUserAccess.resource_id == resource_id)
+        q = session.query(sa.func.count(LessonResourceUserAccess.id)).filter(
+            LessonResourceUserAccess.resource_id == resource_id
+        )
         if user_id is not None:
             q = q.filter(LessonResourceUserAccess.user_id == user_id)
         return q.all()[0][0]
@@ -896,8 +919,9 @@ class LessonResourceUserAccess(Base):
     def log_user_access(resource_id, user_id):
         session = get_session()
         log = LessonResourceUserAccess(resource_id=resource_id, user_id=user_id)
-        q = session.query(LessonResourceUserAccess).\
-            filter(LessonResourceUserAccess.resource_id == resource_id)
+        q = session.query(LessonResourceUserAccess).filter(
+            LessonResourceUserAccess.resource_id == resource_id
+        )
         session.add(log)
         session.commit()
 
@@ -907,23 +931,26 @@ class SegmentUserProgress(Base):
     id = sa.Column(sa.Integer, primary_key=True)
     progress = sa.Column(sa.Integer)
     # No complex join definition for now.
-    segment_id = sa.Column(sa.Integer, sa.ForeignKey('lesson_segments.id'))
-    user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
+    segment_id = sa.Column(sa.Integer, sa.ForeignKey("lesson_segments.id"))
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"))
 
 
 _session = None
+
+
 def get_session():
     global _session
     if _session is None:
-        engine = sa.create_engine(app.config['DB_URI'])
+        engine = sa.create_engine(app.config["DB_URI"])
         Base.metadata.create_all(engine)
         Session = orm.scoped_session(orm.sessionmaker(bind=engine))
         _session = Session()
     return _session
 
+
 def _clear_session_for_tests():
     global _session
-    if 'FLASK_ENV' not in environ or environ['FLASK_ENV'] != 'test':
+    if "FLASK_ENV" not in environ or environ["FLASK_ENV"] != "test":
         raise Exception("Session clearing is for test instances only.")
     _session = None
 
@@ -931,55 +958,68 @@ def _clear_session_for_tests():
 def get_user(user_id):
     return User.find_by_id(user_id)
 
+
 def get_user_by_email(email):
     return User.find_by_email(email)
+
 
 def get_course_by_slug(slug):
     return Course.find_by_slug(slug)
 
+
 def get_course_by_code(code):
     return Course.find_by_code(code)
 
-def get_public_courses():
-    session = get_session()
-    return session.query(Course).filter(Course.guest_access == True, Course.draft == False).all()
 
 def get_program_by_slug(slug):
     return Program.find_by_slug(slug)
 
+
 def get_lesson(lesson_id):
     return Lesson.find_by_id(lesson_id)
+
 
 def get_lesson_by_slug(course_slug, lesson_slug):
     return Lesson.find_by_slug(course_slug, lesson_slug)
 
+
 def get_segment(segment_id):
     return Segment.find_by_id(segment_id)
+
 
 def get_segment_by_slug(course_slug, lesson_slug, segment_slug):
     return Segment.find_by_slug(course_slug, lesson_slug, segment_slug)
 
+
 def get_segment_progress(segment_id, user_id):
     return Segment.find_user_progress(segment_id, user_id)
+
 
 def save_segment_progress(segment_id, user_id, percent):
     session = get_session()
     sup = get_segment_progress(segment_id, user_id)
     percent = int(percent)
     if sup is None:
-        sup = SegmentUserProgress(segment_id=segment_id, user_id=user_id, progress=percent)
+        sup = SegmentUserProgress(
+            segment_id=segment_id, user_id=user_id, progress=percent
+        )
     elif sup.progress < percent:
         sup.progress = percent
     session.add(sup)
     session.commit()
     return sup
 
+
 def get_enrollment(course_id, student_id):
     return CourseEnrollment.find_by_course_and_student(course_id, student_id)
 
+
 def fetch_thumbnail(wistia_id, width=640, height=360):
     """ TODO: Put this in an S3 bucket before returning the URL. """
-    url = 'http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/{}?embedType=async&videoWidth=640'.\
-          format(wistia_id)
+    url = "http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/{}?embedType=async&videoWidth=640".format(
+        wistia_id
+    )
     data = requests.get(url).json()
-    return data['thumbnail_url'].split('?')[0]+'?image_crop_resized={}x{}'.format(width, height)
+    return data["thumbnail_url"].split("?")[0] + "?image_crop_resized={}x{}".format(
+        width, height
+    )

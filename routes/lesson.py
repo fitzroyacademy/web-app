@@ -1,10 +1,21 @@
-from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort
+import json
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    jsonify,
+    flash,
+    abort,
+    session,
+)
 from slugify import slugify
 
 import datamodels
 import stubs
 from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG
-from routes.decorators import login_required, teacher_required
+from util import get_current_user
+from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
 
@@ -125,6 +136,7 @@ def course_delete_lesson(user, course, course_slug, lesson_id):
 
 
 @blueprint.route("<course_slug>/<lesson_slug>")
+@enrollment_required
 def view(course_slug, lesson_slug):
     """
     Retrieves and displays a particular course, with the specified lesson
@@ -134,12 +146,14 @@ def view(course_slug, lesson_slug):
     if lesson is None:
         return redirect("/404")
     course = lesson.course
+
     segment = lesson.segments[0] if lesson.segments else None
     data = {
         "students": stubs.student_completion,
         "active_lesson": lesson,
         "active_segment": segment,
         "course": course,
+        "form": AjaxCSRFTokenForm(),  # need to pass this form in case of guest enrolled for a course
     }
     if course is None:
         return redirect("/404")

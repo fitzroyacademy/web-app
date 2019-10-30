@@ -1,5 +1,35 @@
-{% extends "/layout.html" %}
-{% block body %}
+<!doctype html>
+<html lang="en" class="
+  {% if url_is('course.view', 'lesson.view', 'segment.view') %} course {% endif %}
+  {% if current_user %} current_user {% endif %}
+">
+
+<!-- fit_minleft -->
+<!-- fit_minright -->
+<!-- fit_revealuserpanel -->
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  <!-- Other fool's plugins -->
+  <link rel="stylesheet" href="/vendor/flag-icon-css-master/css/flag-icon.css">
+  <link rel="stylesheet" href="/vendor/bootstrap4-toggle/css/bootstrap4-toggle.css">
+  <script src="https://kit.fontawesome.com/1f45a33999.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="/vendor/node-snackbar/dist/snackbar.min.css" />
+  <link rel="stylesheet" type="text/css" href="/vendor/medium-editor/dist/css/medium-editor.min.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="/vendor/medium-editor/dist/css/themes/flat.min.css" /> -->
+
+  <!-- Then our stuff -->
+  <link rel="stylesheet" href="/css/fit.css?{{ cache_code }}">
+
+  <title>FA! 😍</title>
+</head>
+<body>
 
 
 <main>
@@ -28,4 +58,5 @@
 </main>
 
 
-{% endblock %}
+</body>
+</html>

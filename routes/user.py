@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint, render_template, session, request, url_for, redirect, flash
+from flask import Blueprint, render_template, session, request, url_for, redirect, flash, abort
 from sqlalchemy.exc import IntegrityError
 
 import datamodels
@@ -74,6 +74,7 @@ def create():
         return render_template("login.html", **data)
 
     if form.validate():
+
         try:
             user = datamodels.User()
             user.email = form.email.data
@@ -81,6 +82,12 @@ def create():
             user.last_name = form.last_name.data
             user.username = form.username.data
             setattr(user, "password", form.password.data)
+            db.add(user)
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            flash("This username is already taken")
+            return render_template("login.html", **data)
         except Exception as e:
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)
@@ -88,8 +95,12 @@ def create():
             d = json.loads(session["anon_progress"])
             user.merge_anonymous_data(d)
             session.pop("anon_progress")
-        db.add(user)
-        db.commit()
+        if "enrollments" in session:
+            d = json.loads(session["enrollments"])
+            for id in d:
+                course = datamodels.Course.find_by_id(int(id))
+                if course:
+                    course.enroll(user)
         session["user_id"] = user.id
         flash("Thanks for registering, " + user.full_name + "!")
     else:
@@ -104,9 +115,28 @@ def enroll(course_slug):
     """
     course = datamodels.get_course_by_slug(course_slug)
     if course is None:
-        return redirect("/404")
+        return abort(404)
+
+    course_code = request.form.get("course_code", "")
+
+    if course.visibility == "code" and course_code.lower() != course.course_code.lower():
+        flash("Wrong course code")
+        return redirect("/course/{}".format(course.slug))
+
     user = get_current_user()
-    course.enroll(user)
+    if course.guest_access and not user:  # Guest access for not log in user
+        sess = session.get("enrollments", "[]")
+        data = json.loads(sess)
+        if course.id in data:
+            return redirect(course.lessons[0].permalink)
+        else:
+            data.append(course.id)
+            session["enrollments"] = json.dumps(data)
+    elif not course.guest_access and not user:
+        return redirect("/login")
+    else:
+        course.enroll(user)
+
     flash("You are now enrolled in ", course.title)
     return redirect(course.lessons[0].permalink)
 

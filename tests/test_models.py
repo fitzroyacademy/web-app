@@ -166,7 +166,7 @@ class TestModels(unittest.TestCase):
             code="DEF456", title="Bar Course", guest_access=True
         )
         self.session.add(c)
-        c_results = datamodels.get_public_courses()
+        c_results = datamodels.Course.list_public_courses()
         for result in c_results:
             if result.course_code == "DEF456":
                 c = result

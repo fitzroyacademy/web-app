@@ -26,7 +26,7 @@ def add_event(event_type):
             sup = seg.save_user_progress(user, progress)
             return json.dumps(datamodels.dump(sup))
         else:
-            sess = session.get("anon_progress", "\{\}")
+            sess = session.get("anon_progress", "{}")
             d = json.loads(sess)
             if segment_id not in d or d[segment_id] < progress:
                 d[segment_id] = progress
