@@ -1058,11 +1058,13 @@ $( document ).ready(function() {
     var oheight = p.offsetHeight;
     p.style.maxHeight = `${oheight}px`;
     var reader = new FileReader();
+    var aspectWidth = parseInt(p.dataset.fitAspectWidth) || 16;
+    var aspectHeight = parseInt(p.dataset.fitAspectHeight) || 9;
     reader.onload = (e) => {
       img.onload = () => {
         var cropper = new Cropper(img, {
           viewMode: 3,
-          aspectRatio: dropzone.offsetHeight / dropzone.offsetWidth,
+          aspectRatio: aspectWidth / aspectHeight,
           dragMode: 'move'
         });
         function saveCroppedImage() {

@@ -32,7 +32,7 @@
         <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit>
       </div>
 
-      <div class="fit_vidya" data-fit-image-uploader>
+      <div class="fit_vidya" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
         <img class="placeholder" src="{%  if cover_image %}{{ cover_image }}{% else %}https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360{% endif %}" alt="video">
         <a class="fit_vidya_play" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
         <form action="/course/{{ course.slug }}/edit" method="post" style="display:none;">
