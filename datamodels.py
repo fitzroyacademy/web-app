@@ -186,6 +186,14 @@ class User(BaseModel):
             return True
         return False
 
+    def enrolled(self, course):
+        e = CourseEnrollment.find_by_course_and_student(course.id, self.id)
+        if e is None:
+            return False
+        if e.access_level == COURSE_ACCESS_STUDENT:
+            return True
+        return False
+
     @staticmethod
     def find_by_email(email):
         session = get_session()
