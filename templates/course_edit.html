@@ -21,7 +21,7 @@
           <a class="btn btn-sm btn-outline-secondary" href="{{ course.permalink }}"><i class="fal fa-external-link"></i> View live </a>
           &nbsp;
           <button class="btn btn-sm btn-outline-primary fit_btn_saver">
-            <span class="save">Save changes</span>
+            <span class="save" data-snackbar-alert="you are amazing, saved baby.">Save changes</span>
             <span class="saved"><i class="fal fa-check"></i> Saved</span>
             <span class="saving"><i class="fas fa-spin fa-spinner-third"></i> Saving...</span>
           </button>
@@ -79,8 +79,7 @@
               </div>
               <div class="sub buttonset">
                 <div class="btn btn-text subtle">{{ introduction.strfduration }}</div>
-                  <!-- DEV: Allow editing intro lesson. Allow removing intro lesson? -->
-                <a href="#" class="btn btn-light"><i class="fal fa-ellipsis-v"></i></a>
+                <a href="#" class="btn btn-light"><i class="fal fa-edit"></i></a> <!-- DEV: Make intro editing work here plz, modal = $('#fit_modal_add_intro').modal(); -->
               </div>
             </div>
             {% endif %}
