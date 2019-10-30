@@ -16,11 +16,15 @@
     <div class="fit_course intro">
 
       <h1>
-        <span class="txt">Edit Course.</span>
+        <span class="txt">Edit course.</span>
         <small class="subtxt">
-          <button class="btn btn-sm btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
+          <a class="btn btn-sm btn-outline-secondary" href="{{ course.permalink }}"><i class="fal fa-external-link"></i> View live </a>
           &nbsp;
-          <button class="btn btn-sm btn-outline-primary"><i class="fal fa-check"></i> Save changes</button>
+          <button class="btn btn-sm btn-outline-primary fit_btn_saver">
+            <span class="save">Save changes</span>
+            <span class="saved"><i class="fal fa-check"></i> Saved</span>
+            <span class="saving"><i class="fas fa-spin fa-spinner-third"></i> Saving...</span>
+          </button>
         </small>
       </h1>
 
@@ -33,7 +37,11 @@
       </div>
 
       <div class="fit_vidya" data-fit-image-uploader>
-        <img class="placeholder" src="{%  if cover_image %}{{ cover_image }}{% else %}https://embed-ssl.wistia.com/deliveries/34aa394bce40d844a6914ed6b020eac6c0181c65.jpg?image_crop_resized=640x360{% endif %}" alt="video">
+        
+        {%  if cover_image %}
+          <img class="placeholder" src="{{ cover_image }}" alt="video">
+        {% endif %}
+
         <a class="fit_vidya_play" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
         <form action="/course/{{ course.slug }}/edit" method="post" style="display:none;">
           <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
@@ -138,6 +146,21 @@
                 </div>
               </dd>-->
 
+              <dt><i class="far fa-clock"></i> Workload title</dt>
+              <dd>
+                <div class="form-group">
+                  <input rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 4 hours, 12 weeks." value="{{ course.workload_title|default('') }}" data-course-edit>
+                  <small class="form-text text-muted">This appears next to the 'enrol' button.</small>
+                </div>
+              </dd>
+              <dt><i class="far fa-clock"></i> Workload subtitle</dt>
+              <dd>
+                <div class="form-group">
+                  <textarea rows="3" type="text" class="form-control" id="workload_subtitle" placeholder="E.g. 4 hours of study per week on average, best done with friends!" data-course-edit>{{ course.workload_subtitle|default("") }}</textarea>
+                  <small class="form-text text-muted">This also appears next to the 'enrol' button.</small>
+                </div>
+              </dd>
+              
               <dt><i class="far fa-calendar"></i> Year</dt>
               <dd>
                 <div class="form-group">
@@ -157,16 +180,6 @@
               <dd>
                 <div class="form-group">
                   <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary|default("") }}</textarea>
-                </div>
-              </dd>
-              <dd>
-                <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 32 hours, 12 weeks" data-course-edit>{{ course.workload_title|default("") }}</textarea>
-                </div>
-              </dd>
-              <dd>
-                <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="workload_subtitle" placeholder="E.g. 4 hours of study per week on average, best done with friends!" data-course-edit>{{ course.workload_subtitle|default("") }}</textarea>
                 </div>
               </dd>
 
@@ -347,6 +360,9 @@
 
 </main>
 
+<!-- adding things -->
 {% include 'partials/modal/_add_lesson.html' %}
+{% include 'partials/modal/_add_lesson_fitz.html' %}
+{% include 'partials/modal/_add_intro.html' %}
 
 {% endblock %}

@@ -1,7 +1,15 @@
-{% for var in get_vars() %}
-	<li><b>{{ var.name }}</b>
-		<code>
-			{{ var.dump }}
-		</code>
-	</li>
-{% endfor %}
+<div id="debugTemplates" class="fit_debug">
+  <a class="clicky" data-fit_debug><i class="fas fa-bug"></i></a>
+
+	<ul>
+		{% for var in get_vars() %}
+			<li>
+				<strong>{{ var.name }}</strong>
+				<code>
+					{{ var.dump }}
+				</code>
+			</li>
+		{% endfor %}
+	</ul>
+
+</div>

@@ -12,7 +12,6 @@
       
       <p><span>Curated by <strong> {{ course.instructors|join_names }}</strong>.</span></p>
       
-
       <div class="fit_vidya">
         <!-- DEV: 16:9 image uploaded in edit view -->
         <img class="placeholder" src="{{ course.thumbnail }}" alt="video"> 
@@ -28,7 +27,7 @@
           </div>
           <div class="col-sm-4">
             <i class="fal big fa-file-alt blue"></i>
-            <h4>18+ resources.</h4>
+            <h4>18+ resources.</h4> <!-- DEV: Needs total resources in lesson -->
             <p>Purpose-built templates and links that you can use forever.</p>
           </div>
           <div class="col-sm-4">
@@ -53,7 +52,7 @@
                 <dd>{{ course.target_audience }}</dd>
               {% endif %}
               <dt><i class="far fa-clock"></i> Course length &amp; workload:</dt>
-              <dd>{{ course.lessons|length }}</dd>
+              <dd>{{ course.workload_summary|default("") }}</dd>
               <dt><i class="far fa-tag"></i> Cost:</dt>
               <dd>Free forever!</dd> <!-- DEV: select from (free | paid | funded) -->
               {% if course.skill_level %}
