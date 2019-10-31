@@ -427,14 +427,14 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative; overflow: hidden;}
 .fit_btn > .fit_pic img{height: 100%;}
 .fit_btn > .fit_pic.vid img{margin-left: -35%;} // this is super weird, but hopefully pushes it left enough to centre it.
-.fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff; background: $bg;}
+.fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff;}
 
 
 // icons that appear over images if needed:
-.fit_btn > .fit_pic i{position: absolute; padding: .5rem 0; display: flex; top:0; width: 100%; height: 100%; color: #fff; justify-content: center; text-align: center; opacity: 0;}
+.fit_btn > .fit_pic i{position: absolute; padding: .5rem 0; display: flex; top:0; width: 100%; height: 100%; color: $blue; justify-content: center; text-align: center; opacity: 0;}
 
 // active classes
-.fit_lesson.active .fit_btn > .fit_pic i.fa-play{background: $aqua_80; opacity: 1;}
+.fit_lesson.active .fit_btn > .fit_pic i.fa-play{background: $aqua_80; opacity: 1; color: #fff;}
 // not needed because dropdown? .fit_lesson .fit_btn:hover > .fit_pic i.fa-play{background: $aqua_50; opacity: 1;}
 
 // weirdy border for the underline
@@ -497,12 +497,12 @@ header .fit_btn > i:not(:first-child){margin-right: .5rem;} // not allows for tw
 
 // freak the login friend to intimate the right-side fun:
 header .fit_btn.login .fa-chevron-right{display: none; position: absolute; top:0; right: 0; bottom: 0; background: #fff; align-items:center;}
-header .fit_btn.login:hover .fa-chevron-right{display: flex;}
+header .fit_btn.login:hover .fa-chevron-right{display: flex; opacity: 1;}
 
 
 // header underlines are weird
-header .fit_btn > .fit_txt:after,
-.head .fit_btn > .fit_txt:after{
+header .fit_btn[href] > .fit_txt:after,
+.head .fit_btn[href] > .fit_txt:after{
 	transition: all .2s ease-in-out;
 	display:block; content:''; position: absolute; bottom:.45rem; left:1.25rem; right:1.25rem; height: 3px; background: $blue; border-radius: $border_rad_xl; opacity: 0;}
 
@@ -655,6 +655,8 @@ header .left,
 .head .left{margin-right: auto;}
 header .right,
 .head .right{margin-left: auto;}
+
+header .fit_btn:first-child{margin-left: -1rem;}
 
 // margins in the sidebar within a content thingo
 .fit_body_content > .fit_btn{margin: 0 -1.5rem 0;}
@@ -902,6 +904,11 @@ a.card.rating h5{color: #f4b115;}
 // this is also weirdly used for chunks of text and similar, with a max-width!
 
 .fit_course{max-width: $container_wide; margin: 2rem auto; border-radius: 0.3rem; padding: 0 1rem; position: relative;}
+
+@media (min-width: 70rem) {
+	.fit_course{padding: 0;}
+}
+
 .fit_course.fill{max-width: none;}
 .fit_course .fit_vidya{border-radius: 0.5rem; overflow: hidden;}
 
@@ -961,8 +968,10 @@ a.card.rating h5{color: #f4b115;}
 
 .fit_course h1{display: flex; align-items: initial; padding-bottom: 1rem;}
 .fit_course h1 small{display: block; font-size: 1rem; color:$text_lighter;}
-.fit_course h1 a i.fa-edit{font-size: 1.5rem; color: $text_light;}
-.fit_course h1 a:hover i.fa-edit{color: $blue;}
+// .fit_course h1 a i.fa-edit{font-size: 1.5rem; color: $text_light;}
+// .fit_course h1 a:hover i.fa-edit{color: $blue;}
+
+.fit_course h1 .btn{margin-left: 1rem; display: flex; margin-left: auto;}
 
 // responsive for tucking subtext under things
 @media (max-width: 767px) {
@@ -2223,16 +2232,19 @@ html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 
 // spinny saver button
 .fit_btn_saver > i{animation-duration: 1s;}
-.fit_btn_saver > span{display: none;}
-.fit_btn_saver > .save{display: inline-block;}
+.fit_btn_saver > *{display: none;}
+.fit_btn_saver > .save{display: flex;}
 .fit_btn_saver > .saved{}
 .fit_btn_saver > .saving{}
 
 html.loading_spinner .fit_btn_saver > span{display: none;}
-html.loading_spinner .fit_btn_saver > .saving{display: inline-block;}
+html.loading_spinner .fit_btn_saver > .saving{display: flex;}
 
 html.loading_check .fit_btn_saver > span{display: none;}
-html.loading_check .fit_btn_saver > .saved{display: inline-block;}
+html.loading_check .fit_btn_saver > .saved{display: flex;}
+
+header .fit_btn_saver .error{color: $red;}
+header .fit_btn_saver .saved{color: $new_green;}
 
 // ------------------------------------------------------------------------------------
 // Edit FAQs

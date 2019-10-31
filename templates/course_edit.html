@@ -15,7 +15,7 @@
 
     <div class="fit_course intro">
 
-      <h1>
+      <!-- <h1>
         <span class="txt">Edit course.</span>
         <small class="subtxt">
           <a class="btn btn-sm btn-outline-secondary" href="{{ course.permalink }}"><i class="fal fa-external-link"></i> View live </a>
@@ -26,7 +26,7 @@
             <span class="saving"><i class="fas fa-spin fa-spinner-third"></i> Saving...</span>
           </button>
         </small>
-      </h1>
+      </h1> -->
 
       <div class="form-group">
         <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course" data-fit-slug-first data-fit-slug-name data-course-edit>
@@ -78,7 +78,7 @@
                 Introduction
               </div>
               <div class="sub buttonset">
-                <div class="btn btn-text subtle">{{ introduction.strfduration }}</div>
+                <div class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</div>
                 <a href="#" class="btn btn-light"><i class="fal fa-edit"></i></a> <!-- DEV: Make intro editing work here plz, modal = $('#fit_modal_add_intro').modal(); -->
               </div>
             </div>
@@ -96,7 +96,7 @@
 
                   <div class="sub buttonset">
 
-                    <div class="btn btn-text subtle">{{ lesson.strfduration }}</div>
+                    <div class="btn btn-text subtle">{{ lesson.duration_seconds|hhmmss }}</div>
 
                     <div class="dropdown">
                       <button href="#" class="btn btn-light" type="button" id="dropdown_123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -348,10 +348,10 @@
         </div><!-- col -->
       </div><!-- row -->
 
-      <div class="fit_pane d-flex justify-content-between">
+      <!-- <div class="fit_pane d-flex justify-content-between">
         <button class="btn btn-lg btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
         <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save changes</button>
-      </div>
+      </div> -->
 
     </div>
 

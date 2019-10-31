@@ -8,12 +8,21 @@
 
     <div class="fit_course intro">
 
-      <h1><span class="txt">{{ course.title }}</span></h1>
+      <h1>
+        <span class="txt">{{ course.title }}</span>
+        {% if current_user.teaches(course) %}
+          <a href="/course/{{ course.slug }}/edit" class="btn pull-right btn-outline-secondary"> 
+            <!-- <i class="fal fa-edit"></i> -->
+            Edit course
+          </a>
+        {% endif %}
+      </h1>
       
-      <p><span>Curated by <strong> {{ course.instructors|join_names }}</strong>.</span></p>
+      <p>
+        <span>Curated by <span> {{ course.instructors|join_names }}</span>.</span>
+      </p>
       
       <div class="fit_vidya">
-        <!-- DEV: 16:9 image uploaded in edit view -->
         <img class="placeholder" src="{{ course.thumbnail }}" alt="video"> 
         <a class="fit_vidya_play" href="{{ course.lessons[0].permalink }}"><i class="fas fa-play-circle"></i></a>
       </div>
@@ -31,11 +40,17 @@
             <p>Purpose-built templates and links that you can use forever.</p>
           </div>
           <div class="col-sm-4">
-            {% if current_user.enrolled(course) or current_user.teaches(course) %}
-              <a href="#" class="btn btn-block btn-lg btn-primary">Keep learning</a>
+
+            {% if current_user %}
+              {% if current_user.enrolled(course) or current_user.teaches(course) %}
+                <a href="#" class="btn btn-block btn-lg btn-primary">Keep learning</a>
+              {% else %}
+                <a href="#" class="btn btn-block btn-lg btn-watermelon">Enroll for free</a>
+              {% endif %}
             {% else %}
               <a href="#" class="btn btn-block btn-lg btn-watermelon">Enroll for free</a>
             {% endif %}
+
             <h4>Free forever!</h4>
             <p>This one is on us. 🥰</p>
           </div>

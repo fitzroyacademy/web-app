@@ -16,7 +16,9 @@
 
     <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
-      <h1>
+      
+
+      <!-- <h1>
         <span class="txt">{% if not lesson %}Add{% else %}Edit{% endif %} Lesson.</span>
         <small class="subtxt">
           <a href="/course/{{ course.slug }}/edit" class="btn btn-sm btn-outline-secondary"><i class="fal fa-arrow-left"></i> {{ course.title }} </a>
@@ -25,7 +27,7 @@
           &nbsp;
           <button class="btn btn-sm btn-outline-primary" type="submit"><i class="fal fa-check"></i>  Save</button>
         </small>
-      </h1>
+      </h1> -->
 
       <div class="form-group">
         <input type="text" class="form-control form-control-lg" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required>
@@ -239,10 +241,6 @@
       </div><!-- row -->
 
       {% endif %}
-      <div class="fit_pane d-flex justify-content-between">
-        <button class="btn btn-lg btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
-        <button class="btn btn-lg btn-primary" type="submit"><i class="fal fa-check"></i>  Save</button>
-      </div>
 
     </form>
     </div>

@@ -6,26 +6,91 @@
     <!-- ---------------------------------------------------------------- -->
 
     {% if url_is('course.view') %}
-
-      {% include 'partials/nav/_header_link_home.html' %}
+      <!-- this means course intro -->
+      
+      <a href="/" class="fit_btn"> 
+        <i class="fal fa-arrow-left"></i>
+        <span class="fit_txt">Home</span>
+      </a>
 
     {% elif url_is('lesson.view', 'segment.view') %}
 
-      {% include 'partials/nav/_header_link_coursetitle.html' %}
+      <a href="/course/{{ course.slug }}" class="fit_btn left"> 
+        <i class="fal fa-arrow-left"></i>
+        <span class="fit_txt">{{ course.title }}</span>
+      </a>
 
-    {% elif url_is('course.edit') %}
+    {% elif url_is('course.retrieve') %}
+      <div class="left">
+        <a href="/course/{{ course.slug }}" class="fit_btn"> 
+          <i class="fal fa-arrow-left"></i>
+          <span class="fit_txt">View live</span>
+        </a>
 
-    <!-- This needs to show course edit stuff -->
+        <a class="fit_btn_saver">
+          <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save <span class="d-none d-sm-inline-block">changes</span></span></span>
+          <span class="fit_btn saved"><i class="fal fa-check-circle"></i><span class="fit_txt">Saved</span></span>
+          <span class="fit_btn saving"><i class="fas fa-spin fa-spinner-third"></i><span class="fit_txt">Saving...</span></span>
+          <span class="fit_btn error"><i class="fas fa-exclamation-square"></i><span class="fit_txt">Error! Try again?</span></span>
+        </a>
+      </div>
+
+    {% elif url_is('lesson.course_add_edit_lesson') %}
+      <div class="left">
+        <a href="/course/{{ course.slug }}/edit" class="fit_btn"> 
+          <i class="fal fa-arrow-left"></i>
+          <span class="fit_txt">Course</span>
+        </a>
+
+        <a href="{{ lesson.permalink }}" class="fit_btn"> 
+          <i class="fal fa-external-link"></i>
+          <span class="fit_txt">Live</span>
+        </a>
+
+        <a class="fit_btn_saver">
+          <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save changes</span></span>
+          <span class="fit_btn saved"><i class="fal fa-check-circle"></i><span class="fit_txt">Saved</span></span>
+          <span class="fit_btn saving"><i class="fas fa-spin fa-spinner-third"></i><span class="fit_txt">Saving...</span></span>
+          <span class="fit_btn error"><i class="fas fa-exclamation-square"></i><span class="fit_txt">Error! Try again?</span></span>
+        </a>
+      </div>
 
     {% else %}
 
       <a href="/" class="fit_device">
-        {% include 'partials/chrome/_fa_svg_square.html' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 897 1337">
+          <path 
+            d="M896.926,417.590 L0.097,416.434 L0.056,119.532 L0.058,119.532 L0.024,119.525 L298.280,0.028 L297.542,119.532 L298.114,119.532 L298.088,119.525 L596.343,0.028 L596.792,119.532 L598.755,119.532 L598.721,119.525 L896.975,0.028 L896.926,417.590 ZM683.424,1022.533 L369.742,1023.094 L368.821,1336.982 L0.072,1335.695 L0.063,650.350 L683.424,650.350 L683.424,1022.533 ZM0.056,650.350 L0.063,650.350 L0.056,650.350 Z"/>
+        </svg>
       </a>
 
-      {% include 'partials/nav/_header_nav_code.html' %}
+      <form class="fit_form_code_head fit_fancyplace" method="post" action="{{ url_for('course.code') }}" data-fit_head_code_daddy>
+        <div class="input-group input-group-sm">
+          <input type="text" name="course_code" id="course_code_header" class="form-control" placeholder="Course code" aria-label="Coure code" data-fit_head_code data-fit-fancyplace>
+          <div class="input-group-append">
+            <button class="btn" disabled type="button"><i class="fal fa-rocket"></i> </button>
+          </div>
+          <label for="course_code_header"><span class="course">Course</span> <span class="code">Code</span> </label>
+        </div>  
+      </form>
 
-      {% include 'partials/nav/_header_loading.html' %}
+      <div class="fit_loading spinner">
+        <div class="circle">
+          <i class="fas fa-spin fa-spinner-third"></i>
+        </div>
+      </div>
+
+      <div class="fit_loading check">
+        <div class="circle">
+          <i class="fas fa-check"></i>
+        </div>
+      </div>
+
+      <div class="fit_loading error">
+        <div class="circle">
+          <i class="fas fa-exclamation"></i>
+        </div>
+      </div>
 
     {% endif %}
 
@@ -34,17 +99,34 @@
     <!-- Right hand side logic -->
     <!-- ---------------------------------------------------------------- -->
 
-    {% if url_is('course.view', 'lesson.view', 'segment.view') %}
+    {% if url_is('course.view', 'lesson.view', 'segment.view', 'course.retrieve', 'lesson.course_add_edit_lesson') %}
 
       <div class="right">
 
         {% if current_user %}
           
-          {% include 'partials/nav/_header_link_user.html' %}
+          <a href="/edit" class="fit_btn login" data-fit-userpanel>
+            <span class="fit_txt">
+              <span class="d-none d-sm-inline-block">{{ current_user.first_name }}</span>
+              <span class="d-none d-md-inline-block">{{ current_user.last_name }}</span>
+            </span>
+            <span class="fit_pic circle"> 
+              {% if current_user.profile_picture %}
+                <img src="{{ current_user.profile_picture }}" alt="user">
+              {% else %}
+                <i class="fal fa-user"></i>
+              {% endif %}
+                <i class="fal fa-chevron-right"></i>
+            </span>
+          </a>
 
         {% else %}
 
-          {% include 'partials/nav/_header_link_login.html' %}
+          <a href="{{ url_for('user.login') }}" class="fit_btn login" data-fit-userpanel>
+            <span class="fit_txt">Sign up</span>
+            <i class="fal fa-user"></i>
+            <i class="fal fa-chevron-right"></i>
+          </a>
 
         {% endif %}
 
