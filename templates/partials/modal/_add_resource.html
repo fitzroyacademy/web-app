@@ -1,5 +1,5 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_resource_link">
-  <form id="add-edit-resource" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" class="modal-dialog modal-dialog-centered" role="document" method="post">
+  <form id="add-edit-resource" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" class="modal-dialog modal-dialog-centered" role="document" method="post" data-fit-wysiwyg>
     {{ resource_form.csrf_token }}
     <div class="modal-content">
       <div class="modal-header">
@@ -21,7 +21,7 @@
 
         <div class="form-group">
           <div class="fit_wysiwyg">
-            <div id="fit_wysiwyg_resource">{% if resource %}{{ resource.description|safe }}{% endif %}</div>
+            <div id="fit_wysiwyg_resource" data-fit-wysiwyg-preview>{% if resource %}{{ resource.description|safe }}{% endif %}</div>
           </div>
           <textarea id="resource_description" name="resource_description" style="display: none"></textarea>
         </div>
