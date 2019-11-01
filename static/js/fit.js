@@ -1052,7 +1052,6 @@ $( document ).ready(function() {
     var p = t.closest('[data-fit-image-uploader]');
     p.classList.add('fit_upload_cropping');
     var dropzone = p.querySelector('[data-fit-image-dropzone]');
-    dropzone.style.display = 'none';
     var input = p.querySelector('[data-fit-image-input]');
     var img = p.querySelector('img');
     var oheight = p.offsetHeight;
@@ -1062,6 +1061,7 @@ $( document ).ready(function() {
     var aspectHeight = parseInt(p.dataset.fitAspectHeight) || 9;
     reader.onload = (e) => {
       img.onload = () => {
+        var save = p.querySelector('[data-fit-save-crop]');
         var cropper = new Cropper(img, {
           viewMode: 3,
           aspectRatio: aspectWidth / aspectHeight,
@@ -1081,13 +1081,13 @@ $( document ).ready(function() {
               // cropper.destroy() doesn't seem to clean this up?
               p.querySelector('.cropper-container').remove();
               img.classList.remove('cropper-hidden');
+              save.removeEventListener('click', saveCroppedImage);
             };
             reader.readAsDataURL(blob);
           }, `image/${ext}`);
         }
-        // Just here for debugging until we hook up a UI to this
-        // niche "saving" feature.
-        window.saveCroppedImage = saveCroppedImage;
+        save.removeEventListener('click', saveCroppedImage);
+        save.addEventListener('click', saveCroppedImage);
       }
       img.src = e.target.result;
     }

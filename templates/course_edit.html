@@ -36,17 +36,17 @@
         <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit>
       </div>
 
-      <div class="fit_vidya" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9"> 
+      <div class="fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
         {%  if cover_image %}
           <img class="placeholder" src="{{ cover_image }}" alt="video">
         {% else %}
           <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
         {% endif %}
-        <a class="fit_vidya_play" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
+        <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
         <form action="/course/{{ course.slug }}/edit" method="post" style="display:none;">
           <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
         </form>
-        <a class="btn btn-lg btn-primary fit_save_crop"><i class="fal fa-check"></i> Save</a>
+        <a class="btn btn-lg btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
       </div>
 
       <h3>
