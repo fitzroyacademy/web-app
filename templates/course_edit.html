@@ -123,7 +123,7 @@
           <h3>
             <span class="txt">Course info.</span>
           </h3>
-          <form action="/course/{{ course.slug }}/edit" method="post" id="course-edit-form" data-fit-wysiwyg data-fit-wysiwyg-id="course_summary">
+          <form action="/course/{{ course.slug }}/edit" method="post" id="course-edit-form" data-fit-wysiwyg>
           <div class="fit_pane">
             <dl class="fit_summary_icons">
 
@@ -183,7 +183,7 @@
                   <div class="fit_wysiwyg">
                     <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if course.summary_html %}{{ course.summary_html|safe }}{% endif %}</div>
                   </div>
-                  <textarea id="course_summary" name="course_summary" style="display: none" data-fit-wysiwyg-textarea></textarea>
+                  <textarea id="course_summary" name="course_summary" style="display: none"></textarea>
                 </div>
               </dd>
               

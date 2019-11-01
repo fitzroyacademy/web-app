@@ -1022,9 +1022,9 @@ $( document ).ready(function() {
   delegate('[data-fit-wysiwyg]', 'submit', (e,t) => {
     let p = t.closest('[data-fit-wysiwyg]');
     let preview = p.querySelector('[data-fit-wysiwyg-preview]');
-    let testarea = p.querySelector('[data-fit-wysiwyg-textarea]');
+    let textarea = p.querySelector('textarea');
     let mysave = preview.innerHTML;
-    testarea.value = mysave;
+    textarea.value = mysave;
   });
 
 /* Image upload widget code. */
