@@ -10,7 +10,7 @@
 
       <h1>
         <span class="txt">{{ course.title }}</span>
-        {% if current_user.teaches(course) %}
+        {% if current_user and current_user.teaches(course) %}
           <a href="/course/{{ course.slug }}/edit" class="btn pull-right btn-outline-secondary"> 
             <!-- <i class="fal fa-edit"></i> -->
             Edit course
