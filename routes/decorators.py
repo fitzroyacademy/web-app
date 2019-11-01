@@ -50,6 +50,9 @@ def enrollment_required(function):
         # check if user (logged in or anonymous) is enrolled
         current_user = get_current_user()
         course = datamodels.Course.find_by_slug(course_slug)
+        if not course:
+            raise abort(404)
+
         if not current_user:
             if not course.guest_access:
                 return redirect("/login")
