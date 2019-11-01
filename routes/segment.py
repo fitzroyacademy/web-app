@@ -3,7 +3,7 @@ from slugify import slugify
 
 import datamodels
 import stubs
-from .decorators import login_required, teacher_required
+from .decorators import login_required, teacher_required, enrollment_required
 from .utils import reorder_items, clone_model
 from enums import SegmentPermissionEnum, VideoTypeEnum
 
@@ -225,6 +225,7 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id):
 
 
 @blueprint.route("<course_slug>/<lesson_slug>/<segment_slug>")
+@enrollment_required
 def view(course_slug, lesson_slug, segment_slug):
     """
     Retrieves and displays a particular course, with the specified lesson
