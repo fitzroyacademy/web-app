@@ -356,6 +356,11 @@ class Course(BaseModel):
             .all()
         )
 
+    @property
+    def number_of_resources(self):
+        session = get_session()
+        return session.query(Resource).outerjoin(Resource.lesson).filter(Lesson.course_id == self.id).count()
+
     def get_ordered_lessons(self):
         return Lesson.get_ordered_items().filter(Lesson.course_id == self.id)
 
