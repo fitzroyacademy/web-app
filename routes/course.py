@@ -33,6 +33,7 @@ def index():
         "public_courses": datamodels.Course.list_public_courses(),
         "form": LoginForm(),
     }
+
     return render_template("welcome.html", **data)
 
 

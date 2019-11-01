@@ -32,7 +32,7 @@ c = datamodels.Course(
 <p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
 <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
 """,
-	preview_thumbnail="/assets/images/lessons/customer-interviews.jpg",
+	preview_thumbnail="/static/assets/images/lessons/customer-interviews.jpg",
 	guest_access=True,
 	draft=False,
 	workload_title="",

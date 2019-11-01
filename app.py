@@ -1,17 +1,10 @@
-import json
-import random
 import datetime
-from flask import Flask, render_template, session, request, url_for, redirect, flash
+from flask import Flask, render_template, request, url_for, flash
 from util import get_current_user
 import sass
-import stubs
 import datamodels
 import time
-import re
-import os
 import jinja2
-import random
-import string
 from uuid import uuid4
 from os import environ
 from werkzeug.routing import BuildError
@@ -19,12 +12,11 @@ from werkzeug.utils import import_string
 import routes
 import routes.course
 import routes.error
-import config
 import requests
 import click
 import boto3
 
-app = Flask('FitzroyFrontend', static_url_path='')
+app = Flask('FitzroyFrontend', static_url_path='/static')
 
 environment = environ.get("FLASK_ENV", default="")
 
@@ -41,6 +33,18 @@ else:
 app.config.from_object(cfg)
 
 routes.attach(app)
+
+
+app.add_url_rule(app.static_url_path + '/<path:filename>',
+                 endpoint='static',
+                 view_func=app.send_static_file, subdomain='<institute>')
+
+@app.url_value_preprocessor
+def before_route(endpoint, values):
+    # List of all endpoints that make use of subdomains in other cases remove if from parameters passed to the route
+
+    if endpoint != 'pages.index' and values is not None:
+        values.pop('institute', None)
 
 @app.cli.command("reseed-database")
 def reseed_database():
@@ -213,14 +217,16 @@ def api():
 if __name__ == "__main__":
     app.logger.info("Building SASS")
     compile_sass()
+
     if app.debug:
         from livereload import Server, shell
+
         def ignore_func(path):
             if path.split('.')[-1] == "sqlite":
                 return True
         server = Server(app.wsgi_app)
         server.watch('./static/assets/scss/*', compile_sass)
         server.watch('./', ignore=ignore_func)
-        server.serve(host='0.0.0.0',open_url=False,port=5000)
+        server.serve(host='0.0.0.0', open_url=False, port=5000)
     else:
         app.run(host='0.0.0.0', port=5000) # until we start using gunicorn
