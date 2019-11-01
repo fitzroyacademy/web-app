@@ -848,7 +848,7 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('#change-slug', 'click', (e, t) => {
+  delegate('[data-change-slug]', 'click', (e, t) => {
     let slug = t.dataset.courseSlug;
     let value = document.querySelector('#course-slug').value;
     post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
@@ -889,7 +889,7 @@ $( document ).ready(function() {
     });
   });
 
-  delegate('#add-teacher', 'click', (e, t) => {
+  delegate('[data-add-teacher]', 'click', (e, t) => {
     e.preventDefault();
     let email = document.querySelector('#add-teacher-email');
     let slug = t.dataset.courseSlug;
@@ -918,7 +918,7 @@ $( document ).ready(function() {
     });
   });
 
-  delegate('#save-lesson-question', 'click', (e, t) => {
+  delegate('[data-save-question-answer]', 'click', (e, t) => {
     e.preventDefault();
     let slug = t.dataset.courseSlug;
     let lessonId = t.dataset.lessonId;
@@ -993,7 +993,7 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('#confirm-delete', 'click', (e, t) => {
+  delegate('[data-confirm-delete]', 'click', (e, t) => {
     e.preventDefault();
     post(t.href, {}, (responseText, xhr) => {
         if (xhr.status == 200) {
