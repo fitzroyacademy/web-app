@@ -76,7 +76,7 @@ students = [
 segments = [];
 segments.append([
     {
-        "type": "html",
+        "type": "video",
         "title": "Introduction",
         "duration": "1:12",  # -> duration seconds
         "external_id": "4ub59urk8l",
@@ -94,7 +94,7 @@ segments.append([
         "external_id": "o3lv8dulfk",
         "url": "https://fitzroyacademy.wistia.com/medias/o3lv8dulfk",
         "template": "video_wistia",
-        "type": "resource",
+        "type": "video",
         "id": "seg_b",
         "lesson_id": '00',
         "course_id": "00"
@@ -105,7 +105,7 @@ segments.append([
         "external_id": "yw3rxkapqv",
         "url": "https://fitzroyacademy.wistia.com/medias/yw3rxkapqv",
         "template": "video_wistia",
-        "type": "practical",
+        "type": "video",
         "id": "seg_c",
         "lesson_id": '00',
         "course_id": "00"
@@ -116,7 +116,7 @@ segments.append([
         "external_id": "rxty4preej",
         "url": "https://fitzroyacademy.wistia.com/medias/rxty4preej",
         "template": "video_wistia",
-        "type": "survey",
+        "type": "video",
         "id": "seg_d",
         "lesson_id": '00',
         "course_id": "00"
@@ -138,7 +138,7 @@ segments.append([
         "external_id": "7an2f2hf16",
         "url": "https://fitzroyacademy.wistia.com/medias/7an2f2hf16",
         "template": "video_wistia",
-        "type": "story",
+        "type": "video",
         "id": "seg_f",
         "lesson_id": '00',
         "course_id": "00"
@@ -160,7 +160,7 @@ segments.append([
         "external_id": "ja7ph4j22q",
         "url": "https://fitzroyacademy.wistia.com/medias/ja7ph4j22q",
         "template": "video_wistia",
-        "type": "html",
+        "type": "video",
         "id": "seg_h",
         "lesson_id": '00',
         "course_id": "00"
@@ -171,7 +171,7 @@ segments.append([
         "external_id": "ox83pgmd2l",
         "url": "https://fitzroyacademy.wistia.com/medias/ox83pgmd2l",
         "template": "video_wistia",
-        "type": "story",
+        "type": "video",
         "id": "seg_i",
         "lesson_id": '00',
         "course_id": "00"
@@ -182,7 +182,7 @@ segments.append([
         "external_id": "trphfyidmr",
         "url": "https://fitzroyacademy.wistia.com/medias/trphfyidmr",
         "template": "video_wistia",
-        "type": "video_wistia",
+        "type": "video",
         "id": "seg_j",
         "lesson_id": '00',
         "course_id": "00"
@@ -193,7 +193,7 @@ segments.append([
         "external_id": "co72ocpe4c",
         "url": "https://fitzroyacademy.wistia.com/medias/co72ocpe4c",
         "template": "video_wistia",
-        "type": "case",
+        "type": "video",
         "id": "seg_k",
         "lesson_id": '00',
         "course_id": "00"
@@ -204,7 +204,7 @@ segments.append([
         "external_id": "az7nj4f6sp",
         "url": "https://fitzroyacademy.wistia.com/medias/az7nj4f6sp",
         "template": "video_wistia",
-        "type": "practical",
+        "type": "video",
         "id": "seg_l",
         "lesson_id": '00',
         "course_id": "00"
@@ -215,7 +215,7 @@ segments.append([
         "external_id": "bv7fq9cyxx",
         "url": "https://fitzroyacademy.wistia.com/medias/bv7fq9cyxx",
         "template": "video_wistia",
-        "type": "locked",
+        "type": "video",
         "id": "seg_m",
         "lesson_id": '00',
         "course_id": "00"
@@ -232,7 +232,7 @@ segments.append([
     "id": "seg_n",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Lesson resources",
@@ -243,7 +243,7 @@ segments.append([
     "id": "seg_o",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Prepwork",
@@ -254,7 +254,7 @@ segments.append([
     "id": "seg_p",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "The Pipeline",
@@ -265,7 +265,7 @@ segments.append([
     "id": "seg_q",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Making Contact",
@@ -276,7 +276,7 @@ segments.append([
     "id": "seg_r",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Meeting in person",
@@ -287,7 +287,7 @@ segments.append([
     "id": "seg_s",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Follow up and Routines",
@@ -298,7 +298,7 @@ segments.append([
     "id": "seg_t",
     "lesson_id": "01",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   }
 ]);
 
@@ -312,7 +312,7 @@ segments.append([
     "id": "598pejq0ahbmr92hdjgcx",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "vide"
   },
   {
     "title": "Lesson Resources",
@@ -323,7 +323,7 @@ segments.append([
     "id": "bpp1dfgexztukgyhdrqvk",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "vide"
   },
   {
     "title": "The Big numbers",
@@ -334,7 +334,7 @@ segments.append([
     "id": "2plze9cgsb2ifhwb0ai9da",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Adding detail",
@@ -345,7 +345,7 @@ segments.append([
     "id": "sj93fnzjlef0mvhaoiolb1s",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Do some maths",
@@ -356,7 +356,7 @@ segments.append([
     "id": "nu9dmhwz7gsr4edpsrac1",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Formatting",
@@ -367,7 +367,7 @@ segments.append([
     "id": "ouvwnfb2zz89vzag7l6jv",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Benchmark the results",
@@ -378,7 +378,7 @@ segments.append([
     "id": "ptrrx6iowybe0ppxwv0wmq",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Growth levers",
@@ -389,7 +389,7 @@ segments.append([
     "id": "0zg5s4y4g3ynyrk05e1qpf",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   },
   {
     "title": "Communicate",
@@ -400,7 +400,7 @@ segments.append([
     "id": "i6it0ta9sf7s90p8lu3z",
     "lesson_id": "02",
     "course_id": "00",
-    "type": "locked"
+    "type": "video"
   }
 ]);
 
