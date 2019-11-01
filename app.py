@@ -174,7 +174,8 @@ def hhmmss(seconds):
     out = str(datetime.timedelta(seconds=seconds))
     if seconds < 3600:
         out = out[2:]
-    return out
+
+    return out if not out.startswith("0") else out[1:]
 
 @app.template_filter()
 def hhmm(seconds):
