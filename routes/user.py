@@ -137,7 +137,7 @@ def enroll(course_slug):
     else:
         course.enroll(user)
 
-    flash("You are now enrolled in ", course.title)
+    flash("You are now enrolled in {}".format(course.title))
     return redirect(course.lessons[0].permalink)
 
 
