@@ -15,9 +15,6 @@ def index(institute=''):
     """ Shows all courses the user has access to. """
     data = {"public_courses": datamodels.Course.list_public_courses(), "form": LoginForm()}
 
-    if institute:
-        return render_template("institute.html", **data)
-
     return render_template("welcome.html", **data)
 
 

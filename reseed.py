@@ -102,3 +102,4 @@ session.add(institute1)
 session.commit()
 
 institute1.add_admin(datamodels.get_user(3))  # Bart
+session.commit()

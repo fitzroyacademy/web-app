@@ -43,7 +43,13 @@ app.add_url_rule(app.static_url_path + '/<path:filename>',
 def before_route(endpoint, values):
     # List of all endpoints that make use of subdomains in other cases remove if from parameters passed to the route
 
-    if endpoint != 'pages.index' and values is not None:
+    subdomain_endpoints = ["pages.index",
+                           "institute.retrieve",
+                           "institute.edit",
+                           "institute.add_user",
+                           "institute.remove_user"]
+
+    if endpoint not in subdomain_endpoints and values is not None:
         values.pop('institute', None)
 
 @app.cli.command("reseed-database")
