@@ -37,11 +37,9 @@
         <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required>
       </div>
 
-      <div class="fit_vidya">
-        {% if lesson and lesson.get_cover %}<img class="placeholder" src="{{ lesson.get_cover }}" alt="video">{% endif %}
-        <a class="fit_vidya_play" href="#" onclick="document.getElementById('cover_image').click()"><i class="fas fa-upload"></i></a>
-        <input id="cover_image" name="cover_image" type="file" style="display: none;">
-      </div>
+      {% with cover_image=lesson.get_cover if lesson else "" %}
+      {% include "partials/course/_cover_cropper.html" %}
+      {% endwith %}
 
       {% if lesson %}
       <h3>

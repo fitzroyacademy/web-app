@@ -47,7 +47,8 @@ def before_route(endpoint, values):
                            "institute.retrieve",
                            "institute.edit",
                            "institute.add_user",
-                           "institute.remove_user"]
+                           "institute.remove_user",
+                           "institute.change_slug"]
 
     if endpoint not in subdomain_endpoints and values is not None:
         values.pop('institute', None)

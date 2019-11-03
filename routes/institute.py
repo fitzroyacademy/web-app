@@ -9,7 +9,8 @@ from flask import (
     flash,
     current_app,
     jsonify,
-    abort
+    abort,
+    make_response
 )
 
 import datamodels
@@ -60,12 +61,9 @@ def add(user):
             institute.add_admin(user)
             db.commit()
 
-            if request.url.startswith("https"):
-                protocol = "https"
-            else:
-                protocol = "http"
+            protocol = "https" if request.url.startswith("https") else "http"
 
-            return redirect("{}://{}.{}/institute/edit".format(protocol, current_app.config["SERVER_NAME"], slug))
+            return redirect("{}://{}.{}/institute/edit".format(protocol, slug, current_app.config["SERVER_NAME"]))
         else:
             for key, value in form.errors.items():
                 flash("Field {}: {}".format(key, ",".join(value)))
@@ -104,7 +102,7 @@ def remove_user(user, user_id=None, access_type="teacher", institute=""):
 
     institute = datamodels.Institute.find_by_slug(institute)
 
-    if not institute or not user.super_admin or institute.is_admin(user):
+    if not institute or (not user.super_admin and not institute.is_admin(user)):
         raise abort(404, "No such institute or you don't have permissions to edit it")
 
     if user.id == user_id and access_type == InstitutePermissionEnum.admin.name:
@@ -127,7 +125,7 @@ def remove_user(user, user_id=None, access_type="teacher", institute=""):
 def add_user(user, institute="", access_level="teacher"):
     institute = datamodels.Institute.find_by_slug(institute)
 
-    if not institute or not user.super_admin or institute.is_admin(user):
+    if not institute or (not user.super_admin and not institute.is_admin(user)):
         raise abort(404, "No such institute or you don't have permissions to edit it")
 
     new_user = (
@@ -166,3 +164,40 @@ def add_user(user, institute="", access_level="teacher"):
             "teacher": render_teacher(new_user, institute=institute, user_type=access_level.name),
         }
     )
+
+@blueprint.route("/edit/slug", methods=["POST"], subdomain="<institute>")
+@login_required
+def change_slug(user, institute=""):
+    institute = datamodels.Institute.find_by_slug(institute)
+
+    if not institute or (not user.super_admin and not institute.is_admin(user)):
+        raise abort(404, "No such institute or you don't have permissions to edit it")
+
+    slug = institute.slug
+    db = datamodels.get_session()
+    if request.method == "POST":
+        if "slug" in request.form:
+            slug = request.form["slug"]
+            i = datamodels.Institute.find_by_slug(slug)
+            if i and institute.id != i.id:
+                return make_response(
+                    jsonify(
+                        {
+                            "success": False,
+                            "message": "Use different slug for this institute.",
+                        }
+                    ),
+                    400,
+                )
+            if not slug:
+                return (
+                    jsonify({"success": False, "message": "Slug can't be empty"}),
+                    400,
+                )
+            institute.slug = slug
+            db.add(institute)
+            db.commit()
+
+    protocol = "https" if request.url.startswith("https") else "http"
+
+    return jsonify({"redirect_url": "{}://{}.{}/institute/edit".format(protocol, slug, current_app.config["SERVER_NAME"])})

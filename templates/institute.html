@@ -17,22 +17,13 @@
       </h1>
 
       <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="program_name" value="" id="course_name" placeholder="Institute name" data-fit-slug-first data-fit-slug-name>
+        <input type="text" class="form-control form-control-lg" name="name" value="{{ institute.name }}" value="" id="name" placeholder="Institute name" data-fit-slug-first data-fit-slug-name>
       </div>
       <div class="form-group">
-        <!-- <label for="lesson_description">Short description</label> -->
-        <input type="text" class="form-control" id="course_description" maxlength="140" placeholder="Short description. 140 characters max.">
+        <input type="text" class="form-control" id="description" value="{{ institute.description }}" maxlength="140" placeholder="Short description. 140 characters max.">
       </div>
 
-      <div class="fit_vidya">
-        <!-- DEV: 16:9 image uploaded in edit view -->
-        <img class="placeholder" src="/static/assets/images/partners/fa/ppl.jpg" alt="video">
-        <a class="fit_vidya_play" href="#"><i class="fas fa-upload"></i><span class="txt">Replace image</span></a>
-        <a data-fit-shrinkvidya class="fit_vidya_shrink" href="#">
-          <i class="fas fa-expand-alt"></i>
-          <i class="fas fa-compress-alt"></i>
-        </a>
-      </div>
+      {% include "partials/course/_cover_cropper.html" %}
 
 
       <h3>
@@ -125,7 +116,7 @@ Australia, 3000" value=""></textarea>
               <dt><i class="far fa-language"></i> Default language</dt>
               <dd>
                 <div class="form-group">
-                  <select class="form-control">
+                  <select class="form-control" disabled>
                     <option>English</option>
                     <option>Khmer</option>
                     <option>Vietnamese</option>
@@ -135,8 +126,6 @@ Australia, 3000" value=""></textarea>
               </dd>
 
             </dl>
-
-
 
           </div><!-- pane -->
 
@@ -152,22 +141,24 @@ Australia, 3000" value=""></textarea>
 
           <div class="fit_pane">
             <dl class="fit_summary_icons">
-              
-
-              <!-- DEV: We should probably check if this tag is taken while it's being entered? Is that a security hole? Do we care? -->
+              <form method="post">
               <dt><i class="far fa-external-link"></i> Short link</dt>
               <dd>
                 <div class="form-group">
-                  <div class="input-group">
+                  <div class="input-group" data-fit-change-slug>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="slug" class="form-control" maxlength="15" name="slug" value="{{ institute.slug }}" placeholder="short link" data-fit-slug-set>
+                    <input type="text" class="form-control" maxlength="20" name="course_slug" value="{{ institute.slug }}" placeholder="short link" data-slug-value>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" data-change-slug data-institute-slug="{{ institute.slug }}">Change</button>
+                    </div>
                   </div>
-                  <small class="form-text text-muted">Program link: <a data-fit-slug-url="/program/" href="/program/???">{% if institute.slug %}{{ institute.slug }}.{% endif %}fitzroyacademy.com<strong data-fit-slug-reveal></strong></a></small>
+                  <small class="form-text text-muted">Institute link: <a data-fit-slug-url="/program/" href="http://{% if institute.slug %}{{ institute.slug }}.{% endif %}fitzroyacademy.com">{% if institute.slug %}{{ institute.slug }}.{% endif %}fitzroyacademy.com<strong data-fit-slug-reveal></strong></a></small>
                   <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->
                 </div>
               </dd>
+              </form>
 
               
               <dt><i class="far fa-user-crown"></i> 

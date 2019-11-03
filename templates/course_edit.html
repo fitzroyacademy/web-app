@@ -36,18 +36,10 @@
         <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit>
       </div>
 
-      <div class="fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
-        {%  if cover_image %}
-          <img class="placeholder" src="{{ cover_image }}" alt="video">
-        {% else %}
-          <img class="placeholder" src="/static/assets/images/defaults/spacer.gif" alt="spacer">
-        {% endif %}
-        <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
-        <form action="/course/{{ course.slug }}/edit" method="post" style="display:none;">
-          <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
-        </form>
-        <a class="btn btn-lg btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
-      </div>
+
+      {% with cover_action="/course/"+course.slug+"/edit" %}
+      {% include "partials/course/_cover_cropper.html" %}
+      {% endwith %}
 
       <h3>
         <span class="txt">Lesson plan.</span>
@@ -233,11 +225,11 @@
               <dt><i class="far fa-external-link"></i> Link</dt>
               <dd>
                 <div class="form-group">
-                  <div class="input-group">
+                  <div class="input-group" data-fit-change-slug>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course-slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link">
+                    <input type="text" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-slug-value>
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="button" data-change-slug data-course-slug="{{ course.slug }}">Change</button>
                     </div>

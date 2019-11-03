@@ -849,11 +849,23 @@ $( document ).ready(function() {
   });
 
   delegate('[data-change-slug]', 'click', (e, t) => {
-    let slug = t.dataset.courseSlug;
-    let value = document.querySelector('#course-slug').value;
-    post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
+    e.preventDefault();
+    console.log("dsfasfdasfasfa");
+    let courseSlug = t.dataset.courseSlug;
+    let instituteSlug = t.dataset.courseSlug;
+    let p = t.closest('[data-fit-change-slug]');
+    let value = p.querySelector('[data-slug-value]').value;
+    let utl = '';
+
+    if (courseSlug) {
+        url = `/course/${courseSlug}/edit/slug`;
+    } else {
+        url = '/institute/edit/slug';
+    }
+
+    post(url, {slug: value}, (responseText, xhr) => {
         if (xhr.status == 200) {
-            window.location.href = `/course/${JSON.parse(xhr.response)['slug']}/edit`
+            window.location.href = JSON.parse(xhr.response)['redirect_url']
         } else {
                 console.log('DEV: give me some message')
             }

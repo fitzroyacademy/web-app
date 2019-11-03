@@ -218,7 +218,7 @@ def retrieve(user, course_slug=None):
         "introduction": course.intro_lesson,
         "lessons": course.normal_lessons,
         "ajax_csrf_form": AjaxCSRFTokenForm(),
-        "cover_image": "/uploads/{}".format(course.cover_image)
+        "cover_image": "/static/uploads/{}".format(course.cover_image)
         if course.cover_image and not course.cover_image.startswith("http")
         else course.cover_image,
     }
@@ -239,8 +239,9 @@ def change_course_slug(user, course_slug=None):
 
     db = datamodels.get_session()
     if request.method == "POST":
-        if "course_slug" in request.form:
-            c = datamodels.Course.find_by_slug(request.form["course_slug"])
+        if "slug" in request.form:
+            slug = request.form["slug"]
+            c = datamodels.Course.find_by_slug(slug)
             if c and course.id != c.id:
                 return make_response(
                     jsonify(
@@ -251,16 +252,16 @@ def change_course_slug(user, course_slug=None):
                     ),
                     400,
                 )
-            if not request.form["course_slug"]:
+            if not slug:
                 return (
                     jsonify({"success": False, "message": "Slug can't be empty"}),
                     400,
                 )
-            course.slug = request.form["course_slug"]
+            course.slug = slug
             db.add(course)
             db.commit()
 
-    return jsonify({"slug": course.slug})
+    return jsonify({"redirect_url": "/course/{}/edit".format(course.slug)})
 
 
 @blueprint.route(

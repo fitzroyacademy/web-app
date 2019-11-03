@@ -248,7 +248,7 @@ class Institute(BaseModel):
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String)
-    description = sa.Column(sa.String(140))
+    description = sa.Column(sa.String(140), default="")
     cover_image = sa.Column(sa.String)
     logo = sa.Column(sa.String)  # URL to picture resource
     slug = sa.Column(sa.String(50), unique=True)  # corresponds to subdomain
@@ -739,7 +739,7 @@ class Lesson(OrderedBase):
             if self.cover_image.startswith("http"):
                 return self.cover_image
             else:
-                return "/uploads/{}".format(self.cover_image)
+                return "/static/uploads/{}".format(self.cover_image)
         return ""
 
     @staticmethod
