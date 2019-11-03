@@ -2,6 +2,7 @@ import datetime
 import unittest
 
 import datamodels
+from enums import InstitutePermissionEnum
 from app import app
 
 
@@ -291,7 +292,7 @@ class TestModels(unittest.TestCase):
         )
         self.assertEqual(institute2.users[0].user.id, user.id)
         self.assertEqual(institute2.users[0].institute.id, institute2.id)
-        self.assertEqual(institute2.users[0].access_level, 0)
+        self.assertEqual(institute2.users[0].access_level, InstitutePermissionEnum.teacher)
 
     def test_program_creation(self):
         self.assertEqual(len(self.session.query(datamodels.Program).all()), 0)

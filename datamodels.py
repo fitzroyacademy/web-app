@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum
+from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum, InstitutePermissionEnum
 
 Base = declarative_base()
 
@@ -248,16 +248,24 @@ class Institute(BaseModel):
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String)
+    description = sa.Column(sa.String(140))
+    cover_image = sa.Column(sa.String)
     logo = sa.Column(sa.String)  # URL to picture resource
-    slug = sa.Column(sa.String(50), unique=True)
+    slug = sa.Column(sa.String(50), unique=True)  # corresponds to subdomain
 
     users = orm.relationship("InstituteEnrollment", back_populates="institute")
 
-    def add_user(self, user, access_level=0):
+    def add_user(self, user, access_level=InstitutePermissionEnum.teacher):
         association = InstituteEnrollment(access_level=access_level)
         association.institute = self
         association.user = user
         self.users.append(association)
+
+    def add_manager(self, user):
+        self.add_user(user, access_level=InstitutePermissionEnum.manager)
+
+    def add_admin(self, user):
+        self.add_user(user, access_level=InstitutePermissionEnum.admin)
 
 
 class InstituteEnrollment(BaseModel):
@@ -266,7 +274,7 @@ class InstituteEnrollment(BaseModel):
     id = sa.Column(sa.Integer, primary_key=True)
     user_id = sa.Column("user_id", sa.Integer, sa.ForeignKey("users.id"))
     institute_id = sa.Column("institute_id", sa.Integer, sa.ForeignKey("institutes.id"))
-    access_level = sa.Column("access_level", sa.Integer)
+    access_level = sa.Column(sa.Enum(InstitutePermissionEnum), nullable=True)
 
     user = orm.relationship("User", back_populates="institutes")
     institute = orm.relationship("Institute", back_populates="users")

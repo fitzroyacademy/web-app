@@ -38,3 +38,9 @@ RESOURCE_CONTENT_IMG = {
     "file_generic": "fal fa-file",
     "image": "fal fa-camera",
 }
+
+
+class InstitutePermissionEnum(enum.Enum):
+    admin = "Administrator"
+    manager = "Program manager"
+    teacher = "Teacher"

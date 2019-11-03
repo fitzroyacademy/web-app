@@ -78,3 +78,27 @@ for i, lesson in enumerate(stubs.lessons):
 		l.resources.append(r)
 		session.add(r)
 	session.commit()
+
+
+# default institute, whitout subdomain
+fitz_institute = datamodels.Institute(
+	name="Fitzroyacademy",
+	logo="",
+	slug=""
+)
+
+session.add(fitz_institute)
+session.commit()
+
+fitz_institute.add_admin(datamodels.get_user(1))  # Homer
+
+institute1 = datamodels.Institute(
+	name="Jedi Temple",
+	logo="",
+	slug="jeditemple"
+)
+
+session.add(institute1)
+session.commit()
+
+institute1.add_admin(datamodels.get_user(3))  # Bart

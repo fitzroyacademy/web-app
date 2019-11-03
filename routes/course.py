@@ -109,7 +109,7 @@ def add_course(user):
             for key, value in form.errors.items():
                 flash("Field {}: {}".format(key, ",".join(value)))
             data["errors"] = form.errors
-    return render_template("course_add.html", **data)
+    return render_template("partials/course/_add.html", **data)
 
 
 @blueprint.route("/<course_slug>/edit", methods=["POST"])

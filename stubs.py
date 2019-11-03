@@ -35,7 +35,7 @@ students = [
         'username': 'homer',
         'super_admin': True,
         'email': 'homer@simpsons.com',
-        'profile_picture': '/assets/stub/homer.png',
+        'profile_picture': '/static/assets/stub/homer.png',
         'bio': 'Homer is the Chief Safety Inspector and former power plant operator at the Springfield Nuclear Power Plant',
     },
     {
@@ -45,7 +45,7 @@ students = [
         'username': 'marge',
         'email': 'marge@simpsons.com',
         'bio': 'Marge is a homemaker with previous experience as a buisnesswoman and police officer',
-        'profile_picture': '/assets/stub/marge.png'
+        'profile_picture': '/static/assets/stub/marge.png'
     },
     {
         'first_name': 'Bart',
@@ -53,7 +53,7 @@ students = [
         'password': 'bart',
         'username': 'bart',
         'email': 'bart@simpsons.com',
-        'profile_picture': '/assets/stub/bart.png'
+        'profile_picture': '/static/assets/stub/bart.png'
     },
     {
         'first_name': 'Lisa',
@@ -61,7 +61,7 @@ students = [
         'password': 'lisa',
         'username': 'lisa',
         'email': 'lisa@simpsons.com',
-        'profile_picture': '/assets/stub/lisa.png'
+        'profile_picture': '/static/assets/stub/lisa.png'
     },
     {
         'first_name': 'Maggie',
@@ -69,7 +69,7 @@ students = [
         'password': 'maggie',
         'username': 'maggie',
         'email': 'maggie@simpsons.com',
-        'profile_picture': '/assets/stub/maggie.png'
+        'profile_picture': '/static/assets/stub/maggie.png'
     },
 ]
 
