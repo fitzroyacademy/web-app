@@ -38,6 +38,25 @@ rm dev_db.sqlite; flask reseed-database; python3 app.py
 sass --watch static/assets/scss/fit.scss static/css/fit.css
 ```
 
+### To make the subdomains work:
+
+In your `/etc/hosts` file add the following lines:
+```
+127.0.0.1 fitz-dev.com
+127.0.0.1 jeditemple.fitz-dev.com
+127.0.0.1 some_fancy_subdomain.fitz-dev.com
+...
+```
+
+Having such entries in `hosts` file, the following urls are valid:
+```
+fitz-dev.com
+jeditemple.fitz-dev.com
+some_fancy_subdomain.fitz-dev.com
+```
+
+Note that for local development two domains are obligatory in `hosts` file, namely `fitz-dev.com` and `jeditemple.fitz-dev.com`
+
 ### To add issues to Github:
 
 [https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
