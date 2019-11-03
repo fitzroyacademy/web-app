@@ -258,7 +258,7 @@ class TestCourseRoutes(unittest.TestCase):
         make_authorized_call(
             url="/course/abc-123/edit/slug",
             user=user,
-            data={"course_slug": "fancy_slug"},
+            data={"slug": "fancy_slug"},
             expected_status_code=200,
         )
         course = datamodels.Course.find_by_slug("fancy_slug")
@@ -268,7 +268,7 @@ class TestCourseRoutes(unittest.TestCase):
         make_authorized_call(
             url="/course/fancy_slug/edit/slug",
             user=user,
-            data={"course_slug": "some_other_course"},
+            data={"slug": "some_other_course"},
             expected_status_code=400,
         )
         course = datamodels.Course.find_by_slug("fancy_slug")
