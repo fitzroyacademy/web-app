@@ -88,20 +88,17 @@
 
               <dt><i class="far fa-image"></i> Square logo</dt>
               <dd>
-                <div class="fit_squarelogo">
-                  <img src="/static/assets/images/partners/fa/fa_device_square.jpg" alt="logo">
+                  <div class="fit_squarelogo fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="16">
+                        {% if logo %}
+                            <img class="placeholder" src="{{ logo }}" alt="logo">
+                        {% else %}
+                        <img class="placeholder" src="/static/assets/images/partners/fa/fa_device_square.jpg" alt="spacer">
+                        {% endif %}
+                        <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
+                        <input id="logo" name="logo" type="file" style="display: none;" data-fit-image-input>
+                        <a class="btn btn-lg btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
                 </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-upload"></i></span>
-                    </div>
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputGroupFile01">
-                      <label class="custom-file-label" for="inputGroupFile01">Choose file to change</label>
-                    </div>
-                  </div>
-                </div>
+
               </dd>
 
               <dt><i class="far fa-users"></i> Who do you serve?</dt>

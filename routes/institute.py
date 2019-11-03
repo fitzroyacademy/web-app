@@ -82,7 +82,8 @@ def retrieve(user, institute=""):
             "teachers": [render_teacher(obj, institute=institute) for obj in institute.teachers],
             "admins": [render_teacher(obj, institute=institute, user_type="admin") for obj in institute.admins],
             "managers": [render_teacher(obj, institute=institute, user_type="manager") for obj in institute.managers],
-            "cover_image": "/static/uploads/{}".format(institute.cover_image)
+            "cover_image": "/static/uploads/{}".format(institute.cover_image),
+            "logo": "/static/uploads/{}".format(institute.logo)
             }
 
     return render_template("institute.html", **data)
@@ -125,6 +126,22 @@ def edit(user, institute=""):
             )
 
         institute.cover_image = filename
+    if "logo" in request.form:
+        file = request.files["file"]
+
+        filename = generate_thumbnail(file, "square_m")
+        if not filename:
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "message": "Couldn't upload picture. Try again or use different file format",
+                    }
+                ),
+                400,
+            )
+
+        institute.logo = filename
 
     db.add(institute)
     db.commit()
