@@ -1,4 +1,12 @@
 {% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if form.csrf_token %}
+        var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
+
 {% block body %}
 
 <main>
@@ -11,20 +19,19 @@
         <span class="txt">Edit Institute.</span>
         <small class="subtxt">
           <button class="btn btn-sm btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
-          &nbsp;
-          <button class="btn btn-sm btn-outline-primary"><i class="fal fa-check"></i>  Save changes</button>
         </small>
       </h1>
 
+      <form action="/institute/edit" method="post">
+
       <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="name" value="{{ institute.name }}" value="" id="name" placeholder="Institute name" data-fit-slug-first data-fit-slug-name>
+        <input type="text" class="form-control form-control-lg" name="name" value="{{ institute.name }}" value="" id="name" placeholder="Institute name" data-fit-slug-first data-fit-slug-name data-institute-edit>
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" id="description" value="{{ institute.description }}" maxlength="140" placeholder="Short description. 140 characters max.">
+        <input type="text" class="form-control" id="description" value="{{ institute.description }}" maxlength="140" placeholder="Short description. 140 characters max." data-institute-edit>
       </div>
 
       {% include "partials/course/_cover_cropper.html" %}
-
 
       <h3>
         <span class="txt">Programs.</span>
@@ -100,7 +107,7 @@
               <dt><i class="far fa-users"></i> Who do you serve?</dt>
               <dd>
                 <div class="form-group">
-                  <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." value=""></textarea>
+                  <textarea rows="3" type="text" class="form-control" id="for_who" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.." data-institute-edit>{{ institute.for_who }}</textarea>
                 </div>
               </dd>
               
@@ -109,7 +116,7 @@
                 <div class="form-group">
                   <textarea rows="3" type="text" class="form-control" id="location" placeholder="E.g. 25 Academy Way,
 Fitzroy, Melbourne,
-Australia, 3000" value=""></textarea>
+Australia, 3000" data-institute-edit>{{ institute.location }}</textarea>
                 </div>
               </dd>
 
@@ -194,9 +201,9 @@ Australia, 3000" value=""></textarea>
 
       <div class="fit_pane d-flex justify-content-between">
         <button class="btn btn-lg btn-outline-secondary"><i class="fal fa-external-link"></i> View live </button>
-        <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save changes</button>
       </div>
 
+      </form>>
     </div>
 
   </article>

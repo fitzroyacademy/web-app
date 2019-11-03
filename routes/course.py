@@ -234,8 +234,8 @@ def change_course_slug(user, course_slug=None):
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
 
-    if not course or not user.teaches(course):
-        raise abort(404, "No such course or you don't have permissions to edit it")
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
 
     db = datamodels.get_session()
     if request.method == "POST":

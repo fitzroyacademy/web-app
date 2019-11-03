@@ -77,11 +77,12 @@ def retrieve(user, institute=""):
 
     institute = datamodels.Institute.find_by_slug(institute)
 
-    data = {"form": AjaxCSRFTokenForm,
+    data = {"form": AjaxCSRFTokenForm(),
             "institute": institute,
             "teachers": [render_teacher(obj, institute=institute) for obj in institute.teachers],
             "admins": [render_teacher(obj, institute=institute, user_type="admin") for obj in institute.admins],
             "managers": [render_teacher(obj, institute=institute, user_type="manager") for obj in institute.managers],
+            "cover_image": "/static/uploads/{}".format(institute.cover_image)
             }
 
     return render_template("institute.html", **data)
@@ -90,8 +91,45 @@ def retrieve(user, institute=""):
 @blueprint.route("/edit", methods=["POST"], subdomain="<institute>")
 @login_required
 def edit(user, institute=""):
-    pass
+    institute = datamodels.Institute.find_by_slug(institute)
 
+    if not institute or (not user.super_admin and not institute.is_admin(user)):
+        raise abort(404, "No such institute or you don't have permissions to edit it")
+
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
+
+    db = datamodels.get_session()
+
+    if "name" in request.form and request.form["name"] != "":
+        institute.name = request.form["name"]
+    if "description" in request.form:
+        institute.description = request.form["description"]
+    if "for_who" in request.form:
+        institute.for_who = request.form["for_who"]
+    if "location" in request.form:
+        institute.location = request.form["location"]
+    if "cover_image" in request.form:
+        file = request.files["file"]
+
+        filename = generate_thumbnail(file, "cover")
+        if not filename:
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "message": "Couldn't upload picture. Try again or use different file format",
+                    }
+                ),
+                400,
+            )
+
+        institute.cover_image = filename
+
+    db.add(institute)
+    db.commit()
+
+    return jsonify({"success": True})
 
 
 @blueprint.route(
@@ -172,6 +210,9 @@ def change_slug(user, institute=""):
 
     if not institute or (not user.super_admin and not institute.is_admin(user)):
         raise abort(404, "No such institute or you don't have permissions to edit it")
+
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
 
     slug = institute.slug
     db = datamodels.get_session()

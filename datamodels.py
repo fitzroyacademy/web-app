@@ -252,6 +252,8 @@ class Institute(BaseModel):
     cover_image = sa.Column(sa.String)
     logo = sa.Column(sa.String)  # URL to picture resource
     slug = sa.Column(sa.String(50), unique=True)  # corresponds to subdomain
+    for_who = sa.Column(sa.String, default="")
+    location = sa.Column(sa.String, default="")
 
     users = orm.relationship("InstituteEnrollment", back_populates="institute")
 
