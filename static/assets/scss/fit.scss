@@ -1740,6 +1740,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 .fit_medium h4{font-weight: 900;}
 
+.fit_medium h1.roomy{padding: 2rem 0;}
+
 // iconz
 .fit_medium > h1 > i:first-child,
 .fit_medium > h2 > i:first-child,
@@ -1750,7 +1752,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium > h1 > i:first-child,
 	.fit_medium > h2 > i:first-child,
 	.fit_medium > h3 > i:first-child,
-	.fit_medium > h4 > i:first-child{position: absolute; top:0; right: 100%; margin-right: 1.5rem; font-size: 110%;}
+	.fit_medium > h4 > i:first-child{position: absolute; top:.25rem; right: 100%; margin-right: 1.5rem; font-size: 110%; color:$text_light;}
 }
 
 .fit_medium p,
@@ -1804,7 +1806,6 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium_rare .fit_medium .breakbigger:before{box-shadow: 0 -40px 30px #fff;}
 }
 
-
 .fit_spicy{color:$red; font-size: 2rem;}
 .fit_spicy .fal{color: $text_light;}
 
@@ -1834,6 +1835,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium_rare .fit_rare{ flex: 0 0 $rare_width; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
 
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{display: none;}
+
 }
 
 @media (max-width: 991px) {
