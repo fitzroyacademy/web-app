@@ -1820,6 +1820,9 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // medium large is full size
 
 .fit_medium.large{max-width: $container_wide;}
+@media (min-width: $container_wide) {
+	.fit_medium.large{padding: 0;}
+}
 
 .fit_medium.pricing .row .pane{}
 
@@ -2483,7 +2486,7 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 
 .fit_table_price thead th i{font-size: 2.5rem; display: block; padding-bottom: 1rem;}
 .fit_table_price thead th h4{padding: 1rem 0 .5rem; margin: 0;}
-.fit_table_price thead th small a{color:$blue_dark; display: inline-block; padding: .2rem .3rem; text-decoration: none; font-weight: bold; background: rgba(255,255,255,0.2); border-radius: $border_rad_sm;}
+.fit_table_price thead th small a{color:$blue_dark; display: inline-block; padding: .2rem .4rem; text-decoration: none; font-weight: bold; background: rgba(255,255,255,0.2); border-radius: $border_rad_sm;}
 .fit_table_price thead th small a:hover{background: rgba(255,255,255,0.4);}
 
 .fit_table_price thead th.institute small a{color:#fff; background: rgba(0,0,0,0.2);}
