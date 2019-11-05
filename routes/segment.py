@@ -3,7 +3,7 @@ from slugify import slugify
 
 import datamodels
 import stubs
-from .decorators import login_required, teacher_required
+from .decorators import login_required, teacher_required, enrollment_required
 from .utils import reorder_items, clone_model
 from enums import SegmentPermissionEnum, VideoTypeEnum
 
@@ -82,9 +82,11 @@ def add_edit_segment(
         if not instance or instance.lesson_id != lesson.id:
             flash("No such segment for this lesson")
             return redirect("/course/{}/edit".format(course.slug))
+        editing = True
     else:
         instance = datamodels.Segment()
         instance.lesson_id = lesson.id
+        editing = False
 
     data = {"course": course, "lesson": lesson, "content_type": content_type}
 
@@ -99,7 +101,7 @@ def add_edit_segment(
             datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None
             or slug == instance.slug
         ):
-            if not instance.id:
+            if not editing:
                 if content_type in ["intro_text", "intro_video"]:
                     if (
                         db.query(datamodels.Segment)
@@ -134,7 +136,8 @@ def add_edit_segment(
                 instance.text = request.form["text_segment_content"]
                 instance.slug = slug
                 instance.type = "text"
-                instance.duration_seconds = 0
+                if not editing:
+                    instance.duration_seconds = 0
                 instance.permission = SegmentPermissionEnum.normal
             else:
                 if "segment_url" not in request.form or not request.form["segment_url"]:
@@ -168,7 +171,7 @@ def add_edit_segment(
             db.add(instance)
             db.commit()
 
-            flash("Segment {} added".format(instance.title))
+            flash("Segment {} {}".format(instance.title, "edited" if editing else "added"))
             return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
         else:
             flash("Can't create segment with such name.")
@@ -222,6 +225,7 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id):
 
 
 @blueprint.route("<course_slug>/<lesson_slug>/<segment_slug>")
+@enrollment_required
 def view(course_slug, lesson_slug, segment_slug):
     """
     Retrieves and displays a particular course, with the specified lesson

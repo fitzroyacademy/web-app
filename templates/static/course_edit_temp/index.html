@@ -210,7 +210,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     </div>
                     <input type="text" id="course-slug" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link">
                     <div class="input-group-append">
-                      <button id="change-slug" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Change</button>
+                      <button class="btn btn-link-secondary" type="button" data-change-slug data-course-slug="{{ course.slug }}">Change</button>
                     </div>
                   </div>
                   <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/{{ course.slug }}<strong data-fit-slug-reveal></strong></a></small>
@@ -233,7 +233,7 @@ You'll define your impact model, look into creating behaviour change that lasts,
                     </div>
                     <input type="text" id="add-teacher-email" class="form-control" placeholder="example@email.com">
                     <div class="input-group-append">
-                      <button id="add-teacher" class="btn btn-link-secondary" type="button" data-course-slug="{{ course.slug }}">Add</button>
+                      <button class="btn btn-link-secondary" type="button" data-add-teacher data-course-slug="{{ course.slug }}">Add</button>
                     </div>
                   </div>
 

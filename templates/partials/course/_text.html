@@ -6,7 +6,7 @@
   <article>
 
     <div class="fit_course intro">
-    <form id="text-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/{{ content_type }}" method="POST">
+    <form id="text-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/{{ content_type }}" method="POST" data-fit-wysiwyg>
       <h1>
         <span class="txt">Text segment.</span>
         <small class="subtxt">
@@ -25,7 +25,7 @@
 
       <div class="fit_wysiwyg">
 
-          <div id="fit_wysiwyg_editor">{% if segment %}{{ segment.text|safe }}{% endif %}</div>
+          <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if segment %}{{ segment.text|safe }}{% endif %}</div>
 
       </div>
 

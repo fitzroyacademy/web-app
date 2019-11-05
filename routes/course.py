@@ -50,7 +50,9 @@ def view(slug):
         return redirect("/404")
     elif course.draft and len(course.lessons) == 0:
         return redirect("/course/{}/edit".format(course.slug))
-    return render_template("course_intro.html", course=course, form=LoginForm())
+
+    return render_template("course_intro.html", course=course, form=LoginForm(),
+                           number_of_resources=course.number_of_resources)
 
 
 @blueprint.route("/code", methods=["GET", "POST"])

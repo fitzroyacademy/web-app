@@ -1045,7 +1045,14 @@ Bleh:;
 
 // crop saving thing
 
-.fit_save_crop{position: absolute; top:1rem; right: 1rem; color:#fff !important;}
+
+.fit_cropper {
+	.fit_save_crop{display:none;}
+	&.fit_upload_cropping {
+		.fit_save_crop{position: absolute; top:1rem; right: 1rem; color:#fff !important; display:block; }
+		.fit_upload_dropzone { display: none; }
+	}
+}
 
 
 // Square upload thing

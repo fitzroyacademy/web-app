@@ -848,7 +848,7 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('#change-slug', 'click', (e, t) => {
+  delegate('[data-change-slug]', 'click', (e, t) => {
     let slug = t.dataset.courseSlug;
     let value = document.querySelector('#course-slug').value;
     post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
@@ -889,7 +889,7 @@ $( document ).ready(function() {
     });
   });
 
-  delegate('#add-teacher', 'click', (e, t) => {
+  delegate('[data-add-teacher]', 'click', (e, t) => {
     e.preventDefault();
     let email = document.querySelector('#add-teacher-email');
     let slug = t.dataset.courseSlug;
@@ -918,7 +918,7 @@ $( document ).ready(function() {
     });
   });
 
-  delegate('#save-lesson-question', 'click', (e, t) => {
+  delegate('[data-save-question-answer]', 'click', (e, t) => {
     e.preventDefault();
     let slug = t.dataset.courseSlug;
     let lessonId = t.dataset.lessonId;
@@ -993,7 +993,7 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('#confirm-delete', 'click', (e, t) => {
+  delegate('[data-confirm-delete]', 'click', (e, t) => {
     e.preventDefault();
     post(t.href, {}, (responseText, xhr) => {
         if (xhr.status == 200) {
@@ -1019,24 +1019,12 @@ $( document ).ready(function() {
       }
   });
 
-  delegate('#text-segment', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_editor').html();
-    $('#text_segment_content').val(mysave);
-  });
-
-  delegate('#lesson-edit-form', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_editor').html();
-    $('#further_reading').val(mysave);
-  });
-
-  delegate('#course-edit-form', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_editor').html();
-    $('#course_summary').val(mysave);
-  });
-
-  delegate('#add-edit-resource', 'submit', (e,t) => {
-    let mysave = $('#fit_wysiwyg_resource').html();
-    $('#resource_description').val(mysave);
+  delegate('[data-fit-wysiwyg]', 'submit', (e,t) => {
+    let p = t.closest('[data-fit-wysiwyg]');
+    let preview = p.querySelector('[data-fit-wysiwyg-preview]');
+    let textarea = p.querySelector('textarea');
+    let mysave = preview.innerHTML;
+    textarea.value = mysave;
   });
 
 /* Image upload widget code. */
@@ -1052,7 +1040,6 @@ $( document ).ready(function() {
     var p = t.closest('[data-fit-image-uploader]');
     p.classList.add('fit_upload_cropping');
     var dropzone = p.querySelector('[data-fit-image-dropzone]');
-    dropzone.style.display = 'none';
     var input = p.querySelector('[data-fit-image-input]');
     var img = p.querySelector('img');
     var oheight = p.offsetHeight;
@@ -1062,6 +1049,7 @@ $( document ).ready(function() {
     var aspectHeight = parseInt(p.dataset.fitAspectHeight) || 9;
     reader.onload = (e) => {
       img.onload = () => {
+        var save = p.querySelector('[data-fit-save-crop]');
         var cropper = new Cropper(img, {
           viewMode: 3,
           aspectRatio: aspectWidth / aspectHeight,
@@ -1081,13 +1069,13 @@ $( document ).ready(function() {
               // cropper.destroy() doesn't seem to clean this up?
               p.querySelector('.cropper-container').remove();
               img.classList.remove('cropper-hidden');
+              save.removeEventListener('click', saveCroppedImage);
             };
             reader.readAsDataURL(blob);
           }, `image/${ext}`);
         }
-        // Just here for debugging until we hook up a UI to this
-        // niche "saving" feature.
-        window.saveCroppedImage = saveCroppedImage;
+        save.removeEventListener('click', saveCroppedImage);
+        save.addEventListener('click', saveCroppedImage);
       }
       img.src = e.target.result;
     }
