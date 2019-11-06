@@ -90,7 +90,7 @@
                   <div class="fit_pic vid">
                     <img src="{{ segment.thumbnail }}" alt="course">
                   </div>
-                  <div class="fit_txt">{{ segment.title }}</div>
+                  <a class="fit_txt" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/edit/{{ segment.type }}">{{ segment.title }}</a>
 
                   <div class="sub buttonset">
                     <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>

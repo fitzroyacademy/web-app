@@ -1,0 +1,124 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+  <article>
+    <div class="fit_course intro">
+
+      <form id="survey-segment" action="/course/???/lessons/???/segments/add/survey" method="POST">
+        <h1>
+          <span class="txt">Survey.</span>
+        </h1>
+
+        <div class="form-group">
+          <label for="">Survey question</label>
+          <input type="text" class="form-control form-control-lg" name="survey_question" value="" id="survey_question" placeholder="E.g. How are you going with the course so far?">
+        </div>
+
+        <h3>Survey type:</h3>
+        <div class="form-group fit_radio_icons" data-fit-radio-icons="">
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" checked="checked" id="plain_text" value="plain_text" name="survey_types">
+            <label class="form-check-label" for="plain_text">
+              <i class="fal fa-video" aria-hidden="true"></i> Plain text
+              <small class="form-text text-muted">A single text box.</small>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" value="happiness" id="happiness" name="survey_types">
+            <label class="form-check-label" for="happiness">
+              <i class="fal fa-books" aria-hidden="true"></i> Happiness scale
+              <small class="form-text text-muted">6 faces, from sad to happy.</small>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" value="ten" id="ten" name="survey_types">
+            <label class="form-check-label" for="ten">
+              <i class="fal fa-walking" aria-hidden="true"></i> 10 point scale
+              <small class="form-text text-muted">Selectable scale from 1 to 10.</small>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" value="stuck" id="stuck" name="survey_types">
+            <label class="form-check-label" for="stuck">
+              <i class="fal fa-comments" aria-hidden="true"></i> Stuck?
+              <small class="form-text text-muted">Thumbs up / thumbs down.</small>
+            </label>
+          </div>
+        </div>
+
+        <h3>Extra options:</h3>
+
+        <!--
+        Options are:
+        
+        plain text:
+          - Min char
+
+        Happiness:
+          - Add why
+          - min chars
+
+        1-10:
+          - Label left
+          - Label right
+          - Add why
+          - min chars
+
+
+        Add 'why' box?
+        Minimum characters for 'why' box?
+
+
+
+
+         -->
+
+        <div class="form-group">
+          <label for="">Paste a link to the video here</label>
+          <input type="url" class="form-control" name="segment_url" value="" id="segment_url" placeholder="https://">
+        </div>
+
+        <h3>Permissions:</h3>
+        <div class="form-group fit_radio_icons" data-fit-radio-icons="">
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" checked="checked" value="normal" id="normal" name="permissions">
+            <label class="form-check-label" for="normal">
+              <i class="fal fa-video" aria-hidden="true"></i> Normal
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="barrier" value="barrier" name="permissions">
+            <label class="form-check-label" for="barrier">
+              <i class="fal fa-lock" aria-hidden="true"></i> Barrier
+              <small class="form-text text-muted">Students must 100% complete all segments prior to this one to progress any farther</small>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="hidden" value="hidden" name="permissions">
+            <label class="form-check-label" for="hidden">
+              <i class="fal fa-eye" aria-hidden="true"></i> Hidden
+              <small class="form-text text-muted">Hidden from students. Use this to temporarily disable segments.</small>
+            </label>
+          </div>
+        </div>
+
+        <div class="fit_pane d-flex justify-content-between">
+          <button class="btn btn-lg btn-primary"><i class="fal fa-check" aria-hidden="true"></i>  Save</button>
+        </div>
+
+      </form>
+    </div>
+  </article>
+</main>
+
+
+
+{% endblock %}
