@@ -1,0 +1,32 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+
+
+{% include 'static/surveys/_course_header.html' %}
+
+
+<div class="fit_survey" fit_iconselect_parent>
+
+  <h2>{ Survey title }</h2>
+
+  
+  <p><a href="/surveys/freetext">freetext</a></p>
+  <p><a href="/surveys/faces">faces</a></p>
+  <p><a href="/surveys/faces_reason">faces_reason</a></p>
+  <p><a href="/surveys/faces_reason_force">faces_reason_force</a></p>
+  <p><a href="/surveys/ten">ten</a></p>
+  <p><a href="/surveys/stuck">stuck</a></p>
+  <p><a href="/surveys/stuck_reason">stuck_reason</a></p>
+
+
+  <div class="fit_survey_submit">
+    { Survey button }
+  </div>
+</div>
+
+{% include 'static/surveys/_course_footer.html' %}
+
+
+
+{% endblock %}

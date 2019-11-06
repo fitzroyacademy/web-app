@@ -390,6 +390,7 @@ $( document ).ready(function() {
       icon_color = $(this).find('i').css('color');
       language = $(this).data('fit_iconselect');
 
+
       // if there is a why, show it
       if (typeof $(this).data('fit_triggerwhy') !== 'undefined')
       {
@@ -403,20 +404,21 @@ $( document ).ready(function() {
       // find and enable the go button, set the colour.
       // we only set the colour and gather info if it ISN'T 'fit_gather',
       // passing fit_gather means get the data and colour from the button
-      var gobutton = $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_modal_submit]');
+      var gobutton = $('[data-fit_iconselects_submit]');
 
-      if (gobutton.data('fit_modal_submit') == 'fit_gather')
+
+      // do something fancy if it's a 'fit_gather' button:
+      if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
       {
         gobutton
         .text(language)
         .prop("disabled", false)
         .css('background-color', icon_color)
-        .css('border-color', icon_color);
       }
       else
       {
         gobutton
-        .text(gobutton.data('fit_modal_submit'))
+        .text(gobutton.data('fit_iconselects_submit'))
         .prop("disabled", false)
         .removeClass('btn-secondary')
         .addClass('btn-primary');
@@ -425,20 +427,8 @@ $( document ).ready(function() {
       // wuh oh, what if there's a textarea? Then disable it again until changed
 
       // if it has a force value....
-      if ($('[data-fit_feedback_why_input]').data('fit_modal_force').length > 0){
-
+      if ($('[data-fit_feedback_why_input]').val().length < $('[data-fit_survey_force]').data('fit_survey_force')) {
         gobutton.prop("disabled", true);
-        
-        $('[data-fit_feedback_why_input]').on({
-          'change, keyup': function(e) {
-            var val = $(this).val();
-            if (val.length > $(this).data('fit_modal_force')){
-              gobutton.prop("disabled", false);
-            } else {
-              gobutton.prop("disabled", true);
-            }
-          }
-        });
       }
 
       console.log(language);
@@ -447,14 +437,52 @@ $( document ).ready(function() {
   });
 
 
-  $('[data-fit_modal_force]').on({
+  // set the counter value
+  if ($('[data-fit_survey_force_counter]').length > 0)
+  {
+    $('[data-fit_survey_force_counter_total]').text($('[data-fit_survey_force]').data('fit_survey_force'));
+    $('[data-fit_survey_force_counter]').text($('[data-fit_survey_force]').val().length);
+  }
+
+  $('[data-fit_survey_force]').on({
     'change, keyup': function(e) {
-      var val = $(this).val();
-      if (val.length > $(this).data('fit_modal_force')){
-        $('[data-fit_modal_submit]').prop("disabled", false);
-      } else {
-        $('[data-fit_modal_submit]').prop("disabled", true);
+
+      var gobutton = $('[data-fit_iconselects_submit]');
+      var vallength = $(this).val().length;
+
+      // if the length is good:
+      if (vallength > $(this).data('fit_survey_force')){
+        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+        {
+          gobutton.prop("disabled", false);
+        }
+        else {
+          gobutton
+          .text(gobutton.data('fit_iconselects_submit'))
+          .prop("disabled", false)
+          .removeClass('btn-secondary')
+          .addClass('btn-primary');
+        }
       }
+
+      // otherwise disable it
+      else {
+        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+        {
+          gobutton.prop("disabled", true);
+        }
+        else {
+          gobutton
+          .text(gobutton.data('fit_iconselects_disabled'))
+          .prop("disabled", true)
+          .addClass('btn-secondary')
+          .removeClass('btn-primary');
+        }
+      }
+
+      // set the counter
+      $('[data-fit_survey_force_counter]').text(vallength);
+
     }
   });
 
