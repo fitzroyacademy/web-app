@@ -41,8 +41,6 @@ $( document ).ready(function() {
     }
   });
 
-
-
   // fail list sorter:
 
   $('[data-fit_fail_list]').click(function(e) {
@@ -94,6 +92,23 @@ $( document ).ready(function() {
     });
   });
 
+
+  // survey responses stuff
+  $('[data-fit_survey_responses] .response').each(function(index, el) {
+     var tall = $(this).height();
+     if (tall > 180)
+     {
+      $(this)
+      .addClass('truncated')
+      .append('<a class="expand"><i class="fal fa-arrow-down"></i> Show more</a>')
+      .on('click', function(e) {
+        e.preventDefault();
+        $(this)
+        .removeClass('truncated')
+        .addClass('expanded');
+      });
+     }
+  });
 
   // Will does a hacky "last hit" thing
   $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
@@ -407,25 +422,36 @@ $( document ).ready(function() {
       var gobutton = $('[data-fit_iconselects_submit]');
 
 
-      // do something fancy if it's a 'fit_gather' button:
-      if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+      // if it wasn't previously selected:
+      if (typeof $(this).attr('data-fit_iconselect_previously') !== "undefined")
       {
         gobutton
-        .text(language)
-        .prop("disabled", false)
-        .css('background-color', icon_color)
+        .text(gobutton.data('fit_iconselects_disabled'))
+        .prop("disabled", true)
+        .addClass('btn-secondary')
+        .removeClass('btn-primary');        
       }
       else
       {
-        gobutton
-        .text(gobutton.data('fit_iconselects_submit'))
-        .prop("disabled", false)
-        .removeClass('btn-secondary')
-        .addClass('btn-primary');
+        // do something fancy if it's a 'fit_gather' button:
+        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+        {
+          gobutton
+          .text(language)
+          .prop("disabled", false)
+          .css('background-color', icon_color)
+        }
+        else
+        {
+          gobutton
+          .text(gobutton.data('fit_iconselects_submit'))
+          .prop("disabled", false)
+          .removeClass('btn-secondary')
+          .addClass('btn-primary');
+        }
       }
 
       // wuh oh, what if there's a textarea? Then disable it again until changed
-
       // if it has a force value....
       if ($('[data-fit_feedback_why_input]').val().length < $('[data-fit_survey_force]').data('fit_survey_force')) {
         gobutton.prop("disabled", true);

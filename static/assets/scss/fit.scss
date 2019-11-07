@@ -121,6 +121,14 @@ footer{z-index: 1500;}
 .fit_player{z-index: 2000;}
 
 
+.fit_survey_responses{z-index: 2000;}
+
+.fit_survey_responses table tbody .response.truncated:after{z-index: 2100}
+.fit_survey_responses table tbody .response .expand{z-index: 2150}
+
+.fit_survey{z-index: 2200;}
+
+
 .fit_medium_rare{z-index: 2000;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
@@ -1146,7 +1154,7 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 // ------------------------------------------------------------------------------------
 // chart stuff
-.fit_chart{}
+.fit_chart{min-height: 20rem; background: $bg;}
 
 
 // in the sidebar
@@ -1207,7 +1215,7 @@ aside .fit_chart{margin: 1rem;}
 
 
 // ------------------------------------------------------------------------------------
-// Tables for analyrtics
+// Tables for analytics
 
 table.fit_stats{}
 
@@ -1254,6 +1262,16 @@ table.fit_colhover th:hover::after {content: ""; position: absolute; background-
 table.fit_colhover td:hover{cursor: default;}
 
 
+
+// ------------------------------------------------------------------------------------
+// table for happiness edit
+
+.fit_label_table{border: 1px solid $border_light;}
+
+.fit_label_table thead th small{color:$text_light;}
+.fit_label_table tbody tr th:first-child{width: 1rem; font-size: 1.5rem;}
+
+.fit_label_table tbody tr th:first-child
 
 // ------------------------------------------------------------------------------------
 // flag
@@ -2306,12 +2324,23 @@ header .fit_btn_saver .saved{color: $new_green;}
 .fit_radio_icons.columned{column-count:2;}
 
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
-.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
+.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter; font-weight: bold;}
 .fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
 .fit_radio_icons input:checked + label{color: $brand;}
 .fit_radio_icons input:checked + label .form-text{color: $text  !important;}
+
+// some colours
+.fit_radio_icons input:checked + label.cyan{color: $new_cyan;}
+.fit_radio_icons input:checked + label.teal{color: $new_teal;}
+.fit_radio_icons input:checked + label.purple{color: $new_purple;}
+.fit_radio_icons input:checked + label.pink{color: $new_pink;}
+.fit_radio_icons input:checked + label.red{color: $new_red;}
+.fit_radio_icons input:checked + label.apricot{color: $new_apricot;}
+.fit_radio_icons input:checked + label.green{color: $new_green;}
+.fit_radio_icons input:checked + label.blue{color: $new_blue;}
+.fit_radio_icons input:checked + label.watermelon{color: $new_watermelon;}
 
 
 // last one is the adder
@@ -2454,7 +2483,7 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 .fit_survey_submit{}
 
 
-.fit_survey{border-radius: $border_rad_xl; padding: 3rem;}
+.fit_survey{position:relative; border-radius: $border_rad_xl; padding: 3rem; border:1px solid $border_light; background: #fff;}
 
 .fit_survey h2{padding-bottom: 3rem; position: relative;}
 
@@ -2463,7 +2492,46 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 .fit_survey .fit_survey_why label{padding: 2rem 0 0; font-size: 1.5rem; font-weight: 900; position: relative; display: block;}
 .fit_survey .fit_why_count{position: absolute; bottom:0; right:0;font-size: 0.9rem; color: $text_light; font-weight: normal;}
 
-.fit_survey_submit{text-align: right; padding: 2rem 0 0}
+.fit_survey_submit{padding: 2rem 0 0; display: flex; justify-content:space-between;}
+
+// ------------------------------------------------------------------------------------
+// Survey responses table.
+
+.fit_survey + .fit_survey_responses{margin-top: -2rem; padding-top: 3rem;}
+
+.fit_survey_responses{position:relative; border:1px solid $border_light; border-top:0; border-radius: 0 0 $border_rad_lg $border_rad_lg; padding: 2rem; background: linear-gradient(to bottom, $border_light 0, #ffffff 35px, #ffffff 100%); background-color: #fff;}
+
+.fit_survey_responses h3{padding: 1.5rem 0 1rem; color:$text_light;}
+
+.fit_survey_responses table{margin:0 -.75rem;}
+.fit_survey_responses table thead th{border-top:none;}
+.fit_survey_responses table tbody th .fit_btn{margin: -.75rem; font-weight: normal; white-space: nowrap;}
+.fit_survey_responses table tbody th .fit_btn .badge-pill{clear: left; float: left; margin-top: .2rem;}
+
+.fit_survey_responses table tbody tr:first-child th,
+.fit_survey_responses table tbody tr:first-child td{border-top:none;}
+
+.fit_survey_responses table tbody .response.truncated{height: 180px; overflow: hidden; position: relative;}
+.fit_survey_responses table tbody .response.truncated:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 4rem;}
+
+.fit_survey_responses table tbody .response .expand{position: absolute; bottom: 0; left: 0; width: 100%; font-size: 0.9rem; color:$blue; text-decoration: none; cursor: pointer; background: #fff;}
+.fit_survey_responses table tbody .response .expand:hover{color:$blue_dark;}
+.fit_survey_responses table tbody .response .expand i{margin-right: .25rem;}
+.fit_survey_responses table tbody .response.expanded .expand{display: none;}
+
+.fit_survey_responses table tbody .response p:last-child{margin-bottom: 0;}
+
+.fit_survey_responses table tbody .response_num{font-weight: bold; background: $bg_dark; padding: 0.25rem .75rem; margin: -.25rem -.5rem; border-radius: $border_rad_sm;}
+.fit_survey_responses table tbody .response_num_1,
+.fit_survey_responses table tbody .response_num_2{background-color: $new_red; color:#fff;}
+.fit_survey_responses table tbody .response_num_3,
+.fit_survey_responses table tbody .response_num_4,
+.fit_survey_responses table tbody .response_num_5,
+.fit_survey_responses table tbody .response_num_6,
+.fit_survey_responses table tbody .response_num_7{background-color: $new_apricot; color:#fff;}
+.fit_survey_responses table tbody .response_num_8,
+.fit_survey_responses table tbody .response_num_9,
+.fit_survey_responses table tbody .response_num_10{background-color: $new_green; color:#fff;}
 
 
 // ------------------------------------------------------------------------------------
