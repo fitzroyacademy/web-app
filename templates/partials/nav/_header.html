@@ -44,10 +44,12 @@
           <span class="fit_txt">Course</span>
         </a>
 
+        {% if lesson %}
         <a href="{{ lesson.permalink }}" class="fit_btn"> 
           <i class="fal fa-external-link"></i>
           <span class="fit_txt">Live</span>
         </a>
+        {% endif %}
 
         <a class="fit_btn_saver">
           <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save changes</span></span>
