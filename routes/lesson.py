@@ -10,10 +10,11 @@ from flask import (
     session,
 )
 from slugify import slugify
+from uuid import uuid4
 
 import datamodels
 import stubs
-from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG
+from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG, VideoTypeEnum, SegmentPermissionEnum
 from util import get_current_user
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
@@ -36,6 +37,50 @@ def lessons():
 @teacher_required
 def reorder_lessons(user, course, course_slug=None):
     return reorder_items(request, datamodels.Lesson, course.lessons)
+
+
+@blueprint.route("/<course_slug>/lessons/add_intro", methods=["POST"])
+@login_required
+@teacher_required
+def course_add_edit_intro_lesson(user, course, course_slug):
+    form = AjaxCSRFTokenForm(request.form)
+    intro_lesson = course.intro_lesson
+
+    if form.validate() and "intro_lesson" in request.form:
+        db = datamodels.get_session()
+
+        slug = "intro-lesson"
+        if datamodels.Lesson.find_by_slug(course.slug, "intro-lesson") is not None and not intro_lesson:
+            slug = slug + "-" + str(uuid4())[:3]
+        if intro_lesson:
+            segment = intro_lesson.intro_segment
+            segment.url = request.form["url"]
+        else:
+            intro_lesson = datamodels.Lesson(title="Intro lesson",
+                                             slug=slug,
+                                             description="Intro lesson video",
+                                             order=0,
+                                             course=course
+                                             )
+
+            db.add(intro_lesson)
+
+            segment = datamodels.Segment(lesson=intro_lesson,
+                                         order=0,
+                                         type="video",
+                                         permission=SegmentPermissionEnum.normal,
+                                         video_type=VideoTypeEnum.standard,
+                                         url=request.form["url"],
+                                         duration_seconds=0,
+                                         slug="intro-segment"
+                                         )
+        db.add(segment)
+        db.commit()
+
+    else:
+        flash("Couldn't create intro lesson")
+
+    return redirect("/course/{}/edit".format(course.slug))
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
