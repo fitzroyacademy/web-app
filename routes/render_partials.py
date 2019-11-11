@@ -10,3 +10,17 @@ def render_teacher(teacher, course, lesson=None):
     data = {"teacher": teacher, "course": course, "lesson": lesson}
 
     return render_template("partials/course/_teacher.html", **data)
+
+
+def render_intro(introduction):
+    data = {"introduction": introduction}
+
+    return render_template("partials/course/_intro.html", **data)
+
+
+def render_segment_list_element(course, lesson, segment):
+    data = {"segment": segment,
+            "course": course,
+            "lesson": lesson}
+
+    return render_template("partials/course/_list_segment_element.html", **data)

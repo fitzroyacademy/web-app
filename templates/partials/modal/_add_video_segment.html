@@ -1,0 +1,171 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_video_segment" data-fit-add-edit-segment-modal>
+    <form action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/video"
+          class="modal-dialog modal-dialog-centered" style="overflow-y: initial !important"
+          role="document" method="post"
+          data-fit-add-edit-segment-form
+          data-fit-course-slug="{{ course.slug }}"
+          data-fit-lesson-id="{{ lesson.id }}"
+          data-fit-segment-id=""
+          data-fit-segment-type="video">
+        {{ ajax_csrf_form.csrf_token }}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Video segment.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height: 250px; overflow-y: auto;">
+
+                <div class="fit_course intro">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-lg"
+                               name="segment_name"
+                               value="" id="segment_name"
+                               placeholder="Video title">
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="lesson_description">Paste a link to the video here</label> -->
+                        <input type="url" class="form-control" name="segment_url"
+                               value="" id="segment_url"
+                               placeholder="https://">
+                        <small class="form-text text-muted"><strong>Wista:</strong>
+                            https://fitzroyacademy.wistia.com/medias/4ub59urk8l
+                        </small>
+                        <small class="form-text text-muted"><strong>YouTube:</strong>
+                            https://www.youtube.com/watch?v=u7qCzZCoI2M
+                        </small>
+                    </div>
+
+
+                    <h3>Video type:</h3>
+                    <div class="form-group fit_radio_icons" data-fit-radio-icons>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   id="standard"
+                                   value="standard" name="video_types">
+                            <label class="form-check-label" for="standard">
+                                <i class="fal fa-video"></i> Standard video
+                                <small class="form-text text-muted">Most videos are this type!</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="resources"
+                                   id="resources" name="video_types">
+                            <label class="form-check-label" for="resources">
+                                <i class="fal fa-books"></i> Resources explainer
+                                <small class="form-text text-muted">Usually the second video, explaining how to use
+                                    resources and templates.
+                                </small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="practical" id="practical_example" name="video_types">
+                            <label class="form-check-label" for="practical_example">
+                                <i class="fal fa-walking"></i> Practical example
+                                <small class="form-text text-muted">Usually a screen recording, or explainer of a real
+                                    life example.
+                                </small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="interview"
+                                   id="interview" name="video_types">
+                            <label class="form-check-label" for="interview">
+                                <i class="fal fa-comments"></i> Interview
+                                <small class="form-text text-muted">Two or more people talking about a topic together.
+                                </small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="case"
+                                   id="case_study" name="video_types">
+                            <label class="form-check-label" for="case_study">
+                                <i class="fal fa-folder-open"></i> Case study
+                                <small class="form-text text-muted">Overview or deep dive on a specific case.</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="story" id="story"
+                                   name="video_types">
+                            <label class="form-check-label" for="story">
+                                <i class="fal fa-book-spells"></i> Story
+                                <small class="form-text text-muted">Personal anecdote, or example in story form.</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="bonus" id="bonus"
+                                   name="video_types">
+                            <label class="form-check-label" for="bonus">
+                                <i class="fal fa-star"></i> Bonus!
+                                <small class="form-text text-muted">An extra, optional segment.</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <h3>Permission:</h3>
+                    <div class="form-group fit_radio_icons" data-fit-radio-icons>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   value="normal"
+                                   id="normal" name="permissions">
+                            <label class="form-check-label" for="normal">
+                                <i class="fal fa-video"></i> Normal
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   id="barrier"
+                                   value="barrier" name="permissions">
+                            <label class="form-check-label" for="barrier">
+                                <i class="fal fa-lock"></i> Barrier
+                                <small class="form-text text-muted">Students must 100% complete all segments prior to
+                                    this one to progress any farther
+                                </small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input"
+                                   id="hidden"
+                                   value="hidden" name="permissions">
+                            <label class="form-check-label" for="hidden">
+                                <i class="fal fa-eye"></i> Hidden
+                                <small class="form-text text-muted">Hidden from students. Use this to temporarily
+                                    disable segments.
+                                </small>
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit"
+                        name="intro_lesson"
+                        class="btn btn-primary"
+                        data-fit-segment-add-edit-submit
+                >Save changes</button>
+            </div>
+        </div>
+    </form>
+</div>

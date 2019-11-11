@@ -92,6 +92,16 @@ $( document ).ready(function() {
     });
   });
 
+  function showAlertSnackbar(text){
+    Snackbar.show({
+      text: text,
+      pos: 'bottom-center',
+      backgroundColor: '#fff',
+      textColor: '#4f5153',
+      actionTextColor: '#2793f8',
+      customClass: 'fit_snackbar'
+    });
+  }
 
   // survey responses stuff
   $('[data-fit_survey_responses] .response').each(function(index, el) {
@@ -1015,9 +1025,122 @@ $( document ).ready(function() {
     document.querySelector('#confirm-delete').href = event.relatedTarget.href;
   });
 
-  $('#fit_modal_add_segment').on('show.bs.modal', function(event){
-    document.querySelector('#add-video-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addVideo'];
-    document.querySelector('#add-text-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addText'];
+  delegate('[data-fit-add-edit-segment]', 'click', (e, t) => {
+      $('#fit_modal_add_segment').modal('hide');
+      let segmentType = t.dataset['fitSegmentType'];
+      let modalObj = null;
+      if (segmentType == 'text') {
+          modalObj = $('#fit_modal_add_text_segment');
+          modalObj[0].querySelector('#segment_name').value = "";
+          modalObj[0].querySelector('#fit_wysiwyg_editor').innerHTML = "";
+          modalObj.modal('show');
+      } else {
+          modalObj = $('#fit_modal_add_video_segment');
+          modalObj[0].querySelector('#segment_name').value = "";
+          modalObj[0].querySelector('#segment_url').value = "";
+          modalObj[0].querySelector('#standard').checked = true;
+          modalObj[0].querySelector('#normal').checked = true;
+          modalObj.modal('show');
+      }
+      modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
+  });
+
+  delegate('[data-fit-add-intro-submit]', 'click', (e, t) => {
+    let form = t.closest('form');
+    let formData = new FormData(form);
+    let data = {"segment_url": formData.get("segment_url")};
+
+    post(form.action, data, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        if (xhr.status == 200) {
+            showAlertSnackbar("Intro segment added");
+            $('[data-fit-add-edit-segment-modal]').modal('hide');
+            if ("html" in res) {
+              let container = document.querySelector('[data-fit-sortable-list-with-intro-element]');
+              container.innerHTML = res['html'] + container.innerHTML;
+              document.querySelector('[data-fit-add-intro]').style.display = "none";
+            }
+        } else {
+                showAlertSnackbar(jsonResponse['message'])
+            }
+    });
+
+  })
+
+  delegate('[data-fit-segment-add-edit-submit]', 'click', (e, t) => {
+    e.preventDefault();
+    let form = t.closest('form');
+    let formData = new FormData(form);
+    let segmentId = form.dataset['fitSegmentId'];
+    let segmentType = form.dataset['fitSegmentType'];
+    let courseSlug = form.dataset['fitCourseSlug'];
+    let lessonId = form.dataset['fitLessonId'];
+    let previewWysiwyg = form.querySelector('[data-fit-wysiwyg-preview]');
+    let description = "";
+    let url = '';
+
+    if (previewWysiwyg) {
+      description = previewWysiwyg.innerHTML;
+    }
+
+    if (segmentId) {
+      url = `/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}/edit`
+    } else {
+      url = `/course/${courseSlug}/lessons/${lessonId}/segments/add/${segmentType}`
+    }
+
+    let data = {
+      "segment_url": formData.get("segment_url"),
+      "segment_name": formData.get("segment_name"),
+      "text_segment_content": description,
+      "video_types": formData.get("video_types"),
+      "permissions": formData.get("permissions")
+
+    };
+
+    post(url, data, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        if (xhr.status == 200) {
+          showAlertSnackbar(res["message"]);
+          $('[data-fit-add-edit-segment-modal]').modal('hide');
+
+          if ("html" in res) {
+            let container = document.querySelector('#sortable-list');
+            container.innerHTML = container.innerHTML + res['html'];
+          }
+        } else {
+          showAlertSnackbar(res['message']);
+        }
+    });
+
+  });
+
+  $('#fit_modal_add_text_segment,#fit_modal_add_video_segment').on('show.bs.modal', function(event){
+    if (event.relatedTarget && event.relatedTarget.dataset['fitSegmentId']) {
+        let container = event.relatedTarget.closest('[data-fit-list-elements-container]');
+        let courseSlug = container.dataset['fitCourseSlug'];
+        let lessonId = container.dataset['fitLessonId'];
+        let segmentId = event.relatedTarget.dataset['fitSegmentId'];
+        get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}`,
+            (responseText, xhr) => {
+              if (xhr.status == 200) {
+                let res = JSON.parse(xhr.response);
+                if (res['segment_type'] == 'video') {
+                  event.currentTarget.querySelector('#segment_name').value = res['title'];
+                  event.currentTarget.querySelector('#segment_url').value = res['segment_url'];
+                  event.currentTarget.querySelector(`#${res['video_type']}`).checked = true;
+                  event.currentTarget.querySelector(`#${res['permission']}`).checked = true;
+
+                } else {
+                  event.currentTarget.querySelector('#segment_name').value = res['title'];
+                  event.currentTarget.querySelector('#fit_wysiwyg_editor').innerHTML = res['text'];
+                }
+                event.currentTarget.querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = segmentId;
+              } else {
+                showAlertSnackbar("Oh snap, something went wrong. Try again.")
+              }
+        })
+    }
   });
 
   $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){
@@ -1029,7 +1152,7 @@ $( document ).ready(function() {
     form.attr("action", event.relatedTarget.href);
 
     if (event.relatedTarget.dataset['resourceId']) {
-      let res = get(event.relatedTarget.href, (responseText, xhr) => {
+      get(event.relatedTarget.href, (responseText, xhr) => {
         if (xhr.status == 200) {
             let res = JSON.parse(xhr.response);
             resourceTitle.val(res["title"]);
@@ -1053,8 +1176,7 @@ $( document ).ready(function() {
         if (xhr.status == 200) {
             window.location.href = JSON.parse(xhr.response)['success_url']
         } else {
-                // DEV: add some messaging
-                console.log(JSON.parse(xhr.response)['message'])
+                showAlertSnackbar(JSON.parse(xhr.response)['message'])
             }
     });
   });
@@ -1139,7 +1261,7 @@ $( document ).ready(function() {
   delegate('[data-fit-image-dropzone]', 'click', (e, t) => {
     e.preventDefault();
     var p = t.closest('[data-fit-image-uploader]');
-    var input = p.querySelector('[data-fit-image-input]')
+    var input = p.querySelector('[data-fit-image-input]');
     input.click();
   });
 
@@ -1178,5 +1300,9 @@ $( document ).ready(function() {
       loadSegment(event.state.segment_id);
     }
   });
+
+  delegate('[data-fit-save-lesson-changes]', 'click', (e, t) => {
+    document.querySelector('[data-fit-lesson-add-edit]').submit()
+  })
 
 });

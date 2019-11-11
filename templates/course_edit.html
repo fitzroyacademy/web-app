@@ -61,7 +61,7 @@
           
 
           {% if not introduction %}
-          <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
+          <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_intro">
             <i class="fas fa-plus"></i>
             <span class="fit_txt">Add an intro video</span>
           </a>
@@ -79,7 +79,7 @@
               </div>
               <div class="sub buttonset">
                 <div class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</div>
-                <a href="/course/{{ course.slug }}/lessons/{{ introduction.id }}/edit" class="btn btn-light"><i class="fal fa-edit"></i></a>
+                <a class="btn btn-light" data-toggle="modal" data-target="#fit_modal_add_intro"><i class="fal fa-edit"></i></a>
               </div>
             </div>
             {% endif %}
@@ -362,6 +362,8 @@
 <!-- adding things -->
 {% include 'partials/modal/_add_lesson.html' %}
 {% include 'partials/modal/_add_lesson_fitz.html' %}
+{% with action="/course/" + course.slug + "/lessons/add_intro", intro=introduction.intro_segment if introduction else None %}
 {% include 'partials/modal/_add_intro.html' %}
+{% endwith %}
 
 {% endblock %}

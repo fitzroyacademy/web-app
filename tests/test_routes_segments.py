@@ -181,14 +181,11 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l2.id),
             user=self.user,
             data={},
-            expected_status_code=200,
-            follow_redirects=True,
+            expected_status_code=400
         )
 
         self.assertEqual(len(l1.segments), 0)
-        self.assertTrue(
-            re.search("Lesson do not match course", response.get_data(as_text=True))
-        )
+        self.assertEqual("Lesson do not match course", response.json["message"])
 
     def test_add_text_segment(self):
         l1 = self.make_standard_course_lesson(
@@ -207,8 +204,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=200,
-            follow_redirects=True,
+            expected_status_code=200
         )
 
         self.assertEqual(len(l1.segments), 1)
@@ -231,12 +227,12 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
             user=self.user,
             data={},
-            expected_status_code=200,
+            expected_status_code=400,
         )
         self.assertEqual(len(l1.segments), 0)
         # Can't create segment with such name
         self.assertTrue(
-            re.search("create segment with such name.", response.get_data(as_text=True))
+            re.search("create segment with such name.", response.json['message'])
         )
 
         data = {"segment_name": "Segment numero 1"}
@@ -244,13 +240,13 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=200,
-            follow_redirects=True,
+            expected_status_code=400,
         )
         self.assertEqual(len(l1.segments), 0)
+        print(response.json)
         self.assertTrue(
             re.search(
-                "Segment description is required", response.get_data(as_text=True)
+                "Segment description is required", response.json['message']
             )
         )
 
@@ -262,11 +258,11 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=200,
+            expected_status_code=400,
         )
         self.assertEqual(len(l1.segments), 0)
         self.assertTrue(
-            re.search("create segment with such name.", response.get_data(as_text=True))
+            re.search("create segment with such name.", response.json["message"])
         )
 
     def test_add_video_segment(self):
@@ -287,7 +283,6 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             user=self.user,
             data=data,
             expected_status_code=200,
-            follow_redirects=True,
         )
 
         self.assertEqual(len(l1.segments), 1)
@@ -296,7 +291,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.assertEqual(l1.segments[0].permission, SegmentPermissionEnum.normal)
         self.assertEqual(l1.segments[0].order, 1)
         self.assertTrue(
-            re.search("Segment Video segment added", response.get_data(as_text=True))
+            re.search("Segment Video segment added", response.json["message"])
         )
 
     def test_add_video_segment_without_data(self):
@@ -313,12 +308,12 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/intro_text".format(l1.id),
             user=self.user,
             data={},
-            expected_status_code=200,
+            expected_status_code=400,
         )
 
         self.assertEqual(len(l1.segments), 0)
 
-    def test_add_intro_text_segment(self):
+    def test_add_intro_video_segment(self):
         l1 = self.make_standard_course_lesson(
             title="intro", course=self.course, order=0
         )
@@ -329,53 +324,23 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.session.commit()
 
         data = {
-            "segment_name": "Intro segment",
+            "segment_url": "https://youtube.com/some-video",
             "text_segment_content": "This is the second segment. The one after our brilliant intro.",
         }
 
         self.assertEqual(len(l1.segments), 1)
         response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/segments/add/intro_text".format(l1.id),
-            user=self.user,
-            data=data,
-            expected_status_code=302,
-        )
-
-        self.assertEqual(len(l1.segments), 2)
-        self.assertEqual(l1.segments[1].title, data["segment_name"])
-        self.assertEqual(l1.segments[1].text, data["text_segment_content"])
-        self.assertEqual(l1.segments[1].order, 0)
-
-    def test_add_second_intro_segment(self):
-        l1 = self.make_standard_course_lesson(
-            title="intro", course=self.course, order=0
-        )
-        self.session.add(l1)
-        self.session.commit()
-        s1 = self.make_segment(
-            title="the first intro", slug="the-first-intro", lesson=l1, order=0
-        )
-        self.session.add(s1)
-        self.session.commit()
-
-        data = {
-            "segment_name": "Second intro segment",
-            "text_segment_content": "This is the second segment. Intro segment.",
-        }
-
-        self.assertEqual(len(l1.segments), 1)
-        response = make_authorized_call(
-            url="/course/abc-123/lessons/{}/segments/add/intro_text".format(l1.id),
+            url="/course/abc-123/lessons/{}/segments/add/intro_video".format(l1.id),
             user=self.user,
             data=data,
             expected_status_code=200,
-            follow_redirects=True,
         )
 
-        self.assertEqual(len(l1.segments), 1)
-        self.assertTrue(
-            re.search("Intro segment already exists", response.get_data(as_text=True))
-        )
+        self.assertEqual(len(l1.segments), 2)
+        self.assertEqual(l1.segments[1].title, "Intro segment")
+        self.assertEqual(l1.segments[1].text, data["text_segment_content"])
+        self.assertEqual(l1.segments[1].url, data["segment_url"])
+        self.assertEqual(l1.segments[1].order, 0)
 
     def test_add_segment_wrong_content_type(self):
         l1 = self.make_standard_course_lesson(
@@ -394,12 +359,11 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/some_action".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=200,
-            follow_redirects=True,
+            expected_status_code=400
         )
 
         self.assertEqual(len(l1.segments), 0)
-        self.assertTrue(re.search("Wrong action", response.get_data(as_text=True)))
+        self.assertEqual("Wrong action", response.json["message"])
 
     def test_add_segment_order(self):
         l1 = self.make_standard_course_lesson(
@@ -457,16 +421,11 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=200,
-            follow_redirects=True,
+            expected_status_code=400,
         )
         self.assertEqual(len(l1.segments), 1)
         # Can't create segment with such name
-        self.assertTrue(
-            re.search(
-                "t create segment with such name.", response.get_data(as_text=True)
-            )
-        )
+        self.assertEqual("Can't create segment with such name.", response.json["message"])
 
     def test_add_segment_same_slug_different_lesson(self):
         l1 = self.make_standard_course_lesson(
