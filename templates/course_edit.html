@@ -362,6 +362,8 @@
 <!-- adding things -->
 {% include 'partials/modal/_add_lesson.html' %}
 {% include 'partials/modal/_add_lesson_fitz.html' %}
+{% with action="/course/" + course.slug + "/lessons/add_intro", intro=introduction.intro_segment if introduction else None %}
 {% include 'partials/modal/_add_intro.html' %}
+{% endwith %}
 
 {% endblock %}

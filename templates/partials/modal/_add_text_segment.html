@@ -1,0 +1,45 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_text_segment" data-fit-add-edit-segment-modal>
+  <form id="text-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/text"
+        class="modal-dialog modal-dialog-centered"
+        method="POST"
+        data-fit-add-edit-segment-form
+        data-fit-course-slug="{{ course.slug }}"
+        data-fit-lesson-id="{{ lesson.id }}"
+        data-fit-segment-id=""
+        data-fit-segment-type="text"
+        data-fit-wysiwyg>
+      {{ ajax_csrf_form.csrf_token }}
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Text segment.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="fit_course intro">
+
+          <div class="form-group">
+            <input type="text" class="form-control form-control-lg" name="segment_name" value="{% if segment %}{{ segment.title }}{% endif %}" id="segment_name" placeholder="Segment name">
+
+          </div>
+
+          <div class="fit_wysiwyg">
+            <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if segment %}{{ segment.text|safe }}{% endif %}</div>
+          </div>
+          <textarea id="text_segment_content" name="text_segment_content" style="display: none"></textarea>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit"
+                name="intro_lesson"
+                class="btn btn-primary"
+                data-fit-segment-add-edit-submit
+        >Save changes</button>
+      </div>
+    </div>
+  </form>
+</div>

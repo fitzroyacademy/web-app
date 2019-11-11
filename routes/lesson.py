@@ -1,4 +1,3 @@
-import json
 from flask import (
     Blueprint,
     render_template,
@@ -6,8 +5,7 @@ from flask import (
     redirect,
     jsonify,
     flash,
-    abort,
-    session,
+    abort
 )
 from slugify import slugify
 from uuid import uuid4
@@ -15,7 +13,6 @@ from uuid import uuid4
 import datamodels
 import stubs
 from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG, VideoTypeEnum, SegmentPermissionEnum
-from util import get_current_user
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
@@ -27,9 +24,7 @@ blueprint = Blueprint("lesson", __name__, template_folder="templates")
 
 @blueprint.route("/lessons")
 def lessons():
-    return render_template("lesson_chart.html") @ blueprint.route(
-        "/<slug>/lessons/reorder", methods=["GET", "POST"]
-    )
+    return render_template("lesson_chart.html")
 
 
 @blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"])
