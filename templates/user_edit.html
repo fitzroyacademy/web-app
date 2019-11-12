@@ -48,15 +48,18 @@
 			        </div>
 
 			        <div class="form-group">
-								<div class="input-group">
-								  <div class="input-group-prepend">
-								    <span class="input-group-text">Picture</span>
-								  </div>
-								  <div class="custom-file">
-								    <input type="file" class="custom-file-input" id="inputGroupFile01">
-								    <label class="custom-file-label" for="inputGroupFile01">Choose file to change</label>
-								  </div>
-								</div>
+								<div class="fit_squarelogo fit_cropper" data-fit-image-uploader data-fit-aspect-width="1" data-fit-aspect-height="1">
+		              {% if current_user.profile_picture %}
+		                <img src="{{ current_user.profile_picture }}" alt="user">
+		              {% else %}
+		                <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
+		              {% endif %}
+		              <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
+		              <form action="/edit" method="post" style="display:none;">
+		                <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
+		              </form>
+		              <a class="btn btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
+		            </div>
 							</div>        
 							
 							<div class="form-group">
@@ -77,56 +80,40 @@
 			</div>        
 			  
 			<div class="fit_course">
-			  <h3>
-			    <span class="txt">Your courses.</span>
-			    <small class="subtxt"><span class="fas fa-check"></span> 72% complete</small> <!-- DEV: total % complete, aggregated across all courses user has started -->
-			  </h3>
+        <h3>
+          <span class="txt">Your courses.</span>
+          {% if current_user.courses|length > 0 %}
+            <small class="subtxt"><span class="fas fa-check"></span> {{ current_user.course_progress }}% complete</small> 
+            <!-- DEV: total % complete, aggregated across all courses user has started -->
+          {% endif %}
+        </h3>
 
-			  <div class="fit_body fit_lessons">
+        <div class="fit_body fit_lessons">
 
-			    <!-- DEV: this is just links (without the accordion!) direct to the courses user is enrolled in -->
+          <!-- DEV: this is links (without the accordion!) direct to the courses user is enrolled in -->
 
-			    <div class="fit_lesson">
-			      <a class="fit_btn collapsed i-l i-t" href="#">
-			        <div class="fit_pic vid">
-			          <img src="/assets/images/lessons/agile-project-management.jpg" alt="course">
-			          <span class="fas fa-check"></span>
-			        </div>
-			        <span class="fit_txt">Agile project management</span>
-			        <span class="fit_txt secondary">Clare Carmody, John Smith</span>
-			        <span class="fit_time">43:51</span>
-			      </a>
-			    </div>
+          {% if current_user.courses|length == 0 %}
+            <div class="fit_btn">
+              <div class="fit_txt">You're not enrolled in any courses yet!</div>
+            </div>
+          {% else %}
+            {% for course in current_user.courses %}
+            <div class="fit_lesson">
+              <a class="fit_btn" href="{{ course.permalink }}">
+                <div class="fit_pic vid">
+                  <img src="{{ course.thumbnail }}" alt="course">
+                </div>
+                <span class="fit_txt">{{ course.title }}</span>
+                <span class="fit_sub">{{ course.duration_seconds|hhmmss }}</span>
+              </a>
+            </div>
+            {% endfor %}
+          {% endif %}
+        </div>
 
-			    <div class="fit_lesson">
-			      <a class="fit_btn collapsed i-l i-t" href="#">
-			        <div class="fit_pic vid">
-			          <img src="/assets/images/lessons/guerilla-usability-testing.jpg" alt="course">
-			          <span class="fas fa-check"></span>
-			        </div>
-			        <span class="fit_txt">Feeling good about eating cake</span>
-			        
-			        <span class="fit_txt secondary">Melissa Ng</span>
-			        <span class="fit_time">53:51</span>
-			      </a>        
-			    </div>            
+        <a href="/course/add" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus"></i> New course</a>
 
-
-			    <div class="fit_lesson">
-			      <a class="fit_btn collapsed i-l i-t" href="#">
-			        <div class="fit_pic vid">
-			          <img src="/assets/images/lessons/crowdfunding.jpg" alt="course">
-			          <span class="fas fa-play"></span>
-			        </div>
-			        <span class="fit_txt">Crowdfunding</span>
-			        
-			        <span class="fit_txt secondary">Prashan Paramanathan</span>            
-			        <span class="fit_time">3:51</span>
-			      </a>
-			    </div>
-			  </div>
-			</div><!-- fit_course -->
-			<!-- end vid stack -->
+      </div><!-- fit_course -->
 
 			<h3>
 			  <span class="txt">Your privacy.</span>

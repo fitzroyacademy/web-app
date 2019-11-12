@@ -348,6 +348,16 @@
             </dl>
           </div><!-- pane -->
 
+          <div class="fit_pane danger">
+            <dl class="fit_summary_icons">
+              <dt><i class="fal fa-trash-alt"></i></dt>
+              <dd class="naked">
+                <a href="#" data-toggle="modal" data-target="#fit_modal_delete_course" class="btn btn-outline-danger">Remove course</a>
+              </dd>
+            </dl>
+          </form>
+        </dl>
+
 
         </div><!-- col -->
       </div><!-- row -->
@@ -366,6 +376,7 @@
 <!-- adding things -->
 {% include 'partials/modal/_add_lesson.html' %}
 {% include 'partials/modal/_add_lesson_fitz.html' %}
+{% include 'partials/modal/_delete_course.html' %}
 {% with action="/course/" + course.slug + "/lessons/add_intro", intro=introduction.intro_segment if introduction else None %}
 {% include 'partials/modal/_add_intro.html' %}
 {% endwith %}

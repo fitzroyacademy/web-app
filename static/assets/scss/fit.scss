@@ -550,6 +550,8 @@ header .fit_btn:hover > .fit_txt:after,
 	.fit_pane{margin: 0 -1rem 1rem !important;}
 }
 
+// DANGER PANE
+.fit_pane.danger{border-color: $red;}
 
 // Okay. This is the 'segment types' bit, where we use freaky stuff to display certain icons:
 .fit_btn > .fit_circle{}
@@ -1051,6 +1053,8 @@ Bleh:;
 // move it around if we're 2 deep
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
 
+// naked means it has no title{}
+.fit_summary_icons dd.naked{margin-top: -1.1rem;}
 
 // crop saving thing
 
@@ -1070,7 +1074,7 @@ Bleh:;
 .fit_paneless .fit_cropper{margin: 1rem 1rem 1rem 0;}
 
 // Square upload thing
-.fit_squarelogo{margin-bottom: 1rem; width: 200px; height: 200px; border:1px solid $border_light; border-radius: $border_rad_lg;}
+.fit_squarelogo{margin-bottom: 1rem; width: 300px; height: 300px; border:1px solid $border_light; border-radius: $border_rad_lg; position: relative; overflow: hidden;}
 .fit_squarelogo img{max-width: 100%; border-radius: $border_rad_lg;}
 
 .fit_cta{background: $watermelon; padding: 2rem 0 5rem; margin-top: 3rem;}
