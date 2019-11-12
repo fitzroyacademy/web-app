@@ -2659,6 +2659,7 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 // ------------------------------------------------------------------------------------
 // pricing table
 
+.fit_table_price{margin-top: 8rem;}
 .fit_table_price th,
 .fit_table_price td{text-align: center; padding:.2rem; border-bottom:none !important; border-top:none !important; border-left: 10px solid #fff; border-right: 10px solid #fff; font-size: 1rem; border-spacing: 1rem;}
 
@@ -2677,9 +2678,12 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 .fit_table_price thead th.institute small a:hover{background: rgba(0,0,0,0.5);}
 
 .fit_table_price tbody th{text-align: left; font-weight: normal; position: relative;}
-.fit_table_price tbody small{color: $text_light; display: inline-block; float: left; clear: left;}
+.fit_table_price tbody small{color: $text_light; display: table;}
 .fit_table_price tbody th h4{margin-bottom: 0; padding: 1.5rem 0 .5rem; font-size: 1.3rem;}
 .fit_table_price tbody td{text-align: center; position: relative;}
+
+// weird h1
+.fit_table_price thead h1{margin: 0; padding: 3.5rem 0 0; text-align: left;}
 
 // colours
 .fit_table_price .free,
