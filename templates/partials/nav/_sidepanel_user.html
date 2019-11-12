@@ -59,19 +59,24 @@
           {% else %}
             {% for course in current_user.courses %}
             <div class="fit_lesson">
-              <a class="fit_btn" href="{{ course.permalink }}">
-                <div class="fit_pic vid">
+              <div class="fit_btn">
+                <a class="fit_pic vid" href="{{ course.permalink }}">
                   <img src="/uploads/{{ course.cover_image }}" alt="course">
-                </div>
-                <span class="fit_txt">{{ course.title }}</span>
+                </a>
+                <a class="fit_txt" href="{{ course.permalink }}">{{ course.title }}</a>
+                {% if current_user.teaches(course) %}
+                  <a href="/course/{{ course.slug }}/edit" class="fit_sub"> 
+                    <i class="fal fa-edit"></i> Edit
+                  </a>
+                {% endif %}
                 <span class="fit_sub">{{ course.duration_seconds|hhmmss }}</span>
-              </a>
+              </div>
             </div>
             {% endfor %}
           {% endif %}
         </div>
 
-        <a href="/course/add" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus"></i> New course</a>
+        <a href="/course/add" href="#" data-toggle="modal" data-target="#fit_modal_add_course" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus"></i> New course</a>
 
       </div><!-- fit_course -->
       

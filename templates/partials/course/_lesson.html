@@ -29,12 +29,14 @@
         </small>
       </h1> -->
 
-      <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required>
+      <div class="fit_fancyplace">
+        <label for="course_name">Lesson name</label>
+        <input type="text" class="form-control form-control-lg" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required data-fit-fancyplace>
       </div>
-      <div class="form-group">
-        <!-- <label for="lesson_description">Short description</label> -->
-        <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required>
+
+      <div class="fit_fancyplace">
+        <label for="lesson_description">One-sentence description</label>
+        <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required data-fit-fancyplace>
       </div>
 
       <div class="row">
@@ -56,10 +58,11 @@
               </form>
               <a class="btn btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
             </div>
+          </div>
+
+          <div class="fit_pane bordered white">
 
             <dl class="fit_summary_icons">
-              
-              {% include "partials/course/_teachers.html" %}
 
               <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt>
 
@@ -209,6 +212,7 @@
             <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
           </div>
           <textarea id="further_reading" name="further_reading" style="display: none"></textarea>
+          <small class="form-text text-muted">This appears below any links in the resources tab.</small>
 
         </div><!-- col -->
       </div><!-- row -->

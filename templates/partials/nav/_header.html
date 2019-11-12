@@ -15,10 +15,15 @@
 
     {% elif url_is('lesson.view', 'segment.view') %}
 
-      <a href="/course/{{ course.slug }}" class="fit_btn left"> 
-        <i class="fal fa-arrow-left"></i>
-        <span class="fit_txt">{{ course.title }}</span>
-      </a>
+      <div class="left">
+
+        <a href="/course/{{ course.slug }}" class="fit_btn left"> 
+          <i class="fal fa-arrow-left"></i>
+          <span class="fit_txt">{{ course.title }}</span>
+        </a>
+
+
+      </div>
 
     <!-- Course -->
     {% elif url_is('course.retrieve') %}

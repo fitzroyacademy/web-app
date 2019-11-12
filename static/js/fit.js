@@ -270,18 +270,11 @@ $( document ).ready(function() {
 
 
   // ------------------------------------------------------------
-  // check the original set:
-
   // check if there's already a slug set
-  if ($("[data-fit-slug-set]").val().length > 0){
+  if ( ($("[data-fit-slug-set]").length > 0) && ($("[data-fit-slug-set]").val().length > 0) ){
     slug_userset = true;
     slug_pretty = $('[data-fit-slug-set]').val();
     slug_ugly = slug_pretty;
-  }
-
-  // if there's already a slug set
-  if ($("[data-fit-slug-set]").val().length > 0){
-    slug_userset = true;
   }
 
   // slugification

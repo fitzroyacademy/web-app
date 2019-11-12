@@ -253,7 +253,10 @@
 
               {% include "partials/course/_teachers.html" %}
 
-              <dt><i class="far fa-rocket"></i> Course code</dt>
+              <dt>
+                <i class="far fa-rocket"></i> Course code
+                <a class="" data-toggle="tooltip" title="The unique code for this course, 8 - 12 characters, letters and numbers."><i class="fal fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="form-group">
                   <div class="input-group">
@@ -262,12 +265,15 @@
                     </div>
                     <input type="text" class="form-control" id="course_code" placeholder="Course code" maxlength="12" minlength="8" value="{{ course.course_code }}" data-course-edit>
                   </div>
-                  <small class="form-text text-muted">All courses have a code. 8 - 12 characters, letters and numbers.</small>
+                  <!-- <small class="form-text text-muted">All courses must have a code.</small> -->
                 </div>
               </dd>
               </form>
 
-              <dt><i class="far fa-lock"></i> Visibility</dt>
+              <dt>
+                <i class="far fa-lock"></i> Visibility
+                <a class="" data-toggle="tooltip" title="Where you want the course to be shown on the site."><i class="fal fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -288,7 +294,10 @@
               
               </dd>
 
-              <dt><i class="far fa-usd-square"></i> Cost</dt>
+              <dt>
+                <i class="far fa-usd-square"></i> Cost
+                <a class="" data-toggle="tooltip" title="How much do you want to charge individual users to access the course?"><i class="fal fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="form-group" data-fit-perm-group-type="paid" >
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -315,7 +324,10 @@
               </dd>
 
               <div class="active" data-fit-perm-detail="free">
-                <dt><i class="far fa-eye"></i> Anonymity</dt>
+                <dt>
+                  <i class="far fa-eye"></i> Anonymity
+                  <a class="" data-toggle="tooltip" title="Turn this off if you only want registered students in your course."><i class="fal fa-info-circle"></i></a>
+                </dt>
                 <dd>
                   <div class="form-group" data-fit-perm-group-type="guest_access" data-course-slug="{{ course.slug }}">
                     <input type="checkbox" {{ 'checked' if course.options("guest_access") }} data-toggle="toggle" data-size="sm" data-style="simple" id="guest_access" name="guest_access">
@@ -325,7 +337,10 @@
               </div>
              
 
-            <dt><i class="far fa-file-edit"></i> Draft</dt>
+            <dt>
+              <i class="far fa-file-edit"></i> Draft
+
+            </dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons" >

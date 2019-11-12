@@ -92,7 +92,7 @@ $pdf_red: #ff2016;
 $facebook_blue: #3b5998;
 $youtube_red: #ff0000;
 
-$white_fade: rgba(255,255,255,0.99);
+$white_fade: rgba(255,255,255,0.9);
 
 $box_shadow: rgba(82,63,105,0.1);
 $box_shadow_blue: rgba(8,53,99,0.2);
@@ -432,6 +432,10 @@ a.fit_btn:hover{color:$blue;}
 // wee bits of text on the right
 .fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
+// if the sub has a href (is a link)
+.fit_btn > .fit_sub[href]{color: $text_light;}
+.fit_btn > .fit_sub[href]:hover{color: $blue;}
+
 // videos are weird
 .fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative; overflow: hidden;}
 .fit_btn > .fit_pic img{height: 100%;}
@@ -573,6 +577,7 @@ header .fit_btn:hover > .fit_txt:after,
 
 .fit_btn.resource_link .explain:active,
 .fit_btn.resource_link .explain:focus{height: auto; overflow: auto}
+.fit_btn.resource_link .explain p{margin-bottom: .5rem;}
 
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
@@ -1002,6 +1007,7 @@ a.card.rating h5{color: #f4b115;}
 .fit_pane.slim{padding: 0.1rem;}
 .fit_pane.slimmest{padding: 0rem;}
 .fit_pane.bordered{border: 1px solid $border_medium}
+.fit_pane.white{background: #fff;}
 
 
 // weird radius when in another thingo like a pane
@@ -1036,7 +1042,7 @@ Bleh:;
 .fit_summary_icons{padding: 0.5rem 0 0 ;}
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
 .fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
-.fit_summary_icons dt > i:first-child{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
+.fit_summary_icons dt > i:first-child{position: absolute; top:.25rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
 
 .fit_summary_icons.lite dt{font-weight: normal;}
 
@@ -1071,7 +1077,7 @@ Bleh:;
 
 .fit_cropper input[type="file"]{display: none;}
 
-.fit_paneless .fit_cropper{margin: 1rem 1rem 1rem 0;}
+.fit_paneless .fit_cropper{margin: 1rem 0 1rem 0;}
 
 // Square upload thing
 .fit_squarelogo{margin-bottom: 1rem; width: 300px; height: 300px; border:1px solid $border_light; border-radius: $border_rad_lg; position: relative; overflow: hidden;}
@@ -2320,22 +2326,25 @@ header .fit_btn_saver .saved{color: $new_green;}
 .fit_faq_edits{}
 .fit_faq_edit{}
 
-.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
+.fit_faq_edit{border-bottom: 1px solid $border_light; margin: -.5rem -.5rem 1rem; padding: .5rem; position: relative;}
 // removed coz we have the adder below now!
 .fit_faq_edit:last-child{border-bottom: none;}
 
-.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .4rem 0;}
+.fit_faq_edit .fit_faq_drag{position: absolute; top:.5rem; bottom: 0; width: 2.25rem; left: -2.75rem; color:$text_light; padding: .4rem 0;}
 .fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
 .fit_faq_edit .btn-remove:hover{color:$red; background: #fff;}
+
+.fit_pane.white .fit_faq_edit{background: #fff;}
+
 // ------------------------------------------------------------------------------------
 // Custom radios for permissions and things
 .fit_radio_icons{}
 .fit_radio_icons.columned{column-count:2;}
 
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
-.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter; font-weight: bold;}
-.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter; font-weight: normal;}
+.fit_radio_icons label > i{font-size: 1.4rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
 .fit_radio_icons input:checked + label{color: $brand;}
