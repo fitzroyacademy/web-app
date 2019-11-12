@@ -2412,107 +2412,110 @@ header .fit_btn_saver .saved{color: $new_green;}
 	.fit_player aside .fits{border-bottom: 1px solid $border_light;}
 }
 
-main.fit_player.breezy,
-main.fit_player.breezy article{overscroll-behavior:auto; overflow: visible; overflow-y:visible;}
 
-.fit_player.breezy aside .fits
+html:not(.fit_breezy_player) header .container{max-width: none; padding: 0 1rem;}
+
+html.fit_breezy_player main.fit_player,
+html.fit_breezy_player main.fit_player article{overscroll-behavior:auto; overflow: visible; overflow-y:visible;}
+
+html.fit_breezy_player main.fit_player aside .fits
 html.fit_dispref-breezy .fit_player aside .fits{}
 
-.fit_player.breezy aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] > *{}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+html.fit_breezy_player main.fit_player aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] > *{}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
 
 // on / off
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
 
 // re-order buttons:
-.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
-.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
-.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn.resources{order:1;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn.teacher{order:2;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn.manage{order:3;}
 
-.fit_player.breezy aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
+html.fit_breezy_player main.fit_player aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
 
 html.course footer{display: none;}
 
 
-main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto; left: auto; bottom: auto; padding: 0;}
-.fit_player.breezy nav{display: none;}
+html.fit_breezy_player main.fit_player{position: relative; max-width: $container_wide; top:auto; left: auto; bottom: auto; padding: 0;}
+html.fit_breezy_player main.fit_player nav{display: none;}
 
 @media (max-width: 575px) {
-	main.fit_player.breezy > article{position: sticky; top:0;}
+	html.fit_breezy_player main.fit_player > article{position: sticky; top:0;}
 }
 
 .fit_lesson_asider{border:1px solid $border_light; border-radius: $border_rad_md; background: #fff;}
 
 @media (max-width: 899px) {
-	main.fit_player.breezy aside .fits .fit_body.courselist{padding: .5rem; background: $bg;}
+	html.fit_breezy_player main.fit_player aside .fits .fit_body.courselist{padding: .5rem; background: $bg;}
 }
 
 @media (max-width: 575px) {
-	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist,
-	main.fit_player.breezy aside .fits .fit_body.courselist{background: $bg;}
-	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist.collapsed{background: #fff;}
+	html.fit_breezy_player main.fit_player aside .fits .fit_btn[data-toggle="collapse"].courselist,
+	html.fit_breezy_player main.fit_player aside .fits .fit_body.courselist{background: $bg;}
+	html.fit_breezy_player main.fit_player aside .fits .fit_btn[data-toggle="collapse"].courselist.collapsed{background: #fff;}
 
 }
 
 @media (min-width: 900px) {
-	main.fit_player.breezy{margin: 1rem;}
+	html.fit_breezy_player main.fit_player{margin: 1rem;}
 
 
-	main.fit_player.breezy .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
+	html.fit_breezy_player main.fit_player .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
 
 
-	.fit_player.breezy aside{}
+	html.fit_breezy_player main.fit_player aside{}
 
 	
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
 
-	.fit_player.breezy aside > .fits {padding: 1rem 0; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] > *{}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] >i:first-child{width: 3rem;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+	html.fit_breezy_player main.fit_player aside > .fits {padding: 1rem 0; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] > *{}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] >i:first-child{width: 3rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
 
 	// on / off
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
 
 	// re-order buttons:
-	.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
-	.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
-	.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn.resources{order:1;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn.teacher{order:2;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn.manage{order:3;}
 
-	.fit_player.breezy aside .fits > .fit_body{order:100; border-top:1px solid $border_light; width: 100%; margin-top: -1px; padding-top:1rem;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_body{order:100; border-top:1px solid $border_light; width: 100%; margin-top: -1px; padding-top:1rem;}
 
 
 
 	// logic for latest and actives
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed,
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$text; height: 3rem;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt:after{display: none;} // weird grad thing
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"].collapsed,
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]{color:$text; height: 3rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt:after{display: none;} // weird grad thing
 
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]:hover{background: transparent; color:$blue;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]:hover{background: transparent; color:$blue;}
 
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].active_latest{color:$blue; border-bottom:1px solid $blue;  margin-bottom: -1px;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"].active_latest{color:$blue; border-bottom:1px solid $blue;  margin-bottom: -1px;}
 
 
 	// collapsed bodies
-	.fit_player.breezy aside > .fits > .fit_body.collapse,
-	.fit_player.breezy aside > .fits > .fit_body.collapsing,
-	.fit_player.breezy aside > .fits > .fit_body.show{display: none; -webkit-transition: none;transition: none;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.collapse,
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.collapsing,
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.show{display: none; -webkit-transition: none;transition: none;}
 
-	.fit_player.breezy aside > .fits > .fit_body > .fit_body_content{padding: 1rem 1.5rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body > .fit_body_content{padding: 1rem 1.5rem;}
 
-	.fit_player.breezy aside > .fits > .fit_body.active_latest{display: block;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.active_latest{display: block;}
 
 }
 
 @media (min-width: $container_wide) {
-	main.fit_player.breezy{margin: 3rem auto 1rem;}
+	html.fit_breezy_player main.fit_player{margin: 3rem auto 1rem;}
 }
 
 
