@@ -24,14 +24,27 @@
   <div class="fit_body collapse show" id="fit_lesson_resources">
     <div class="fit_body_content">
       {% for resource in lesson.resources %}
-        <a class="fit_btn resource_link {{ resource.type }} {{ 'featured' if resource.featured }}" href="{{ resource.permalink }}">
-          <i class="fas {{ resource.icon }} lg"></i>
-          <span class="fit_txt">
-            {{ resource.title }}
-            <small>{{ resource.description }}</small>
-          </span>
-        </a>
+        <div class="fit_resource_link_wrap">
+          <a class="fit_btn resource_link {{ resource.type.label }} {{ 'featured' if resource.featured }}" href="{{ resource.permalink }}" target="_blank">
+            <i class="fas {{ resource.icon }} lg"></i>
+            <span class="fit_txt">
+              {{ resource.title }}
+              <small>{{ resource.type.value }}</small>
+            </span>
+          </a>
+          {% if resource.description %}
+            <div class="fit_resource_description">
+              <i class="fal fa-chevron-up"></i>
+              {{ resource.description|safe }}
+            </div>
+          {% endif %}
+        </div>
       {% endfor %}
+
+      {% if lesson.further_reading %}
+        <hr>
+        {{ lesson.further_reading|safe }}
+      {% endif %}
     </div>
   </div>
 

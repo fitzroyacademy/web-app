@@ -69,6 +69,7 @@ $watermelon_vibrant: #e6033e;
 
 
 $text: #4f5153;
+$text_medium: #666c6f;
 $text_light: #717b81;
 $text_lightish: #8f989d;
 $text_lighter: #b0b4b7;
@@ -135,6 +136,12 @@ footer{z-index: 1500;}
 
 .fit_medium_rare .fit_medium .breakbig:after{z-index: 2210;}
 .fit_medium_rare .fit_medium .breakbig > *{z-index: 2220;}
+
+.fit_fancyplace input,
+.fit_wysiwyg .medium-editor-element{z-index: 2300}
+
+.fit_fancyplace.labelled label,
+.fit_wysiwyg label{z-index: 2350;}
 
 
 header{z-index: 3000;}
@@ -571,6 +578,8 @@ header .fit_btn:hover > .fit_txt:after,
 
 .fit_btn.resource_link .fit_txt{}
 
+
+
 // the short text explainer
 .fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize; width: 100%;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
@@ -578,6 +587,18 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn.resource_link .explain:active,
 .fit_btn.resource_link .explain:focus{height: auto; overflow: auto}
 .fit_btn.resource_link .explain p{margin-bottom: .5rem;}
+
+
+// this stuff only appears when viewed by a student
+.fit_resource_link_wrap{border:1px solid transparent; border-radius: $border_rad_md;}
+
+.fit_resource_description{padding: .5rem 0 1rem 4rem; position: relative;}
+.fit_resource_description > i{color: $text_lighter; position: absolute; top:-.2rem; left: 0; width: 4rem; padding: 1rem; font-size: .8rem; text-align: center; display: block;}
+.fit_resource_description p{font-size: .95rem; margin-bottom: 0.25rem; color:$text_medium;}
+.fit_resource_description p:last-child{margin-bottom: 0rem;}
+
+.fit_resource_link_wrap:hover{border-color: $border_light;}
+.fit_resource_link_wrap:hover .fit_resource_description > i{transform: rotate(90deg);}
 
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
@@ -1977,7 +1998,8 @@ $square_size: 22rem;
 .fit_fancyplace .form-control{padding: .75rem 1rem; height: calc(2em + .75rem + 2px);}
 
 // when the label is shown:
-.fit_fancyplace.labelled label{opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .5rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
+.fit_fancyplace.labelled label,
+.fit_wysiwyg label{position:absolute; opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .5rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
 
 
 // when it's active
@@ -2004,6 +2026,9 @@ $square_size: 22rem;
 .fit_form_code.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$watermelon_light; } /* IE 10+ */
 
 
+
+// let's do the weird h2 size thing
+form .form-control-lg{}
 
 
 // login on its own
@@ -2491,6 +2516,17 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 }
 
 
+// locked survey
+.fit_segment_locked{text-align: center; padding: 8rem 0;}
+.fit_segment_locked > i{font-size: 4rem; padding-bottom: 1rem;}
+.fit_segment_locked h1{font-size: 3rem; padding-bottom: 1rem; color:$brand_dark;}
+.fit_segment_locked .btn:hover{color: $blue;}
+
+@media (max-height: 700px) {
+	.fit_segment_locked{padding: 4rem 0;}
+}
+
+
 // ------------------------------------------------------------------------------------
 // Surveys within lessons
 
@@ -2673,15 +2709,20 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 // ------------------------------------------------------------------------------------
 // Medium wysiwyg editor
 
-.fit_wysiwyg{border: 1px solid $border_medium; border-radius: $border_rad_sm; padding: 1rem; background: #fff; min-height: 10rem;}
+.fit_wysiwyg{position: relative;}
+.fit_wysiwyg.further{margin-top: 2rem;}
 
-.fit_wysiwyg .medium-editor-element{outline: none !important;}
+.fit_wysiwyg .medium-editor-element{outline: none !important; border: 1px solid $border_medium; border-radius: $border_rad_md; padding: 1rem; background: #fff; min-height: 8rem;}
+
+.fit_wysiwyg .medium-editor-element[data-medium-focused="true"]{border-color: $blue; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);}
+
 .fit_wysiwyg .medium-editor-placeholder-relative:after,
 .fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: $text_light;}
 
 .medium-toolbar-arrow-under:after{}
 
 .fit_wysiwyg blockquote{display: block; font-size: 1.3rem; border-left: 3px solid $border_light; padding: .25rem .5rem .25rem calc(1rem - 3px); margin-left: -1rem;}
+
 
 
 .medium-editor-toolbar,
