@@ -248,13 +248,41 @@ $( document ).ready(function() {
 
 
   // ------------------------------------------------------------
-  // changing user URL
+  // changing slugs automatically:
+  //
+  // How to use:
+  //
+  // Add data-fit-slug-name to the 'name' input on a form.
+  // make sure data-fit-slug-first is on the above field or it won't work
+  // For login/user names, use these on first/last name fields: data-fit-slug-first and data-fit-slug-last 
+  // Add data-fit-slug-set to the 'slug' input (i.e. the thing that sets the slug)
+  // Add data-fit-slug-reveal to the element that shows the final result
+  // Make sure there is a hidden input with data-fit-slug-reveal-secret that actually submits
 
+
+  // ------------------------------------------------------------
+  // variables
   var slug_ugly = '';
   var slug_pretty = '';
   var slug_userset = false;
   var slug_maxlength = 20;
   var slug_url = '';
+
+
+  // ------------------------------------------------------------
+  // check the original set:
+
+  // check if there's already a slug set
+  if ($("[data-fit-slug-set]").val().length > 0){
+    slug_userset = true;
+    slug_pretty = $('[data-fit-slug-set]').val();
+    slug_ugly = slug_pretty;
+  }
+
+  // if there's already a slug set
+  if ($("[data-fit-slug-set]").val().length > 0){
+    slug_userset = true;
+  }
 
   // slugification
   function slugify(string) {
@@ -274,7 +302,7 @@ $( document ).ready(function() {
   
   // change the actual url
 
-  function userslug_set(){
+  function fit_slug_set(){
     slug_pretty = slugify(slug_ugly);
     slug_pretty = slug_pretty.substring(0,slug_maxlength);
     
@@ -293,27 +321,26 @@ $( document ).ready(function() {
     $('[data-fit-slug-url]').attr('href', slug_url);
   }
 
+  // user manually sets the slug
   $("[data-fit-slug-set]").on({
     'change, keyup': function() {
      slug_ugly = $(this).val();
      slug_userset = true;
-     userslug_set();
+     fit_slug_set();
     }
   });  
 
-  // and set it automatically from the user id:
-
+  // and set it automatically from the slug name
   $("[data-fit-slug-name]").on({
     'change, keyup': function() {
       
       // if it's empty, unset user input
-      if (slug_ugly == ''){
+      if (slug_pretty == ''){
         slug_userset = false;
       }
 
-      // user hasn't set it manually:
-      if (slug_userset == false)
-      {
+      // only if user hasn't set it manually:
+      if (slug_userset == false){
         // first bit
 
         if ($('[data-fit-slug-first]').length > 0 && $('[data-fit-slug-first]').val() != ''){
@@ -325,7 +352,7 @@ $( document ).ready(function() {
         }
       }
       
-      userslug_set();
+      fit_slug_set();
     }
   });
 
@@ -914,7 +941,7 @@ $( document ).ready(function() {
 
   delegate('[data-change-slug]', 'click', (e, t) => {
     let slug = t.dataset.courseSlug;
-    let value = document.querySelector('#course-slug').value;
+    let value = document.querySelector('#course_slug').value;
     post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
         if (xhr.status == 200) {
             window.location.href = `/course/${JSON.parse(xhr.response)['slug']}/edit`

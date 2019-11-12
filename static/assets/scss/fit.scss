@@ -1054,7 +1054,6 @@ Bleh:;
 
 // crop saving thing
 
-
 .fit_cropper {
 	.fit_save_crop{display:none;}
 	&.fit_upload_cropping {
@@ -1063,6 +1062,12 @@ Bleh:;
 	}
 }
 
+.fit_cropper .fit_upload_dropzone i{position: absolute; top:0; right:0; font-size:1.5rem; padding: 1rem; background: rgba(0,0,0,0.1); border-bottom-left-radius: $border_rad_lg;}
+.fit_cropper .fit_upload_dropzone:hover i{background: $blue;}
+
+.fit_cropper input[type="file"]{display: none;}
+
+.fit_paneless .fit_cropper{margin: 1rem 1rem 1rem 0;}
 
 // Square upload thing
 .fit_squarelogo{margin-bottom: 1rem; width: 200px; height: 200px; border:1px solid $border_light; border-radius: $border_rad_lg;}
