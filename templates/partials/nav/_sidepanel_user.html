@@ -61,7 +61,7 @@
             <div class="fit_lesson">
               <a class="fit_btn" href="{{ course.permalink }}">
                 <div class="fit_pic vid">
-                  <img src="{{ course.thumbnail }}" alt="course">
+                  <img src="/uploads/{{ course.cover_image }}" alt="course">
                 </div>
                 <span class="fit_txt">{{ course.title }}</span>
                 <span class="fit_sub">{{ course.duration_seconds|hhmmss }}</span>
@@ -74,31 +74,32 @@
         <a href="/course/add" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus"></i> New course</a>
 
       </div><!-- fit_course -->
+      
 
-      <!-- end vid stack -->
+      <div class="fit_user_preferences">
+        <h3>
+          <span class="txt">Your privacy.</span>
+        </h3>
+        <dl class="fit_summary_icons">
+          <dt><i class="far fa-bell"></i> Emails:</dt>
+          <dd>
+            {{ pref_toggle('emails_from_teachers', 'Receieve emails from your teachers.') }}
+            {{ pref_toggle('emails_from_site', 'Receieve emails from Fitzroy Academy.') }} 
+          </dd>
+          <dt><i class="far fa-lock"></i> Privacy:</dt>
+          <dd>     
+            {{ pref_toggle('data_show_name', 'Other students can see my name') }}
+            {{ pref_toggle('data_show_email', 'Other students can see my email address') }}
+          </dd>
+          <dt><i class="far fa-flask"></i> Research:</dt>
+          <dd>     
+            {{ pref_toggle('data_research', 'Let us use your learning data for research.') }}
+          </dd>
+        </dl>
+        <p>Wondering about privacy? <a href="/support/privacy">Learn more.</a></p>
+      </div>
 
-      <h3>
-        <span class="txt">Your privacy.</span>
-      </h3>
-      <p></p>
-      <dl class="fit_summary_icons">
-        <dt><i class="far fa-bell"></i> Emails:</dt>
-        <dd>
-          {{ pref_toggle('emails_from_teachers', 'Receieve emails from your teachers.') }}
-          {{ pref_toggle('emails_from_site', 'Receieve emails from Fitzroy Academy.') }} 
-        </dd>
-        <dt><i class="far fa-lock"></i> Privacy:</dt>
-        <dd>     
-          {{ pref_toggle('data_show_name', 'Other students can see my name') }}
-          {{ pref_toggle('data_show_email', 'Other students can see my email address') }}
-        </dd>
-        <dt><i class="far fa-flask"></i> Research:</dt>
-        <dd>     
-          {{ pref_toggle('data_research', 'Let us use your learning data for research.') }}
-        </dd>
-      </dl>
-      <p>Wondering about privacy? <a href="/support/privacy">Learn more.</a></p>
-    </div>
 
-  </div>
+    </div><!-- content -->
+  </div><!-- panel -->
 </div>

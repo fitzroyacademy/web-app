@@ -5,7 +5,7 @@
 
   <article>
 
-    <div class="fit_course">
+    <div class="fit_course fit_user_edit">
 
     	<h1 class="fit_avatared">
     		<a href="{{ current_user.profile_picture }}" target="_blank" class="fit_avatar">
@@ -101,7 +101,7 @@
             <div class="fit_lesson">
               <a class="fit_btn" href="{{ course.permalink }}">
                 <div class="fit_pic vid">
-                  <img src="{{ course.thumbnail }}" alt="course">
+                  <img src="/uploads/{{ course.cover_image }}" alt="course">
                 </div>
                 <span class="fit_txt">{{ course.title }}</span>
                 <span class="fit_sub">{{ course.duration_seconds|hhmmss }}</span>
@@ -115,39 +115,9 @@
 
       </div><!-- fit_course -->
 
-			<h3>
-			  <span class="txt">Your privacy.</span>
-			</h3>
-			<p></p>
-			<dl class="fit_summary_icons">
-			  <dt><i class="far fa-lock"></i> Notifications.</dt>
-			  <dd>
-			    <div class="form-group">
-			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-			      <label for="permissions_1">Receieve emails and notifications from your teachers.</label>
-			    </div>
-			    <div class="form-group">
-			      <input type="checkbox"  data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-			      <label for="permissions_1">Receieve emails and notifications from <a href="/">Fitzroy Academy</a>.</label>
-			    </div>
-			  </dd>
-			  <dt><i class="far fa-lock"></i> Your details and data.</dt>
-			  <dd>     
-			    <div class="form-group">
-			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-			      <label for="permissions_1">Let us use your learning data for research. <a href="/faq#research">What&rsquo;s this?</a></label>
-			    </div>
-			    <div class="form-group">
-			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1"> <!-- DEV: user privacy permissions. Let's talk this through -->
-			      <label for="permissions_1">Allow other students to see my name</label>
-			    </div>
-			    <div class="form-group">
-			      <input type="checkbox" checked data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">  <!-- DEV: user privacy permissions. Let's talk this through -->
-			      <label for="permissions_1">Allow other registered users to see my email address</label>
-			    </div>
-			  </dd>          
-			</dl>
-			<p>Not sure about privacy or data? <a href="/faq#privacy">Read the FAQs</a> about our data and research.</p>
+
+			<div class="fit_user_preferences">Put the entire fit_user_preferences div from the sidebar here please!</div>
+
 		</div>
 	</article>
 </main>
