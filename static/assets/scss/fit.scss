@@ -780,6 +780,9 @@ header .fit_btn:first-child{margin-left: -1rem;}
 .fit_segments .fa-file,
 .fit_segments .fa-dot-circle{color: $aqua;}
 
+// make them less aggressive for the intro
+.fit_course.intro .fit_segments .fa-circle{color: $text_lightest;}
+
 .fit_segments .fa-check{color: #aaa;}
 .fit_segments .fa-play{color: $aqua;}
 
@@ -2673,8 +2676,8 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 .fit_table_price thead th.institute small a{color:#fff; background: rgba(0,0,0,0.2);}
 .fit_table_price thead th.institute small a:hover{background: rgba(0,0,0,0.5);}
 
-.fit_table_price tbody th{text-align: left; font-weight: normal;}
-.fit_table_price tbody small{display: block; color: $text_light;}
+.fit_table_price tbody th{text-align: left; font-weight: normal; position: relative;}
+.fit_table_price tbody small{color: $text_light; display: inline-block; float: left; clear: left;}
 .fit_table_price tbody th h4{margin-bottom: 0; padding: 1.5rem 0 .5rem; font-size: 1.3rem;}
 .fit_table_price tbody td{text-align: center; position: relative;}
 
@@ -2695,13 +2698,21 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 .fit_table_price thead th.institute:after,
 .fit_table_price tbody tr:last-child td.institute:after{background: $brand; color:#fff;}
 
-// ----
+// fancy tooltippy boiez
 
+.fit_table_price tbody [data-toggle="tooltip"]{border-bottom: 2px dotted $border_light;}
+
+// ----
 .fit_table_price tbody tr:not(.title):hover th{background: $bg;}
 .fit_table_price tbody tr:not(.title):hover td.free{background: $bg;}
 .fit_table_price tbody tr:not(.title):hover td.student{background: darken(#e3f5b6, 10%);}
 .fit_table_price tbody tr:not(.title):hover td.teacher{background: darken(#b6d8f2, 10%);}
 .fit_table_price tbody tr:not(.title):hover td.institute{background: lighten($brand, 5%);}
+
+// add some weird stuff
+.fit_table_price tbody tr:not(.title):hover th:after{content:''; display: block; position: absolute; top:0; right: 100%; bottom: 0; width: 1rem; border-radius: $border_rad_lg 0 0 $border_rad_lg; background: $bg;}
+.fit_table_price tbody tr:not(.title):hover td:after{content:''; display: block; position: absolute; top:0; right: 100%; bottom: 0; width: 10px; background: $bg_dark;}
+.fit_table_price tbody tr:not(.title):hover td.institute:after{content:''; display: block; position: absolute; top:0; left: 100%; bottom: 0; width: 1rem; border-radius: 0 $border_rad_lg $border_rad_lg 0; background: $bg_dark;}
 
 // and the end
 .fit_table_price tbody tr:last-child td:after{content:''; display: block; position: absolute; height: .5rem; top:100%; left: 0; right: 0; border-radius: 0 0 $border_rad_xl $border_rad_xl;}
