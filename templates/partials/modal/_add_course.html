@@ -1,7 +1,8 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_course">
   <form id="add-course" action="/course/add" method="post" enctype="multipart/form-data">
-    
-    
+      {% if form %}
+        {{ form.csrf_token }}
+      {% endif %}
 
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
