@@ -2762,7 +2762,11 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 
 
 
+.fit_welcome{padding: 0; text-align: center; height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction:column;}
 
+.fit_welcome .fit_window{max-width: 40rem;}
+
+.fit_welcome h1{font-weight: 300; font-size: 1.75rem; padding: 3rem 0; max-width: 500px; margin: 0 auto;}
 
 
 
