@@ -827,7 +827,7 @@ class Resource(OrderedBase):
     title = sa.Column(sa.String)
     url = sa.Column(sa.String)
     type = sa.Column(sa.Enum(ResourceTypeEnum), nullable=True)
-    featured = sa.Column(sa.Boolean)
+    featured = sa.Column(sa.Boolean, default=False)
     language = sa.Column(sa.String(2))
     slug = sa.Column(sa.String(50))
     description = sa.Column(sa.String())

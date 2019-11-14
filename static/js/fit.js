@@ -1167,6 +1167,7 @@ $( document ).ready(function() {
     let resourceTitle = $('#resource_title');
     let resourceDescription = $('#fit_wysiwyg_resource');
     let resourceUrl = $('#resource_url');
+    let resourceFeatured = $('#resource_featured');
     let form = $('#add-edit-resource');
 
     form.attr("action", event.relatedTarget.href);
@@ -1178,6 +1179,7 @@ $( document ).ready(function() {
             resourceTitle.val(res["title"]);
             resourceDescription.html(res["description"]);
             resourceUrl.val(res["url"]);
+            resourceFeatured.prop("checked", res["featured"]);
             $("input[name=resource_type][value="  + res["type"] + "]").prop("checked", true);
         } else {
         }
