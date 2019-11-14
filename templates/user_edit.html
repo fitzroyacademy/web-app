@@ -1,4 +1,11 @@
 {% extends "/layout.html" %}
+{% macro pref_toggle(tag, label) -%}
+  <div class="form-group" data-fit-preference-toggle="{{ tag }}">
+    <input type="checkbox" {{ 'checked' if current_user.preference(tag) }} data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
+    <label for="permissions_1">{{ label }}</label>
+  </div>
+{%- endmacro %}
+
 {% block body %}
 
 <main>
@@ -116,7 +123,28 @@
       </div><!-- fit_course -->
 
 
-			<div class="fit_user_preferences">Put the entire fit_user_preferences div from the sidebar here please!</div>
+        <div class="fit_user_preferences">
+        <h3>
+          <span class="txt">Your privacy.</span>
+        </h3>
+        <dl class="fit_summary_icons">
+          <dt><i class="far fa-bell"></i> Emails:</dt>
+          <dd>
+            {{ pref_toggle('emails_from_teachers', 'Receieve emails from your teachers.') }}
+            {{ pref_toggle('emails_from_site', 'Receieve emails from Fitzroy Academy.') }}
+          </dd>
+          <dt><i class="far fa-lock"></i> Privacy:</dt>
+          <dd>
+            {{ pref_toggle('data_show_name', 'Other students can see my name') }}
+            {{ pref_toggle('data_show_email', 'Other students can see my email address') }}
+          </dd>
+          <dt><i class="far fa-flask"></i> Research:</dt>
+          <dd>
+            {{ pref_toggle('data_research', 'Let us use your learning data for research.') }}
+          </dd>
+        </dl>
+        <p>Wondering about privacy? <a href="/support/privacy">Learn more.</a></p>
+      </div>
 
 		</div>
 	</article>

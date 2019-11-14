@@ -234,11 +234,11 @@ class UserPreference(BaseModel):
     @staticmethod
     def set_preference(user, preference_tag, boolean):
         pref = UserPreference.get_preference(user, preference_tag)
+        session = get_session()
         if pref is None:
             i = PreferenceTags.index(preference_tag)
-            session = get_session()
             pref = UserPreference(user_id=user.id, preference=i, toggled=boolean)
-        pref.boolean = boolean
+        pref.toggled = boolean
         session.add(pref)
         session.commit()
 
