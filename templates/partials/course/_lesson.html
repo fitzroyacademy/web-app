@@ -60,6 +60,7 @@
             </div>
           </div>
 
+        {% if lesson %}
           <div class="fit_pane bordered white">
 
             <dl class="fit_summary_icons">
@@ -104,7 +105,7 @@
               
             </dl>
           </div><!-- pane -->
-
+        {% endif %}
 
         </div><!-- col -->
 
@@ -131,7 +132,7 @@
               <div data-fit-sortable-list-with-intro-element>
 
 
-                <!-- This first one is spcial, just for the intro video: -->
+                <!-- This first one is special, just for the intro video: -->
                 {% if introduction %}
                     {% include "partials/course/_intro.html" %}
                 {% endif %}

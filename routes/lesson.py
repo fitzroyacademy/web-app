@@ -17,7 +17,7 @@ from routes.decorators import login_required, teacher_required, enrollment_requi
 from routes.utils import generate_thumbnail, reorder_items
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
 
-from .render_partials import render_question_answer, render_teacher
+from .render_partials import render_question_answer, render_teacher, render_intro
 
 blueprint = Blueprint("lesson", __name__, template_folder="templates")
 
@@ -49,7 +49,8 @@ def course_add_edit_intro_lesson(user, course, course_slug):
             slug = slug + "-" + str(uuid4())[:3]
         if intro_lesson:
             segment = intro_lesson.intro_segment
-            segment.url = request.form["url"]
+            segment.url = request.form["segment_url"]
+            html = ""
         else:
             intro_lesson = datamodels.Lesson(title="Intro lesson",
                                              slug=slug,
@@ -65,17 +66,17 @@ def course_add_edit_intro_lesson(user, course, course_slug):
                                          type="video",
                                          permission=SegmentPermissionEnum.normal,
                                          video_type=VideoTypeEnum.standard,
-                                         url=request.form["url"],
+                                         url=request.form["segment_url"],
                                          duration_seconds=0,
                                          slug="intro-segment"
                                          )
+            html = render_intro(segment)
+
         db.add(segment)
         db.commit()
-
+        return jsonify({"message": "Intro lesson added", "html": html})
     else:
-        flash("Couldn't create intro lesson")
-
-    return redirect("/course/{}/edit".format(course.slug))
+        return jsonify({"message": "Couldn't create intro lesson"}), 400
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
@@ -98,7 +99,8 @@ def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
     if request.method == "POST":
         if form.validate():
             if not lesson:
-                lesson = datamodels.Lesson(course=course, order=len(course.lessons))
+                lesson = datamodels.Lesson(course=course,
+                                           order=len(course.lessons)+1)
 
             lesson.title = form.title.data
             lesson.description = form.description.data

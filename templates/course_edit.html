@@ -161,27 +161,16 @@
           <div class="fit_body fit_lessons">
 
             {% if not introduction %}
-            <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_intro">
+            <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
               <i class="fas fa-plus"></i>
               <span class="fit_txt">Add an intro video</span>
             </a>
             {% endif %}
 
-            <div>
+            <div data-fit-sortable-list-with-intro-element>
 
               {% if introduction %}
-              <div class="fit_btn">
-                <div class="fit_pic vid">
-                  <img src="{{ introduction.thumbnail }}" alt="course">
-                </div>
-                <div class="fit_txt">
-                  Introduction
-                </div>
-                <div class="sub buttonset">
-                  <div class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</div>
-                  <a class="btn btn-light" data-toggle="modal" data-target="#fit_modal_add_intro"><i class="fal fa-edit"></i></a>
-                </div>
-              </div>
+                {% include "partials/course/_intro.html" %}
               {% endif %}
 
               <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/reorder">

@@ -13,7 +13,9 @@
         <p>Are you <strong>absolute</strong> sure you want to do this?</p>
       </div>
       <div class="modal-footer">
-        <a href="#" class="btn btn-lg btn-danger">Delete course forever</a>
+          <form action="/course/{{ course.slug }}/delete" method="post">
+            <button type="submit" class="btn btn-lg btn-danger">Delete course forever</button>
+          </form>
       </div>
     </div>
   </div>

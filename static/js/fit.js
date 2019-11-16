@@ -1068,12 +1068,12 @@ $( document ).ready(function() {
   delegate('[data-fit-add-intro-submit]', 'click', (e, t) => {
     let form = t.closest('form');
     let formData = new FormData(form);
-    let data = {"segment_url": formData.get("segment_url")};
+    let data = {"segment_url": formData.get("segment_url"), "intro_lesson": ""};
 
     post(form.action, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
         if (xhr.status == 200) {
-            showAlertSnackbar("Intro segment added");
+            showAlertSnackbar(res["message"]);
             $('[data-fit-add-edit-segment-modal]').modal('hide');
             if ("html" in res) {
               let container = document.querySelector('[data-fit-sortable-list-with-intro-element]');
@@ -1081,7 +1081,7 @@ $( document ).ready(function() {
               document.querySelector('[data-fit-add-intro]').style.display = "none";
             }
         } else {
-                showAlertSnackbar(jsonResponse['message'])
+                showAlertSnackbar(res['message'])
             }
     });
 

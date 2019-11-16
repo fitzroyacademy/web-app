@@ -54,19 +54,23 @@ def dump(obj, seen=None):
 
 class BaseModel(Base):
     __abstract__ = True
+    _is_deleted = sa.Column(sa.Boolean, default=False)
 
     @classmethod
     def find_by_id(cls, obj_id):
-        session = get_session()
-        return session.query(cls).filter(cls.id == obj_id).first()
+        return cls.objects().filter(cls.id == obj_id).first()
 
     @classmethod
     def find_by_slug(cls, slug):
-        session = get_session()
         if hasattr(cls, "slug"):
-            return session.query(cls).filter(cls.slug == slug).first()
+            return cls.objects().filter(cls.slug == slug).first()
         else:
             raise AttributeError("Object do not has attribute slug")
+
+    @classmethod
+    def objects(cls, deleted=False):
+        session = get_session()
+        return session.query(cls).filter(cls._is_deleted == deleted)
 
 
 class OrderedBase(BaseModel):
@@ -76,16 +80,14 @@ class OrderedBase(BaseModel):
 
     @classmethod
     def get_ordered_items(cls):
-        session = get_session()
-        return session.query(cls).filter(cls.order > 0).order_by(cls.order)
+        return cls.objects().filter(cls.order > 0).order_by(cls.order)
 
     @classmethod
     def ordered_items_for_parent(cls, parent, key):
-        session = get_session()
         return (
-            session.query(cls)
-            .filter(getattr(cls, key) == parent.id)
-            .order_by(cls.order)
+            cls.objects()
+                .filter(getattr(cls, key) == parent.id)
+                .order_by(cls.order)
         )
 
     @classmethod
@@ -106,9 +108,9 @@ class OrderedBase(BaseModel):
 
             list_of_items = [
                 l.id
-                for l in session.query(cls)
-                .filter(getattr(cls, key) == parent.id)
-                .order_by(cls.order)
+                for l in cls.objects()
+                    .filter(getattr(cls, key) == parent.id)
+                    .order_by(cls.order)
             ]
             if list_of_items:
                 cls.reorder_items(list_of_items)
@@ -196,8 +198,7 @@ class User(BaseModel):
 
     @staticmethod
     def find_by_email(email):
-        session = get_session()
-        return session.query(User).filter(User.email == email).first()
+        return User.objects().filter(User.email == email).first()
 
 
 PreferenceTags = [
@@ -223,9 +224,8 @@ class UserPreference(BaseModel):
         if preference_tag not in PreferenceTags:
             raise Exception("Preference Unknown: {}".format(preference_tag))
         i = PreferenceTags.index(preference_tag)
-        session = get_session()
         return (
-            session.query(UserPreference)
+            UserPreference.objects()
             .filter(UserPreference.user_id == user.id)
             .filter(UserPreference.preference == i)
             .first()
@@ -311,7 +311,7 @@ class Course(BaseModel):
     id = sa.Column(sa.Integer, primary_key=True)
     title = sa.Column(sa.String)
     picture = sa.Column(sa.String)  # URL to picture resource
-    cover_image = sa.Column(sa.String)
+    cover_image = sa.Column(sa.String, default="")
     order = sa.Column(sa.Integer)
     year = sa.Column(sa.Date)
     course_code = sa.Column(sa.String(16), unique=True)
@@ -347,9 +347,8 @@ class Course(BaseModel):
 
     @classmethod
     def list_public_courses(cls):
-        session = get_session()
         return (
-            session.query(cls)
+            cls.objects()
             .filter(
                 cls.guest_access == True, cls.visibility == "public", cls.draft == False
             )
@@ -358,8 +357,7 @@ class Course(BaseModel):
 
     @property
     def number_of_resources(self):
-        session = get_session()
-        return session.query(Resource).outerjoin(Resource.lesson).filter(Lesson.course_id == self.id).count()
+        return Resource.objects().outerjoin(Resource.lesson).filter(Lesson.course_id == self.id).count()
 
     def get_ordered_lessons(self):
         return Lesson.get_ordered_items().filter(Lesson.course_id == self.id)
@@ -391,8 +389,7 @@ class Course(BaseModel):
     @property
     def lessons_queryset(self):
         if not self._lessons_queryset:
-            session = get_session()
-            self._lessons_queryset = session.query(Lesson).filter_by(course_id=self.id)
+            self._lessons_queryset = Lesson.objects().filter_by(course_id=self.id)
         return self._lessons_queryset
 
     @property
@@ -422,6 +419,12 @@ class Course(BaseModel):
             return self.lessons[0].thumbnail
 
     @property
+    def cover_image_url(self):
+        return "/uploads/{}".format(self.cover_image) \
+                   if self.cover_image and not self.cover_image.startswith("http") \
+                   else self.cover_image
+
+    @property
     def instructors(self):
         """ A unique list of users associated with this course that
         have teacher-level access."""
@@ -440,6 +443,28 @@ class Course(BaseModel):
         for ass in associations:
             users.append(ass.user)
         return users
+
+    def delete(self):
+        # Safe delete the course instance and all related objects
+
+        db = get_session()
+        self._is_deleted = True
+        db.add(self)
+
+        db.query(Lesson).filter(Lesson.course_id == self.id).\
+            update({Lesson._is_deleted: True}, synchronize_session=False)
+
+        db.query(CourseEnrollment).filter(CourseEnrollment.course_id == self.id).\
+            update({CourseEnrollment._is_deleted: True}, synchronize_session=False)
+
+        # ToDo: once we swtich to different backend we can use something along this lines
+        # statement = update(Segment).where(Lesson.course_id == course.id).values(_is_deleted=True)
+        # db.execute(statement)
+        segments = db.query(Segment).join(Lesson).filter(Lesson.course_id == self.id).all()
+        for segment in segments:
+            segment._is_deleted = True
+            db.add(segment)
+        db.commit()
 
     def user_progress(self, user):
         if len(self.lessons) is 0:
@@ -466,8 +491,7 @@ class Course(BaseModel):
 
     @staticmethod
     def find_by_code(code):
-        session = get_session()
-        return session.query(Course).filter(Course.course_code == code).first()
+        return Course.objects().filter(Course.course_code == code).first()
 
 
 class CourseTranslation(Base):
@@ -510,9 +534,8 @@ class CourseEnrollment(BaseModel):
 
     @staticmethod
     def find_by_course_and_student(course_id, student_id):
-        session = get_session()
         return (
-            session.query(CourseEnrollment)
+            CourseEnrollment.objects()
             .filter(CourseEnrollment.course_id == course_id)
             .filter(CourseEnrollment.user_id == student_id)
             .first()
@@ -520,9 +543,8 @@ class CourseEnrollment(BaseModel):
 
     @staticmethod
     def find_students_for_course(course_id):
-        session = get_session()
         return (
-            session.query(CourseEnrollment)
+            CourseEnrollment.objects()
             .filter(CourseEnrollment.course_id == course_id)
             .filter(CourseEnrollment.access_level == COURSE_ACCESS_STUDENT)
             .all()
@@ -530,9 +552,8 @@ class CourseEnrollment(BaseModel):
 
     @staticmethod
     def find_teachers_for_course(course_id):
-        session = get_session()
         return (
-            session.query(CourseEnrollment)
+            CourseEnrollment.objects()
             .filter(CourseEnrollment.course_id == course_id)
             .filter(CourseEnrollment.access_level == COURSE_ACCESS_TEACHER)
             .all()
@@ -540,9 +561,8 @@ class CourseEnrollment(BaseModel):
 
     @staticmethod
     def find_by_user(user_id):
-        session = get_session()
         return (
-            session.query(CourseEnrollment)
+            CourseEnrollment.objects()
             .filter(CourseEnrollment.user_id == user_id)
             .all()
         )
@@ -584,8 +604,7 @@ class Lesson(OrderedBase):
     @property
     def segments_queryset(self):
         if not self._segments_queryset:
-            session = get_session()
-            self._segments_queryset = session.query(Segment).filter_by(
+            self._segments_queryset = Segment.objects().filter_by(
                 lesson_id=self.id
             )
         return self._segments_queryset
@@ -600,9 +619,8 @@ class Lesson(OrderedBase):
 
     @property
     def ordered_resources(self):
-        session = get_session()
         return (
-            session.query(Resource)
+            Resource.objects()
             .filter_by(lesson_id=self.id)
             .order_by(Resource.order)
         )
@@ -660,9 +678,8 @@ class Lesson(OrderedBase):
 
     @staticmethod
     def find_by_slug(course_slug, lesson_slug):
-        session = get_session()
         q = (
-            session.query(Lesson)
+            Lesson.objects()
             .join(Lesson.course)
             .filter(Course.slug == course_slug)
             .filter(Lesson.slug == lesson_slug)
@@ -674,9 +691,8 @@ class Lesson(OrderedBase):
 
     @staticmethod
     def find_by_course_slug_and_id(course_slug, lesson_id):
-        session = get_session()
         q = (
-            session.query(Lesson)
+            Lesson.objects()
             .join(Lesson.course)
             .filter(Course.slug == course_slug)
             .filter(Lesson.id == lesson_id)
@@ -779,9 +795,8 @@ class Segment(OrderedBase):
 
     @staticmethod
     def find_user_progress(segment_id, user_id):
-        session = get_session()
         q = (
-            session.query(SegmentUserProgress)
+            SegmentUserProgress.objects()
             .filter(SegmentUserProgress.segment_id == segment_id)
             .filter(SegmentUserProgress.user_id == user_id)
         )
@@ -792,9 +807,8 @@ class Segment(OrderedBase):
 
     @classmethod
     def find_by_slug(cls, course_slug, lesson_slug, segment_slug):
-        session = get_session()
         q = (
-            session.query(cls)
+            cls.objects()
             .join(Lesson.segments)
             .join(Lesson.course)
             .filter(Course.slug == course_slug)
@@ -902,16 +916,15 @@ class LessonQA(OrderedBase):
     def find_by_lesson_and_id(cls, lesson_id, qa_id):
         if not isinstance(lesson_id, int) or not isinstance(qa_id, int):
             return None
-        session = get_session()
         return (
-            session.query(cls)
+            cls.objects()
             .filter(cls.lesson_id == lesson_id)
             .filter(cls.id == qa_id)
             .first()
         )
 
 
-class LessonResourceUserAccess(Base):
+class LessonResourceUserAccess(BaseModel):
     __tablename__ = "resource_user_access"
     id = sa.Column(sa.Integer, primary_key=True)
     resource_id = sa.Column(sa.Integer, sa.ForeignKey("lesson_resources.id"))
@@ -932,14 +945,14 @@ class LessonResourceUserAccess(Base):
     def log_user_access(resource_id, user_id):
         session = get_session()
         log = LessonResourceUserAccess(resource_id=resource_id, user_id=user_id)
-        q = session.query(LessonResourceUserAccess).filter(
+        q = LessonResourceUserAccess.objects().filter(
             LessonResourceUserAccess.resource_id == resource_id
         )
         session.add(log)
         session.commit()
 
 
-class SegmentUserProgress(Base):
+class SegmentUserProgress(BaseModel):
     __tablename__ = "segment_user_progress"
     id = sa.Column(sa.Integer, primary_key=True)
     progress = sa.Column(sa.Integer)
