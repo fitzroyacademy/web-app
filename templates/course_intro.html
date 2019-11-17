@@ -23,7 +23,11 @@
       </p>
       
       <div class="fit_vidya">
-        <img class="placeholder" src="{{ course.cover_image_url }}" alt="video">
+        {%  if course.cover_image_url %}
+            <img class="placeholder" src="{{ course.cover_image_url }}" alt="video">
+        {% else %}
+            <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
+        {% endif %}
         <a class="fit_vidya_play" href="{{ course.lessons[0].permalink }}"><i class="fas fa-play-circle"></i></a>
       </div>
       

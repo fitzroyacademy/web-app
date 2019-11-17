@@ -420,6 +420,8 @@ class Course(BaseModel):
 
     @property
     def cover_image_url(self):
+        if not self.cover_image:
+            return ""
         return "/uploads/{}".format(self.cover_image) \
                    if self.cover_image and not self.cover_image.startswith("http") \
                    else self.cover_image

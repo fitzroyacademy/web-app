@@ -42,8 +42,6 @@ def view(slug):
     Retrieves and displays a course based on course slug.
     """
 
-    # ToDo: course that do not have lessons will raise exception
-
     course = datamodels.get_course_by_slug(slug)
     user = get_current_user()
     if course is None or course.draft and not (user and user.teaches(course)):
