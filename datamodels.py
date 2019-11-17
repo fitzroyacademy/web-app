@@ -27,11 +27,12 @@ def dump(obj, seen=None):
             return obj
     seen = seen or []  # Recursion trap.
     seen.append(id(obj))
-    ignored = ["metadata", "get_ordered_items", "get_ordered_segments", "get_ordered_lessons"]
+    ignored = ["metadata"]
     fields = {}
     for f in [x for x in dir(obj) if x.startswith("_") is False and x not in ignored]:
         data = getattr(obj, f)
         try:
+
             json.dumps(data)
             fields[f] = data
         except TypeError:
@@ -43,7 +44,11 @@ def dump(obj, seen=None):
                 else:
                     fields[f] = dump(data, seen)
             elif callable(data) and f.startswith("get_"):
-                fields[f[4:]] = dump(data(), seen)
+                _data = data()
+                if isinstance(_data, sa.orm.query.Query):
+                    fields[f[4:]] = None
+                else:
+                    fields[f[4:]] = dump(_data, seen)
             elif isinstance(data, list):
                 fields[f] = []
                 for o in data:
