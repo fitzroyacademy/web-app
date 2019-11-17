@@ -22,7 +22,6 @@ from routes.render_partials import render_teacher
 
 blueprint = Blueprint("institute", __name__, template_folder="templates")
 
-
 @blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 def add(user):
@@ -77,13 +76,17 @@ def retrieve(user, institute=""):
 
     institute = datamodels.Institute.find_by_slug(institute)
 
+    if institute is None:
+        flash("No such institute.")
+        return redirect('/')
+
     data = {"form": AjaxCSRFTokenForm(),
             "institute": institute,
             "teachers": [render_teacher(obj, institute=institute) for obj in institute.teachers],
             "admins": [render_teacher(obj, institute=institute, user_type="admin") for obj in institute.admins],
             "managers": [render_teacher(obj, institute=institute, user_type="manager") for obj in institute.managers],
-            "cover_image": "/static/uploads/{}".format(institute.cover_image),
-            "logo": "/static/uploads/{}".format(institute.logo)
+            "cover_image": institute.cover_image_url,
+            "logo": institute.logo_url
             }
 
     return render_template("institute.html", **data)

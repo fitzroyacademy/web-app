@@ -2,7 +2,7 @@
         {% if cover_image %}
             <img class="placeholder" src="{{ cover_image }}" alt="cover image">
         {% else %}
-        <img class="placeholder" src="/static/assets/images/defaults/spacer.gif" alt="spacer">
+        <img class="placeholder" src="{{ url_for('static', filename='assets/images/defaults/spacer.gif') }}" alt="spacer">
         {% endif %}
         <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
         {% if cover_action %}

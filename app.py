@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template, request, url_for, flash
+from flask import Flask, render_template, request, url_for, flash, session
 from util import get_current_user
 import sass
 import datamodels
@@ -16,7 +16,7 @@ import requests
 import click
 import boto3
 
-app = Flask('FitzroyFrontend', static_url_path='/static')
+app = Flask('FitzroyFrontend')
 
 environment = environ.get("FLASK_ENV", default="")
 
@@ -48,7 +48,8 @@ def before_route(endpoint, values):
                            "institute.edit",
                            "institute.add_user",
                            "institute.remove_user",
-                           "institute.change_slug"]
+                           "institute.change_slug"
+                           ]
 
     if endpoint not in subdomain_endpoints and values is not None:
         values.pop('institute', None)
@@ -196,6 +197,21 @@ def hhmm(seconds):
 def uuid():
     return "{}".format(uuid4().hex)
 app.jinja_env.globals.update(uuid=uuid)
+
+def get_logo(*args, **kwargs):
+    host_url = request.host_url.split("://")[1]
+    host = host_url.split(".") if host_url else []
+    if len(host) > 2:
+        subdomain = host[0]
+        institute = datamodels.Institute.find_by_slug(subdomain)
+
+        if institute:
+            logo_url = institute.logo_url
+            if logo_url:
+                return '<img src="{}">'.format(logo_url)
+
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 897 1337"><path d="M896.926,417.590 L0.097,416.434 L0.056,119.532 L0.058,119.532 L0.024,119.525 L298.280,0.028 L297.542,119.532 L298.114,119.532 L298.088,119.525 L596.343,0.028 L596.792,119.532 L598.755,119.532 L598.721,119.525 L896.975,0.028 L896.926,417.590 ZM683.424,1022.533 L369.742,1023.094 L368.821,1336.982 L0.072,1335.695 L0.063,650.350 L683.424,650.350 L683.424,1022.533 ZM0.056,650.350 L0.063,650.350 L0.056,650.350 Z"></path></svg>'
+app.jinja_env.globals.update(get_logo=get_logo)
 
 def url4(*args, **kwargs):
     try:

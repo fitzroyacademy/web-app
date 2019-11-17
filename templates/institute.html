@@ -92,7 +92,7 @@
                         {% if logo %}
                             <img class="placeholder" src="{{ logo }}" alt="logo">
                         {% else %}
-                        <img class="placeholder" src="/static/assets/images/partners/fa/fa_device_square.jpg" alt="spacer">
+                        <img class="placeholder" src="{{ url_for('static', filename='assets/images/partners/fa/fa_device_square.jpg') }}" alt="spacer">
                         {% endif %}
                         <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
                         <input id="logo" name="logo" type="file" style="display: none;" data-fit-image-input>

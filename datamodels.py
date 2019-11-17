@@ -256,8 +256,8 @@ class Institute(BaseModel):
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String)
     description = sa.Column(sa.String(140), default="")
-    cover_image = sa.Column(sa.String)
-    logo = sa.Column(sa.String)  # URL to picture resource
+    cover_image = sa.Column(sa.String, default="")
+    logo = sa.Column(sa.String, default="")  # URL to picture resource
     slug = sa.Column(sa.String(50), unique=True)  # corresponds to subdomain
     for_who = sa.Column(sa.String, default="")
     location = sa.Column(sa.String, default="")
@@ -298,6 +298,22 @@ class Institute(BaseModel):
     @property
     def managers(self):
         return self._get_user_group("managers")
+
+    @property
+    def logo_url(self):
+        if not self.logo:
+            return ""
+        return url_for("static", filename="uploads/{}".format(self.logo)) \
+            if self.logo and not self.logo.startswith("http") \
+            else self.logo
+
+    @property
+    def cover_image_url(self):
+        if not self.cover_image:
+            return ""
+        return url_for("static", filename="uploads/{}".format(self.cover_image)) \
+            if self.cover_image and not self.cover_image.startswith("http") \
+            else self.cover_image
 
     def is_admin(self, user):
         return InstituteEnrollment.is_admin(self.id, user.id)
