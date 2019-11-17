@@ -254,7 +254,7 @@ $( document ).ready(function() {
   //
   // Add data-fit-slug-name to the 'name' input on a form.
   // make sure data-fit-slug-first is on the above field or it won't work
-  // For login/user names, use these on first/last name fields: data-fit-slug-first and data-fit-slug-last 
+  // For login/user names, use these on first/last name fields: data-fit-slug-first and data-fit-slug-last
   // Add data-fit-slug-set to the 'slug' input (i.e. the thing that sets the slug)
   // Add data-fit-slug-reveal to the element that shows the final result
   // Make sure there is a hidden input with data-fit-slug-reveal-secret that actually submits
@@ -460,7 +460,7 @@ $( document ).ready(function() {
         .text(gobutton.data('fit_iconselects_disabled'))
         .prop("disabled", true)
         .addClass('btn-secondary')
-        .removeClass('btn-primary');        
+        .removeClass('btn-primary');
       }
       else
       {
@@ -903,14 +903,14 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('textarea[data-course-edit]', 'change', (e, t) => {
+  delegate('textarea[data-course-edit],textarea[data-institute-edit]', 'change', (e, t) => {
     let key = e.target.id;
     let formData = {};
     formData[key] = e.target.value;
     post(e.target.form.action, formData)
   });
 
-  delegate('input[data-course-edit]', 'change', (e, t) => {
+  delegate('input[data-course-edit],input[data-institute-edit]', 'change', (e, t) => {
     let key = e.target.id;
     let formData = {};
     if (e.target.files) {
@@ -935,72 +935,101 @@ $( document ).ready(function() {
   });
 
   delegate('[data-change-slug]', 'click', (e, t) => {
-    let slug = t.dataset.courseSlug;
-    let value = document.querySelector('#course_slug').value;
-    post(`/course/${slug}/edit/slug`, {course_slug: value}, (responseText, xhr) => {
+    e.preventDefault();
+    let courseSlug = t.dataset.courseSlug;
+    let instituteSlug = t.dataset.courseSlug;
+    let p = t.closest('[data-fit-change-slug]');
+    let value = p.querySelector('[data-slug-value]').value;
+    let utl = '';
+
+    if (courseSlug) {
+        url = `/course/${courseSlug}/edit/slug`;
+    } else {
+        url = '/institute/edit/slug';
+    }
+
+    post(url, {slug: value}, (responseText, xhr) => {
         if (xhr.status == 200) {
-            window.location.href = `/course/${JSON.parse(xhr.response)['slug']}/edit`
+            window.location.href = JSON.parse(xhr.response)['redirect_url']
         } else {
                 console.log('DEV: give me some message')
             }
     });
   });
 
-  delegate('a[data-course-edit-remove-teacher]', 'click', (e, t) => {
-    let teacherId = e.target.dataset.teacherId;
-    let slug = t.dataset.courseSlug;
-    let lessonId = e.target.dataset.lessonId;
+  delegate('a[data-remove-user]', 'click', (e, t) => {
+    let userId = e.target.dataset.userId;
+    let courseSlug = t.dataset.courseSlug;
+    let userType = t.dataset.userType;
+    let instituteSlug = t.dataset.instituteSlug;
     let url = "";
 
-    if (lessonId) {
-      url = `/course/${slug}/lessons/${lessonId}/teacher/${teacherId}/delete`;
+    if (courseSlug) {
+        let lessonId = e.target.dataset.lessonId;
+        if (lessonId) {
+            url = `/course/${courseSlug}/lessons/${lessonId}/teacher/${userId}/delete`;
+        } else {
+            url = `/course/${courseSlug}/edit/remove/teacher/${userId}`;
+        }
     } else {
-      url = `/course/${slug}/edit/remove/teacher/${teacherId}`;
+      url = `/institute/edit/user/remove/${userId}/${userType}`
     }
 
     post(url, {}, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
-        let alert = $('#add-teacher-alert');
+
+        let alert = document.querySelector(`[data-${userType}-action-alert]`);
+        alert.style.display = "none";
         if (xhr.status == 200) {
-            let teacherDiv = $(`#teacher-${responseJSON['teacher_id']}`);
+            let teacherDiv = t.closest('[data-fit-user]');
             if (teacherDiv) {
                 teacherDiv.remove()
             }
         } else {
-                alert.css("display", "block");
-                alert.removeClass('alert-success');
-                alert.addClass('alert-danger');
-                alert.html(responseJSON.message);
+                alert.style.display = "block";
+                alert.classList.remove('alert-success');
+                alert.classList.add('alert-danger');
+                alert.innerHTML = responseJSON.message;
             }
     });
   });
 
-  delegate('[data-add-teacher]', 'click', (e, t) => {
+  delegate('[data-add-user]', 'click', (e, t) => {
     e.preventDefault();
-    let email = document.querySelector('#add-teacher-email');
-    let slug = t.dataset.courseSlug;
-    let lessonId = e.target.dataset.lessonId;
-    let url = "";
 
-    if (lessonId) {
-      url = `/course/${slug}/lessons/${lessonId}/teacher/add`;
+    let p = t.closest('[data-fit-add-user]');
+    let email = p.querySelector('[data-user-email]');
+    let courseSlug = t.dataset.courseSlug;
+    let instituteSlug = t.dataset.instituteSlug;
+    let url = "";
+    let userType = t.dataset.userType;
+
+    if (courseSlug){
+      let lessonId = e.target.dataset.lessonId;
+      if (lessonId) {
+        url = `/course/${courseSlug}/lessons/${lessonId}/teacher/add`;
+      } else {
+        url = `/course/${courseSlug}/edit/add/teacher`;
+      }
     } else {
-      url = `/course/${slug}/edit/add/teacher`;
+      url = `/institute/edit/add/${userType}`
     }
 
+
     post(url, {teacher_email: email.value}, (responseText, xhr) => {
-        let alert = $('#add-teacher-alert');
+        let alert = document.querySelector(`[data-${userType}-action-alert]`);
         let responseJSON = JSON.parse(xhr.response);
-        alert.css("display", "block");
+        alert.style.display = "block";
         if (xhr.status == 400) {
-            alert.removeClass('alert-success');
-            alert.addClass('alert-danger');
+            alert.classList.remove('alert-success');
+            alert.classList.add('alert-danger');
         } else {
-            alert.addClass('alert-success');
-            alert.removeClass('alert-danger');
-            $('#teachers-list').append(responseJSON['teacher'])
+            alert.classList.add('alert-success');
+            alert.classList.remove('alert-danger');
+            let usersList = p.querySelector('[data-users-list]');
+            usersList.innerHTML = usersList.innerHTML + responseJSON['teacher'];
         }
-        alert.html(responseJSON.message);
+        alert.innerHTML = responseJSON.message;
     });
   });
 

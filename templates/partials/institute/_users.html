@@ -1,9 +1,5 @@
-<dt>
-    <i class="far fa-chalkboard-teacher"></i> Teacher(s)
-    <a class="" data-toggle="tooltip" title="Invite other users to have teacher access to this course, via email."><i class="fal fa-info-circle"></i></a>
-</dt>
 <dd>
-    <div class="alert" style="display: none;" data-teacher-action-alert></div>
+    <div class="alert" style="display: none;" data-{{ user_type }}-action-alert></div>
 
     <div class="fit_quicksearch" data-fit-add-user>
 
@@ -14,15 +10,13 @@
             <input type="text" class="form-control" placeholder="example@email.com" data-user-email>
             <div class="input-group-append">
                 <button class="btn btn-link-secondary" type="button" data-add-user
-                        data-course-slug="{{ course.slug }}"
-                        data-lesson-id="{% if lesson %}{{ lesson.id }}{% endif %}"
-                        data-user-type="teacher">Add
+                        data-institute-slug="{{ institute.slug }}" data-user-type="{{ user_type }}">Add
                 </button>
             </div>
         </div>
 
         <div class="teachers" data-users-list>
-            {% for teacher in teachers %}
+            {% for teacher in users %}
                 {{ teacher|safe }}
             {% endfor %}
         </div>

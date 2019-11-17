@@ -33,6 +33,7 @@ def index():
         "public_courses": datamodels.Course.list_public_courses(),
         "form": LoginForm(),
     }
+
     return render_template("welcome.html", **data)
 
 
@@ -106,7 +107,7 @@ def add_course(user):
             for key, value in form.errors.items():
                 flash("Field {}: {}".format(key, ",".join(value)))
             data["errors"] = form.errors
-    return render_template("course_add.html", **data)
+    return render_template("partials/course/_add.html", **data)
 
 
 @blueprint.route("/<course_slug>/edit", methods=["POST"])
@@ -238,13 +239,14 @@ def change_course_slug(user, course_slug=None):
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
 
-    if not course or not user.teaches(course):
-        raise abort(404, "No such course or you don't have permissions to edit it")
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
 
     db = datamodels.get_session()
     if request.method == "POST":
-        if "course_slug" in request.form:
-            c = datamodels.Course.find_by_slug(request.form["course_slug"])
+        if "slug" in request.form:
+            slug = request.form["slug"]
+            c = datamodels.Course.find_by_slug(slug)
             if c and course.id != c.id:
                 return make_response(
                     jsonify(
@@ -255,16 +257,16 @@ def change_course_slug(user, course_slug=None):
                     ),
                     400,
                 )
-            if not request.form["course_slug"]:
+            if not slug:
                 return (
                     jsonify({"success": False, "message": "Slug can't be empty"}),
                     400,
                 )
-            course.slug = request.form["course_slug"]
+            course.slug = slug
             db.add(course)
             db.commit()
 
-    return jsonify({"slug": course.slug})
+    return jsonify({"redirect_url": "/course/{}/edit".format(course.slug)})
 
 
 @blueprint.route(

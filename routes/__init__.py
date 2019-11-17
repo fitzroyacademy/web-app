@@ -1,6 +1,6 @@
 import sys
 
-from . import user, course, lesson, object, error, log, segment, pages, resource
+from . import user, course, lesson, object, error, log, segment, pages, resource, institute
 
 
 def attach(app):
@@ -9,6 +9,7 @@ def attach(app):
     app.register_blueprint(lesson.blueprint, url_prefix="/course")
     app.register_blueprint(segment.blueprint, url_prefix="/course")
     app.register_blueprint(resource.blueprint, url_prefix="/course")
+    app.register_blueprint(institute.blueprint, url_prefix="/institute")
     app.register_blueprint(object.blueprint)
     app.register_blueprint(error.blueprint)
     app.register_blueprint(log.blueprint)

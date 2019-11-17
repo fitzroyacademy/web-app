@@ -9,10 +9,12 @@ from dataforms import LoginForm
 blueprint = Blueprint("pages", __name__)
 
 
+@blueprint.route("/", subdomain="<institute>")
 @blueprint.route("/")
-def index():
+def index(institute=''):
     """ Shows all courses the user has access to. """
     data = {"public_courses": datamodels.Course.list_public_courses(), "form": LoginForm()}
+
     return render_template("welcome.html", **data)
 
 
@@ -22,8 +24,9 @@ def index():
 
 
 def _bind_render(s, p):
+    data = {"form": None}
     def fun():
-        return render_template("static/{}/{}.html".format(s, p))
+        return render_template("static/{}/{}.html".format(s, p), **data)
 
     return fun
 

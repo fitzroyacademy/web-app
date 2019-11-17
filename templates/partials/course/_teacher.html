@@ -1,11 +1,11 @@
-<div id="teacher-{{ teacher.id }}" class="fit_btn">
-    <div class="fit_pic circle"><img src="{% if teacher.profile_picture %}{{ teacher.profile_picture }}{% else %}/assets/stub/marge.png{% endif %}" alt="user"></div>
-    <div class="fit_txt">{{ teacher.first_name }} {{ teacher.last_name }}</div>
+<div class="fit_btn" data-fit-user>
+    <div class="fit_pic circle"><img src="{% if user.profile_picture %}{{ user.profile_picture }}{% else %}/static/assets/stub/marge.png{% endif %}" alt="user"></div>
+    <div class="fit_txt">{{ user.first_name }} {{ user.last_name }}</div>
     <div class="sub buttonset">
-        <a class="btn btn-sm btn-light" data-teacher-id="{{ teacher.id }}"
-           data-course-slug="{{ course.slug }}"
+        <a class="btn btn-sm btn-light" data-user-id="{{ user.id }}"
+           data-{{ data_type }}-slug="{{ obj.slug }}"
            {% if lesson %}data-lesson-id="{{ lesson.id }}"{% endif %}
-           data-course-edit-remove-teacher><i
-                class="fal fa-trash"></i> Remove</a>
+           data-remove-user data-user-type="{{ user_type }}">
+            <i class="fal fa-trash"></i> Remove</a>
     </div>
 </div>

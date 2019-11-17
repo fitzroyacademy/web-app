@@ -43,7 +43,6 @@ def teacher_required(function):
 
 
 def enrollment_required(function):
-    # http://localhost:5000/course/fitzroy-academy/how-to-have-good-ideas
 
     @wraps(function)
     def decorated_function(course_slug, lesson_slug, *args, **kwargs):

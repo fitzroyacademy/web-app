@@ -32,7 +32,7 @@ c = datamodels.Course(
 <p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
 <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
 """,
-	preview_thumbnail="/assets/images/lessons/customer-interviews.jpg",
+	preview_thumbnail="/static/assets/images/lessons/customer-interviews.jpg",
 	guest_access=True,
 	draft=False,
 	workload_title="",
@@ -78,3 +78,28 @@ for i, lesson in enumerate(stubs.lessons):
 		l.resources.append(r)
 		session.add(r)
 	session.commit()
+
+
+# default institute, whitout subdomain
+fitz_institute = datamodels.Institute(
+	name="Fitzroyacademy",
+	logo="",
+	slug=""
+)
+
+session.add(fitz_institute)
+session.commit()
+
+fitz_institute.add_admin(datamodels.get_user(1))  # Homer
+
+institute1 = datamodels.Institute(
+	name="Jedi Temple",
+	logo="",
+	slug="jeditemple"
+)
+
+session.add(institute1)
+session.commit()
+
+institute1.add_admin(datamodels.get_user(3))  # Bart
+session.commit()

@@ -2,7 +2,7 @@
 {% block CSRFtoken %}
     <script type="text/javascript">
         {% if ajax_csrf_form.csrf_token %}
-        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        let csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
         {% endif %}
     </script>
 {% endblock %}
@@ -47,16 +47,9 @@
           <div class="fit_paneless">
 
             <div class="fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
-              {% if lesson and lesson.get_cover %}
-                <img class="placeholder" src="{{ lesson.get_cover }}" alt="video">
-              {% else %}
-                <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
-              {% endif %}
-              <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
-              <form action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="post" style="display:none;">
-                <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
-              </form>
-              <a class="btn btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
+              {% with cover_image=lesson.get_cover if lesson else "" %}
+              {% include "partials/course/_cover_cropper.html" %}
+              {% endwith %}
             </div>
           </div>
 
@@ -147,16 +140,16 @@
                     {% endfor %}
                 </div>
               </div>
-              
+
               <a class="fit_btn solid secondary add-segment" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/add/"
                  data-toggle="modal" data-target="#fit_modal_add_segment">
                 <i class="fas fa-plus"></i>
                 <span class="fit_txt">Add a video or text page</span>
               </a>
-            
+
           </div>
           <!-- end vid stack -->
-            
+
           <h3>
             <span class="txt">Resources.</span>
           </h3>
@@ -173,7 +166,7 @@
                 data-target="#fit_modal_add_resource_link"
                 data-resource-id="{{ resource.id }}"
               >
-                {{ resource.title }} 
+                {{ resource.title }}
                 <small>{{ resource.type.value }}</small>
               </a>
               <div class="sub buttonset">
@@ -240,7 +233,7 @@
 
 <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-<script>var editor = new MediumEditor('#fit_wysiwyg_editor');</script>
-<script>var editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
+<script>let editor = new MediumEditor('#fit_wysiwyg_editor');</script>
+<script>let editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
 
 {% endblock %}

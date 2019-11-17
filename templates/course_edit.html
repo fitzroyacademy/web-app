@@ -45,21 +45,12 @@
             <span class="txt">The course.</span>
           </h3>
           <form action="/course/{{ course.slug }}/edit" method="post" id="course-edit-form" data-fit-wysiwyg>
-          
+
           <div class="fit_paneless">
-            
-            <div class="fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
-              {%  if cover_image %}
-                <img class="placeholder" src="{{ cover_image }}" alt="video">
-              {% else %}
-                <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
-              {% endif %}
-              <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
-              <form action="/course/{{ course.slug }}/edit" method="post" style="display:none;">
-                <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
-              </form>
-              <a class="btn btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
-            </div>
+
+            {% with cover_action="/course/"+course.slug+"/edit" %}
+              {% include "partials/course/_cover_cropper.html" %}
+            {% endwith %}
 
             <dl class="fit_summary_icons">
 
@@ -205,14 +196,14 @@
                   {% endfor %}
               </div>
             </div>
-            
+
             <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
               <i class="fas fa-plus"></i>
               <span class="fit_txt">Add lesson</span>
             </a>
-            
+
           </div><!-- end lesson stack -->
-            
+
           <h3>
             <span class="txt">Permissions.</span>
           </h3>
@@ -225,18 +216,18 @@
               <dt><i class="far fa-external-link"></i> Link</dt>
               <dd>
                 <div class="form-group">
-                  <div class="input-group">
+                  <div class="input-group" data-fit-change-slug>
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" id="course_slug_input" class="form-control" maxlength="20" name="course_slug_input" value="{{ course.slug }}" placeholder="short link" data-fit-slug-set>
+                    <input type="text" class="form-control" maxlength="20" id="course_slug_input" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-slug-value>
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="button" data-change-slug data-course-slug="{{ course.slug }}">Change</button>
                     </div>
                   </div>
                   <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/<strong data-fit-slug-reveal>{{ course.slug }}</strong></a></small>
-                  <input type="hidden" value="{{ course.slug }}" id="course_slug" name="course_slug" data-fit-slug-reveal-secret> 
-                  
+                  <input type="hidden" value="{{ course.slug }}" id="course_slug" name="course_slug" data-fit-slug-reveal-secret>
+
                 </div>
               </dd> 
 

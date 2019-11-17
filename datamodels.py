@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum
+from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum, InstitutePermissionEnum
 
 Base = declarative_base()
 
@@ -255,16 +255,84 @@ class Institute(BaseModel):
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String)
-    logo = sa.Column(sa.String)  # URL to picture resource
-    slug = sa.Column(sa.String(50), unique=True)
+    description = sa.Column(sa.String(140), default="")
+    cover_image = sa.Column(sa.String, default="")
+    logo = sa.Column(sa.String, default="")  # URL to picture resource
+    slug = sa.Column(sa.String(50), unique=True)  # corresponds to subdomain
+    for_who = sa.Column(sa.String, default="")
+    location = sa.Column(sa.String, default="")
 
     users = orm.relationship("InstituteEnrollment", back_populates="institute")
 
-    def add_user(self, user, access_level=0):
-        association = InstituteEnrollment(access_level=access_level)
-        association.institute = self
-        association.user = user
+    def add_user(self, user, access_level=InstitutePermissionEnum.teacher):
+        association = InstituteEnrollment(institute=self,
+                                          access_level=access_level,
+                                          user=user)
+        db = get_session()
         self.users.append(association)
+        db.commit()
+
+    def add_manager(self, user):
+        self.add_user(user, access_level=InstitutePermissionEnum.manager)
+
+    def add_admin(self, user):
+        self.add_user(user, access_level=InstitutePermissionEnum.admin)
+
+    def _get_user_group(self, group_name):
+        associations = getattr(InstituteEnrollment, "find_{}_for_institute".format(group_name))(self.id)
+        users = []
+        for ass in associations:
+            users.append(ass.user)
+        return users
+
+    @property
+    def teachers(self):
+        """ A unique list of users associated with this course that
+        have teacher-level access."""
+        return self._get_user_group("teachers")
+
+    @property
+    def admins(self):
+        return self._get_user_group("admins")
+
+    @property
+    def managers(self):
+        return self._get_user_group("managers")
+
+    @property
+    def logo_url(self):
+        if not self.logo:
+            return ""
+        return url_for("static", filename="uploads/{}".format(self.logo)) \
+            if self.logo and not self.logo.startswith("http") \
+            else self.logo
+
+    @property
+    def cover_image_url(self):
+        if not self.cover_image:
+            return ""
+        return url_for("static", filename="uploads/{}".format(self.cover_image)) \
+            if self.cover_image and not self.cover_image.startswith("http") \
+            else self.cover_image
+
+    def is_admin(self, user):
+        return InstituteEnrollment.is_admin(self.id, user.id)
+
+    def remove_user(self, user, access_level):
+        access_level = getattr(InstitutePermissionEnum, access_level, None)
+
+        if access_level is None:
+            return False
+
+        enrollment = InstituteEnrollment.filter_by_institute_user(self.id, user.id).\
+            filter(InstituteEnrollment.access_level==access_level).first()
+
+        if enrollment:
+            s = get_session()
+            s.delete(enrollment)
+            s.commit()
+            return True
+        return False
 
 
 class InstituteEnrollment(BaseModel):
@@ -273,10 +341,44 @@ class InstituteEnrollment(BaseModel):
     id = sa.Column(sa.Integer, primary_key=True)
     user_id = sa.Column("user_id", sa.Integer, sa.ForeignKey("users.id"))
     institute_id = sa.Column("institute_id", sa.Integer, sa.ForeignKey("institutes.id"))
-    access_level = sa.Column("access_level", sa.Integer)
+    access_level = sa.Column(sa.Enum(InstitutePermissionEnum), nullable=True)
 
     user = orm.relationship("User", back_populates="institutes")
     institute = orm.relationship("Institute", back_populates="users")
+
+    @classmethod
+    def find_users_for_institute(cls, institute_id, access_level):
+        session = get_session()
+        return (
+            session.query(cls)
+                .filter(cls.institute_id == institute_id)
+                .filter(cls.access_level == access_level)
+                .all()
+        )
+
+    @classmethod
+    def filter_by_institute_user(cls, institute_id, user_id):
+        session = get_session()
+        return session.query(cls).filter(cls.institute_id == institute_id) \
+            .filter(cls.user_id == user_id)
+
+    @classmethod
+    def is_admin(cls, institute_id, user_id):
+        return cls.filter_by_institute_user(institute_id, user_id).\
+                   filter(cls.access_level == InstitutePermissionEnum.admin)\
+                   .first() is not None
+
+    @classmethod
+    def find_admins_for_institute(cls, institute_id, access_level=InstitutePermissionEnum.admin):
+        return cls.find_users_for_institute(institute_id, access_level)
+
+    @classmethod
+    def find_teachers_for_institute(cls, institute_id, access_level=InstitutePermissionEnum.teacher):
+        return cls.find_users_for_institute(institute_id, access_level)
+
+    @classmethod
+    def find_managers_for_institute(cls, institute_id, access_level=InstitutePermissionEnum.manager):
+        return cls.find_users_for_institute(institute_id, access_level)
 
 
 class Program(BaseModel):
@@ -682,7 +784,7 @@ class Lesson(OrderedBase):
             if self.cover_image.startswith("http"):
                 return self.cover_image
             else:
-                return "/uploads/{}".format(self.cover_image)
+                return "/static/uploads/{}".format(self.cover_image)
         return ""
 
     @staticmethod

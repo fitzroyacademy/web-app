@@ -1,0 +1,41 @@
+{% extends "/layout.html" %}
+
+{% block body %}
+
+<main>
+
+  <article>
+
+    <div class="fit_course intro">
+      <form action="/institute/add" method="post" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+      <h1>
+        <span class="txt">Add Institute.</span>
+        <small class="subtxt">
+          <button class="btn btn-sm btn-outline-primary" type="submit"><i class="fal fa-check"></i> Save changes</button>
+        </small>
+      </h1>
+
+      <div class="form-group">
+        <input type="text" class="form-control form-control-lg" name="name" value="" id="name" placeholder="Institute name">
+      </div>
+      <div class="form-group">
+        <!-- <label for="lesson_description">Short description</label> -->
+        <input type="text" class="form-control" id="description" name="description" value="" maxlength="140" placeholder="Short description. 140 characters max.">
+      </div>
+
+      {% include "partials/course/_cover_cropper.html" %}
+
+
+      <div class="fit_pane d-flex justify-content-between">
+        <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save changes</button>
+      </div>
+
+      </form>
+    </div>
+
+  </article>
+
+</main>
+
+{% endblock %}
