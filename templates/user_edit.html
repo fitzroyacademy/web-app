@@ -59,7 +59,7 @@
 		              {% if current_user.profile_picture %}
 		                <img src="{{ current_user.profile_picture }}" alt="user">
 		              {% else %}
-		                <img class="placeholder" src="/assets/images/defaults/spacer.gif" alt="spacer">
+		                <img class="placeholder" src="/static/assets/images/defaults/spacer.gif" alt="spacer">
 		              {% endif %}
 		              <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
 		              <form action="/edit" method="post" style="display:none;">

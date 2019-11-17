@@ -936,7 +936,6 @@ $( document ).ready(function() {
 
   delegate('[data-change-slug]', 'click', (e, t) => {
     e.preventDefault();
-    console.log("dsfasfdasfasfa");
     let courseSlug = t.dataset.courseSlug;
     let instituteSlug = t.dataset.courseSlug;
     let p = t.closest('[data-fit-change-slug]');
