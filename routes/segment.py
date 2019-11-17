@@ -1,10 +1,13 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, abort
 from slugify import slugify
+from uuid import uuid4
 
 import datamodels
 import stubs
+from dataforms import AjaxCSRFTokenForm
 from .decorators import login_required, teacher_required, enrollment_required
 from .utils import reorder_items, clone_model
+from .render_partials import render_intro, render_segment_list_element
 from enums import SegmentPermissionEnum, VideoTypeEnum
 
 blueprint = Blueprint("segment", __name__, template_folder="templates")
@@ -51,44 +54,106 @@ def reorder_segments(user, course, course_slug, lesson_id):
     return reorder_items(request, datamodels.Segment, lesson.segments)
 
 
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>",)
+@login_required
+@teacher_required
+def retrieve(user, course, course_slug, lesson_id, segment_id):
+    lesson = datamodels.Lesson.find_by_id(lesson_id)
+    segment = datamodels.Segment.find_by_id(segment_id)
+
+    if lesson and lesson.course_id == course.id and segment.lesson_id == lesson.id:
+        return jsonify({"segment_url": segment.url,
+                        "segment_type": segment.type,
+                        "video_type": segment.video_type.value if segment.video_type else "",
+                        "permission": segment.permission.value if segment.permission else "",
+                        "title": segment.title,
+                        "text": segment.text
+                        })
+
+    return jsonify({"message": "Segment doesn't match a course lesson."}), 400
+
+
 @blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/segments/add/<string:content_type>",
-    methods=["GET", "POST"],
+    "/<course_slug>/lessons/<int:lesson_id>/segments/add/intro_video",
+    methods=["POST"],
+)
+@login_required
+@teacher_required
+def add_edit_intro_segment(user, course, course_slug, lesson_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+
+    if not lesson:
+        return jsonify({"message": "Lesson do not match course"}), 400
+
+    slug = "intro-video"
+
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"message": "Invalid CSRF token"}), 400
+
+    db = datamodels.get_session()
+
+    segment = lesson.intro_segment
+    if segment:
+        segment.url = request.form["segment_url"]
+        db.add(segment)
+        db.commit()
+        return jsonify({"message": "Intro video updated"})
+
+    segment = datamodels.Segment.find_by_slug(course_slug, lesson.slug, slug)
+    if segment and segment.order != 0:
+        slug = slug + "-" + uuid4()[:3]
+
+    segment = datamodels.Segment(
+        url=request.form["segment_url"],
+        type="video",
+        video_type=VideoTypeEnum.standard,
+        permission=SegmentPermissionEnum.normal,
+        duration_seconds=0,
+        order=0,
+        lesson=lesson,
+        slug=slug,
+        title="Intro segment",
+        text=request.form.get("text_segment_content", "Intro segment video")
+    )
+
+    db.add(segment)
+    db.commit()
+
+    return jsonify({"message": "Intro video added.",
+                    "html": render_intro(segment)
+                    })
+
+
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/segments/add/<string:content_type>", methods=["POST"],
 )
 @blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>/edit/<string:content_type>",
-    methods=["GET", "POST"],
+    "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>/edit",
+    methods=["POST"],
 )
 @login_required
 @teacher_required
 def add_edit_segment(
-    user, course, course_slug, lesson_id, content_type, segment_id=None
+    user, course, course_slug, lesson_id, content_type=None, segment_id=None
 ):
-    if content_type not in ["text", "video", "intro_text", "intro_video"]:
-        flash("Wrong action")
-        return redirect("/course/{}/edit".format(course.slug))
-
-    template_name = (
-        "_video.html" if content_type in ["video", "intro_video"] else "_text.html"
-    )
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
-        flash("Lesson do not match course")
-        return redirect("/course/{}/edit".format(course.slug))
+        return jsonify({"message": "Lesson do not match course"}), 400
 
     if segment_id:
         instance = datamodels.Segment.find_by_id(segment_id)
         if not instance or instance.lesson_id != lesson.id:
-            flash("No such segment for this lesson")
-            return redirect("/course/{}/edit".format(course.slug))
+            return jsonify({"message": "No such segment for this lesson"}), 400
         editing = True
+        content_type = instance.type
     else:
         instance = datamodels.Segment()
         instance.lesson_id = lesson.id
         editing = False
 
-    data = {"course": course, "lesson": lesson, "content_type": content_type}
+    if content_type not in ["text", "video", "intro_video"]:
+        return jsonify({"message": "Wrong action"}), 400
 
     if request.method == "POST":
         segment_name = (
@@ -111,10 +176,7 @@ def add_edit_segment(
                         )
                         .first()
                     ):
-                        flash("Intro segment already exists")
-                        return render_template(
-                            "partials/course/{}".format(template_name), **data
-                        )
+                        return jsonify({"message": "Intro segment already exists"}), 400
                     else:
                         instance.order = 0
                 else:
@@ -125,12 +187,7 @@ def add_edit_segment(
                     "text_segment_content" not in request.form
                     or not request.form["text_segment_content"]
                 ):
-                    flash("Segment description is required")
-                    return redirect(
-                        "/course/{}/lessons/{}/segments/add/{}".format(
-                            course.slug, lesson.id, content_type
-                        )
-                    )
+                    return jsonify({"message": "Segment description is required"}), 400
 
                 instance.title = request.form["segment_name"]
                 instance.text = request.form["text_segment_content"]
@@ -141,12 +198,7 @@ def add_edit_segment(
                 instance.permission = SegmentPermissionEnum.normal
             else:
                 if "segment_url" not in request.form or not request.form["segment_url"]:
-                    flash("Segment URL is required.")
-                    return redirect(
-                        "/course/{}/lessons/{}/segments/add".format(
-                            course.slug, lesson.id
-                        )
-                    )
+                    return jsonify({"message": "Segment URL is requied"}), 400
 
                 permission = getattr(
                     SegmentPermissionEnum,
@@ -171,21 +223,18 @@ def add_edit_segment(
             db.add(instance)
             db.commit()
 
-            flash("Segment {} {}".format(instance.title, "edited" if editing else "added"))
-            return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
+            response = {
+                "message": "Segment {} {}".format(instance.title, "edited" if editing else "added")
+            }
+
+            if not editing:
+                response["html"] = render_segment_list_element(course=course, lesson=lesson, segment=instance)
+
+            return jsonify(response), 200
         else:
-            flash("Can't create segment with such name.")
+            return jsonify({"message": "Can't create segment with such name."}), 400
 
-    if instance.id:
-        data["segment"] = instance
-        data["video_type"] = instance.video_type.value if instance.video_type else ""
-        data["permission"] = instance.permission.value if instance.permission else ""
-    else:
-        data["segment"] = None
-        data["video_type"] = VideoTypeEnum.standard.value
-        data["permission"] = SegmentPermissionEnum.normal.value
-
-    return render_template("partials/course/{}".format(template_name), **data)
+    return jsonify({"message": "Oh snap..."})
 
 
 @blueprint.route(

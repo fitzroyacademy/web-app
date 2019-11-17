@@ -1,0 +1,33 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+
+
+{% include 'static/surveys/_course_header.html' %}
+
+
+<div class="fit_survey" data-fit_iconselect_parent>
+
+  <h2>How are you going so far?</h2>
+
+  <div class="fit_iconselects" data-fit_iconselects>
+    <a class="fit_iconselect" data-fit_iconselect="I'm fine, thanks"><i class="fas fa-thumbs-up"></i><span class="sub">I'm fine</span></a>
+    <a class="fit_iconselect" data-fit_triggerwhy data-fit_iconselect="I'm stuck, I need help!"><i class="fas fa-thumbs-down"></i><span class="sub">I'm stuck</span></a>
+  </div>
+
+  <div class="collapse fit_survey_why" data-fit_feedback_why>
+    <div class="form-group">
+      <label for="reason">How might we help you with that?</label>
+      <textarea class="form-control" data-fit_feedback_why_input id="reason" rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="fit_survey_submit">
+    <button type="button" disabled data-fit_iconselects_submit="fit_gather" data-fit_iconselects_disabled="Please choose an answer" class="btn btn-lg btn-secondary">Please choose an answer</button>
+  </div>
+</div>
+
+{% include 'static/surveys/_course_footer.html' %}
+
+
+{% endblock %}

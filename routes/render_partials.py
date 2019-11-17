@@ -23,3 +23,17 @@ def render_teacher(user, course=None, lesson=None, institute=None, user_type="te
             }
 
     return render_template("partials/course/_teacher.html", **data)
+
+
+def render_intro(introduction):
+    data = {"introduction": introduction}
+
+    return render_template("partials/course/_intro.html", **data)
+
+
+def render_segment_list_element(course, lesson, segment):
+    data = {"segment": segment,
+            "course": course,
+            "lesson": lesson}
+
+    return render_template("partials/course/_list_segment_element.html", **data)

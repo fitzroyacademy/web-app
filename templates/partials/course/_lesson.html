@@ -2,7 +2,7 @@
 {% block CSRFtoken %}
     <script type="text/javascript">
         {% if ajax_csrf_form.csrf_token %}
-        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        let csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
         {% endif %}
     </script>
 {% endblock %}
@@ -14,7 +14,7 @@
 
     <div class="fit_course intro">
 
-    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data" data-fit-wysiwyg>
+    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data" data-fit-wysiwyg data-fit-lesson-add-edit>
     {{ form.csrf_token }}
       
 
@@ -29,108 +29,34 @@
         </small>
       </h1> -->
 
-      <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required>
-      </div>
-      <div class="form-group">
-        <!-- <label for="lesson_description">Short description</label> -->
-        <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required>
+      <div class="fit_fancyplace">
+        <label for="course_name">Lesson name</label>
+        <input type="text" class="form-control form-control-h2" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required data-fit-fancyplace>
       </div>
 
-      {% with cover_image=lesson.get_cover if lesson else "" %}
-      {% include "partials/course/_cover_cropper.html" %}
-      {% endwith %}
-
-      {% if lesson %}
-      <h3>
-        <span class="txt">Lesson segments.</span>
-        <small class="subtxt"><span class="fas fa-clock"></span>
-          {{ lesson.duration_seconds|hhmmss }}
-        </small>
-      </h3>
-
-      <div class="fit_body fit_lessons">
-          
-
-          {% if not introduction %}
-          <a class="fit_btn solid secondary add-segment" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/add/"
-             data-add-video="intro_video" data-add-text="intro_text" data-toggle="modal" data-target="#fit_modal_add_segment">
-            <i class="fas fa-plus"></i>
-            <span class="fit_txt">Add an intro video</span>
-          </a>
-          {% endif %}
-
-          <div>
-
-
-            <!-- This first one is spcial, just for the intro video: -->
-            {% if introduction %}
-            <div class="fit_btn">
-              <div class="fit_pic vid">
-                <img src="{{ introduction.thumbnail }}" alt="course">
-              </div>
-              <span class="fit_txt">
-                Introduction
-              </span>
-
-              <div class="sub buttonset">
-                
-                <span class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</span>
-                
-                <a href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ introduction.id }}/edit/{{ introduction.type }}" class="btn btn-light"><i class="fal fa-edit"></i></a>
-              </div>
-            </div>
-            {% endif %}
-
-            <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/reorder">
-                {% for segment in segments %}
-                <div class="fit_btn" id="item_{{ segment.id }}" data-list-el-id="{{ segment.id }}">
-                  <div class="fit_pic vid">
-                    <img src="{{ segment.thumbnail }}" alt="course">
-                  </div>
-                  <div class="fit_txt">{{ segment.title }}</div>
-
-                  <div class="sub buttonset">
-                    <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>
-
-                    <div class="dropdown">
-                      <button href="#" class="btn btn-light" type="button" id="dropdown_12345" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fal fa-ellipsis-v"></i>
-                      </button>
-
-                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_12345">
-                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/edit/{{ segment.type }}"><i class="fal fa-edit"></i> Edit</a>
-                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/delete" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
-                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/copy"><i class="fal fa-copy"></i> Duplicate</a>
-                      </div>
-                    </div>
-
-                    <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
-                  </div>
-                </div>
-
-                {% endfor %}
-            </div>
-          </div>
-          
-          <a class="fit_btn solid secondary add-segment" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/add/"
-             data-add-video="video" data-add-text="text" data-toggle="modal" data-target="#fit_modal_add_segment">
-            <i class="fas fa-plus"></i>
-            <span class="fit_txt">Add a video or text page</span>
-          </a>
-        
+      <div class="fit_fancyplace">
+        <label for="lesson_description">One-sentence description</label>
+        <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required data-fit-fancyplace>
       </div>
-      <!-- end vid stack -->
 
       <div class="row">
         <div class="col-md-6">
           <h3>
-            <span class="txt">Lesson info.</span>
+            <span class="txt">The lesson.</span>
           </h3>
-          <div class="fit_pane">
+          <div class="fit_paneless">
+
+            <div class="fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
+              {% with cover_image=lesson.get_cover if lesson else "" %}
+              {% include "partials/course/_cover_cropper.html" %}
+              {% endwith %}
+            </div>
+          </div>
+
+        {% if lesson %}
+          <div class="fit_pane bordered white">
+
             <dl class="fit_summary_icons">
-              
-              {% include "partials/course/_teachers.html" %}
 
               <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt>
 
@@ -172,12 +98,58 @@
               
             </dl>
           </div><!-- pane -->
-
+        {% endif %}
 
         </div><!-- col -->
 
         <div class="col-md-6">
-            
+
+          {% if lesson %}
+          <h3>
+            <span class="txt">Lesson segments.</span>
+            <small class="subtxt"><span class="fas fa-clock"></span>
+              {{ lesson.duration_seconds|hhmmss }}
+            </small>
+          </h3>
+
+          <div class="fit_body fit_lessons">
+
+              {% if not introduction %}
+              <a class="fit_btn solid secondary add-segment"
+                 data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
+                <i class="fas fa-plus"></i>
+                <span class="fit_txt">Add an intro video</span>
+              </a>
+              {% endif %}
+
+              <div data-fit-sortable-list-with-intro-element>
+
+
+                <!-- This first one is special, just for the intro video: -->
+                {% if introduction %}
+                    {% include "partials/course/_intro.html" %}
+                {% endif %}
+
+                <div id="sortable-list"
+                     data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/reorder"
+                     data-fit-list-elements-container
+                     data-fit-course-slug="{{ course.slug }}"
+                     data-fit-lesson-id="{{ lesson.id }}">
+                    {% for segment in segments %}
+                        {% include "partials/course/_list_segment_element.html" %}
+                    {% endfor %}
+                </div>
+              </div>
+
+              <a class="fit_btn solid secondary add-segment" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/add/"
+                 data-toggle="modal" data-target="#fit_modal_add_segment">
+                <i class="fas fa-plus"></i>
+                <span class="fit_txt">Add a video or text page</span>
+              </a>
+
+          </div>
+          <!-- end vid stack -->
+
           <h3>
             <span class="txt">Resources.</span>
           </h3>
@@ -194,7 +166,7 @@
                 data-target="#fit_modal_add_resource_link"
                 data-resource-id="{{ resource.id }}"
               >
-                {{ resource.title }} <i class="far fa-edit"></i>
+                {{ resource.title }}
                 <small>{{ resource.type.value }}</small>
               </a>
               <div class="sub buttonset">
@@ -216,7 +188,7 @@
               </div>
               {% if resource.description %}
                 <a class="explain">
-                    {{ resource.description|safe }}
+                  {{ resource.description|safe }}
                 </a>
               {% endif %}
             </div>
@@ -229,11 +201,13 @@
             </a>
           </div><!-- pane -->
 
-          <h3>Further reading.</h3>
-          <div class="fit_wysiwyg">
+          <!-- <h3>Further reading.</h3> -->
+          <div class="fit_wysiwyg further">
+            <label for="fit_wysiwyg_editor">Further reading (appears under resource links)</label>
             <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
           </div>
           <textarea id="further_reading" name="further_reading" style="display: none"></textarea>
+          <!-- <small class="form-text text-muted">This appears below any links in the resources tab.</small> -->
 
         </div><!-- col -->
       </div><!-- row -->
@@ -244,24 +218,22 @@
     </div>
 
   </article>
-
 </main>
 
 {% if lesson %}
-    {% include 'partials/modal/_add_segment.html' %}
-    {% include 'partials/modal/_add_resource.html' %}
+  {% include 'partials/modal/_add_segment.html' %}
+  {% include 'partials/modal/_add_resource.html' %}
+  {% with action="/course/" + course.slug + "/lessons/" + lesson.id|string + "/segments/add/intro_video", intro=introduction %}
+  {% include 'partials/modal/_add_intro.html' %}
+  {% endwith %}
+  {% include 'partials/modal/_add_text_segment.html' %}
+  {% include 'partials/modal/_add_video_segment.html' %}
 {% endif %}
 
 
 <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-<script>var editor = new MediumEditor('#fit_wysiwyg_editor');</script>
-<script>var editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
-<style type="text/css">
-    .fit_wysiwyg{border: 1px solid #ddd; border-radius: .25rem; padding: 1rem;}
-    .fit_wysiwyg .medium-editor-element{outline: none !important;}
-    .fit_wysiwyg .medium-editor-placeholder-relative:after,
-    .fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: #888;}
-</style>
+<script>let editor = new MediumEditor('#fit_wysiwyg_editor');</script>
+<script>let editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
 
 {% endblock %}

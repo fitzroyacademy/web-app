@@ -17,7 +17,7 @@
     <div class="fit_body fit_segments">
       {% for segment in lesson.segments %}
         <a 
-          class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}" 
+          class="fit_btn {{ segment.type }} {{'active' if segment.id == active_segment.id }}"
           href="{{ segment.permalink }}" 
           data-fit-segment="{{ segment.id }}" 
           data-fit-parent="{{ segment.lesson_id }}"

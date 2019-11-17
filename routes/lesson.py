@@ -1,4 +1,3 @@
-import json
 from flask import (
     Blueprint,
     render_template,
@@ -6,29 +5,26 @@ from flask import (
     redirect,
     jsonify,
     flash,
-    abort,
-    session,
+    abort
 )
 from slugify import slugify
+from uuid import uuid4
 
 import datamodels
 import stubs
-from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG
-from util import get_current_user
+from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG, VideoTypeEnum, SegmentPermissionEnum
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
 
-from .render_partials import render_question_answer, render_teacher
+from .render_partials import render_question_answer, render_teacher, render_intro
 
 blueprint = Blueprint("lesson", __name__, template_folder="templates")
 
 
 @blueprint.route("/lessons")
 def lessons():
-    return render_template("lesson_chart.html") @ blueprint.route(
-        "/<slug>/lessons/reorder", methods=["GET", "POST"]
-    )
+    return render_template("lesson_chart.html")
 
 
 @blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"])
@@ -36,6 +32,51 @@ def lessons():
 @teacher_required
 def reorder_lessons(user, course, course_slug=None):
     return reorder_items(request, datamodels.Lesson, course.lessons)
+
+
+@blueprint.route("/<course_slug>/lessons/add_intro", methods=["POST"])
+@login_required
+@teacher_required
+def course_add_edit_intro_lesson(user, course, course_slug):
+    form = AjaxCSRFTokenForm(request.form)
+    intro_lesson = course.intro_lesson
+
+    if form.validate() and "intro_lesson" in request.form:
+        db = datamodels.get_session()
+
+        slug = "intro-lesson"
+        if datamodels.Lesson.find_by_slug(course.slug, "intro-lesson") is not None and not intro_lesson:
+            slug = slug + "-" + str(uuid4())[:3]
+        if intro_lesson:
+            segment = intro_lesson.intro_segment
+            segment.url = request.form["segment_url"]
+            html = ""
+        else:
+            intro_lesson = datamodels.Lesson(title="Intro lesson",
+                                             slug=slug,
+                                             description="Intro lesson video",
+                                             order=0,
+                                             course=course
+                                             )
+
+            db.add(intro_lesson)
+
+            segment = datamodels.Segment(lesson=intro_lesson,
+                                         order=0,
+                                         type="video",
+                                         permission=SegmentPermissionEnum.normal,
+                                         video_type=VideoTypeEnum.standard,
+                                         url=request.form["segment_url"],
+                                         duration_seconds=0,
+                                         slug="intro-segment"
+                                         )
+            html = render_intro(segment)
+
+        db.add(segment)
+        db.commit()
+        return jsonify({"message": "Intro lesson added", "html": html})
+    else:
+        return jsonify({"message": "Couldn't create intro lesson"}), 400
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
@@ -58,7 +99,8 @@ def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
     if request.method == "POST":
         if form.validate():
             if not lesson:
-                lesson = datamodels.Lesson(course=course, order=len(course.lessons))
+                lesson = datamodels.Lesson(course=course,
+                                           order=len(course.lessons)+1)
 
             lesson.title = form.title.data
             lesson.description = form.description.data

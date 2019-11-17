@@ -69,6 +69,7 @@ $watermelon_vibrant: #e6033e;
 
 
 $text: #4f5153;
+$text_medium: #666c6f;
 $text_light: #717b81;
 $text_lightish: #8f989d;
 $text_lighter: #b0b4b7;
@@ -92,7 +93,7 @@ $pdf_red: #ff2016;
 $facebook_blue: #3b5998;
 $youtube_red: #ff0000;
 
-$white_fade: rgba(255,255,255,0.99);
+$white_fade: rgba(255,255,255,0.9);
 
 $box_shadow: rgba(82,63,105,0.1);
 $box_shadow_blue: rgba(8,53,99,0.2);
@@ -121,12 +122,26 @@ footer{z-index: 1500;}
 .fit_player{z-index: 2000;}
 
 
+.fit_survey_responses{z-index: 2000;}
+
+.fit_survey_responses table tbody .response.truncated:after{z-index: 2100}
+.fit_survey_responses table tbody .response .expand{z-index: 2150}
+
+.fit_survey{z-index: 2200;}
+
+
 .fit_medium_rare{z-index: 2000;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
 
 .fit_medium_rare .fit_medium .breakbig:after{z-index: 2210;}
 .fit_medium_rare .fit_medium .breakbig > *{z-index: 2220;}
+
+.fit_fancyplace input,
+.fit_wysiwyg .medium-editor-element{z-index: 2300}
+
+.fit_fancyplace.labelled label,
+.fit_wysiwyg label{z-index: 2350;}
 
 
 header{z-index: 3000;}
@@ -262,7 +277,8 @@ body > .fit_player nav,
 .fit_sidepanel .panel,
 .fit_debug,
 .fit_snackbar,
-.medium-editor-toolbar{box-shadow: 0 0 1.5rem $box_shadow;}
+.medium-editor-toolbar,
+.fit_survey{box-shadow: 0 0 1.5rem $box_shadow;}
 
 @media (min-width: 576px){
 	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
@@ -423,6 +439,10 @@ a.fit_btn:hover{color:$blue;}
 // wee bits of text on the right
 .fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
 
+// if the sub has a href (is a link)
+.fit_btn > .fit_sub[href]{color: $text_light;}
+.fit_btn > .fit_sub[href]:hover{color: $blue;}
+
 // videos are weird
 .fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative; overflow: hidden;}
 .fit_btn > .fit_pic img{height: 100%;}
@@ -541,6 +561,8 @@ header .fit_btn:hover > .fit_txt:after,
 	.fit_pane{margin: 0 -1rem 1rem !important;}
 }
 
+// DANGER PANE
+.fit_pane.danger{border-color: $red;}
 
 // Okay. This is the 'segment types' bit, where we use freaky stuff to display certain icons:
 .fit_btn > .fit_circle{}
@@ -556,12 +578,27 @@ header .fit_btn:hover > .fit_txt:after,
 
 .fit_btn.resource_link .fit_txt{}
 
+
+
 // the short text explainer
 .fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize; width: 100%;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
 
 .fit_btn.resource_link .explain:active,
 .fit_btn.resource_link .explain:focus{height: auto; overflow: auto}
+.fit_btn.resource_link .explain p{margin-bottom: .5rem;}
+
+
+// this stuff only appears when viewed by a student
+.fit_resource_link_wrap{border:1px solid transparent; border-radius: $border_rad_md;}
+
+.fit_resource_description{padding: .5rem 0 1rem 4rem; position: relative;}
+.fit_resource_description > i{color: $text_lighter; position: absolute; top:-.2rem; left: 0; width: 4rem; padding: 1rem; font-size: .8rem; text-align: center; display: block;}
+.fit_resource_description p{font-size: .95rem; margin-bottom: 0.25rem; color:$text_medium;}
+.fit_resource_description p:last-child{margin-bottom: 0rem;}
+
+.fit_resource_link_wrap:hover{border-color: $border_light;}
+.fit_resource_link_wrap:hover .fit_resource_description > i{transform: rotate(90deg);}
 
 // the standard stuff of 'types', most are just circles.
 .fit_btn.intro > [class*="fa-"]:before{content: "\f04b";}
@@ -742,6 +779,9 @@ header .fit_btn:first-child{margin-left: -1rem;}
 .fit_segments .fa-poll-h,
 .fit_segments .fa-file,
 .fit_segments .fa-dot-circle{color: $aqua;}
+
+// make them less aggressive for the intro
+.fit_course.intro .fit_segments .fa-circle{color: $text_lightest;}
 
 .fit_segments .fa-check{color: #aaa;}
 .fit_segments .fa-play{color: $aqua;}
@@ -991,6 +1031,7 @@ a.card.rating h5{color: #f4b115;}
 .fit_pane.slim{padding: 0.1rem;}
 .fit_pane.slimmest{padding: 0rem;}
 .fit_pane.bordered{border: 1px solid $border_medium}
+.fit_pane.white{background: #fff;}
 
 
 // weird radius when in another thingo like a pane
@@ -1025,7 +1066,7 @@ Bleh:;
 .fit_summary_icons{padding: 0.5rem 0 0 ;}
 .fit_summary_icons:after{content: ''; display: block; clear: both; overflow:hidden; height: 0;}
 .fit_summary_icons dt{padding:0.1rem 0 1rem 3.2rem; position: relative; font-size: 1.2rem;}
-.fit_summary_icons dt > i:first-child{position: absolute; top:.2rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
+.fit_summary_icons dt > i:first-child{position: absolute; top:.25rem; left: 0.5rem; font-size: 1.5rem; color: #b0b4b7;}
 
 .fit_summary_icons.lite dt{font-weight: normal;}
 
@@ -1042,9 +1083,10 @@ Bleh:;
 // move it around if we're 2 deep
 .fit_summary_icons dd .form-group .form-group{padding-left: 4rem;}
 
+// naked means it has no title{}
+.fit_summary_icons dd.naked{margin-top: -1.1rem;}
 
 // crop saving thing
-
 
 .fit_cropper {
 	.fit_save_crop{display:none;}
@@ -1054,9 +1096,15 @@ Bleh:;
 	}
 }
 
+.fit_cropper .fit_upload_dropzone i{position: absolute; top:0; right:0; font-size:1.5rem; padding: 1rem; background: rgba(0,0,0,0.1); border-bottom-left-radius: $border_rad_lg;}
+.fit_cropper .fit_upload_dropzone:hover i{background: $blue;}
+
+.fit_cropper input[type="file"]{display: none;}
+
+.fit_paneless .fit_cropper{margin: 1rem 0 1rem 0;}
 
 // Square upload thing
-.fit_squarelogo{margin-bottom: 1rem; width: 200px; height: 200px; border:1px solid $border_light; border-radius: $border_rad_lg;}
+.fit_squarelogo{margin-bottom: 1rem; width: 300px; height: 300px; border:1px solid $border_light; border-radius: $border_rad_lg; position: relative; overflow: hidden;}
 .fit_squarelogo img{max-width: 100%; border-radius: $border_rad_lg;}
 
 .fit_cta{background: $watermelon; padding: 2rem 0 5rem; margin-top: 3rem;}
@@ -1145,7 +1193,7 @@ dd form.fit_user_edit{margin: 2rem 0 1rem;}
 
 // ------------------------------------------------------------------------------------
 // chart stuff
-.fit_chart{}
+.fit_chart{min-height: 20rem; background: $bg;}
 
 
 // in the sidebar
@@ -1206,7 +1254,7 @@ aside .fit_chart{margin: 1rem;}
 
 
 // ------------------------------------------------------------------------------------
-// Tables for analyrtics
+// Tables for analytics
 
 table.fit_stats{}
 
@@ -1253,6 +1301,16 @@ table.fit_colhover th:hover::after {content: ""; position: absolute; background-
 table.fit_colhover td:hover{cursor: default;}
 
 
+
+// ------------------------------------------------------------------------------------
+// table for happiness edit
+
+.fit_label_table{border: 1px solid $border_light;}
+
+.fit_label_table thead th small{color:$text_light;}
+.fit_label_table tbody tr th:first-child{width: 1rem; font-size: 1.5rem;}
+
+.fit_label_table tbody tr th:first-child
 
 // ------------------------------------------------------------------------------------
 // flag
@@ -1440,7 +1498,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_iconselect.active .fa-smile,
 .fit_iconselect:hover .fa-smile{color:#f0a385;}
 .fit_iconselect.active .fa-meh,
-.fit_iconselect:hover .fa-meh{color:#f0bc85;}
+.fit_iconselect:hover .fa-meh{color:#ce8b44;}
 .fit_iconselect.active .fa-frown,
 .fit_iconselect:hover .fa-frown{color:#e4bc4b;}
 .fit_iconselect.active .fa-angry,
@@ -1470,6 +1528,11 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 .fit_iconselects.high_sub .blue i{color:$blue;}
 
 
+// Freakin weird colour thing
+.btn[data-fit_iconselects_submit="fit_gather"]{border-width: 0 !important;}
+.btn[data-fit_iconselects_submit="fit_gather"]:disabled{background: $text_light !important;}
+.btn[data-fit_iconselects_submit="fit_gather"]:not(:disabled):hover{box-shadow: inset 0 0 5rem rgba(0,0,0,0.1);}
+
 
 // -----------------------------------------------------------------------------------------
 // user panel from the right
@@ -1494,7 +1557,8 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 // the course list:
 .fit_sidepanel .fit_course{padding: 0;}
-.fit_sidepanel .fit_course .fit_lessons{margin-bottom: 1rem;}
+.fit_sidepanel .fit_course .fit_lessons,
+.fit_user_edit .fit_course .fit_lessons{margin-bottom: 1rem;}
 
 // ------------------------------------------------------------
 // hide and reveals
@@ -1747,6 +1811,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 .fit_medium h4{font-weight: 900;}
 
+.fit_medium h1.roomy{padding: 2rem 0;}
+
 // iconz
 .fit_medium > h1 > i:first-child,
 .fit_medium > h2 > i:first-child,
@@ -1757,7 +1823,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium > h1 > i:first-child,
 	.fit_medium > h2 > i:first-child,
 	.fit_medium > h3 > i:first-child,
-	.fit_medium > h4 > i:first-child{position: absolute; top:0; right: 100%; margin-right: 1.5rem; font-size: 110%;}
+	.fit_medium > h4 > i:first-child{position: absolute; top:.25rem; right: 100%; margin-right: 1.5rem; font-size: 110%; color:$text_light;}
 }
 
 .fit_medium p,
@@ -1811,7 +1877,6 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium_rare .fit_medium .breakbigger:before{box-shadow: 0 -40px 30px #fff;}
 }
 
-
 .fit_spicy{color:$red; font-size: 2rem;}
 .fit_spicy .fal{color: $text_light;}
 
@@ -1819,6 +1884,9 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // medium large is full size
 
 .fit_medium.large{max-width: $container_wide;}
+@media (min-width: $container_wide) {
+	.fit_medium.large{padding: 0;}
+}
 
 .fit_medium.pricing .row .pane{}
 
@@ -1841,6 +1909,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium_rare .fit_rare{ flex: 0 0 $rare_width; top:($header_height+2rem); margin:0; padding: 0 3rem 2rem 0; position: sticky; align-self: flex-start;}
 
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{display: none;}
+
 }
 
 @media (max-width: 991px) {
@@ -1932,7 +2001,8 @@ $square_size: 22rem;
 .fit_fancyplace .form-control{padding: .75rem 1rem; height: calc(2em + .75rem + 2px);}
 
 // when the label is shown:
-.fit_fancyplace.labelled label{opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .5rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
+.fit_fancyplace.labelled label,
+.fit_wysiwyg label{position:absolute; opacity: 1; padding: .25rem .5rem; top:-.75rem; left: .5rem; color:$text_light; background: #fff; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02rem;}
 
 
 // when it's active
@@ -1959,6 +2029,9 @@ $square_size: 22rem;
 .fit_form_code.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$watermelon_light; } /* IE 10+ */
 
 
+
+// let's do the weird h2 size thing
+form .form-control-lg{}
 
 
 // login on its own
@@ -2096,6 +2169,28 @@ body > .fit_code {margin-top:10rem;}
 
 .fit_form_code_head.active label,
 .fit_form_code_head.labelled label{display: none;}
+
+
+// make the header code less aggressive!
+
+.fit_form_code_head .input-group{background: $bg_dark; border-radius: $border_rad_lg;}
+
+.fit_form_code_head .form-control, 
+.fit_form_code_head .btn,
+.fit_form_code_head .btn:disabled,
+.fit_form_code_head label{background: transparent; border-color: transparent; color:$text_light;}
+
+
+.fit_form_code_head.active .input-group,
+.fit_form_code_head.labelled .input-group{background: $watermelon; border-color: $watermelon;}
+
+.fit_form_code_head.active .form-control:empty::-webkit-input-placeholder,
+.fit_form_code_head.active .form-control,
+.fit_form_code_head.active .btn,
+.fit_form_code_head.active label,
+.fit_form_code_head.labelled .form-control, 
+.fit_form_code_head.labelled .btn,
+.fit_form_code_head.labelled label{color: #fff;}
 
 
 // search in the top bar
@@ -2259,26 +2354,40 @@ header .fit_btn_saver .saved{color: $new_green;}
 .fit_faq_edits{}
 .fit_faq_edit{}
 
-.fit_faq_edit{border-bottom: 1px solid $border_light; margin-bottom: 1rem; position: relative;}
+.fit_faq_edit{border-bottom: 1px solid $border_light; margin: -.5rem -.5rem 1rem; padding: .5rem; position: relative;}
 // removed coz we have the adder below now!
 .fit_faq_edit:last-child{border-bottom: none;}
 
-.fit_faq_edit .fit_faq_drag{position: absolute; top:0; bottom: 1rem; width: 2.25rem; left: -3.25rem; color:$text_light; padding: .4rem 0;}
+.fit_faq_edit .fit_faq_drag{position: absolute; top:.5rem; bottom: 0; width: 2.25rem; left: -2.75rem; color:$text_light; padding: .4rem 0;}
 .fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
 .fit_faq_edit .btn-remove:hover{color:$red; background: #fff;}
+
+.fit_pane.white .fit_faq_edit{background: #fff;}
+
 // ------------------------------------------------------------------------------------
 // Custom radios for permissions and things
 .fit_radio_icons{}
 .fit_radio_icons.columned{column-count:2;}
 
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
-.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter;}
-.fit_radio_icons label > i{font-size: 1.2rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter; font-weight: normal;}
+.fit_radio_icons label > i{font-size: 1.4rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
 .fit_radio_icons input:checked + label{color: $brand;}
 .fit_radio_icons input:checked + label .form-text{color: $text  !important;}
+
+// some colours
+.fit_radio_icons input:checked + label.cyan{color: $new_cyan;}
+.fit_radio_icons input:checked + label.teal{color: $new_teal;}
+.fit_radio_icons input:checked + label.purple{color: $new_purple;}
+.fit_radio_icons input:checked + label.pink{color: $new_pink;}
+.fit_radio_icons input:checked + label.red{color: $new_red;}
+.fit_radio_icons input:checked + label.apricot{color: $new_apricot;}
+.fit_radio_icons input:checked + label.green{color: $new_green;}
+.fit_radio_icons input:checked + label.blue{color: $new_blue;}
+.fit_radio_icons input:checked + label.watermelon{color: $new_watermelon;}
 
 
 // last one is the adder
@@ -2306,105 +2415,185 @@ header .fit_btn_saver .saved{color: $new_green;}
 	.fit_player aside .fits{border-bottom: 1px solid $border_light;}
 }
 
-.fit_player.breezy aside .fits
+
+html:not(.fit_breezy_player) header .container{max-width: none; padding: 0 1rem;}
+
+html.fit_breezy_player main.fit_player,
+html.fit_breezy_player main.fit_player article{overscroll-behavior:auto; overflow: visible; overflow-y:visible;}
+
+html.fit_breezy_player main.fit_player aside .fits
 html.fit_dispref-breezy .fit_player aside .fits{}
 
-.fit_player.breezy aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] > *{}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+html.fit_breezy_player main.fit_player aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] > *{}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
 
 // on / off
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
-.fit_player.breezy aside .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
 
 // re-order buttons:
-.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
-.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
-.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn.resources{order:1;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn.teacher{order:2;}
+html.fit_breezy_player main.fit_player aside .fits > .fit_btn.manage{order:3;}
 
-.fit_player.breezy aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
+html.fit_breezy_player main.fit_player aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
 
 html.course footer{display: none;}
 
 
-main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto; left: auto; bottom: auto; padding: 0;}
-.fit_player.breezy nav{display: none;}
+html.fit_breezy_player main.fit_player{position: relative; max-width: $container_wide; top:auto; left: auto; bottom: auto; padding: 0;}
+html.fit_breezy_player main.fit_player nav{display: none;}
 
 @media (max-width: 575px) {
-	main.fit_player.breezy > article{position: sticky; top:0;}
+	html.fit_breezy_player main.fit_player > article{position: sticky; top:0;}
 }
 
 .fit_lesson_asider{border:1px solid $border_light; border-radius: $border_rad_md; background: #fff;}
 
 @media (max-width: 899px) {
-	main.fit_player.breezy aside .fits .fit_body.courselist{padding: .5rem; background: $bg;}
+	html.fit_breezy_player main.fit_player aside .fits .fit_body.courselist{padding: .5rem; background: $bg;}
 }
 
 @media (max-width: 575px) {
-	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist,
-	main.fit_player.breezy aside .fits .fit_body.courselist{background: $bg;}
-	main.fit_player.breezy aside .fits .fit_btn[data-toggle="collapse"].courselist.collapsed{background: #fff;}
+	html.fit_breezy_player main.fit_player aside .fits .fit_btn[data-toggle="collapse"].courselist,
+	html.fit_breezy_player main.fit_player aside .fits .fit_body.courselist{background: $bg;}
+	html.fit_breezy_player main.fit_player aside .fits .fit_btn[data-toggle="collapse"].courselist.collapsed{background: #fff;}
 
 }
 
 @media (min-width: 900px) {
-	main.fit_player.breezy{margin: 1rem;}
+	html.fit_breezy_player main.fit_player{margin: 1rem;}
 
 
-	main.fit_player.breezy .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
+	html.fit_breezy_player main.fit_player .fit_vidya{border-radius: $border_rad_lg; background: #fff; overflow: hidden;}
 
 
-	.fit_player.breezy aside{}
+	html.fit_breezy_player main.fit_player aside{}
 
-	.fit_player.breezy aside > .fits{padding: 1rem 0;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
+	
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
 
-	.fit_player.breezy aside > .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] > *{}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] >i:first-child{width: 3rem;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+	html.fit_breezy_player main.fit_player aside > .fits {padding: 1rem 0; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] > *{}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] >i:first-child{width: 3rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
 
 	// on / off
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"].collapsed{color:$text;}
 
 	// re-order buttons:
-	.fit_player.breezy aside .fits > .fit_btn.resources{order:1;}
-	.fit_player.breezy aside .fits > .fit_btn.teacher{order:2;}
-	.fit_player.breezy aside .fits > .fit_btn.manage{order:3;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn.resources{order:1;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn.teacher{order:2;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn.manage{order:3;}
 
-	.fit_player.breezy aside .fits > .fit_body{order:100; border-top:1px solid $border_light; width: 100%; margin-top: -1px; padding-top:1rem;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_body{order:100; border-top:1px solid $border_light; width: 100%; margin-top: -1px; padding-top:1rem;}
 
 
 
 	// logic for latest and actives
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].collapsed,
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]{color:$text; height: 3rem;}
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt:after{display: none;} // weird grad thing
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"].collapsed,
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]{color:$text; height: 3rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"] .fit_txt:after{display: none;} // weird grad thing
 
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]:hover{background: transparent; color:$blue;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"]:hover{background: transparent; color:$blue;}
 
-	.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"].active_latest{color:$blue; border-bottom:1px solid $blue;  margin-bottom: -1px;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_btn[data-toggle="collapse"].active_latest{color:$blue; border-bottom:1px solid $blue;  margin-bottom: -1px;}
 
 
 	// collapsed bodies
-	.fit_player.breezy aside > .fits > .fit_body.collapse,
-	.fit_player.breezy aside > .fits > .fit_body.collapsing,
-	.fit_player.breezy aside > .fits > .fit_body.show{display: none; -webkit-transition: none;transition: none;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.collapse,
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.collapsing,
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.show{display: none; -webkit-transition: none;transition: none;}
 
-	.fit_player.breezy aside > .fits > .fit_body > .fit_body_content{padding: 1rem 1.5rem;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body > .fit_body_content{padding: 1rem 1.5rem;}
 
-	.fit_player.breezy aside > .fits > .fit_body.active_latest{display: block;}
+	html.fit_breezy_player main.fit_player aside > .fits > .fit_body.active_latest{display: block;}
 
 }
 
-@media (min-width: 1200px) {
-	main.fit_player.breezy{margin: 3rem auto 1rem;}
+@media (min-width: $container_wide) {
+	html.fit_breezy_player main.fit_player{margin: 3rem auto 1rem;}
 }
+
+
+// locked survey
+.fit_segment_locked{text-align: center; padding: 8rem 0;}
+.fit_segment_locked > i{font-size: 4rem; padding-bottom: 1rem;}
+.fit_segment_locked h1{font-size: 3rem; padding-bottom: 1rem; color:$brand_dark;}
+.fit_segment_locked .btn:hover{color: $blue;}
+
+@media (max-height: 700px) {
+	.fit_segment_locked{padding: 4rem 0;}
+}
+
+
+// ------------------------------------------------------------------------------------
+// Surveys within lessons
+
+.fit_survey{}
+.fit_survey h2{}
+.fit_survey .fit_iconselects{}
+.fit_survey .fit_iconselect{}
+.fit_survey .fit_survey_why{}
+.fit_survey_submit{}
+
+
+.fit_survey{position:relative; border-radius: $border_rad_xl; padding: 3rem; border:1px solid $border_light; background: #fff;}
+
+.fit_survey h2{padding-bottom: 3rem; position: relative;}
+
+.fit_survey .fit_iconselects{justify-content:space-around;}
+
+.fit_survey .fit_survey_why label{padding: 2rem 0 0; font-size: 1.5rem; font-weight: 900; position: relative; display: block;}
+.fit_survey .fit_why_count{position: absolute; bottom:0; right:0;font-size: 0.9rem; color: $text_light; font-weight: normal;}
+
+.fit_survey_submit{padding: 2rem 0 0; display: flex; justify-content:space-between;}
+
+// ------------------------------------------------------------------------------------
+// Survey responses table.
+
+.fit_survey + .fit_survey_responses{margin-top: -2rem; padding-top: 3rem;}
+
+.fit_survey_responses{position:relative; border:1px solid $border_light; border-top:0; border-radius: 0 0 $border_rad_lg $border_rad_lg; padding: 2rem; background: linear-gradient(to bottom, $border_light 0, #ffffff 35px, #ffffff 100%); background-color: #fff;}
+
+.fit_survey_responses h3{padding: 1.5rem 0 1rem; color:$text_light;}
+
+.fit_survey_responses table{margin:0 -.75rem;}
+.fit_survey_responses table thead th{border-top:none;}
+.fit_survey_responses table tbody th .fit_btn{margin: -.75rem; font-weight: normal; white-space: nowrap;}
+.fit_survey_responses table tbody th .fit_btn .badge-pill{clear: left; float: left; margin-top: .2rem;}
+
+.fit_survey_responses table tbody tr:first-child th,
+.fit_survey_responses table tbody tr:first-child td{border-top:none;}
+
+.fit_survey_responses table tbody .response.truncated{height: 180px; overflow: hidden; position: relative;}
+.fit_survey_responses table tbody .response.truncated:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 4rem;}
+
+.fit_survey_responses table tbody .response .expand{position: absolute; bottom: 0; left: 0; width: 100%; font-size: 0.9rem; color:$blue; text-decoration: none; cursor: pointer; background: #fff;}
+.fit_survey_responses table tbody .response .expand:hover{color:$blue_dark;}
+.fit_survey_responses table tbody .response .expand i{margin-right: .25rem;}
+.fit_survey_responses table tbody .response.expanded .expand{display: none;}
+
+.fit_survey_responses table tbody .response p:last-child{margin-bottom: 0;}
+
+.fit_survey_responses table tbody .response_num{font-weight: bold; background: $bg_dark; padding: 0.25rem .75rem; margin: -.25rem -.5rem; border-radius: $border_rad_sm;}
+.fit_survey_responses table tbody .response_num_1,
+.fit_survey_responses table tbody .response_num_2{background-color: $new_red; color:#fff;}
+.fit_survey_responses table tbody .response_num_3,
+.fit_survey_responses table tbody .response_num_4,
+.fit_survey_responses table tbody .response_num_5,
+.fit_survey_responses table tbody .response_num_6,
+.fit_survey_responses table tbody .response_num_7{background-color: $new_apricot; color:#fff;}
+.fit_survey_responses table tbody .response_num_8,
+.fit_survey_responses table tbody .response_num_9,
+.fit_survey_responses table tbody .response_num_10{background-color: $new_green; color:#fff;}
+
 
 // ------------------------------------------------------------------------------------
 // get yo wiggle on!
@@ -2470,6 +2659,7 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 // ------------------------------------------------------------------------------------
 // pricing table
 
+.fit_table_price{margin-top: 8rem;}
 .fit_table_price th,
 .fit_table_price td{text-align: center; padding:.2rem; border-bottom:none !important; border-top:none !important; border-left: 10px solid #fff; border-right: 10px solid #fff; font-size: 1rem; border-spacing: 1rem;}
 
@@ -2481,16 +2671,19 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 
 .fit_table_price thead th i{font-size: 2.5rem; display: block; padding-bottom: 1rem;}
 .fit_table_price thead th h4{padding: 1rem 0 .5rem; margin: 0;}
-.fit_table_price thead th small a{color:$blue_dark; display: inline-block; padding: .2rem .3rem; text-decoration: none; font-weight: bold; background: rgba(255,255,255,0.2); border-radius: $border_rad_sm;}
+.fit_table_price thead th small a{color:$blue_dark; display: inline-block; padding: .2rem .4rem; text-decoration: none; font-weight: bold; background: rgba(255,255,255,0.2); border-radius: $border_rad_sm;}
 .fit_table_price thead th small a:hover{background: rgba(255,255,255,0.4);}
 
 .fit_table_price thead th.institute small a{color:#fff; background: rgba(0,0,0,0.2);}
 .fit_table_price thead th.institute small a:hover{background: rgba(0,0,0,0.5);}
 
-.fit_table_price tbody th{text-align: left; font-weight: normal;}
-.fit_table_price tbody small{display: block; color: $text_light;}
+.fit_table_price tbody th{text-align: left; font-weight: normal; position: relative;}
+.fit_table_price tbody small{color: $text_light; display: table;}
 .fit_table_price tbody th h4{margin-bottom: 0; padding: 1.5rem 0 .5rem; font-size: 1.3rem;}
 .fit_table_price tbody td{text-align: center; position: relative;}
+
+// weird h1
+.fit_table_price thead h1{margin: 0; padding: 3.5rem 0 0; text-align: left;}
 
 // colours
 .fit_table_price .free,
@@ -2509,29 +2702,45 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 .fit_table_price thead th.institute:after,
 .fit_table_price tbody tr:last-child td.institute:after{background: $brand; color:#fff;}
 
-// ----
+// fancy tooltippy boiez
 
+.fit_table_price tbody [data-toggle="tooltip"]{border-bottom: 2px dotted $border_light;}
+
+// ----
 .fit_table_price tbody tr:not(.title):hover th{background: $bg;}
 .fit_table_price tbody tr:not(.title):hover td.free{background: $bg;}
 .fit_table_price tbody tr:not(.title):hover td.student{background: darken(#e3f5b6, 10%);}
 .fit_table_price tbody tr:not(.title):hover td.teacher{background: darken(#b6d8f2, 10%);}
 .fit_table_price tbody tr:not(.title):hover td.institute{background: lighten($brand, 5%);}
 
+// add some weird stuff
+.fit_table_price tbody tr:not(.title):hover th:after{content:''; display: block; position: absolute; top:0; right: 100%; bottom: 0; width: 1rem; border-radius: $border_rad_lg 0 0 $border_rad_lg; background: $bg;}
+.fit_table_price tbody tr:not(.title):hover td:after{content:''; display: block; position: absolute; top:0; right: 100%; bottom: 0; width: 10px; background: $bg_dark;}
+.fit_table_price tbody tr:not(.title):hover td.institute:after{content:''; display: block; position: absolute; top:0; left: 100%; bottom: 0; width: 1rem; border-radius: 0 $border_rad_lg $border_rad_lg 0; background: $bg_dark;}
+
 // and the end
 .fit_table_price tbody tr:last-child td:after{content:''; display: block; position: absolute; height: .5rem; top:100%; left: 0; right: 0; border-radius: 0 0 $border_rad_xl $border_rad_xl;}
+
+
+
 
 // ------------------------------------------------------------------------------------
 // Medium wysiwyg editor
 
-.fit_wysiwyg{border: 1px solid $border_medium; border-radius: $border_rad_sm; padding: 1rem; background: #fff; min-height: 10rem;}
+.fit_wysiwyg{position: relative;}
+.fit_wysiwyg.further{margin-top: 2rem;}
 
-.fit_wysiwyg .medium-editor-element{outline: none !important;}
+.fit_wysiwyg .medium-editor-element{outline: none !important; border: 1px solid $border_medium; border-radius: $border_rad_md; padding: 1rem; background: #fff; min-height: 8rem;}
+
+.fit_wysiwyg .medium-editor-element[data-medium-focused="true"]{border-color: $blue; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);}
+
 .fit_wysiwyg .medium-editor-placeholder-relative:after,
 .fit_wysiwyg .medium-editor-placeholder:after{font-style: normal; color: $text_light;}
 
 .medium-toolbar-arrow-under:after{}
 
 .fit_wysiwyg blockquote{display: block; font-size: 1.3rem; border-left: 3px solid $border_light; padding: .25rem .5rem .25rem calc(1rem - 3px); margin-left: -1rem;}
+
 
 
 .medium-editor-toolbar,
@@ -2553,7 +2762,11 @@ main.fit_player.breezy{position: relative; max-width: $container_wide; top:auto;
 
 
 
+.fit_welcome{padding: 0; text-align: center; height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction:column;}
 
+.fit_welcome .fit_window{max-width: 40rem;}
+
+.fit_welcome h1{font-weight: 300; font-size: 1.75rem; padding: 3rem 0; max-width: 500px; margin: 0 auto;}
 
 
 

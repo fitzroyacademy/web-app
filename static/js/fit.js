@@ -5,7 +5,7 @@ $( document ).ready(function() {
   // standard tooltips
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
-  })
+  });
 
   // lesson tooltips
   $(function () {
@@ -30,7 +30,7 @@ $( document ).ready(function() {
   // typing for the search bar
   $('[data-fit_search_header_input]').on({
     'change, keyup': function() {
-      var search_term = $(this).val();
+      let search_term = $(this).val();
       if (search_term.length > 0)
       {
       console.log(search_term);
@@ -41,13 +41,11 @@ $( document ).ready(function() {
     }
   });
 
-
-
   // fail list sorter:
 
   $('[data-fit_fail_list]').click(function(e) {
     
-    var set = $(this).data('fit_fail_list');
+    let set = $(this).data('fit_fail_list');
 
     $('[data-fit_fail_list]').removeClass('active');
     $(this).addClass('active');
@@ -94,6 +92,33 @@ $( document ).ready(function() {
     });
   });
 
+  function showAlertSnackbar(text){
+    Snackbar.show({
+      text: text,
+      pos: 'bottom-center',
+      backgroundColor: '#fff',
+      textColor: '#4f5153',
+      actionTextColor: '#2793f8',
+      customClass: 'fit_snackbar'
+    });
+  }
+
+  // survey responses stuff
+  $('[data-fit_survey_responses] .response').each(function(index, el) {
+     let tall = $(this).height();
+     if (tall > 180)
+     {
+      $(this)
+      .addClass('truncated')
+      .append('<a class="expand"><i class="fal fa-arrow-down"></i> Show more</a>')
+      .on('click', function(e) {
+        e.preventDefault();
+        $(this)
+        .removeClass('truncated')
+        .addClass('expanded');
+      });
+     }
+  });
 
   // Will does a hacky "last hit" thing
   $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
@@ -107,7 +132,7 @@ $( document ).ready(function() {
   });
 
   // get first valid one and show it
-  var first_active_latest = $('.fit_player.breezy aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
+  let first_active_latest = $('.fit_player.breezy aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
   $(first_active_latest).addClass('active_latest');
   $($(first_active_latest).attr('href')).addClass('active_latest');
 
@@ -120,9 +145,9 @@ $( document ).ready(function() {
 
   $('[data-fit-perm-trigger]').on({
     'change': function() {
-      var perm = $(this).data('fit-perm-trigger');
-      var type = $(this).data('fit-perm-type');
-      var slug = $(this).data('course-slug');
+      let perm = $(this).data('fit-perm-trigger');
+      let type = $(this).data('fit-perm-type');
+      let slug = $(this).data('course-slug');
 
       $('[data-fit-perm-detail][data-fit-perm-type="' + type + '"]').removeClass('active');
 
@@ -223,19 +248,40 @@ $( document ).ready(function() {
 
 
   // ------------------------------------------------------------
-  // changing user URL
+  // changing slugs automatically:
+  //
+  // How to use:
+  //
+  // Add data-fit-slug-name to the 'name' input on a form.
+  // make sure data-fit-slug-first is on the above field or it won't work
+  // For login/user names, use these on first/last name fields: data-fit-slug-first and data-fit-slug-last
+  // Add data-fit-slug-set to the 'slug' input (i.e. the thing that sets the slug)
+  // Add data-fit-slug-reveal to the element that shows the final result
+  // Make sure there is a hidden input with data-fit-slug-reveal-secret that actually submits
 
-  var slug_ugly = '';
-  var slug_pretty = '';
-  var slug_userset = false;
-  var slug_maxlength = 20;
-  var slug_url = '';
+
+  // ------------------------------------------------------------
+  // variables
+  let slug_ugly = '';
+  let slug_pretty = '';
+  let slug_userset = false;
+  let slug_maxlength = 20;
+  let slug_url = '';
+
+
+  // ------------------------------------------------------------
+  // check if there's already a slug set
+  if ( ($("[data-fit-slug-set]").length > 0) && ($("[data-fit-slug-set]").val().length > 0) ){
+    slug_userset = true;
+    slug_pretty = $('[data-fit-slug-set]').val();
+    slug_ugly = slug_pretty;
+  }
 
   // slugification
   function slugify(string) {
-  const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;'
-  const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------'
-  const p = new RegExp(a.split('').join('|'), 'g')
+  const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
+  const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
+  const p = new RegExp(a.split('').join('|'), 'g');
 
   return string.toString().toLowerCase()
     .replace(/\s+/g, '-') // Replace spaces with -
@@ -244,12 +290,12 @@ $( document ).ready(function() {
     .replace(/[^\w\-]+/g, '') // Remove all non-word characters
     .replace(/\-\-+/g, '-') // Replace multiple - with single -
     .replace(/^-+/, '') // Trim - from start of text
-    .replace(/-+$/, '') // Trim - from end of text
+    .replace(/-+$/, ''); // Trim - from end of text
   }
   
   // change the actual url
 
-  function userslug_set(){
+  function fit_slug_set(){
     slug_pretty = slugify(slug_ugly);
     slug_pretty = slug_pretty.substring(0,slug_maxlength);
     
@@ -262,45 +308,45 @@ $( document ).ready(function() {
     }
 
     // change the auto url:
-    slug_url = $('[data-fit-slug-url]').data('fit-slug-url');
+    let slugUrlElement = $('[data-fit-slug-url]');
+    slug_url = slugUrlElement.data('fit-slug-url');
     slug_url = (slug_url + slug_pretty);
 
-    $('[data-fit-slug-url]').attr('href', slug_url);
+    slugUrlElement.attr('href', slug_url);
   }
 
+  // user manually sets the slug
   $("[data-fit-slug-set]").on({
     'change, keyup': function() {
      slug_ugly = $(this).val();
      slug_userset = true;
-     userslug_set();
+     fit_slug_set();
     }
   });  
 
-  // and set it automatically from the user id:
-
+  // and set it automatically from the slug name
   $("[data-fit-slug-name]").on({
     'change, keyup': function() {
       
       // if it's empty, unset user input
-      if (slug_ugly == ''){
+      if (slug_pretty == ''){
         slug_userset = false;
       }
 
-      // user hasn't set it manually:
-      if (slug_userset == false)
-      {
+      // only if user hasn't set it manually:
+      if (slug_userset == false){
         // first bit
-
-        if ($('[data-fit-slug-first]').length > 0 && $('[data-fit-slug-first]').val() != ''){
-          slug_ugly = $('[data-fit-slug-first]').val();
+        let slugFirstElement = $('[data-fit-slug-first]');
+        if (slugFirstElement.length > 0 && slugFirstElement.val() != ''){
+          slug_ugly = slugFirstElement.val();
         }
         // add second if there
-        if ($('[data-fit-slug-last]').length > 0 && $('[data-fit-slug-last]').val() != ''){
+        if (slugFirstElement.length > 0 && slugFirstElement.val() != ''){
           slug_ugly = (slug_ugly + $('[data-fit-slug-last]').val());
         }
       }
       
-      userslug_set();
+      fit_slug_set();
     }
   });
 
@@ -310,7 +356,7 @@ $( document ).ready(function() {
   $('.progress-bar').each(function(index, el) {
 
     // find the percentage width
-    var pwidth = $(this).width() / $(this).parent().width() * 100;
+    let pwidth = $(this).width() / $(this).parent().width() * 100;
      
      // set colours
     if (pwidth > 80)
@@ -377,8 +423,8 @@ $( document ).ready(function() {
 
   // ------------------------------------------------------------
   $('[data-fit_iconselects]').each(function(e) {
-    var selected = '';
-    var icon_color = '';
+    let selected = '';
+    let icon_color = '';
 
     $(this).find('[data-fit_iconselect]').on("click", function(i, e) {
 
@@ -389,6 +435,7 @@ $( document ).ready(function() {
 
       icon_color = $(this).find('i').css('color');
       language = $(this).data('fit_iconselect');
+
 
       // if there is a why, show it
       if (typeof $(this).data('fit_triggerwhy') !== 'undefined')
@@ -403,42 +450,42 @@ $( document ).ready(function() {
       // find and enable the go button, set the colour.
       // we only set the colour and gather info if it ISN'T 'fit_gather',
       // passing fit_gather means get the data and colour from the button
-      var gobutton = $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_modal_submit]');
+      let gobutton = $('[data-fit_iconselects_submit]');
 
-      if (gobutton.data('fit_modal_submit') == 'fit_gather')
+
+      // if it wasn't previously selected:
+      if (typeof $(this).attr('data-fit_iconselect_previously') !== "undefined")
       {
         gobutton
-        .text(language)
-        .prop("disabled", false)
-        .css('background-color', icon_color)
-        .css('border-color', icon_color);
+        .text(gobutton.data('fit_iconselects_disabled'))
+        .prop("disabled", true)
+        .addClass('btn-secondary')
+        .removeClass('btn-primary');
       }
       else
       {
-        gobutton
-        .text(gobutton.data('fit_modal_submit'))
-        .prop("disabled", false)
-        .removeClass('btn-secondary')
-        .addClass('btn-primary');
+        // do something fancy if it's a 'fit_gather' button:
+        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+        {
+          gobutton
+          .text(language)
+          .prop("disabled", false)
+          .css('background-color', icon_color)
+        }
+        else
+        {
+          gobutton
+          .text(gobutton.data('fit_iconselects_submit'))
+          .prop("disabled", false)
+          .removeClass('btn-secondary')
+          .addClass('btn-primary');
+        }
       }
 
       // wuh oh, what if there's a textarea? Then disable it again until changed
-
       // if it has a force value....
-      if ($('[data-fit_feedback_why_input]').data('fit_modal_force').length > 0){
-
+      if ($('[data-fit_feedback_why_input]').val().length < $('[data-fit_survey_force]').data('fit_survey_force')) {
         gobutton.prop("disabled", true);
-        
-        $('[data-fit_feedback_why_input]').on({
-          'change, keyup': function(e) {
-            var val = $(this).val();
-            if (val.length > $(this).data('fit_modal_force')){
-              gobutton.prop("disabled", false);
-            } else {
-              gobutton.prop("disabled", true);
-            }
-          }
-        });
       }
 
       console.log(language);
@@ -447,14 +494,52 @@ $( document ).ready(function() {
   });
 
 
-  $('[data-fit_modal_force]').on({
+  // set the counter value
+  if ($('[data-fit_survey_force_counter]').length > 0)
+  {
+    $('[data-fit_survey_force_counter_total]').text($('[data-fit_survey_force]').data('fit_survey_force'));
+    $('[data-fit_survey_force_counter]').text($('[data-fit_survey_force]').val().length);
+  }
+
+  $('[data-fit_survey_force]').on({
     'change, keyup': function(e) {
-      var val = $(this).val();
-      if (val.length > $(this).data('fit_modal_force')){
-        $('[data-fit_modal_submit]').prop("disabled", false);
-      } else {
-        $('[data-fit_modal_submit]').prop("disabled", true);
+
+      let gobutton = $('[data-fit_iconselects_submit]');
+      let vallength = $(this).val().length;
+
+      // if the length is good:
+      if (vallength > $(this).data('fit_survey_force')){
+        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+        {
+          gobutton.prop("disabled", false);
+        }
+        else {
+          gobutton
+          .text(gobutton.data('fit_iconselects_submit'))
+          .prop("disabled", false)
+          .removeClass('btn-secondary')
+          .addClass('btn-primary');
+        }
       }
+
+      // otherwise disable it
+      else {
+        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
+        {
+          gobutton.prop("disabled", true);
+        }
+        else {
+          gobutton
+          .text(gobutton.data('fit_iconselects_disabled'))
+          .prop("disabled", true)
+          .addClass('btn-secondary')
+          .removeClass('btn-primary');
+        }
+      }
+
+      // set the counter
+      $('[data-fit_survey_force_counter]').text(vallength);
+
     }
   });
 
@@ -464,28 +549,29 @@ $( document ).ready(function() {
     if (e.keyCode == 27) {
       
       // first check, and only close menu if search or user panel is not on
+      let htmlElement = $('html');
       if (
-          ($('html').hasClass('fit_mobile_menu_active'))
+          (htmlElement.hasClass('fit_mobile_menu_active'))
           &&
-          (!$('html').hasClass('fit_search_header_active'))
+          (!htmlElement.hasClass('fit_search_header_active'))
           &&
-          (!$('html').hasClass('fit_revealuserpanel'))
+          (!htmlElement.hasClass('fit_revealuserpanel'))
         ){
-        $('html').removeClass('fit_mobile_menu_active');
+        htmlElement.removeClass('fit_mobile_menu_active');
       }
 
       // just the user panel
       if (
-          ($('html').hasClass('fit_revealuserpanel'))
+          (htmlElement.hasClass('fit_revealuserpanel'))
         ){
-        $('html').removeClass('fit_revealuserpanel');
+        htmlElement.removeClass('fit_revealuserpanel');
       }      
 
       // only remove search if the menu is active
       if (
-          ($('html').hasClass('fit_search_header_active'))
+          (htmlElement.hasClass('fit_search_header_active'))
         ){
-        $('html').removeClass('fit_search_header_active');
+        htmlElement.removeClass('fit_search_header_active');
       }
 
     }
@@ -503,7 +589,7 @@ $( document ).ready(function() {
       {name: 'Class Average', data: [50, 50, 10, 50, 0]}
     ];
 
-    var students = document.querySelectorAll(student_selector);
+    let students = document.querySelectorAll(student_selector);
 
     for (let s of students) {
       colors.push(s.dataset.fitChartColor);
@@ -513,7 +599,7 @@ $( document ).ready(function() {
       });
     }
 
-    var options = {
+    let options = {
       chart: {
           height: 350,
           width: '100%',
@@ -563,7 +649,7 @@ $( document ).ready(function() {
           followCursor: true
         },
       }
-    }
+    };
 
     if ($('#fit_chart').length > 0) {
       if (!chart) {
@@ -574,7 +660,7 @@ $( document ).ready(function() {
       chart.updateSeries(series);
     }
 
-  };
+  }
 
   // event delgation magic but it's chill; just don't touch it
   (function() {
@@ -631,7 +717,7 @@ $( document ).ready(function() {
       }
     };
     xhr.open('POST', url);
-    var f = new FormData();
+    let f = new FormData();
     for (let k in data) f.append(k, data[k]);
     if (typeof csrf_token !== 'undefined' && csrf_token) {
       f.append("csrf_token", csrf_token)
@@ -640,7 +726,7 @@ $( document ).ready(function() {
   }
 
   // Called from the wistia video embed template.
-  var _fitz_video = false;
+  let _fitz_video = false;
   function fitzVideoReady(video) {
     _fitz_video = video;
     video.bind('end', handleVideoEnd);
@@ -667,17 +753,17 @@ $( document ).ready(function() {
   }
 
   function handleVideoProgress(percent, lastPercent) {
-    var id = _fitz_video.data.media.hashedId;
+    let id = _fitz_video.data.media.hashedId;
     percent = Math.floor(percent*100);  // Avoid floating point hassles.
-    var active_segment = document.querySelector('[data-fit-segment].active');
-    var segment_id = active_segment.dataset.fitSegment;
+    let active_segment = document.querySelector('[data-fit-segment].active');
+    let segment_id = active_segment.dataset.fitSegment;
     post('/event/progress', {segment_id:segment_id, percent:percent}, ()=>{});
   }
 
   function handleVideoTime(seconds) {
     if (seconds % 15 > 0) return;
-    var active_segment = document.querySelector('[data-fit-segment].active');
-    var segment_id = active_segment.dataset.fitSegment;
+    let active_segment = document.querySelector('[data-fit-segment].active');
+    let segment_id = active_segment.dataset.fitSegment;
     setCookie('resume_segment_place', seconds);
     setCookie('resume_segment_id', segment_id);
   }
@@ -706,8 +792,8 @@ $( document ).ready(function() {
   });
 
   delegate('[data-fit-preference-toggle]', 'click', (e, t) => {
-    var value = !t.querySelector('input[type=checkbox]').checked;
-    var tag = t.dataset.fitPreferenceToggle;
+    let value = !t.querySelector('input[type=checkbox]').checked;
+    let tag = t.dataset.fitPreferenceToggle;
     post(`/preference/${tag}/${(value)?'on':'off'}`);
   });
 
@@ -772,7 +858,7 @@ $( document ).ready(function() {
     loadSegment(t.dataset.fitSegment, t.dataset.fitParent);
     // Push to browser history so back/forward works.
     window.history.pushState({"segment_id":t.dataset.fitSegment},"", t.href);
-    var lastpages = document.querySelectorAll('[data-fit-lastpage]');
+    let lastpages = document.querySelectorAll('[data-fit-lastpage]');
     for (let l in lastpages) l.value = t.href;
     e.preventDefault();
   });
@@ -791,12 +877,12 @@ $( document ).ready(function() {
   });
 
   // Pause/resume video on sidebar and after interacting with sidepanel forms.
-  var __sidebar_video_paused = false;
+  let __sidebar_video_paused = false;
   delegate('[data-fit-userpanel]', 'click', (e, t) => {
     if (!_fitz_video) return;
     // The class hasn't changed to its toggled state yet, so the class
     // is kind of flipped.
-    var closed = document
+    let closed = document
                   .documentElement
                   .classList
                   .contains('fit_revealuserpanel');
@@ -835,7 +921,7 @@ $( document ).ready(function() {
   });
 
   delegate('[data-fit-perm-group-type]', 'click', (e, t) => {
-    var group = t.dataset.fitGroupName;
+    let group = t.dataset.fitGroupName;
     let value = '';
     if (group) {
     } else {
@@ -991,26 +1077,141 @@ $( document ).ready(function() {
     document.querySelector('#confirm-delete').href = event.relatedTarget.href;
   });
 
-  $('#fit_modal_add_segment').on('show.bs.modal', function(event){
-    document.querySelector('#add-video-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addVideo'];
-    document.querySelector('#add-text-segment').href = event.relatedTarget.href + event.relatedTarget.dataset['addText'];
+  delegate('[data-fit-add-edit-segment]', 'click', (e, t) => {
+      $('#fit_modal_add_segment').modal('hide');
+      let segmentType = t.dataset['fitSegmentType'];
+      let modalObj = null;
+      if (segmentType == 'text') {
+          modalObj = $('#fit_modal_add_text_segment');
+          modalObj[0].querySelector('#segment_name').value = "";
+          modalObj[0].querySelector('#fit_wysiwyg_editor').innerHTML = "";
+          modalObj.modal('show');
+      } else {
+          modalObj = $('#fit_modal_add_video_segment');
+          modalObj[0].querySelector('#segment_name').value = "";
+          modalObj[0].querySelector('#segment_url').value = "";
+          modalObj[0].querySelector('#standard').checked = true;
+          modalObj[0].querySelector('#normal').checked = true;
+          modalObj.modal('show');
+      }
+      modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
+  });
+
+  delegate('[data-fit-add-intro-submit]', 'click', (e, t) => {
+    let form = t.closest('form');
+    let formData = new FormData(form);
+    let data = {"segment_url": formData.get("segment_url"), "intro_lesson": ""};
+
+    post(form.action, data, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        if (xhr.status == 200) {
+            showAlertSnackbar(res["message"]);
+            $('[data-fit-add-edit-segment-modal]').modal('hide');
+            if ("html" in res) {
+              let container = document.querySelector('[data-fit-sortable-list-with-intro-element]');
+              container.innerHTML = res['html'] + container.innerHTML;
+              document.querySelector('[data-fit-add-intro]').style.display = "none";
+            }
+        } else {
+                showAlertSnackbar(res['message'])
+            }
+    });
+
+  })
+
+  delegate('[data-fit-segment-add-edit-submit]', 'click', (e, t) => {
+    e.preventDefault();
+    let form = t.closest('form');
+    let formData = new FormData(form);
+    let segmentId = form.dataset['fitSegmentId'];
+    let segmentType = form.dataset['fitSegmentType'];
+    let courseSlug = form.dataset['fitCourseSlug'];
+    let lessonId = form.dataset['fitLessonId'];
+    let previewWysiwyg = form.querySelector('[data-fit-wysiwyg-preview]');
+    let description = "";
+    let url = '';
+
+    if (previewWysiwyg) {
+      description = previewWysiwyg.innerHTML;
+    }
+
+    if (segmentId) {
+      url = `/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}/edit`
+    } else {
+      url = `/course/${courseSlug}/lessons/${lessonId}/segments/add/${segmentType}`
+    }
+
+    let data = {
+      "segment_url": formData.get("segment_url"),
+      "segment_name": formData.get("segment_name"),
+      "text_segment_content": description,
+      "video_types": formData.get("video_types"),
+      "permissions": formData.get("permissions")
+
+    };
+
+    post(url, data, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        if (xhr.status == 200) {
+          showAlertSnackbar(res["message"]);
+          $('[data-fit-add-edit-segment-modal]').modal('hide');
+
+          if ("html" in res) {
+            let container = document.querySelector('#sortable-list');
+            container.innerHTML = container.innerHTML + res['html'];
+          }
+        } else {
+          showAlertSnackbar(res['message']);
+        }
+    });
+
+  });
+
+  $('#fit_modal_add_text_segment,#fit_modal_add_video_segment').on('show.bs.modal', function(event){
+    if (event.relatedTarget && event.relatedTarget.dataset['fitSegmentId']) {
+        let container = event.relatedTarget.closest('[data-fit-list-elements-container]');
+        let courseSlug = container.dataset['fitCourseSlug'];
+        let lessonId = container.dataset['fitLessonId'];
+        let segmentId = event.relatedTarget.dataset['fitSegmentId'];
+        get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}`,
+            (responseText, xhr) => {
+              if (xhr.status == 200) {
+                let res = JSON.parse(xhr.response);
+                if (res['segment_type'] == 'video') {
+                  event.currentTarget.querySelector('#segment_name').value = res['title'];
+                  event.currentTarget.querySelector('#segment_url').value = res['segment_url'];
+                  event.currentTarget.querySelector(`#${res['video_type']}`).checked = true;
+                  event.currentTarget.querySelector(`#${res['permission']}`).checked = true;
+
+                } else {
+                  event.currentTarget.querySelector('#segment_name').value = res['title'];
+                  event.currentTarget.querySelector('#fit_wysiwyg_editor').innerHTML = res['text'];
+                }
+                event.currentTarget.querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = segmentId;
+              } else {
+                showAlertSnackbar("Oh snap, something went wrong. Try again.")
+              }
+        })
+    }
   });
 
   $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){
     let resourceTitle = $('#resource_title');
     let resourceDescription = $('#fit_wysiwyg_resource');
     let resourceUrl = $('#resource_url');
+    let resourceFeatured = $('#resource_featured');
     let form = $('#add-edit-resource');
 
     form.attr("action", event.relatedTarget.href);
 
     if (event.relatedTarget.dataset['resourceId']) {
-      let res = get(event.relatedTarget.href, (responseText, xhr) => {
+      get(event.relatedTarget.href, (responseText, xhr) => {
         if (xhr.status == 200) {
             let res = JSON.parse(xhr.response);
             resourceTitle.val(res["title"]);
             resourceDescription.html(res["description"]);
             resourceUrl.val(res["url"]);
+            resourceFeatured.prop("checked", res["featured"]);
             $("input[name=resource_type][value="  + res["type"] + "]").prop("checked", true);
         } else {
         }
@@ -1029,8 +1230,7 @@ $( document ).ready(function() {
         if (xhr.status == 200) {
             window.location.href = JSON.parse(xhr.response)['success_url']
         } else {
-                // DEV: add some messaging
-                console.log(JSON.parse(xhr.response)['message'])
+                showAlertSnackbar(JSON.parse(xhr.response)['message'])
             }
     });
   });
@@ -1038,8 +1238,8 @@ $( document ).ready(function() {
   // ------------------------------------------------------------
   // medium wysiwyg edito stuff
 
-  var autolist = new AutoList();
-  var fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
+  let autolist = new AutoList();
+  let fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
       buttonLabels: 'fontawesome',
       extensions: {
           'autolist': autolist
@@ -1062,25 +1262,25 @@ $( document ).ready(function() {
   function handleImageUpload(t, blob) {
     // We can convert to whatever ext we like, but preserving the original
     // makes things look nicer.
-    var ext = ((blob.type || "").indexOf('/') !== -1) ?
+    let ext = ((blob.type || "").indexOf('/') !== -1) ?
             blob.type.split('/').pop() : 'jpeg';
     if (['jpeg', 'jpg', 'png', 'gif'].indexOf(ext) === -1) {
       return false; // Some weird file, we don't want it, whatever.
     }
-    var p = t.closest('[data-fit-image-uploader]');
+    let p = t.closest('[data-fit-image-uploader]');
     p.classList.add('fit_upload_cropping');
-    var dropzone = p.querySelector('[data-fit-image-dropzone]');
-    var input = p.querySelector('[data-fit-image-input]');
-    var img = p.querySelector('img');
-    var oheight = p.offsetHeight;
+    let dropzone = p.querySelector('[data-fit-image-dropzone]');
+    let input = p.querySelector('[data-fit-image-input]');
+    let img = p.querySelector('img');
+    let oheight = p.offsetHeight;
     p.style.maxHeight = `${oheight}px`;
-    var reader = new FileReader();
-    var aspectWidth = parseInt(p.dataset.fitAspectWidth) || 16;
-    var aspectHeight = parseInt(p.dataset.fitAspectHeight) || 9;
+    let reader = new FileReader();
+    let aspectWidth = parseInt(p.dataset.fitAspectWidth) || 16;
+    let aspectHeight = parseInt(p.dataset.fitAspectHeight) || 9;
     reader.onload = (e) => {
       img.onload = () => {
-        var save = p.querySelector('[data-fit-save-crop]');
-        var cropper = new Cropper(img, {
+        let save = p.querySelector('[data-fit-save-crop]');
+        let cropper = new Cropper(img, {
           viewMode: 3,
           aspectRatio: aspectWidth / aspectHeight,
           dragMode: 'move'
@@ -1093,7 +1293,7 @@ $( document ).ready(function() {
             formData[input.name] = `a:/b/c/d/e.f.${ext}`;
             post(form.action, formData);
             p.classList.remove('fit_upload_cropping');
-            var reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = (e) => {
               img.src = e.target.result;
               // cropper.destroy() doesn't seem to clean this up?
@@ -1114,35 +1314,35 @@ $( document ).ready(function() {
 
   delegate('[data-fit-image-dropzone]', 'click', (e, t) => {
     e.preventDefault();
-    var p = t.closest('[data-fit-image-uploader]');
-    var input = p.querySelector('[data-fit-image-input]')
+    let p = t.closest('[data-fit-image-uploader]');
+    let input = p.querySelector('[data-fit-image-input]');
     input.click();
   });
 
   delegate('[data-fit-image-dropzone]', 'dragenter', (e, t) => {
     e.dataTransfer.setData("text", "somedata");
-    var p = t.closest('[data-fit-image-uploader]');
+    let p = t.closest('[data-fit-image-uploader]');
     p.classList.add('fit_upload_dragging');
   });
 
   delegate('[data-fit-image-dropzone]', 'dragleave', (e, t) => {
-    var p = t.closest('[data-fit-image-uploader]');
+    let p = t.closest('[data-fit-image-uploader]');
     p.classList.remove('fit_upload_dragging');
   });
 
   delegate('[data-fit-image-dropzone]', 'dragover', (e, t) => {
     e.preventDefault();
-    var p = t.closest('[data-fit-image-uploader]');
+    let p = t.closest('[data-fit-image-uploader]');
     p.classList.remove('fit_upload_dragging');
   });
 
   delegate('[data-fit-image-input]', 'change', (e, t) => {
     handleImageUpload(t, t.files[0]);
-  })
+  });
 
   delegate('[data-fit-image-dropzone]', 'drop', (e, t) => {
     e.preventDefault();
-    var p = t.closest('[data-fit-image-uploader]');
+    let p = t.closest('[data-fit-image-uploader]');
     p.classList.remove('fit_upload_dragging');
     handleImageUpload(t, e.dataTransfer.files[0]);
   });
@@ -1154,5 +1354,9 @@ $( document ).ready(function() {
       loadSegment(event.state.segment_id);
     }
   });
+
+  delegate('[data-fit-save-lesson-changes]', 'click', (e, t) => {
+    document.querySelector('[data-fit-lesson-add-edit]').submit()
+  })
 
 });

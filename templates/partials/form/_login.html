@@ -10,25 +10,6 @@
   </ul>
 
   <div class="tab-content" id="tabContent">
-    <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
-      {% include 'partials/form/_errors.html' %}
-      <form class="form" action="{{ url_for('user.login') }}" method="post">
-        {{ form.csrf_token }}
-        <div class="fit_fancyplace">
-          <label for="email_or_username">Email address</label>
-          <input type="email" id="email_or_username" name="email" class="form-control" placeholder="Email address" required data-fit-fancyplace>
-        </div>
-
-        <div class="fit_fancyplace">
-          <label for="login_password">Password</label>
-          <input type="password" id="login_password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
-        </div>
-
-        <input type="hidden" name="last_page" data-fit-lastpage value="{{ request.full_path }}" />
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-    </div><!-- login -->
 
     <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
       <form class="form" action="{{ url_for('user.create') }}" method="post">
@@ -57,22 +38,47 @@
           <label for="register_password">Password</label>
           <input type="password" name="password" id="register_password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
-
+<!-- 
+        user can edit version, moving to hidden field for now!
         <div class="form-group">
           <div class="input-group fit_fancyplace">
             <div class="input-group-prepend">
               <span class="input-group-text" id="username-addon">@</span>
             </div>
-            <input type="text" id="username" class="form-control" maxlength="20" name="username" value="" placeholder="username" required data-fit-slug-set>
+            <input type="text" id="username_userset" class="form-control" maxlength="20" name="username_userset" value="" placeholder="username" required data-fit-slug-set>
           </div>
-          <input type="hidden" value="clarecarmody" id="secretslug" name="secretslug" data-fit-slug-reveal-secret>
+          <input type="hidden" value="generatednamegoeshereomg  " id="username" name="username" data-fit-slug-reveal-secret>
         </div>
+ -->
+
+        <input type="hidden" id="username_userset" class="form-control" maxlength="20" name="username_userset" value="" placeholder="username" required data-fit-slug-set>
+        <input type="hidden" value="generatednamegoeshereomg" id="username" name="username" data-fit-slug-reveal-secret>
 
         <input type="hidden" name="last_page" data-fit-lastpage value="{{ request.full_path }}" />
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
       </form>      
     </div><!-- register -->
+
+    <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+      {% include 'partials/form/_errors.html' %}
+      <form class="form" action="{{ url_for('user.login') }}" method="post">
+        {{ form.csrf_token }}
+        <div class="fit_fancyplace">
+          <label for="email_or_username">Email address</label>
+          <input type="email" id="email_or_username" name="email" class="form-control" placeholder="Email address" required data-fit-fancyplace>
+        </div>
+
+        <div class="fit_fancyplace">
+          <label for="login_password">Password</label>
+          <input type="password" id="login_password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
+        </div>
+
+        <input type="hidden" name="last_page" data-fit-lastpage value="{{ request.full_path }}" />
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+    </div><!-- login -->
 
 <!-- 
     <hr class="my-4">

@@ -1,0 +1,21 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+
+
+{% include 'static/surveys/_course_header.html' %}
+
+
+<div class="fit_segment_locked">
+  <i class="fal fa-lock"></i>
+  <h1>Locked.</h1> 
+  <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete the previous segment first.</a>
+  <!-- <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete all previous segments first.</a> -->
+</div>
+
+
+{% include 'static/surveys/_course_footer.html' %}
+
+
+
+{% endblock %}

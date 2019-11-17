@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, validators, TextAreaField, FileField
+from wtforms import Form, StringField, validators, TextAreaField, FileField, BooleanField
 
 from enums import ResourceTypeEnum
 from werkzeug.utils import cached_property
@@ -56,6 +56,7 @@ class AddResourceForm(CSRFBaseForm):
     resource_title = StringField("Title", [validators.required()])
     resource_url = StringField("Link", [validators.required(), validators.URL()])
     resource_description = TextAreaField("Description")
+    resource_featured = BooleanField("Featured resource")
     resource_type = StringField(
         "Content type",
         [validators.required(), validators.AnyOf([e.name for e in ResourceTypeEnum])],

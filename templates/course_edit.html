@@ -28,102 +28,30 @@
         </small>
       </h1> -->
 
-      <div class="form-group">
-        <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course" data-fit-slug-first data-fit-slug-name data-course-edit>
-      </div>
-      <div class="form-group">
-        <!-- <label for="lesson_description">Short description</label> -->
-        <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit>
+      <div class="fit_fancyplace">
+        <label for="course_name">Course name</label>
+        <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course" data-fit-slug-name data-fit-slug-first data-course-edit data-fit-fancyplace>
       </div>
 
-
-      {% with cover_action="/course/"+course.slug+"/edit" %}
-      {% include "partials/course/_cover_cropper.html" %}
-      {% endwith %}
-
-      <h3>
-        <span class="txt">Lesson plan.</span>
-        <small class="subtxt">
-          <i class="fas fa-clock"></i>
-          {{ course.duration_seconds|format_time }}
-        </small>
-      </h3>
-
-      <div class="fit_body fit_lessons">
-          
-
-          {% if not introduction %}
-          <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
-            <i class="fas fa-plus"></i>
-            <span class="fit_txt">Add an intro video</span>
-          </a>
-          {% endif %}
-
-          <div>
-
-            {% if introduction %}
-            <div class="fit_btn">
-              <div class="fit_pic vid">
-                <img src="{{ introduction.thumbnail }}" alt="course">
-              </div>
-              <div class="fit_txt">
-                Introduction
-              </div>
-              <div class="sub buttonset">
-                <div class="btn btn-text subtle">{{ introduction.duration_seconds|hhmmss }}</div>
-                <a href="/course/{{ course.slug }}/lessons/{{ introduction.id }}/edit" class="btn btn-light"><i class="fal fa-edit"></i></a>
-              </div>
-            </div>
-            {% endif %}
-
-            <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/reorder">
-                {% for lesson in lessons %}
-                <div id="item_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
-                  <div class="fit_pic vid">
-                    <img src="{{ lesson.thumbnail }}" alt="course">
-                  </div>
-                  <a class="fit_txt" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit">
-                    {{ lesson.title }}
-                  </a>
-
-                  <div class="sub buttonset">
-
-                    <div class="btn btn-text subtle">{{ lesson.duration_seconds|hhmmss }}</div>
-
-                    <div class="dropdown">
-                      <button href="#" class="btn btn-light" type="button" id="dropdown_123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fal fa-ellipsis-v"></i>
-                      </button>
-
-                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
-                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit"><i class="fal fa-edit"></i> Edit</a>
-                        <a class="dropdown-item" href="{{ lesson.permalink }}" target="_blank"><i class="fal fa-external-link"></i> View live</a>
-                        <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/delete" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
-                      </div>
-                    </div>
-
-                    <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
-                  </div>
-                </div>
-                {% endfor %}
-            </div>
-          </div>
-          
-          <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
-            <i class="fas fa-plus"></i>
-            <span class="fit_txt">Add lesson</span>
-          </a>
-        
+      <div class="fit_fancyplace">
+        <label for="course_description">One-sentence description</label>
+        <input type="text" class="form-control" id="course_description" value="{{ course.info }}" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-course-edit data-fit-fancyplace>
       </div>
-      <!-- end vid stack -->
+
 
       <div class="row">
         <div class="col-md-6">
           <h3>
-            <span class="txt">Course info.</span>
+            <span class="txt">The course.</span>
           </h3>
           <form action="/course/{{ course.slug }}/edit" method="post" id="course-edit-form" data-fit-wysiwyg>
-          <div class="fit_pane">
+
+          <div class="fit_paneless">
+
+            {% with cover_action="/course/"+course.slug+"/edit" %}
+              {% include "partials/course/_cover_cropper.html" %}
+            {% endwith %}
+
             <dl class="fit_summary_icons">
 
               <!--
@@ -140,7 +68,7 @@
               <dt><i class="far fa-clock"></i> Workload title</dt>
               <dd>
                 <div class="form-group">
-                  <input rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 4 hours, 12 weeks." value="{{ course.workload_title|default('') }}" data-course-edit>
+                  <input rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 4 hours per week, or 12 weeks total." value="{{ course.workload_title|default('') }}" data-course-edit>
                   <small class="form-text text-muted">This appears next to the 'enrol' button.</small>
                 </div>
               </dd>
@@ -212,7 +140,70 @@
 
 
         <div class="col-md-6">
-            
+
+          <h3>
+            <span class="txt">Lessons.</span>
+            <small class="subtxt">
+              <i class="fas fa-clock"></i>
+              {{ course.duration_seconds|format_time }}
+            </small>
+          </h3>
+
+          <div class="fit_body fit_lessons">
+
+            {% if not introduction %}
+            <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
+              <i class="fas fa-plus"></i>
+              <span class="fit_txt">Add an intro video</span>
+            </a>
+            {% endif %}
+
+            <div data-fit-sortable-list-with-intro-element>
+
+              {% if introduction %}
+                {% include "partials/course/_intro.html" %}
+              {% endif %}
+
+              <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/reorder">
+                  {% for lesson in lessons %}
+                  <div id="item_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
+                    <div class="fit_pic vid">
+                      <img src="{{ lesson.thumbnail }}" alt="course">
+                    </div>
+                    <a class="fit_txt" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit">
+                      {{ lesson.title }}
+                    </a>
+
+                    <div class="sub buttonset">
+
+                      <div class="btn btn-text subtle">{{ lesson.duration_seconds|hhmmss }}</div>
+
+                      <div class="dropdown">
+                        <button href="#" class="btn btn-light" type="button" id="dropdown_123" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fal fa-ellipsis-v"></i>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_123">
+                          <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit"><i class="fal fa-edit"></i> Edit</a>
+                          <a class="dropdown-item" href="{{ lesson.permalink }}" target="_blank"><i class="fal fa-external-link"></i> View live</a>
+                          <a class="dropdown-item" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/delete" data-toggle="modal" data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Delete</a>
+                        </div>
+                      </div>
+
+                      <a href="#" class="btn btn-light handle" data-fit-dragndrop><i class="fal fa-arrows-v"></i></a>
+                    </div>
+                  </div>
+                  {% endfor %}
+              </div>
+            </div>
+
+            <a class="fit_btn solid secondary" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson">
+              <i class="fas fa-plus"></i>
+              <span class="fit_txt">Add lesson</span>
+            </a>
+
+          </div><!-- end lesson stack -->
+
           <h3>
             <span class="txt">Permissions.</span>
           </h3>
@@ -229,19 +220,23 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fal fa-link"></i></span>
                     </div>
-                    <input type="text" class="form-control" maxlength="20" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-slug-value>
+                    <input type="text" class="form-control" maxlength="20" id="course_slug_input" name="course_slug" value="{{ course.slug }}" placeholder="short link" data-slug-value>
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="button" data-change-slug data-course-slug="{{ course.slug }}">Change</button>
                     </div>
                   </div>
-                  <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/{{ course.slug }}<strong data-fit-slug-reveal></strong></a></small>
-                  <input type="hidden" value="????" id="secretslug" name="secretslug" data-fit-slug-reveal_secret> <!-- DEV: store this input, it strips off weird characters -->
+                  <small class="form-text text-muted">Course link: <a data-fit-slug-url="/course/" href="/course/{{ course.slug }}">fitzroyacademy.com/course/<strong data-fit-slug-reveal>{{ course.slug }}</strong></a></small>
+                  <input type="hidden" value="{{ course.slug }}" id="course_slug" name="course_slug" data-fit-slug-reveal-secret>
+
                 </div>
               </dd> 
 
               {% include "partials/course/_teachers.html" %}
 
-              <dt><i class="far fa-rocket"></i> Course code</dt>
+              <dt>
+                <i class="far fa-rocket"></i> Course code
+                <a class="" data-toggle="tooltip" title="The unique code for this course, 8 - 12 characters, letters and numbers."><i class="fal fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="form-group">
                   <div class="input-group">
@@ -250,12 +245,15 @@
                     </div>
                     <input type="text" class="form-control" id="course_code" placeholder="Course code" maxlength="12" minlength="8" value="{{ course.course_code }}" data-course-edit>
                   </div>
-                  <small class="form-text text-muted">All courses have a code. 8 - 12 characters, letters and numbers.</small>
+                  <!-- <small class="form-text text-muted">All courses must have a code.</small> -->
                 </div>
               </dd>
               </form>
 
-              <dt><i class="far fa-lock"></i> Visibility</dt>
+              <dt>
+                <i class="far fa-lock"></i> Visibility
+                <a class="" data-toggle="tooltip" title="Where you want the course to be shown on the site."><i class="fal fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -276,7 +274,10 @@
               
               </dd>
 
-              <dt><i class="far fa-usd-square"></i> Cost</dt>
+              <dt>
+                <i class="far fa-usd-square"></i> Cost
+                <a class="" data-toggle="tooltip" title="How much do you want to charge individual users to access the course?"><i class="fal fa-info-circle"></i></a>
+              </dt>
               <dd>
                 <div class="form-group" data-fit-perm-group-type="paid" >
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -303,7 +304,10 @@
               </dd>
 
               <div class="active" data-fit-perm-detail="free">
-                <dt><i class="far fa-eye"></i> Anonymity</dt>
+                <dt>
+                  <i class="far fa-eye"></i> Anonymity
+                  <a class="" data-toggle="tooltip" title="Turn this off if you only want registered students in your course."><i class="fal fa-info-circle"></i></a>
+                </dt>
                 <dd>
                   <div class="form-group" data-fit-perm-group-type="guest_access" data-course-slug="{{ course.slug }}">
                     <input type="checkbox" {{ 'checked' if course.options("guest_access") }} data-toggle="toggle" data-size="sm" data-style="simple" id="guest_access" name="guest_access">
@@ -313,7 +317,10 @@
               </div>
              
 
-            <dt><i class="far fa-file-edit"></i> Draft</dt>
+            <dt>
+              <i class="far fa-file-edit"></i> Draft
+
+            </dt>
               <dd>
                 <div class="form-group">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons" >
@@ -336,6 +343,16 @@
             </dl>
           </div><!-- pane -->
 
+          <div class="fit_pane danger">
+            <dl class="fit_summary_icons">
+              <dt><i class="fal fa-trash-alt"></i></dt>
+              <dd class="naked">
+                <a href="#" data-toggle="modal" data-target="#fit_modal_delete_course" class="btn btn-outline-danger">Remove course</a>
+              </dd>
+            </dl>
+          </form>
+        </dl>
+
 
         </div><!-- col -->
       </div><!-- row -->
@@ -354,6 +371,9 @@
 <!-- adding things -->
 {% include 'partials/modal/_add_lesson.html' %}
 {% include 'partials/modal/_add_lesson_fitz.html' %}
+{% include 'partials/modal/_delete_course.html' %}
+{% with action="/course/" + course.slug + "/lessons/add_intro", intro=introduction.intro_segment if introduction else None %}
 {% include 'partials/modal/_add_intro.html' %}
+{% endwith %}
 
 {% endblock %}

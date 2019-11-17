@@ -70,6 +70,7 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None):
         instance.type = getattr(ResourceTypeEnum, form.resource_type.data)
         instance.slug = slugify(form.resource_title.data)
         instance.description = form.resource_description.data
+        instance.featured = form.resource_featured.data
 
         db = datamodels.get_session()
         db.add(instance)
@@ -104,6 +105,7 @@ def edit_resource(user, course, course_slug, lesson_id, resource_id):
                 "title": resource.title,
                 "type": resource.type.name,
                 "description": resource.description,
+                "featured": resource.featured
             }
         )
 

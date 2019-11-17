@@ -1,0 +1,27 @@
+{% extends "/layout.html" %}
+{% block body %}
+
+<main>
+
+  <article>
+
+    <div class="fit_course intro">
+    <form id="text-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/{{ content_type }}" method="POST" data-fit-wysiwyg>
+      <h1>
+        <span class="txt">Survey.</span>
+      </h1>
+
+      <!-- DEV: Wonderful stuff goes here -->
+
+      <div class="fit_pane d-flex justify-content-between">
+        <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Save</button>
+      </div>
+
+    </form>
+    </div>
+
+  </article>
+
+</main>
+
+{% endblock %}
