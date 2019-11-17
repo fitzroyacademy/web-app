@@ -54,7 +54,7 @@
             <div class="fit_lesson">
               <div class="fit_btn">
                 <a class="fit_pic vid" href="{{ course.permalink }}">
-                  <img src="/uploads/{{ course.cover_image }}" alt="course">
+                  <img src="{{ course.cover_image_url }}" alt="course">
                 </a>
                 <a class="fit_txt" href="{{ course.permalink }}">{{ course.title }}</a>
                 {% if current_user.teaches(course) %}
