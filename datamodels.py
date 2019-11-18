@@ -531,9 +531,9 @@ class Course(BaseModel):
     def cover_image_url(self):
         if not self.cover_image:
             return ""
-        return "/uploads/{}".format(self.cover_image) \
-                   if self.cover_image and not self.cover_image.startswith("http") \
-                   else self.cover_image
+        return url_for("static", filename="uploads/{}".format(self.cover_image)) \
+            if self.cover_image and not self.cover_image.startswith("http") \
+            else self.cover_image
 
     @property
     def instructors(self):
@@ -1004,7 +1004,8 @@ class Resource(OrderedBase):
             "youtube": "fab fa-youtube",
             "pdf": "far fa-file-pdf",
         }
-        if self.type.name in stubs:
+
+        if self.type and self.type.name in stubs:
             return stubs[self.type.name]
         return "fas fa-file-alt"
 
