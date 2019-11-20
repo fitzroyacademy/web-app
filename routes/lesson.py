@@ -79,80 +79,99 @@ def course_add_edit_intro_lesson(user, course, course_slug):
         return jsonify({"message": "Couldn't create intro lesson"}), 400
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET", "POST"])
-@blueprint.route("/<course_slug>/lessons/add", methods=["GET", "POST"])
+@blueprint.route("/<course_slug>/lessons/add", methods=["POST"])
 @login_required
 @teacher_required
-def course_add_edit_lesson(user, course, course_slug, lesson_id=None):
-    if lesson_id:
-        lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
-        if not lesson:
-            raise abort(404, "No such lesson")
+def add(user, course, course_slug, lesson_id=None):
+    form = AddLessonForm(request.form)
+
+    if form.validate():
+        lesson = datamodels.Lesson(course=course,
+                                   order=len(course.lessons) + 1)
+        lesson.title = form.title.data
+        lesson.description = form.description.data
+        lesson.slug = slugify(form.title.data)
+
+        db = datamodels.get_session()
+        db.add(lesson)
+        db.commit()
+
+        return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
     else:
-        lesson = None
+        for error in form.errors:
+            flash(error)
 
-    if lesson:
-        form = AddLessonForm(request.form, lesson)
-    else:
-        form = AddLessonForm(request.form)
+    return redirect("/course/{}/edit".format(course.slug))
 
-    if request.method == "POST":
-        if form.validate():
-            if not lesson:
-                lesson = datamodels.Lesson(course=course,
-                                           order=len(course.lessons)+1)
 
-            lesson.title = form.title.data
-            lesson.description = form.description.data
-            lesson.further_reading = form.further_reading.data
-            lesson.slug = slugify(form.title.data)
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["POST"])
+@login_required
+@teacher_required
+def edit(user, course, course_slug, lesson_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    if not lesson:
+        raise abort(404, "No such lesson")
 
-            if "cover_image" in request.files:
-                cover_image = request.files["cover_image"]
-                filename = generate_thumbnail(cover_image, "cover")
-                lesson.cover_image = filename
+    if not AjaxCSRFTokenForm(request.form).validate():
+        return jsonify({"success": False, "message": "CSRF token required"}), 400
 
-            db = datamodels.get_session()
-            db.add(lesson)
-            db.commit()
 
-            return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
-        else:
-            for error in form.errors:
-                flash(error)
-            return redirect("/course/{}/edit".format(course.slug))
+    if "title" in request.form:
+        slug = slugify(request.form["title"])
+        if datamodels.Lesson.find_by_slug(course_slug, slug) is not None:
+            return jsonify({"success": False, "message": "Use different lesson name"}), 400
+        lesson.title = request.form["title"]
+        lesson.slug = slug
+    if "description" in request.form:
+        lesson.description = request.form["description"]
+        if 3 > len(lesson.description) > 140:
+            return jsonify({"success": False, "message": "Description should be no more than 140 characters."}), 400
+    if "further_reading" in request.form:
+        lesson.further_reading = request.form["further_reading"]
+    if "cover_image" in request.form:
+        cover_image = request.files["file"]
+        filename = generate_thumbnail(cover_image, "cover")
+        lesson.cover_image = filename
 
-    if lesson:
-        ordered_questions = datamodels.LessonQA.ordered_items_for_parent(
-            parent=lesson, key="lesson_id"
-        ).all()
+    db = datamodels.get_session()
+    db.add(lesson)
+    db.commit()
+    return jsonify({"success": True})
 
-        data = {
-            "course": course,
-            "lesson": lesson,
-            "form": form,
-            "introduction": lesson.intro_segment,
-            "resources": lesson.ordered_resources,
-            "teachers": [
-                render_teacher(obj.user, course, lesson) for obj in lesson.teachers
+
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET"])
+@login_required
+@teacher_required
+def retrieve(user, course, course_slug, lesson_id):
+    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    if not lesson:
+        raise abort(404, "No such lesson")
+
+    form = AddLessonForm(request.form, lesson)
+
+    ordered_questions = datamodels.LessonQA.ordered_items_for_parent(
+        parent=lesson, key="lesson_id"
+    ).all()
+
+    data = {
+        "course": course,
+        "lesson": lesson,
+        "form": form,
+        "introduction": lesson.intro_segment,
+        "resources": lesson.ordered_resources,
+        "teachers": [
+            render_teacher(obj.user, course, lesson) for obj in lesson.teachers
             ],
-            "segments": lesson.normal_segments,
-            "questions": [
-                render_question_answer(course, lesson, question)
-                for question in ordered_questions
+        "segments": lesson.normal_segments,
+        "questions": [
+            render_question_answer(course, lesson, question)
+            for question in ordered_questions
             ],
-            "resource_types": {r.name: r.value for r in ResourceTypeEnum},
-            "resource_images": RESOURCE_CONTENT_IMG,
-            "ajax_csrf_form": AjaxCSRFTokenForm(),
-            "resource_form": AddResourceForm(),
-        }
-    else:
-        data = {
-            "course": course,
-            "form": form,
-            "ajax_csrf_form": AjaxCSRFTokenForm(),
-            "resource_form": AddResourceForm(),
-        }
+        "resource_types": {r.name: r.value for r in ResourceTypeEnum},
+        "resource_images": RESOURCE_CONTENT_IMG,
+        "ajax_csrf_form": AjaxCSRFTokenForm(),
+        "resource_form": AddResourceForm(),
+    }
 
     return render_template("partials/course/_lesson.html", **data)
 

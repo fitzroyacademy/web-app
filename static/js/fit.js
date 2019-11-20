@@ -667,6 +667,7 @@ $( document ).ready(function() {
     let _root = document.body;
     let delegates = {};  // {[eventType]:{[selector]:[...fns]}}
     function _handler(event) {
+      console.log(event)
       let selectors = delegates[event.type];
       if (!selectors) return;
       for (let selector in selectors) {
@@ -910,14 +911,26 @@ $( document ).ready(function() {
     post(e.target.form.action, formData)
   });
 
-  delegate('input[data-course-edit],input[data-institute-edit]', 'change', (e, t) => {
+  delegate('#further_reading', 'change', (e, t) => {
+    console.log('Magic should happen here');
+
+  });
+
+  delegate('input[data-course-edit],input[data-fit-lesson-edit],input[data-institute-edit]', 'change', (e, t) => {
     let key = e.target.id;
     let formData = {};
     if (e.target.files) {
       formData['file'] = e.target.files[0];
     }
     formData[key] = e.target.value;
-    post(e.target.formAction, formData)
+    post(e.target.formAction, formData, (responseText, xhr) => {
+        let responseJSON = JSON.parse(xhr.response);
+        if (xhr.status == 200) {
+            // do something clever
+        } else {
+            showAlertSnackbar(responseJSON["message"])
+         }
+    })
   });
 
   delegate('[data-fit-perm-group-type]', 'click', (e, t) => {
@@ -1074,6 +1087,11 @@ $( document ).ready(function() {
 
   $('#fit_modal_delete').on('show.bs.modal', function(event){
     document.querySelector('#confirm-delete').href = event.relatedTarget.href;
+  });
+
+  delegate('[data-fit-add-lesson]', 'click', (e, t) => {
+    $('#fit_modal_add_lesson_choice').modal('hide');
+    $('#fit_modal_add_lesson').modal('show');
   });
 
   delegate('[data-fit-add-edit-segment]', 'click', (e, t) => {
@@ -1305,9 +1323,9 @@ $( document ).ready(function() {
         }
         save.removeEventListener('click', saveCroppedImage);
         save.addEventListener('click', saveCroppedImage);
-      }
+      };
       img.src = e.target.result;
-    }
+    };
     reader.readAsDataURL(blob);
   }
 
@@ -1354,8 +1372,6 @@ $( document ).ready(function() {
     }
   });
 
-  delegate('[data-fit-save-lesson-changes]', 'click', (e, t) => {
-    document.querySelector('[data-fit-lesson-add-edit]').submit()
-  })
+
 
 });

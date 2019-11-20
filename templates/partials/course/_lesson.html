@@ -14,9 +14,7 @@
 
     <div class="fit_course intro">
 
-    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{% if not lesson %}add{% else %}{{ lesson.id }}/edit{% endif %}" method="POST" enctype="multipart/form-data" data-fit-wysiwyg data-fit-lesson-add-edit>
-    {{ form.csrf_token }}
-      
+    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit" method="POST" enctype="multipart/form-data" data-fit-wysiwyg>
 
       <!-- <h1>
         <span class="txt">{% if not lesson %}Add{% else %}Edit{% endif %} Lesson.</span>
@@ -31,12 +29,12 @@
 
       <div class="fit_fancyplace">
         <label for="course_name">Lesson name</label>
-        <input type="text" class="form-control form-control-h2" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required data-fit-fancyplace>
+        <input type="text" class="form-control form-control-h2" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required data-fit-fancyplace data-fit-lesson-edit>
       </div>
 
       <div class="fit_fancyplace">
         <label for="lesson_description">One-sentence description</label>
-        <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required data-fit-fancyplace>
+        <input type="text" value="{{ form.description.data }}" class="form-control" id="description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required data-fit-fancyplace data-fit-lesson-edit>
       </div>
 
       <div class="row">
@@ -45,15 +43,11 @@
             <span class="txt">The lesson.</span>
           </h3>
           <div class="fit_paneless">
-
-            <div class="fit_vidya fit_cropper" data-fit-image-uploader data-fit-aspect-width="16" data-fit-aspect-height="9">
-              {% with cover_image=lesson.get_cover if lesson else "" %}
+              {% with cover_image=lesson.get_cover if lesson else "", cover_action="/course/"+course.slug+"/lesson/" + lesson.id|string + "/edit" %}
               {% include "partials/course/_cover_cropper.html" %}
               {% endwith %}
-            </div>
           </div>
 
-        {% if lesson %}
           <div class="fit_pane bordered white">
 
             <dl class="fit_summary_icons">
@@ -98,13 +92,11 @@
               
             </dl>
           </div><!-- pane -->
-        {% endif %}
 
         </div><!-- col -->
 
         <div class="col-md-6">
 
-          {% if lesson %}
           <h3>
             <span class="txt">Lesson segments.</span>
             <small class="subtxt"><span class="fas fa-clock"></span>
@@ -206,13 +198,12 @@
             <label for="fit_wysiwyg_editor">Further reading (appears under resource links)</label>
             <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
           </div>
-          <textarea id="further_reading" name="further_reading" style="display: none"></textarea>
+          <textarea id="further_reading" name="further_reading" style="display: none;" data-fit-lesson-edit></textarea>
           <!-- <small class="form-text text-muted">This appears below any links in the resources tab.</small> -->
 
         </div><!-- col -->
       </div><!-- row -->
 
-      {% endif %}
 
     </form>
     </div>
@@ -234,6 +225,14 @@
 <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
 <script>let editor = new MediumEditor('#fit_wysiwyg_editor');</script>
-<script>let editorResource = new MediumEditor('#fit_wysiwyg_resource');</script>
+<script>let editorResource = new MediumEditor('#fit_wysiwyg_resource');
+let furtherReading = document.getElementById("further_reading");
+let evt = new CustomEvent('change');
+
+    editor.subscribe('editableInput', function (e, editable) {
+        furtherReading.value = editor.getContent();
+        furtherReading.dispatchEvent(evt);
+    });
+</script>
 
 {% endblock %}

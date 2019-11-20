@@ -17,7 +17,7 @@ from flask import (
 from util import get_current_user
 
 import datamodels
-from dataforms import AddCourseForm, AjaxCSRFTokenForm, LoginForm
+from dataforms import AddCourseForm, AjaxCSRFTokenForm, LoginForm, AddLessonForm
 from routes.decorators import login_required, teacher_required
 from routes.utils import generate_thumbnail
 
@@ -216,7 +216,8 @@ def retrieve(user, course_slug=None):
         "introduction": course.intro_lesson,
         "lessons": course.normal_lessons,
         "ajax_csrf_form": AjaxCSRFTokenForm(),
-        "cover_image": course.cover_image_url
+        "cover_image": course.cover_image_url,
+        "add_lesson_form": AddLessonForm()
     }
 
     return render_template("course_edit.html", **data)

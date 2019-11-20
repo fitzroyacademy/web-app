@@ -1,30 +1,36 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_lesson">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add a lesson.</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>        
-      </div>
-      <div class="modal-body">
-        <div class="fit_iconselects high_sub">
-          <a class="fit_iconselect watermelon" href="#" data-toggle="modal" data-target="#fit_modal_add_lesson_fitz">
-            <i class="fal fa-copy"></i>
-            <div class="sub">
-              <h4>Use a Fitzroy lesson.</h4>
-              Choose from the 30+ lessons<br>in the video lesson library.
-            </div>
-          </a>      
-          <a class="fit_iconselect blue" href="/course/{{ course.slug }}/lessons/add">
-            <i class="fal fa-file-plus"></i>
-            <div class="sub">
-              <h4>Make your own.</h4>
-              Build a lesson from scratch <br>with your own videos.
-            </div>
-          </a>         
+  <form action="/course/{{ course.slug }}/lessons/add" method="post" enctype="multipart/form-data">
+    {{ add_lesson_form.csrf_token }}
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <h5 class="modal-title">Add a lesson.</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>        
         </div>
+
+        <div class="modal-body">
+
+          <div class="fit_fancyplace">
+            <label for="title">Lesson name</label>
+            <input type="text" class="form-control form-control-lg" name="title" value="" id="title" placeholder="Name your lesson" data-fit-fancyplace>
+          </div>
+
+          <div class="fit_fancyplace">
+            <label for="description">One-sentence description</label>
+            <input type="text" class="form-control" id="description" name="description" value="" maxlength="140" placeholder="Short description of the lesson. 140 characters max." data-fit-fancyplace>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-lg btn-primary"><i class="fal fa-check"></i>  Add lesson</button>
+        </div>
+
       </div>
     </div>
-  </div>
+  </form>
 </div>
