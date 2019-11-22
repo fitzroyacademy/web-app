@@ -215,9 +215,10 @@ app.jinja_env.globals.update(get_logo=get_logo)
 
 def url4(*args, **kwargs):
     try:
-        return url_for(*args, **kwargs)
+        # For subdomains url_for is building url with server name and schema, and we would like to keep relative path.
+        return url_for(*args, **kwargs).split(app.config["SERVER_NAME"])[-1]
     except BuildError as e:
-        if app.debug == True:
+        if app.debug:
             flash("{}".format(e))
         return "#"
 app.jinja_env.globals.update(url_for=url4)
