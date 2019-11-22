@@ -667,7 +667,6 @@ $( document ).ready(function() {
     let _root = document.body;
     let delegates = {};  // {[eventType]:{[selector]:[...fns]}}
     function _handler(event) {
-      console.log(event)
       let selectors = delegates[event.type];
       if (!selectors) return;
       for (let selector in selectors) {
@@ -916,7 +915,8 @@ $( document ).ready(function() {
 
   });
 
-  delegate('input[data-course-edit],input[data-fit-lesson-edit],input[data-institute-edit]', 'change', (e, t) => {
+  delegate('input[data-course-edit],input[data-fit-lesson-edit],' +
+      'input[data-institute-edit],input[data-fit-user-edit]', 'change', (e, t) => {
     let key = e.target.id;
     let formData = {};
     if (e.target.files) {
@@ -1043,6 +1043,26 @@ $( document ).ready(function() {
             usersList.innerHTML = usersList.innerHTML + responseJSON['teacher'];
         }
         alert.innerHTML = responseJSON.message;
+    });
+  });
+
+  delegate('[data-fit-user-save]', 'click', (e, t) => {
+    e.preventDefault();
+    let form = t.closest('form');
+    let formData = new FormData(form);
+    let url = form.action;
+
+    let data = {
+      "first_name": formData.get("first_name"),
+      "last_name": formData.get("last_name"),
+      "username": formData.get("username"),
+      "email": formData.get("email"),
+      "password": formData.get("password")
+    };
+
+    post(url, data, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        showAlertSnackbar(res["message"]);
     });
   });
 

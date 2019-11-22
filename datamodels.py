@@ -79,6 +79,18 @@ class BaseModel(Base):
         session = get_session()
         return session.query(cls).filter(cls._is_deleted == deleted)
 
+    def __getattr__(self, item):
+        if item.endswith("_url"):
+            return self._image_field_url(item[:-4])
+        return super().__getattr__(item)
+
+    def _image_field_url(self, field):
+        image_field = getattr(self, field, None)
+        if not image_field:
+            return ""
+        return url_for("static", filename="uploads/{}".format(image_field)) \
+            if image_field and not image_field.startswith("http") else image_field
+
 
 class OrderedBase(BaseModel):
     __abstract__ = True
@@ -299,22 +311,6 @@ class Institute(BaseModel):
     def managers(self):
         return self._get_user_group("managers")
 
-    @property
-    def logo_url(self):
-        if not self.logo:
-            return ""
-        return url_for("static", filename="uploads/{}".format(self.logo)) \
-            if self.logo and not self.logo.startswith("http") \
-            else self.logo
-
-    @property
-    def cover_image_url(self):
-        if not self.cover_image:
-            return ""
-        return url_for("static", filename="uploads/{}".format(self.cover_image)) \
-            if self.cover_image and not self.cover_image.startswith("http") \
-            else self.cover_image
-
     def is_admin(self, user):
         return InstituteEnrollment.is_admin(self.id, user.id)
 
@@ -526,14 +522,6 @@ class Course(BaseModel):
             return self.cover_image
         elif self.lessons:
             return self.lessons[0].thumbnail
-
-    @property
-    def cover_image_url(self):
-        if not self.cover_image:
-            return ""
-        return url_for("static", filename="uploads/{}".format(self.cover_image)) \
-            if self.cover_image and not self.cover_image.startswith("http") \
-            else self.cover_image
 
     @property
     def instructors(self):

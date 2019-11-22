@@ -1,13 +1,14 @@
 import json
 
-from flask import Blueprint, render_template, session, request, url_for, redirect, flash, abort
+from flask import Blueprint, render_template, session, request, url_for, redirect, flash, abort, jsonify
 from sqlalchemy.exc import IntegrityError
 
 import datamodels
-from dataforms import AddUserForm, EditUserForm, LoginForm
+from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm
 
 from util import get_current_user
 from .decorators import login_required
+from .utils import generate_thumbnail
 
 blueprint = Blueprint("user", __name__, template_folder="templates")
 
@@ -21,40 +22,66 @@ def view(slug):
     return render_template("user.html", **data)
 
 
-@blueprint.route("/edit", methods=["GET", "POST"])
-@blueprint.route("/edit/<slug>", methods=["GET", "POST"])
+@blueprint.route("/edit", methods=["GET"])
 @login_required
-def edit(user, slug=None):
+def retrieve(user):
+
+    return render_template("user_edit.html", **{"form": EditUserForm()})
+
+@blueprint.route("/edit", methods=["POST"])
+@login_required
+def edit(user):
     """
     Edit the current user.
     """
 
-    data = {"errors": []}
-    if request.method == "POST":
-        form = EditUserForm(request.form)
-        if form.validate():
-            user.email = form.email.data
-            user.first_name = form.first_name.data
-            user.last_name = form.last_name.data
-            user.username = form.username.data
-            if form.password.data:
-                setattr(user, "password", form.password.data)
+    data = {"errors": [], "message": "Error while saving data"}
+    db = datamodels.get_session()
 
-            db = datamodels.get_session()
-            try:
+    if "profile_picture" in request.form:
+        form = AjaxCSRFTokenForm(request.form)
+        if form.validate():
+            file = request.files["file"]
+
+            filename = generate_thumbnail(file, "square_l")
+            if not filename:
+                data["errors"] = ["Couldn't upload picture."]
+            else:
+                user.profile_picture = filename
                 db.add(user)
                 db.commit()
-            except IntegrityError:
-                db.rollback()
-                data["errors"] = ["Wrong email address"]
         else:
-            data["errors"] = form.errors
+            data["errors"] = "Missing CSRF token"
+
+        if data["errors"]:
+            return jsonify(data), 400
+        else:
+            return jsonify({"message": "Changes saved", "errors": []})
+
+    form = EditUserForm(request.form)
+    if form.validate():
+        user.email = form.email.data
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
+        user.username = form.username.data
+        if form.password.data:
+            setattr(user, "password", form.password.data)
+
+        try:
+            db.add(user)
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            data["errors"] = ["Wrong email address"]
     else:
-        form = EditUserForm()
+        data["errors"] = form.errors
 
-    data["form"] = form
-
-    return render_template("user_edit.html", **data)
+    if data["errors"]:
+        data["message"] = "Error while saving data"
+        return jsonify(data), 400
+    else:
+        data["message"] = "Changes saved"
+        return jsonify(data)
 
 
 @blueprint.route("/register", methods=["POST"])

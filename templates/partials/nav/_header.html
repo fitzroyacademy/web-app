@@ -134,7 +134,7 @@
             </span>
             <span class="fit_pic circle"> 
               {% if current_user.profile_picture %}
-                <img src="{{ current_user.profile_picture }}" alt="user">
+                <img src="{{ current_user.profile_picture_url }}" alt="user">
               {% else %}
                 <i class="fal fa-user"></i>
               {% endif %}

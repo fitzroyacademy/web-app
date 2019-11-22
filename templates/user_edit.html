@@ -1,4 +1,11 @@
 {% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if form.csrf_token %}
+            var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
 {% macro pref_toggle(tag, label) -%}
   <div class="form-group" data-fit-preference-toggle="{{ tag }}">
     <input type="checkbox" {{ 'checked' if current_user.preference(tag) }} data-toggle="toggle" data-size="sm" data-style="simple" id="permissions_1" name="permissions_1">
@@ -15,8 +22,8 @@
     <div class="fit_course fit_user_edit">
 
     	<h1 class="fit_avatared">
-    		<a href="{{ current_user.profile_picture }}" target="_blank" class="fit_avatar">
-    			<img src="{{ current_user.profile_picture }}" alt="user">
+    		<a href="{{ current_user.profile_picture_url }}" target="_blank" class="fit_avatar">
+    			<img src="{{ current_user.profile_picture_url }}" alt="user">
     		</a>
     		<span class="fit_txt">{{ current_user.full_name }}.</span>
     	</h1> 
@@ -25,11 +32,10 @@
 
 			<div class="fit_pane">
 			  <dl class="fit_summary_icons">
-			    <dt><i class="far fa-user"></i> About you.</dt>
+			    <dt><i class="far fa-user"></i> About you. </dt>
 			    <dd>
 			      <form class="fit_user_edit" method="post" action="/edit">
-            	{{ form.csrf_token }}
-							<div class="row">
+                    <div class="row">
 			          <div class="col">
 			            <div class="fit_fancyplace">
 			              <label for="firstname">Given name</label>
@@ -57,14 +63,12 @@
 			        <div class="form-group">
 								<div class="fit_squarelogo fit_cropper" data-fit-image-uploader data-fit-aspect-width="1" data-fit-aspect-height="1">
 		              {% if current_user.profile_picture %}
-		                <img src="{{ current_user.profile_picture }}" alt="user">
+		                <img src="{{ current_user.profile_picture_url }}" alt="user">
 		              {% else %}
 		                <img class="placeholder" src="/static/assets/images/defaults/spacer.gif" alt="spacer">
 		              {% endif %}
 		              <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
-		              <form action="/edit" method="post" style="display:none;">
-		                <input id="cover_image" name="cover_image" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
-		              </form>
+		                <input id="profile_picture" name="profile_picture" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
 		              <a class="btn btn-primary fit_save_crop" data-fit-save-crop><i class="fal fa-check"></i> Save</a>
 		            </div>
 							</div>        
@@ -80,7 +84,7 @@
 								<input type="hidden" value="{{ current_user.username }}" id="secretslug" name="secretslug" data-fit-slug-reveal-secret> <!-- DEV: store this input as username, it strips off weird characters -->
 							</div>
 
-						  <button type="submit" class="btn btn-primary">Save changes</button>
+						  <button type="submit" class="btn btn-primary" data-fit-user-save>Save changes</button>
 			      </form>
 			    </dd>
 			  </dl>
@@ -108,7 +112,7 @@
             <div class="fit_lesson">
               <a class="fit_btn" href="{{ course.permalink }}">
                 <div class="fit_pic vid">
-                  <img src="/uploads/{{ course.cover_image }}" alt="course">
+                  <img src="{{ course.cover_image_url }}" alt="course">
                 </div>
                 <span class="fit_txt">{{ course.title }}</span>
                 <span class="fit_sub">{{ course.duration_seconds|hhmmss }}</span>

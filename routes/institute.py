@@ -141,7 +141,7 @@ def edit(user, institute=""):
                         "message": "Couldn't upload picture. Try again or use different file format",
                     }
                 ),
-                400,
+                400
             )
 
         institute.logo = filename
