@@ -13,7 +13,7 @@ blueprint = Blueprint("pages", __name__)
 @blueprint.route("/")
 def index(institute=''):
     """ Shows all courses the user has access to. """
-    data = {"public_courses": datamodels.Course.list_public_courses(), "form": LoginForm()}
+    data = {"public_courses": datamodels.Course.list_public_courses(institute_slug=institute), "form": LoginForm()}
 
     return render_template("welcome.html", **data)
 

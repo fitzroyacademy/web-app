@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta
 from os import environ
 
@@ -45,6 +44,8 @@ class BaseModel(Base):
         image_field = getattr(self, field, None)
         if not image_field:
             return ""
+        if image_field.startswith("/static/"):
+            return image_field
         return url_for("static", filename="uploads/{}".format(image_field)) \
             if image_field and not image_field.startswith("http") else image_field
 
@@ -232,6 +233,7 @@ class Institute(BaseModel):
     location = sa.Column(sa.String, default="")
 
     users = orm.relationship("InstituteEnrollment", back_populates="institute")
+    courses = orm.relationship("Course", back_populates="institute")
 
     def add_user(self, user, access_level=InstitutePermissionEnum.teacher):
         association = InstituteEnrollment(institute=self,
@@ -398,6 +400,9 @@ class Course(BaseModel):
     program_id = sa.Column(sa.Integer, sa.ForeignKey("programs.id"))
     program = orm.relationship("Program", back_populates="courses")
 
+    institute_id = sa.Column(sa.Integer, sa.ForeignKey("institutes.id"), default=None)
+    institute = orm.relationship("Institute", back_populates="courses")
+
     lessons = orm.relationship("Lesson", back_populates="course")
 
     users = orm.relationship("CourseEnrollment", back_populates="course")
@@ -408,11 +413,17 @@ class Course(BaseModel):
     _lessons_queryset = None
 
     @classmethod
-    def list_public_courses(cls):
+    def list_public_courses(cls, institute_slug=""):
+        query = cls.visibility == "public"
+        if institute_slug:
+            institute = Institute.find_by_slug(institute_slug)
+            if institute:
+                query = sa.or_(cls.visibility == "public",
+                               sa.and_(cls.visibility == "institute", cls.institute == institute))
         return (
             cls.objects()
             .filter(
-                cls.guest_access == True, cls.visibility == "public", cls.draft == False
+                cls.guest_access == True, query, cls.draft == False
             )
             .all()
         )
@@ -471,7 +482,7 @@ class Course(BaseModel):
 
     @property
     def permalink(self):
-        return url_for("course.view", slug=self.slug)
+        return url_for("course.view", slug=self.slug, institute="")
 
     @property
     def thumbnail(self):
@@ -684,7 +695,7 @@ class Lesson(OrderedBase):
     @property
     def permalink(self):
         return url_for(
-            "lesson.view", course_slug=self.course.slug, lesson_slug=self.slug
+            "lesson.view", course_slug=self.course.slug, lesson_slug=self.slug, institute=""
         )
 
     @property

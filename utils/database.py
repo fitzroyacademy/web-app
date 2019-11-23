@@ -20,8 +20,6 @@ def dump(obj, seen=None):
                 o.append(dump(i, seen=seen))
             return o
         else:
-            print("dupa dupa dupa")
-            print(type(obj))
             return obj
     seen = seen or []  # Recursion trap.
     seen.append(id(obj))

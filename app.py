@@ -59,7 +59,8 @@ def before_route(endpoint, values):
                            "institute.change_slug"
                            ]
 
-    if endpoint not in subdomain_endpoints and values is not None:
+    if endpoint and not any([endpoint.startswith("lesson"), endpoint.startswith("course"), endpoint in subdomain_endpoints]) \
+            and values is not None:
         values.pop('institute', None)
 
 @app.route('/')

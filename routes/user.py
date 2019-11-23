@@ -191,7 +191,6 @@ def login():
                         session.pop("anon_progress")
                     return redirect(request.form.get("last_page", ""))
         else:
-            print(form.errors)
             data["errors"].append("Username or email and password are required")
     else:
         data["form"] = LoginForm()

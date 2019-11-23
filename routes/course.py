@@ -27,10 +27,11 @@ blueprint = Blueprint("course", __name__, template_folder="templates")
 
 
 @blueprint.route("/")
-def index():
+@blueprint.route("/", subdomain="<institute>")
+def index(institute=""):
     """ Shows all courses the user has access to. """
     data = {
-        "public_courses": datamodels.Course.list_public_courses(),
+        "public_courses": datamodels.Course.list_public_courses(institute_slug=institute),
         "form": LoginForm(),
     }
 
@@ -38,7 +39,8 @@ def index():
 
 
 @blueprint.route("/<slug>")
-def view(slug):
+@blueprint.route("/<slug>", subdomain="<institute>")
+def view(slug, institute=""):
     """
     Retrieves and displays a course based on course slug.
     """
@@ -55,7 +57,8 @@ def view(slug):
 
 
 @blueprint.route("/code", methods=["GET", "POST"])
-def code():
+@blueprint.route("/code", methods=["GET", "POST"], subdomain="<institute>")
+def code(institute=""):
     error = None
     if request.method == "POST":
         c = datamodels.get_course_by_code(request.form["course_code"])
@@ -69,61 +72,69 @@ def code():
         return render_template("code.html", **data)
 
 
-@blueprint.route("/add", methods=["GET", "POST"])
+@blueprint.route("/add", methods=["POST"])
+@blueprint.route("/add", methods=["POST"], subdomain="<institute>")
 @login_required
-def add_course(user):
+def add_course(user, institute=""):  # ToDo: use Ajax
+    """
+    Add a new course for a given institute given by institute parameter derived from subdomain
+
+    :param user: a User instance passed by decorator
+    :param institute: an institute subdomain
+    :return: html response
+    """
 
     form = AddCourseForm(request.form)
     data = {"form": form}
 
-    if request.method == "POST":
-        if form.validate():
-            slug = slugify(form.title.data)
+    if institute:
+        institute = datamodels.Institute.find_by_slug(institute)
 
-            if datamodels.Course.find_by_slug(slug):
-                slug = slug[:46] + "-" + str(uuid4())[:3]
+    if form.validate():
+        slug = slugify(form.title.data)
 
-            course = datamodels.Course()
-            course.title = form.title.data
-            course.info = form.info.data
-            course.course_code = str(uuid4())[:8]
-            course.slug = slug
-            if "cover_image" in request.files:
-                file = request.files["cover_image"]
+        if datamodels.Course.find_by_slug(slug):
+            slug = slug[:46] + "-" + str(uuid4())[:3]
 
-                filename = generate_thumbnail(file, "cover")
-                if not filename:
-                    flash("Couldn't save cover image")
-                else:
-                    course.cover_image = filename
+        course = datamodels.Course()
+        course.title = form.title.data
+        course.info = form.info.data
+        course.institute = institute
+        course.course_code = str(uuid4())[:8]
+        course.slug = slug
 
-            db = datamodels.get_session()
-            db.add(course)
-            course.add_instructor(user)
-            db.commit()
+        db = datamodels.get_session()
+        db.add(course)
+        course.add_instructor(user)
+        db.commit()
 
-            return redirect("/course/{}/edit".format(slug))
-        else:
-            for key, value in form.errors.items():
-                flash("Field {}: {}".format(key, ",".join(value)))
-            data["errors"] = form.errors
-    return render_template("partials/course/_add.html", **data)
+        return redirect("/course/{}/edit".format(slug))
+    else:
+        for key, value in form.errors.items():
+            flash("Field {}: {}".format(key, ",".join(value)))
+        data["errors"] = form.errors
+        return redirect("/", **data)
 
 
 @blueprint.route("/<course_slug>/edit", methods=["POST"])
+@blueprint.route("/<course_slug>/edit", methods=["POST"], subdomain="<institute>")
 @login_required
-def edit(user, course_slug=None):
+def edit(user, course_slug=None, institute=""):
     """
-    Either retrieve a course edit view for a course given by course_slug parameter or edit a course via Ajax requests.
+    Edit a course via Ajax requests.
 
     :param user: a User instance passed by decorator
     :param course_slug: a unique course
+    :param institute: an institute subdomain
     :return: json response
     """
     course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")
+
+    if institute:
+        institute = datamodels.Institute.find_by_slug(institute)
 
     db = datamodels.get_session()
 
@@ -197,13 +208,15 @@ def edit(user, course_slug=None):
 
 
 @blueprint.route("/<course_slug>/edit", methods=["GET"])
+@blueprint.route("/<course_slug>/edit", methods=["GET"], subdomain="<institute>")
 @login_required
-def retrieve(user, course_slug=None):
+def retrieve(user, course_slug=None, institute=""):
     """
-    Either retrieve a course edit view for a course given by course_slug parameter or edit a course via Ajax requests.
+    Retrieve a course edit view for a course given by course_slug parameter.
 
     :param user: a User instance passed by decorator
     :param course_slug: a unique course
+    :param institute: an institute subdomain
     :return: html response
     """
     course = datamodels.get_course_by_slug(course_slug)
@@ -224,17 +237,19 @@ def retrieve(user, course_slug=None):
 
 
 @blueprint.route("/<course_slug>/delete", methods=["POST"])
+@blueprint.route("/<course_slug>/delete", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def delete(user, course, course_slug):
+def delete(user, course, course_slug, institute=""):
     course.delete()
     flash("Course {} deleted".format(course.title))
     return redirect("/")
 
 
 @blueprint.route("/<course_slug>/edit/slug", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/slug", methods=["POST"], subdomain="<institute>")
 @login_required
-def change_course_slug(user, course_slug=None):
+def change_course_slug(user, course_slug=None, institute=""):
     course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
@@ -273,8 +288,11 @@ def change_course_slug(user, course_slug=None):
 @blueprint.route(
     "/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"]
 )
+@blueprint.route(
+    "/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"], subdomain="<institute>"
+)
 @login_required
-def remove_teacher(user, course_slug=None, teacher_id=None):
+def remove_teacher(user, course_slug=None, teacher_id=None, institute=""):
     course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
@@ -294,8 +312,9 @@ def remove_teacher(user, course_slug=None, teacher_id=None):
 
 
 @blueprint.route("/<course_slug>/edit/add/teacher", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/add/teacher", methods=["POST"], subdomain="<institute>")
 @login_required
-def add_teacher(user, course_slug=None):
+def add_teacher(user, course_slug=None, institute=""):
     course = datamodels.get_course_by_slug(course_slug)
 
     if not course or not user.teaches(course):
@@ -333,9 +352,10 @@ def add_teacher(user, course_slug=None):
 
 
 @blueprint.route("/<course_slug>/edit/options/<option>/<on_or_off>", methods=["POST"])
+@blueprint.route("/<course_slug>/edit/options/<option>/<on_or_off>", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def set_options(user, course, course_slug=None, option=None, on_or_off=False):
+def set_options(user, course, course_slug=None, option=None, on_or_off=False, institute=""):
     """ Set course options. """
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")

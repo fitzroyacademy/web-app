@@ -13,7 +13,7 @@
 
 
   <div class="fit_code">
-    <form class="fit_form_code fit_fancyplace fit_wiggle_daddy" method="post" action="{{ url_for('course.code') }}">
+    <form class="fit_form_code fit_fancyplace fit_wiggle_daddy" method="post" action="{{ url_for('course.code', institute='') }}">
       <div class="form-group">
         <input type="text" class="form-control" name="course_code" id="course_code" placeholder="Course code" required data-fit-fancyplace>
         <label for="course_code">Course code</label>

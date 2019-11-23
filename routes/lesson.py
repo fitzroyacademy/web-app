@@ -28,16 +28,18 @@ def lessons():
 
 
 @blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def reorder_lessons(user, course, course_slug=None):
+def reorder_lessons(user, course, course_slug=None, institute=""):
     return reorder_items(request, datamodels.Lesson, course.lessons)
 
 
 @blueprint.route("/<course_slug>/lessons/add_intro", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/add_intro", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def course_add_edit_intro_lesson(user, course, course_slug):
+def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
     form = AjaxCSRFTokenForm(request.form)
     intro_lesson = course.intro_lesson
 
@@ -80,9 +82,10 @@ def course_add_edit_intro_lesson(user, course, course_slug):
 
 
 @blueprint.route("/<course_slug>/lessons/add", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/add", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def add(user, course, course_slug, lesson_id=None):
+def add(user, course, course_slug, lesson_id=None, institute=""):
     form = AddLessonForm(request.form)
 
     if form.validate():
@@ -105,9 +108,10 @@ def add(user, course, course_slug, lesson_id=None):
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def edit(user, course, course_slug, lesson_id):
+def edit(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         raise abort(404, "No such lesson")
@@ -140,9 +144,10 @@ def edit(user, course, course_slug, lesson_id):
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET"], subdomain="<institute>")
 @login_required
 @teacher_required
-def retrieve(user, course, course_slug, lesson_id):
+def retrieve(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         raise abort(404, "No such lesson")
@@ -177,9 +182,10 @@ def retrieve(user, course, course_slug, lesson_id):
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def course_delete_lesson(user, course, course_slug, lesson_id):
+def course_delete_lesson(user, course, course_slug, lesson_id, institute=""):
 
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if lesson:
@@ -196,9 +202,9 @@ def course_delete_lesson(user, course, course_slug, lesson_id):
     return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400
 
 
-@blueprint.route("<course_slug>/<lesson_slug>")
+@blueprint.route("<course_slug>/<lesson_slug>", subdomain="<institute>")
 @enrollment_required
-def view(course_slug, lesson_slug):
+def view(course_slug, lesson_slug, institute=""):
     """
     Retrieves and displays a particular course, with the specified lesson
     and its first segment set to be active.
@@ -222,9 +228,10 @@ def view(course_slug, lesson_slug):
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/teacher/add", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/teacher/add", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def add_teacher(user, course, course_slug, lesson_id):
+def add_teacher(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not AjaxCSRFTokenForm(request.form).validate():
@@ -279,11 +286,15 @@ def add_teacher(user, course, course_slug, lesson_id):
 
 @blueprint.route(
     "/<course_slug>/lessons/<int:lesson_id>/teacher/<int:teacher_id>/delete",
-    methods=["POST"],
+    methods=["POST"]
+)
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/teacher/<int:teacher_id>/delete",
+    methods=["POST"], subdomain="<institute>"
 )
 @login_required
 @teacher_required
-def delete_teacher(user, course, course_slug, lesson_id, teacher_id):
+def delete_teacher(user, course, course_slug, lesson_id, teacher_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
@@ -303,9 +314,13 @@ def delete_teacher(user, course, course_slug, lesson_id, teacher_id):
     "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/edit", methods=["POST"]
 )
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/add", methods=["POST"])
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/edit", methods=["POST"], subdomain="<institute>"
+)
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/add", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None):
+def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not AjaxCSRFTokenForm(request.form).validate():
@@ -349,9 +364,12 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None):
 @blueprint.route(
     "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/delete", methods=["POST"]
 )
+@blueprint.route(
+    "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/delete", methods=["POST"], subdomain="<institute>"
+)
 @login_required
 @teacher_required
-def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id):
+def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
@@ -373,9 +391,10 @@ def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id):
 
 
 @blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/reorder", methods=["POST"])
+@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/reorder", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
-def reorder_lesson_qa(user, course, course_slug, lesson_id):
+def reorder_lesson_qa(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
