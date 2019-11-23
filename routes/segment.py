@@ -1,14 +1,15 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, abort
-from slugify import slugify
 from uuid import uuid4
 
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, abort
+from slugify import slugify
+
 import datamodels
-import stubs
 from dataforms import AjaxCSRFTokenForm
-from .decorators import login_required, teacher_required, enrollment_required
-from .utils import reorder_items, clone_model
-from .render_partials import render_intro, render_segment_list_element
 from enums import SegmentPermissionEnum, VideoTypeEnum
+from utils import stubs
+from .decorators import login_required, teacher_required, enrollment_required
+from .render_partials import render_intro, render_segment_list_element
+from .utils import reorder_items, clone_model
 
 blueprint = Blueprint("segment", __name__, template_folder="templates")
 

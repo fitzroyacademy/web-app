@@ -1,20 +1,21 @@
 import datetime
-from flask import Flask, render_template, request, url_for, flash, session
-from util import get_current_user
-import sass
-import datamodels
-import time
-import jinja2
-from uuid import uuid4
 from os import environ
+from uuid import uuid4
+
+import jinja2
+import sass
+from flask import Flask, render_template, request, url_for, flash
 from werkzeug.routing import BuildError
 from werkzeug.utils import import_string
+
+import commands
+import context_preprocessor
 import routes
 import routes.course
 import routes.error
-import requests
-import click
-import boto3
+from utils.base import get_current_user
+from utils.database import dump
+
 
 app = Flask('FitzroyFrontend')
 
@@ -32,7 +33,14 @@ else:
 
 app.config.from_object(cfg)
 
+# Add main routes to the app
 routes.attach(app)
+
+# Register app custom commands
+app.register_blueprint(commands.bp, cli_group='utils')
+
+# Register app context processor
+app.register_blueprint(context_preprocessor.bp)
 
 
 app.add_url_rule(app.static_url_path + '/<path:filename>',
@@ -54,55 +62,6 @@ def before_route(endpoint, values):
     if endpoint not in subdomain_endpoints and values is not None:
         values.pop('institute', None)
 
-@app.cli.command("reseed-database")
-def reseed_database():
-    import reseed
-
-@app.cli.command("test-email")
-@click.argument("email_to")
-@click.argument("email_from")
-@click.argument("subject")
-@click.argument("body")
-def test_email(email_to,email_from,subject,body):
-    send_email(email_to,email_from,subject,body)
-
-def send_email(email_to, email_from, subject, body):
-    message_data = {'from': email_from,
-       'to': email_to,
-       'subject': subject,
-       'html': body}
-    message_data = {k: v for k, v in message_data.items() if v is not None}
-
-    if not app.config.get('MAILGUN_API_URL') or not app.config.get('MAILGUN_API_KEY'):
-        app.logger.warning('No MAILGUN_API_URL or MAILGUN_API_KEY provided. Dumping email contents: {}'.format(message_data))
-        return
-    
-    response = requests.post("{}/messages".format(app.config.get('MAILGUN_API_URL')),
-    auth=requests.auth.HTTPBasicAuth("api", app.config.get('MAILGUN_API_KEY')),
-    data=message_data)
-    response.raise_for_status()
-    return response
-
-@app.cli.command("test-s3")
-@click.argument("file_name")
-def test_s3(file_name):
-    upload_to_s3(file_name)
-
-def upload_to_s3(file_name, object_name=None):
-    bucket_name = app.config.get('S3_BUCKET')
-    if object_name is None:
-        object_name = file_name
-    if bucket_name is None:
-        app.logger.warn('No S3_BUCKET specified in environment variables. File name to upload: {}'.format(object_name))
-        return True
-    s3_client = boto3.client('s3')
-    try:
-        response = s3_client.upload_file(file_name, bucket_name, object_name)
-    except ClientError as e:
-        app.logger.error(e)
-        return False
-    return True
-
 @app.route('/')
 def index():
     return routes.course.index()
@@ -110,29 +69,6 @@ def index():
 def compile_sass():
     sass.compile(dirname=("static/assets/scss", 'static/css'))
 
-@app.context_processor
-def inject_current_user():
-    return dict(current_user=get_current_user())
-
-@app.context_processor
-def inject_institute():
-    return dict(current_institute=get_institute_from_url())
-
-@app.context_processor
-def inject_resume_video():
-    segment_id = request.cookies.get('resume_segment_id', None)
-    segment = datamodels.Segment.find_by_id(segment_id)
-    place = request.cookies.get('resume_segment_place', None)
-    return dict(last_segment=segment, last_segment_place=place)
-
-@app.context_processor
-def inject_current_section():
-    app.logger.info(request.path)
-    return dict(current_section=request.path.split('/')[1])
-
-@app.context_processor
-def inject_cache_code():
-    return dict(cache_code=time.time())
 
 @jinja2.contextfunction
 def get_vars(c):
@@ -145,7 +81,7 @@ def get_vars(c):
             continue
         if k in ["config", "g", "session"]:
             continue
-        methods.append({'name': k, 'dump': datamodels.dump(v)})
+        methods.append({'name': k, 'dump': dump(v)})
     return methods
 app.jinja_env.globals.update(get_vars=get_vars)
 
@@ -238,21 +174,12 @@ def api():
     return render_template('url_fors.html', controllers=docs)
 
 
-def get_institute_from_url():
-    host_url = request.host_url.split("://")[1]
-    host = host_url.split(".") if host_url else []
-
-    subdomain = host[0] if len(host) > 2 else ""
-
-    return datamodels.Institute.find_by_slug(subdomain) if subdomain else None
-
-
 if __name__ == "__main__":
     app.logger.info("Building SASS")
     compile_sass()
 
     if app.debug:
-        from livereload import Server, shell
+        from livereload import Server
 
         def ignore_func(path):
             if path.split('.')[-1] == "sqlite":

@@ -4,6 +4,7 @@ import random
 from flask import Blueprint, render_template
 
 import datamodels
+from utils.database import dump
 
 blueprint = Blueprint("object", __name__, template_folder="templates")
 
@@ -20,8 +21,8 @@ def segment(segment_id):
         raise "Segment not found: %s".format(segment_id)
     data = {"active_segment": active_segment}
     if ext is "json":
-        dump = datamodels.dump(data["active_segment"])
-        data["active_segment"] = dump
+        dumped_data = dump(data["active_segment"])
+        data["active_segment"] = dumped_data
         return json.dumps(data)
     return render_template("partials/_active_segment.html", **data)
 

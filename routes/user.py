@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 import datamodels
 from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm
 
-from util import get_current_user
+from utils.base import get_current_user
 from .decorators import login_required
 from .utils import generate_thumbnail
 

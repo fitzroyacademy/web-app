@@ -4,7 +4,7 @@ from functools import wraps
 
 from flask import abort, session, redirect
 
-from util import get_current_user
+from utils.base import get_current_user
 
 import datamodels
 

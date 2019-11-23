@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from flask import (
     Blueprint,
     render_template,
@@ -8,15 +10,13 @@ from flask import (
     abort
 )
 from slugify import slugify
-from uuid import uuid4
 
 import datamodels
-import stubs
+from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
 from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG, VideoTypeEnum, SegmentPermissionEnum
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
-from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
-
+from utils import stubs
 from .render_partials import render_question_answer, render_teacher, render_intro
 
 blueprint = Blueprint("lesson", __name__, template_folder="templates")

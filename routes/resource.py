@@ -4,7 +4,7 @@ from slugify import slugify
 import datamodels
 from dataforms import AddResourceForm
 from enums import ResourceTypeEnum
-from util import get_current_user
+from utils.base import get_current_user
 from .decorators import login_required, teacher_required
 from .utils import reorder_items, clone_model
 

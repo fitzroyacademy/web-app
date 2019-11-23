@@ -16,49 +16,6 @@ from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum, Instit
 Base = declarative_base()
 
 
-def dump(obj, seen=None):
-    if not isinstance(obj, Base):
-        if isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], Base):
-            o = []
-            for i in obj:
-                o.append(dump(i, seen=seen))
-            return o
-        else:
-            return obj
-    seen = seen or []  # Recursion trap.
-    seen.append(id(obj))
-    ignored = ["metadata"]
-    fields = {}
-    for f in [x for x in dir(obj) if x.startswith("_") is False and x not in ignored]:
-        data = getattr(obj, f)
-        try:
-
-            json.dumps(data)
-            fields[f] = data
-        except TypeError:
-            if isinstance(data, sa.orm.query.Query):
-                fields[f[4:]] = None
-            elif isinstance(data, Base):
-                if id(data) in seen:
-                    fields[f] = None
-                else:
-                    fields[f] = dump(data, seen)
-            elif callable(data) and f.startswith("get_"):
-                _data = data()
-                if isinstance(_data, sa.orm.query.Query):
-                    fields[f[4:]] = None
-                else:
-                    fields[f[4:]] = dump(_data, seen)
-            elif isinstance(data, list):
-                fields[f] = []
-                for o in data:
-                    if id(o) in seen:
-                        fields[f].append(None)
-                    else:
-                        fields[f].append(dump(o, seen))
-    return fields
-
-
 class BaseModel(Base):
     __abstract__ = True
     _is_deleted = sa.Column(sa.Boolean, default=False)

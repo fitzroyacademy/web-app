@@ -14,7 +14,7 @@ from flask import (
     flash,
 )
 
-from util import get_current_user
+from utils.base import get_current_user
 
 import datamodels
 from dataforms import AddCourseForm, AjaxCSRFTokenForm, LoginForm, AddLessonForm

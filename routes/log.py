@@ -3,6 +3,7 @@ import json
 from flask import Blueprint, session, request
 
 import datamodels
+from utils.database import dump
 
 blueprint = Blueprint("log", __name__, template_folder="templates")
 
@@ -24,7 +25,7 @@ def add_event(event_type):
             progress = request.form["percent"]
             seg = datamodels.get_segment(segment_id)
             sup = seg.save_user_progress(user, progress)
-            return json.dumps(datamodels.dump(sup))
+            return json.dumps(dump(sup))
         else:
             sess = session.get("anon_progress", "{}")
             d = json.loads(sess)
