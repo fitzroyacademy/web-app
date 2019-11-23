@@ -115,6 +115,10 @@ def inject_current_user():
     return dict(current_user=get_current_user())
 
 @app.context_processor
+def inject_institute():
+    return dict(current_institute=get_institute_from_url())
+
+@app.context_processor
 def inject_resume_video():
     segment_id = request.cookies.get('resume_segment_id', None)
     segment = datamodels.Segment.find_by_id(segment_id)
@@ -198,17 +202,12 @@ def uuid():
     return "{}".format(uuid4().hex)
 app.jinja_env.globals.update(uuid=uuid)
 
-def get_logo(*args, **kwargs):
-    host_url = request.host_url.split("://")[1]
-    host = host_url.split(".") if host_url else []
-    if len(host) > 2:
-        subdomain = host[0]
-        institute = datamodels.Institute.find_by_slug(subdomain)
+def get_logo(institute):
 
-        if institute:
-            logo_url = institute.logo_url
-            if logo_url:
-                return '<img src="{}">'.format(logo_url)
+    if institute:
+        logo_url = institute.logo_url
+        if logo_url:
+            return '<img src="{}">'.format(logo_url)
 
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 897 1337"><path d="M896.926,417.590 L0.097,416.434 L0.056,119.532 L0.058,119.532 L0.024,119.525 L298.280,0.028 L297.542,119.532 L298.114,119.532 L298.088,119.525 L596.343,0.028 L596.792,119.532 L598.755,119.532 L598.721,119.525 L896.975,0.028 L896.926,417.590 ZM683.424,1022.533 L369.742,1023.094 L368.821,1336.982 L0.072,1335.695 L0.063,650.350 L683.424,650.350 L683.424,1022.533 ZM0.056,650.350 L0.063,650.350 L0.056,650.350 Z"></path></svg>'
 app.jinja_env.globals.update(get_logo=get_logo)
@@ -237,6 +236,16 @@ app.jinja_env.globals.update(teacher_of=teacher_of)
 def api():
     docs = routes.dump_api(app)
     return render_template('url_fors.html', controllers=docs)
+
+
+def get_institute_from_url():
+    host_url = request.host_url.split("://")[1]
+    host = host_url.split(".") if host_url else []
+
+    subdomain = host[0] if len(host) > 2 else ""
+
+    return datamodels.Institute.find_by_slug(subdomain) if subdomain else None
+
 
 if __name__ == "__main__":
     app.logger.info("Building SASS")

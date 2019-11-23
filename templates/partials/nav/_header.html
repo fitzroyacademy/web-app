@@ -83,7 +83,7 @@
     {% else %}
 
       <a href="/" class="fit_device">
-        {{ get_logo()|safe }}
+        {{ get_logo(current_institute)|safe }}
       </a>
 
       <form class="fit_form_code_head fit_fancyplace" method="post" action="{{ url_for('course.code') }}" data-fit_head_code_daddy>
