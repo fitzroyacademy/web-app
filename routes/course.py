@@ -5,7 +5,6 @@ from datetime import datetime
 from slugify import slugify
 from flask import (
     abort,
-    Blueprint,
     render_template,
     request,
     redirect,
@@ -15,6 +14,7 @@ from flask import (
 )
 
 from utils.base import get_current_user
+from routes.blueprint import SubdomainBlueprint
 
 import datamodels
 from dataforms import AddCourseForm, AjaxCSRFTokenForm, LoginForm, AddLessonForm
@@ -23,23 +23,23 @@ from routes.utils import generate_thumbnail
 
 from routes.render_partials import render_teacher
 
-blueprint = Blueprint("course", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("course", __name__, template_folder="templates")
 
 
-@blueprint.route("/")
-@blueprint.route("/", subdomain="<institute>")
+@blueprint.subdomain_route("/", methods=["GET"])
 def index(institute=""):
     """ Shows all courses the user has access to. """
     data = {
-        "public_courses": datamodels.Course.list_public_courses(institute_slug=institute),
+        "public_courses": datamodels.Course.list_public_courses(
+            institute_slug=institute
+        ),
         "form": LoginForm(),
     }
 
     return render_template("welcome.html", **data)
 
 
-@blueprint.route("/<slug>")
-@blueprint.route("/<slug>", subdomain="<institute>")
+@blueprint.subdomain_route("/<slug>")
 def view(slug, institute=""):
     """
     Retrieves and displays a course based on course slug.
@@ -52,12 +52,15 @@ def view(slug, institute=""):
     elif course.draft and len(course.lessons) == 0:
         return redirect("/course/{}/edit".format(course.slug))
 
-    return render_template("course_intro.html", course=course, form=LoginForm(),
-                           number_of_resources=course.number_of_resources)
+    return render_template(
+        "course_intro.html",
+        course=course,
+        form=LoginForm(),
+        number_of_resources=course.number_of_resources,
+    )
 
 
-@blueprint.route("/code", methods=["GET", "POST"])
-@blueprint.route("/code", methods=["GET", "POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/code", methods=["GET", "POST"])
 def code(institute=""):
     error = None
     if request.method == "POST":
@@ -72,8 +75,7 @@ def code(institute=""):
         return render_template("code.html", **data)
 
 
-@blueprint.route("/add", methods=["POST"])
-@blueprint.route("/add", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/add", methods=["POST"])
 @login_required
 def add_course(user, institute=""):  # ToDo: use Ajax
     """
@@ -116,8 +118,7 @@ def add_course(user, institute=""):  # ToDo: use Ajax
         return redirect("/", **data)
 
 
-@blueprint.route("/<course_slug>/edit", methods=["POST"])
-@blueprint.route("/<course_slug>/edit", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/edit", methods=["POST"])
 @login_required
 def edit(user, course_slug=None, institute=""):
     """
@@ -207,8 +208,7 @@ def edit(user, course_slug=None, institute=""):
     return jsonify({"success": True})
 
 
-@blueprint.route("/<course_slug>/edit", methods=["GET"])
-@blueprint.route("/<course_slug>/edit", methods=["GET"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/edit", methods=["GET"])
 @login_required
 def retrieve(user, course_slug=None, institute=""):
     """
@@ -230,14 +230,13 @@ def retrieve(user, course_slug=None, institute=""):
         "lessons": course.normal_lessons,
         "ajax_csrf_form": AjaxCSRFTokenForm(),
         "cover_image": course.cover_image_url,
-        "add_lesson_form": AddLessonForm()
+        "add_lesson_form": AddLessonForm(),
     }
 
     return render_template("course_edit.html", **data)
 
 
-@blueprint.route("/<course_slug>/delete", methods=["POST"])
-@blueprint.route("/<course_slug>/delete", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/delete", methods=["POST"])
 @login_required
 @teacher_required
 def delete(user, course, course_slug, institute=""):
@@ -246,8 +245,7 @@ def delete(user, course, course_slug, institute=""):
     return redirect("/")
 
 
-@blueprint.route("/<course_slug>/edit/slug", methods=["POST"])
-@blueprint.route("/<course_slug>/edit/slug", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/edit/slug", methods=["POST"])
 @login_required
 def change_course_slug(user, course_slug=None, institute=""):
     course = datamodels.get_course_by_slug(course_slug)
@@ -285,11 +283,8 @@ def change_course_slug(user, course_slug=None, institute=""):
     return jsonify({"redirect_url": "/course/{}/edit".format(course.slug)})
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"]
-)
-@blueprint.route(
-    "/<course_slug>/edit/remove/teacher/<int:teacher_id>", methods=["POST"], subdomain="<institute>"
 )
 @login_required
 def remove_teacher(user, course_slug=None, teacher_id=None, institute=""):
@@ -311,8 +306,7 @@ def remove_teacher(user, course_slug=None, teacher_id=None, institute=""):
     )
 
 
-@blueprint.route("/<course_slug>/edit/add/teacher", methods=["POST"])
-@blueprint.route("/<course_slug>/edit/add/teacher", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/edit/add/teacher", methods=["POST"])
 @login_required
 def add_teacher(user, course_slug=None, institute=""):
     course = datamodels.get_course_by_slug(course_slug)
@@ -351,11 +345,14 @@ def add_teacher(user, course_slug=None, institute=""):
     )
 
 
-@blueprint.route("/<course_slug>/edit/options/<option>/<on_or_off>", methods=["POST"])
-@blueprint.route("/<course_slug>/edit/options/<option>/<on_or_off>", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route(
+    "/<course_slug>/edit/options/<option>/<on_or_off>", methods=["POST"]
+)
 @login_required
 @teacher_required
-def set_options(user, course, course_slug=None, option=None, on_or_off=False, institute=""):
+def set_options(
+    user, course, course_slug=None, option=None, on_or_off=False, institute=""
+):
     """ Set course options. """
     if not course or not user.teaches(course):
         raise abort(404, "No such course or you don't have permissions to edit it")

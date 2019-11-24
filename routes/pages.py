@@ -1,19 +1,24 @@
 import re
 from glob import glob
 
-from flask import Blueprint, render_template, redirect
+from flask import render_template, redirect
 
 import datamodels
 from dataforms import LoginForm
+from .blueprint import SubdomainBlueprint
 
-blueprint = Blueprint("pages", __name__)
+blueprint = SubdomainBlueprint("pages", __name__)
 
 
-@blueprint.route("/", subdomain="<institute>")
-@blueprint.route("/")
-def index(institute=''):
+@blueprint.subdomain_route("/")
+def index(institute=""):
     """ Shows all courses the user has access to. """
-    data = {"public_courses": datamodels.Course.list_public_courses(institute_slug=institute), "form": LoginForm()}
+    data = {
+        "public_courses": datamodels.Course.list_public_courses(
+            institute_slug=institute
+        ),
+        "form": LoginForm(),
+    }
 
     return render_template("welcome.html", **data)
 
@@ -25,6 +30,7 @@ def index(institute=''):
 
 def _bind_render(s, p):
     data = {"form": None}
+
     def fun():
         return render_template("static/{}/{}.html".format(s, p), **data)
 
@@ -53,7 +59,7 @@ def attach_static_paths(app, relative_path):
     """
     paths = get_static_paths(relative_path)
     for section, pages in paths.items():
-        bp = Blueprint(section, section)
+        bp = SubdomainBlueprint(section, section)
         for page in pages:
             if page == "index":
                 path = "/{}".format(section)

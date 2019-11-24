@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, abort, flash, request, jsonify, render_template
+from flask import redirect, abort, flash, request, jsonify
 from slugify import slugify
 
 import datamodels
@@ -7,17 +7,18 @@ from enums import ResourceTypeEnum
 from utils.base import get_current_user
 from .decorators import login_required, teacher_required
 from .utils import reorder_items, clone_model
+from .blueprint import SubdomainBlueprint
 
-blueprint = Blueprint("resource", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("resource", __name__, template_folder="templates")
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/delete",
     methods=["POST"],
 )
 @login_required
 @teacher_required
-def delete_resource(user, course, course_slug, lesson_id, resource_id):
+def delete_resource(user, course, course_slug, lesson_id, resource_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
     if lesson and resource and lesson.id == resource.lesson_id:
@@ -30,28 +31,28 @@ def delete_resource(user, course, course_slug, lesson_id, resource_id):
     return jsonify({"success": False, "message": "Couldn't delete resource"}), 400
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/resources/reorder", methods=["POST"]
 )
 @login_required
 @teacher_required
-def reorder_resources(user, course, course_slug, lesson_id):
+def reorder_resources(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return "Lesson not found", 400
     return reorder_items(request, datamodels.Resource, lesson.resources)
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/edit",
     methods=["POST"],
 )
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/resources/add", methods=["POST"]
 )
 @login_required
 @teacher_required
-def add_resource(user, course, course_slug, lesson_id, resource_id=None):
+def add_resource(user, course, course_slug, lesson_id, resource_id=None, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return abort(404)
@@ -86,13 +87,13 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None):
     return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/edit",
     methods=["GET"],
 )
 @login_required
 @teacher_required
-def edit_resource(user, course, course_slug, lesson_id, resource_id):
+def edit_resource(user, course, course_slug, lesson_id, resource_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
 
@@ -105,18 +106,18 @@ def edit_resource(user, course, course_slug, lesson_id, resource_id):
                 "title": resource.title,
                 "type": resource.type.name,
                 "description": resource.description,
-                "featured": resource.featured
+                "featured": resource.featured,
             }
         )
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/resources/<int:resource_id>/copy",
     methods=["GET"],
 )
 @login_required
 @teacher_required
-def copy_resource(user, course, course_slug, lesson_id, resource_id):
+def copy_resource(user, course, course_slug, lesson_id, resource_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
 
@@ -139,8 +140,8 @@ def copy_resource(user, course, course_slug, lesson_id, resource_id):
     return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson_id))
 
 
-@blueprint.route("<resource_id>")
-def view(resource_id):
+@blueprint.subdomain_route("<resource_id>")
+def view(resource_id, institute=""):
     """
     Proxy for resource links which logs access then redirects the user.
     """

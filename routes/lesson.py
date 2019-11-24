@@ -1,25 +1,23 @@
 from uuid import uuid4
 
-from flask import (
-    Blueprint,
-    render_template,
-    request,
-    redirect,
-    jsonify,
-    flash,
-    abort
-)
+from flask import render_template, request, redirect, jsonify, flash, abort
 from slugify import slugify
 
 import datamodels
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
-from enums import ResourceTypeEnum, RESOURCE_CONTENT_IMG, VideoTypeEnum, SegmentPermissionEnum
+from enums import (
+    ResourceTypeEnum,
+    RESOURCE_CONTENT_IMG,
+    VideoTypeEnum,
+    SegmentPermissionEnum,
+)
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
 from utils import stubs
 from .render_partials import render_question_answer, render_teacher, render_intro
+from .blueprint import SubdomainBlueprint
 
-blueprint = Blueprint("lesson", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("lesson", __name__, template_folder="templates")
 
 
 @blueprint.route("/lessons")
@@ -27,16 +25,14 @@ def lessons():
     return render_template("lesson_chart.html")
 
 
-@blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/reorder", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/lessons/reorder", methods=["POST"])
 @login_required
 @teacher_required
 def reorder_lessons(user, course, course_slug=None, institute=""):
     return reorder_items(request, datamodels.Lesson, course.lessons)
 
 
-@blueprint.route("/<course_slug>/lessons/add_intro", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/add_intro", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/lessons/add_intro", methods=["POST"])
 @login_required
 @teacher_required
 def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
@@ -47,31 +43,36 @@ def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
         db = datamodels.get_session()
 
         slug = "intro-lesson"
-        if datamodels.Lesson.find_by_slug(course.slug, "intro-lesson") is not None and not intro_lesson:
+        if (
+            datamodels.Lesson.find_by_slug(course.slug, "intro-lesson") is not None
+            and not intro_lesson
+        ):
             slug = slug + "-" + str(uuid4())[:3]
         if intro_lesson:
             segment = intro_lesson.intro_segment
             segment.url = request.form["segment_url"]
             html = ""
         else:
-            intro_lesson = datamodels.Lesson(title="Intro lesson",
-                                             slug=slug,
-                                             description="Intro lesson video",
-                                             order=0,
-                                             course=course
-                                             )
+            intro_lesson = datamodels.Lesson(
+                title="Intro lesson",
+                slug=slug,
+                description="Intro lesson video",
+                order=0,
+                course=course,
+            )
 
             db.add(intro_lesson)
 
-            segment = datamodels.Segment(lesson=intro_lesson,
-                                         order=0,
-                                         type="video",
-                                         permission=SegmentPermissionEnum.normal,
-                                         video_type=VideoTypeEnum.standard,
-                                         url=request.form["segment_url"],
-                                         duration_seconds=0,
-                                         slug="intro-segment"
-                                         )
+            segment = datamodels.Segment(
+                lesson=intro_lesson,
+                order=0,
+                type="video",
+                permission=SegmentPermissionEnum.normal,
+                video_type=VideoTypeEnum.standard,
+                url=request.form["segment_url"],
+                duration_seconds=0,
+                slug="intro-segment",
+            )
             html = render_intro(segment)
 
         db.add(segment)
@@ -81,16 +82,14 @@ def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
         return jsonify({"message": "Couldn't create intro lesson"}), 400
 
 
-@blueprint.route("/<course_slug>/lessons/add", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/add", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/<course_slug>/lessons/add", methods=["POST"])
 @login_required
 @teacher_required
 def add(user, course, course_slug, lesson_id=None, institute=""):
     form = AddLessonForm(request.form)
 
     if form.validate():
-        lesson = datamodels.Lesson(course=course,
-                                   order=len(course.lessons) + 1)
+        lesson = datamodels.Lesson(course=course, order=len(course.lessons) + 1)
         lesson.title = form.title.data
         lesson.description = form.description.data
         lesson.slug = slugify(form.title.data)
@@ -107,8 +106,9 @@ def add(user, course, course_slug, lesson_id=None, institute=""):
     return redirect("/course/{}/edit".format(course.slug))
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/edit", methods=["POST"]
+)
 @login_required
 @teacher_required
 def edit(user, course, course_slug, lesson_id, institute=""):
@@ -119,17 +119,27 @@ def edit(user, course, course_slug, lesson_id, institute=""):
     if not AjaxCSRFTokenForm(request.form).validate():
         return jsonify({"success": False, "message": "CSRF token required"}), 400
 
-
     if "title" in request.form:
         slug = slugify(request.form["title"])
         if datamodels.Lesson.find_by_slug(course_slug, slug) is not None:
-            return jsonify({"success": False, "message": "Use different lesson name"}), 400
+            return (
+                jsonify({"success": False, "message": "Use different lesson name"}),
+                400,
+            )
         lesson.title = request.form["title"]
         lesson.slug = slug
     if "description" in request.form:
         lesson.description = request.form["description"]
         if 3 > len(lesson.description) > 140:
-            return jsonify({"success": False, "message": "Description should be no more than 140 characters."}), 400
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "message": "Description should be no more than 140 characters.",
+                    }
+                ),
+                400,
+            )
     if "further_reading" in request.form:
         lesson.further_reading = request.form["further_reading"]
     if "cover_image" in request.form:
@@ -143,8 +153,9 @@ def edit(user, course, course_slug, lesson_id, institute=""):
     return jsonify({"success": True})
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET"])
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET"], subdomain="<institute>")
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/edit", methods=["GET"]
+)
 @login_required
 @teacher_required
 def retrieve(user, course, course_slug, lesson_id, institute=""):
@@ -166,12 +177,12 @@ def retrieve(user, course, course_slug, lesson_id, institute=""):
         "resources": lesson.ordered_resources,
         "teachers": [
             render_teacher(obj.user, course, lesson) for obj in lesson.teachers
-            ],
+        ],
         "segments": lesson.normal_segments,
         "questions": [
             render_question_answer(course, lesson, question)
             for question in ordered_questions
-            ],
+        ],
         "resource_types": {r.name: r.value for r in ResourceTypeEnum},
         "resource_images": RESOURCE_CONTENT_IMG,
         "ajax_csrf_form": AjaxCSRFTokenForm(),
@@ -181,8 +192,9 @@ def retrieve(user, course, course_slug, lesson_id, institute=""):
     return render_template("partials/course/_lesson.html", **data)
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/delete", methods=["POST"]
+)
 @login_required
 @teacher_required
 def course_delete_lesson(user, course, course_slug, lesson_id, institute=""):
@@ -202,7 +214,7 @@ def course_delete_lesson(user, course, course_slug, lesson_id, institute=""):
     return jsonify({"success": False, "message": "Couldn't delete lesson"}), 400
 
 
-@blueprint.route("<course_slug>/<lesson_slug>", subdomain="<institute>")
+@blueprint.subdomain_route("<course_slug>/<lesson_slug>")
 @enrollment_required
 def view(course_slug, lesson_slug, institute=""):
     """
@@ -227,8 +239,9 @@ def view(course_slug, lesson_slug, institute=""):
     return render_template("course.html", **data)
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/teacher/add", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/teacher/add", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/teacher/add", methods=["POST"]
+)
 @login_required
 @teacher_required
 def add_teacher(user, course, course_slug, lesson_id, institute=""):
@@ -284,13 +297,9 @@ def add_teacher(user, course, course_slug, lesson_id, institute=""):
     )
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/teacher/<int:teacher_id>/delete",
-    methods=["POST"]
-)
-@blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/teacher/<int:teacher_id>/delete",
-    methods=["POST"], subdomain="<institute>"
+    methods=["POST"],
 )
 @login_required
 @teacher_required
@@ -310,14 +319,12 @@ def delete_teacher(user, course, course_slug, lesson_id, teacher_id, institute="
     )
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/edit", methods=["POST"]
 )
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/add", methods=["POST"])
-@blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/edit", methods=["POST"], subdomain="<institute>"
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/qa/add", methods=["POST"]
 )
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/add", methods=["POST"], subdomain="<institute>")
 @login_required
 @teacher_required
 def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""):
@@ -361,11 +368,8 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""
     return jsonify({"success": False, "message": "Error saving questions"}), 400
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/delete", methods=["POST"]
-)
-@blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/qa/<int:qa_id>/delete", methods=["POST"], subdomain="<institute>"
 )
 @login_required
 @teacher_required
@@ -390,8 +394,9 @@ def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id, institute=""):
     )
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/reorder", methods=["POST"])
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/qa/reorder", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/qa/reorder", methods=["POST"]
+)
 @login_required
 @teacher_required
 def reorder_lesson_qa(user, course, course_slug, lesson_id, institute=""):

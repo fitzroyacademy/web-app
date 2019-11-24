@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, abort
+from flask import render_template, request, jsonify, redirect, flash, abort
 from slugify import slugify
 
 import datamodels
@@ -8,19 +8,22 @@ from dataforms import AjaxCSRFTokenForm
 from enums import SegmentPermissionEnum, VideoTypeEnum
 from utils import stubs
 from .decorators import login_required, teacher_required, enrollment_required
+from .blueprint import SubdomainBlueprint
 from .render_partials import render_intro, render_segment_list_element
 from .utils import reorder_items, clone_model
 
-blueprint = Blueprint("segment", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("segment", __name__, template_folder="templates")
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>/delete",
     methods=["POST"],
 )
 @login_required
 @teacher_required
-def course_delete_segment(user, course, course_slug, lesson_id, segment_id):
+def course_delete_segment(
+    user, course, course_slug, lesson_id, segment_id, institute=""
+):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
     if segment and lesson and segment.lesson_id == lesson_id:
@@ -39,12 +42,12 @@ def course_delete_segment(user, course, course_slug, lesson_id, segment_id):
     return jsonify({"success": False, "message": "Couldn't delete segment"}), 400
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/segments/reorder", methods=["POST"]
 )
 @login_required
 @teacher_required
-def reorder_segments(user, course, course_slug, lesson_id):
+def reorder_segments(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return (
@@ -55,32 +58,36 @@ def reorder_segments(user, course, course_slug, lesson_id):
     return reorder_items(request, datamodels.Segment, lesson.segments)
 
 
-@blueprint.route("/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>",)
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>", methods=["GET"]
+)
 @login_required
 @teacher_required
-def retrieve(user, course, course_slug, lesson_id, segment_id):
+def retrieve(user, course, course_slug, lesson_id, segment_id, institute=""):
     lesson = datamodels.Lesson.find_by_id(lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
 
     if lesson and lesson.course_id == course.id and segment.lesson_id == lesson.id:
-        return jsonify({"segment_url": segment.url,
-                        "segment_type": segment.type,
-                        "video_type": segment.video_type.value if segment.video_type else "",
-                        "permission": segment.permission.value if segment.permission else "",
-                        "title": segment.title,
-                        "text": segment.text
-                        })
+        return jsonify(
+            {
+                "segment_url": segment.url,
+                "segment_type": segment.type,
+                "video_type": segment.video_type.value if segment.video_type else "",
+                "permission": segment.permission.value if segment.permission else "",
+                "title": segment.title,
+                "text": segment.text,
+            }
+        )
 
     return jsonify({"message": "Segment doesn't match a course lesson."}), 400
 
 
-@blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/segments/add/intro_video",
-    methods=["POST"],
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/segments/add/intro_video", methods=["POST"]
 )
 @login_required
 @teacher_required
-def add_edit_intro_segment(user, course, course_slug, lesson_id):
+def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
@@ -114,28 +121,33 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id):
         lesson=lesson,
         slug=slug,
         title="Intro segment",
-        text=request.form.get("text_segment_content", "Intro segment video")
+        text=request.form.get("text_segment_content", "Intro segment video"),
     )
 
     db.add(segment)
     db.commit()
 
-    return jsonify({"message": "Intro video added.",
-                    "html": render_intro(segment)
-                    })
+    return jsonify({"message": "Intro video added.", "html": render_intro(segment)})
 
 
-@blueprint.route(
-    "/<course_slug>/lessons/<int:lesson_id>/segments/add/<string:content_type>", methods=["POST"],
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/segments/add/<string:content_type>",
+    methods=["POST"],
 )
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>/edit",
     methods=["POST"],
 )
 @login_required
 @teacher_required
 def add_edit_segment(
-    user, course, course_slug, lesson_id, content_type=None, segment_id=None
+    user,
+    course,
+    course_slug,
+    lesson_id,
+    content_type=None,
+    segment_id=None,
+    institute="",
 ):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
@@ -225,11 +237,15 @@ def add_edit_segment(
             db.commit()
 
             response = {
-                "message": "Segment {} {}".format(instance.title, "edited" if editing else "added")
+                "message": "Segment {} {}".format(
+                    instance.title, "edited" if editing else "added"
+                )
             }
 
             if not editing:
-                response["html"] = render_segment_list_element(course=course, lesson=lesson, segment=instance)
+                response["html"] = render_segment_list_element(
+                    course=course, lesson=lesson, segment=instance
+                )
 
             return jsonify(response), 200
         else:
@@ -238,13 +254,13 @@ def add_edit_segment(
     return jsonify({"message": "Oh snap..."})
 
 
-@blueprint.route(
+@blueprint.subdomain_route(
     "/<course_slug>/lessons/<int:lesson_id>/segments/<int:segment_id>/copy",
     methods=["GET"],
 )
 @login_required
 @teacher_required
-def copy_segment(user, course, course_slug, lesson_id, segment_id):
+def copy_segment(user, course, course_slug, lesson_id, segment_id, institute=""):
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
 
@@ -274,9 +290,11 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id):
     return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson_id))
 
 
-@blueprint.route("<course_slug>/<lesson_slug>/<segment_slug>")
+@blueprint.subdomain_route(
+    "<course_slug>/<lesson_slug>/<segment_slug>", methods=["GET"]
+)
 @enrollment_required
-def view(course_slug, lesson_slug, segment_slug):
+def view(course_slug, lesson_slug, segment_slug, institute=""):
     """
     Retrieves and displays a particular course, with the specified lesson
     and segment set to be active.
