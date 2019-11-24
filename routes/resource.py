@@ -8,6 +8,7 @@ from utils.base import get_current_user
 from .decorators import login_required, teacher_required
 from .utils import reorder_items, clone_model
 from .blueprint import SubdomainBlueprint
+from .render_partials import render_resource_list_element
 
 blueprint = SubdomainBlueprint("resource", __name__, template_folder="templates")
 
@@ -64,6 +65,7 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None, institu
     else:
         instance = datamodels.Resource(lesson=lesson, order=len(lesson.resources) + 1)
 
+    errors = []
     form = AddResourceForm(request.form)
     if form.validate():
         instance.url = form.resource_url.data
@@ -77,14 +79,15 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None, institu
         db.add(instance)
         db.commit()
         if resource_id:
-            flash("Resource updated")
+            return jsonify({"message": "Resource updated"})
         else:
-            flash("Resource created")
+            return jsonify({"message": "Resource created",
+                            "html": render_resource_list_element(course=course, lesson=lesson, resource=instance)})
     else:
-        for error in form.errors.values():
-            flash(error)
+        errors = [error for error in form.errors.values()]
 
-    return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson.id))
+    return jsonify({"message": "There were errors when saving resource data",
+                    "errors": errors}), 400
 
 
 @blueprint.subdomain_route(

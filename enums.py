@@ -16,6 +16,7 @@ class SegmentPermissionEnum(enum.Enum):
     barrier = "barrier"  # Soft barrier Only this segment must be completed to continue (but not previous)
     hard_barrier = "hard barrier"  # Hard barrier This and every prior segment must be completed to continue
     hidden = "hidden"  # Hidden Not shown to students, visible only to teachers
+    paid = "paid"  # You shall not pass if you haven't paid
 
 
 class ResourceTypeEnum(enum.Enum):

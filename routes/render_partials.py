@@ -37,3 +37,11 @@ def render_segment_list_element(course, lesson, segment):
             "lesson": lesson}
 
     return render_template("partials/course/_list_segment_element.html", **data)
+
+
+def render_resource_list_element(course, lesson, resource):
+    data = {"resource": resource,
+            "course": course,
+            "lesson": lesson}
+
+    return render_template("partials/course/_list_resource_element.html", **data)

@@ -1236,32 +1236,62 @@ $( document ).ready(function() {
   });
 
   $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){
-    let resourceTitle = $('#resource_title');
-    let resourceDescription = $('#fit_wysiwyg_resource');
-    let resourceUrl = $('#resource_url');
-    let resourceFeatured = $('#resource_featured');
-    let form = $('#add-edit-resource');
+    let form = $('[data-fit-add-edit-resource-form ]')[0];
+    let resourceTitle = form.querySelector('[data-fit-resource-title]');
+    let resourceDescription = form.querySelector('[data-fit-wysiwyg-preview]');
+    let resourceUrl = form.querySelector('[data-fit-resource-url]');
+    let resourceFeatured = form.querySelector('[data-fit-resource-featured]');
 
-    form.attr("action", event.relatedTarget.href);
-
+    form.action = event.relatedTarget.href;
     if (event.relatedTarget.dataset['resourceId']) {
       get(event.relatedTarget.href, (responseText, xhr) => {
         if (xhr.status == 200) {
             let res = JSON.parse(xhr.response);
-            resourceTitle.val(res["title"]);
-            resourceDescription.html(res["description"]);
-            resourceUrl.val(res["url"]);
-            resourceFeatured.prop("checked", res["featured"]);
+            resourceTitle.value = res["title"];
+            resourceDescription.innerHTML = res["description"];
+            resourceUrl.value = res["url"];
+            resourceFeatured.checked = res["featured"];
             $("input[name=resource_type][value="  + res["type"] + "]").prop("checked", true);
         } else {
+          showAlertSnackbar("Failed retrieving resource data")
         }
           });
     } else {
-      resourceTitle.val("");
-      resourceDescription.html("");
-      resourceUrl.val("");
+      resourceTitle.value = "";
+      resourceDescription.innerHTML = "";
+      resourceUrl.value = "";
       $("input[name=resource_type][value=google_drawing]").prop("checked", true)
     }
+  });
+
+  delegate('[data-fit-add-edit-resource-form]', 'submit', (e, t) => {
+    e.preventDefault();
+    let form = t.closest('[data-fit-add-edit-resource-form ]');
+    let formData = new FormData(form);
+    let previewWysiwyg = form.querySelector('[data-fit-wysiwyg-preview]');
+    let data = {
+      resource_url: formData.get('resource_url'),
+      resource_title: formData.get('resource_title'),
+      resource_description: previewWysiwyg.innerHTML,
+      resource_featured: formData.get('resource_featured'),
+      resource_type: formData.get('resource_type')
+    };
+    post(form.action, data, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        if (xhr.status == 200) {
+            showAlertSnackbar(res["message"]);
+            $('[data-fit-modal-add-resource-link]').modal('hide');
+            if ("html" in res) {
+              let container = document.querySelector('[data-fit-sortable-list-resources]');
+              container.innerHTML = container.innerHTML + res['html'];
+              showAlertSnackbar(res['message'])
+            }
+        } else if (xhr.status == 400) {
+            showAlertSnackbar(res['message'])
+        } else {
+            showAlertSnackbar("Unknown error")
+        }
+    });
   });
 
   delegate('[data-confirm-delete]', 'click', (e, t) => {
