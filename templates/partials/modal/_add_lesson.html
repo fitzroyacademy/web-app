@@ -1,4 +1,4 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_lesson">
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_lesson" data-fit-modal-add-lesson>
   <form action="/course/{{ course.slug }}/lessons/add" method="post" enctype="multipart/form-data">
     {{ add_lesson_form.csrf_token }}
 

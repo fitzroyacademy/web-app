@@ -164,7 +164,7 @@
                 {% include "partials/course/_intro.html" %}
               {% endif %}
 
-              <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/reorder">
+              <div id="sortable-list" data-action-url="/course/{{ course.slug }}/lessons/reorder" data-fit-sortable-list>
                   {% for lesson in lessons %}
                   <div id="item_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
                     <div class="fit_pic vid">

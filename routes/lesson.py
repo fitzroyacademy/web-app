@@ -331,10 +331,10 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""
     lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
 
     if not AjaxCSRFTokenForm(request.form).validate():
-        return jsonify({"success": False, "message": "CSRF token required"}), 400
+        return jsonify({"message": "CSRF token required"}), 400
 
     if not lesson:
-        return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
+        return jsonify({"message": "Wrong lesson or course"}), 400
 
     form = LessonQAForm(data=request.form)
 
@@ -342,10 +342,7 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""
         # get instance of LessonQA
         qa = datamodels.LessonQA.find_by_lesson_and_id(lesson_id, qa_id)
         if qa is None and qa_id:
-            return (
-                jsonify({"success": False, "message": "Wrong question or lesson"}),
-                400,
-            )
+            return jsonify({"message": "Wrong question or lesson"}), 400
 
         if not qa:
             qa = datamodels.LessonQA(lesson=lesson, order=len(lesson.questions) + 1)
@@ -359,13 +356,12 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""
 
         return jsonify(
             {
-                "success": True,
                 "message": "Question saved",
-                "html": render_question_answer(course, lesson, qa),
+                "html": render_question_answer(course, lesson, qa)
             }
         )
 
-    return jsonify({"success": False, "message": "Error saving questions"}), 400
+    return jsonify({"message": "Error saving questions"}), 400
 
 
 @blueprint.subdomain_route(

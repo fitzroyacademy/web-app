@@ -910,10 +910,11 @@ $( document ).ready(function() {
     post(e.target.form.action, formData)
   });
 
-  delegate('#further_reading', 'change', (e, t) => {
-    console.log('Magic should happen here');
-
-  });
+  // DEV: make it work
+  // delegate('#further_reading', 'change', (e, t) => {
+  //   console.log('Magic should happen here');
+  //
+  // });
 
   delegate('input[data-course-edit],input[data-fit-lesson-edit],' +
       'input[data-institute-edit],input[data-fit-user-edit]', 'change', (e, t) => {
@@ -1070,18 +1071,19 @@ $( document ).ready(function() {
     e.preventDefault();
     let slug = t.dataset.courseSlug;
     let lessonId = t.dataset.lessonId;
-    let question = document.querySelector('#lesson-question');
-    let answer = document.querySelector('#lesson-question-answer');
-    let url = "";
-
-    url = `/course/${slug}/lessons/${lessonId}/qa/add`;
+    let question = document.querySelector('[data-fit-lesson-question]');
+    let answer = document.querySelector('[data-fit-lesson-question-answer]');
+    let url = `/course/${slug}/lessons/${lessonId}/qa/add`;
 
     post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
         if (xhr.status == 400) {
-            // DEV: handle wrong action
+            showAlertSnackbar(responseJSON['message'])
+        } else if (xhr.status == 200) {
+            $('[data-fit-sortable-list-questions]').append(responseJSON['html']);
+            showAlertSnackbar(responseJSON['message'])
         } else {
-            $('#sortable-list-questions').append(responseJSON['html']);
+          showAlertSnackbar("Unknown error")
         }
     });
   });
@@ -1091,44 +1093,45 @@ $( document ).ready(function() {
     let slug = t.dataset.courseSlug;
     let lessonId = t.dataset.lessonId;
     let qaId = t.dataset.questionId;
-    let question = document.querySelector(`#lesson-question-${qaId}`);
-    let answer = document.querySelector(`#lesson-answer-${qaId}`);
+    let container = t.closest('[data-fit-qa-container]');
+    let question = container.querySelector('input');
+    let answer = container.querySelector("textarea");
     let url = `/course/${slug}/lessons/${lessonId}/qa/${qaId}/edit`;
 
     post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
-        if (xhr.status == 400) {
-            // DEV: handle wrong action
+        if (xhr.status == 400 || xhr.status == 200) {
+            showAlertSnackbar(responseJSON['message'])
         } else {
-            // DEV: handle success. Some nice story for a user
+            showAlertSnackbar("Unknown error")
         }
     });
   });
 
   $('#fit_modal_delete').on('show.bs.modal', function(event){
-    document.querySelector('#confirm-delete').href = event.relatedTarget.href;
+    document.querySelector('[data-confirm-delete]').href = event.relatedTarget.href;
   });
 
   delegate('[data-fit-add-lesson]', 'click', (e, t) => {
-    $('#fit_modal_add_lesson_choice').modal('hide');
-    $('#fit_modal_add_lesson').modal('show');
+    $('[data-fit-add-lesson-choice]').modal('hide');
+    $('[data-fit-modal-add-lesson]').modal('show');
   });
 
   delegate('[data-fit-add-edit-segment]', 'click', (e, t) => {
-      $('#fit_modal_add_segment').modal('hide');
+      $('[data-fit-modal-add-segment]').modal('hide');
       let segmentType = t.dataset['fitSegmentType'];
       let modalObj = null;
       if (segmentType == 'text') {
-          modalObj = $('#fit_modal_add_text_segment');
-          modalObj[0].querySelector('#segment_name').value = "";
-          modalObj[0].querySelector('#fit_wysiwyg_editor').innerHTML = "";
+          modalObj = $('[data-fit-add-text-segment-modal]');
+          modalObj[0].querySelector('[data-fit-segment-name]').value = "";
+          modalObj[0].querySelector('[data-fit-wysiwyg-preview]').innerHTML = "";
           modalObj.modal('show');
       } else {
-          modalObj = $('#fit_modal_add_video_segment');
-          modalObj[0].querySelector('#segment_name').value = "";
-          modalObj[0].querySelector('#segment_url').value = "";
-          modalObj[0].querySelector('#standard').checked = true;
-          modalObj[0].querySelector('#normal').checked = true;
+          modalObj = $('[data-fit-add-video-segment-modal]');
+          modalObj[0].querySelector('[data-fit-segment-name]').value = "";
+          modalObj[0].querySelector('[data-fit-segment-url]').value = "";
+          modalObj[0].querySelector('[data-fit-segment-standard]').checked = true;
+          modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
           modalObj.modal('show');
       }
       modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
@@ -1154,7 +1157,7 @@ $( document ).ready(function() {
             }
     });
 
-  })
+  });
 
   delegate('[data-fit-segment-add-edit-submit]', 'click', (e, t) => {
     e.preventDefault();
@@ -1194,7 +1197,7 @@ $( document ).ready(function() {
           $('[data-fit-add-edit-segment-modal]').modal('hide');
 
           if ("html" in res) {
-            let container = document.querySelector('#sortable-list');
+            let container = document.querySelector('[data-fit-sortable-list]');
             container.innerHTML = container.innerHTML + res['html'];
           }
         } else {
@@ -1290,8 +1293,7 @@ $( document ).ready(function() {
     let p = t.closest('[data-fit-wysiwyg]');
     let preview = p.querySelector('[data-fit-wysiwyg-preview]');
     let textarea = p.querySelector('textarea');
-    let mysave = preview.innerHTML;
-    textarea.value = mysave;
+    textarea.value = preview.innerHTML;
   });
 
 /* Image upload widget code. */

@@ -70,7 +70,7 @@
             {% endif %}
 
             <!-- DEV: Put user-added lessons here -->
-            <div id="sortable-list" data-course-slug="{{ course.slug }}">
+            <div id="sortable-list" data-course-slug="{{ course.slug }}" data-fit-sortable-list>
                 {% for lesson in lessons %}
                 <div id="lesson_{{ lesson.id }}" class="fit_btn" data-list-el-id="{{ lesson.id }}">
                   <div class="fit_pic vid">

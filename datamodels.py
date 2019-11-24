@@ -701,7 +701,7 @@ class Lesson(OrderedBase):
     @property
     def thumbnail(self):
         if self.cover_image:
-            return self.cover_image
+            return self.cover_image_url
         elif self.segments:
             return self.segments[0].thumbnail
         return ""
