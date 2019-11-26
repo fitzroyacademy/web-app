@@ -34,7 +34,7 @@
         </a>
 
         <a class="fit_btn_saver">
-          <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save <span class="d-none d-sm-inline-block">changes</span></span></span>
+          <!-- <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save <span class="d-none d-sm-inline-block">changes</span></span></span> -->
           <span class="fit_btn saved"><i class="fal fa-check-circle"></i><span class="fit_txt">Saved</span></span>
           <span class="fit_btn saving"><i class="fas fa-spin fa-spinner-third"></i><span class="fit_txt">Saving...</span></span>
           <span class="fit_btn error"><i class="fas fa-exclamation-square"></i><span class="fit_txt">Error! Try again?</span></span>
@@ -42,7 +42,7 @@
       </div>
 
     <!-- Course > lesson -->
-    {% elif url_is('lesson.course_add_edit_lesson') %}
+    {% elif url_is('lesson.retrieve') %}
       <div class="left">
         <a href="/course/{{ course.slug }}/edit" class="fit_btn"> 
           <i class="fal fa-arrow-left"></i>
@@ -121,7 +121,7 @@
     <!-- Right hand side logic -->
     <!-- ---------------------------------------------------------------- -->
 
-    {% if url_is('course.view', 'lesson.view', 'segment.view', 'course.retrieve', 'lesson.course_add_edit_lesson', 'segment.add_edit_segment') %}
+    {% if url_is('course.view', 'lesson.view', 'segment.view', 'course.retrieve', 'lesson.retrieve', 'segment.add_edit_segment') %}
 
       <div class="right">
 

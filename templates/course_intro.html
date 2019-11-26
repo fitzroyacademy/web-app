@@ -83,15 +83,15 @@
 
                   {% if not course.paid %}
                     <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
-                      <h4>Free course!</h4>
-                      <p>Sign up for free to enrol.</p>
-                    </div>
+                    <h4>Free course!</h4>
+                    <p>Sign up for free to enrol.</p>
+
 
                   {% elif course.paid %}
                     <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Pay with card.</a>
-                      <h4>${{ course.amount }} USD</h4>
-                      <p>Use your card to continue.</p>
-                    </div>
+                    <h4>${{ course.amount }} USD</h4>
+                    <p>Use your card to continue.</p>
+
 
                   {% endif %}
 
@@ -108,15 +108,14 @@
 
               {% elif not course.paid %}
                 <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
-                  <h4>Free course!</h4>
-                  <p>Sign up for free to enrol.  🥰</p>
-                </div>
+                <h4>Free course!</h4>
+                <p>Sign up for free to enrol.  🥰</p>
+
 
               {% elif course.paid %}
                 <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
-                  <h4>${{ course.amount }} USD</h4>
-                  <p>Sign up to pay.</p>
-                </div>
+                <h4>${{ course.amount }} USD</h4>
+                <p>Sign up to pay.</p>
 
 
               {% endif %}              
