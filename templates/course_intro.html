@@ -34,29 +34,95 @@
       <div class="fit_seduce">
         <div class="row">
           <div class="col-sm-4">
-            <i class="fal big fa-film green"></i>
-            <h4>{{ course.workload_title|default("") }}</h4>
-            <p>{{ course.workload_subtitle|default("") }}</p>
+            <i class="fal big fa-clock green"></i>
+            <h4>{{ course.workload_title|default("Learn online!") }}</h4>
+            <p>{{ course.workload_subtitle|default("At your own pace") }}</p>
           </div>
           <div class="col-sm-4">
             <i class="fal big fa-file-alt blue"></i>
-            <h4>{{ number_of_resources }} resources.</h4>
+            <h4>{{ number_of_resources }}+ resources.</h4>
             <p>Purpose-built templates and links that you can use forever.</p>
           </div>
           <div class="col-sm-4">
 
+            <!-- 
+              
+              Hot damn this is confusing, psuedocode first:
+
+              Registered:
+                + enrolled or teacher
+                  = continue
+                + not enrolled
+                  + free course
+                    = start course for free
+                  + paid course
+                    = pay
+
+              !Registered:
+                + anon access
+                  = start course
+                + paid course
+                    = sign up
+                + free course
+                    = sign up
+
+             -->
+
+
+            <!-- signed up -->
             {% if current_user %}
-              {% if current_user.enrolled(course) or current_user.teaches(course) %}
-                <a href="#" class="btn btn-block btn-lg btn-primary">Keep learning</a>
-              {% else %}
-                <a href="#" class="btn btn-block btn-lg btn-watermelon">Enroll for free</a>
-              {% endif %}
+
+                <!-- enrolled -->
+                {% if current_user.enrolled(course) or current_user.teaches(course) %}
+                  <a href="{{ course.lessons[0].permalink }}" class="btn btn-block btn-lg btn-watermelon">Keep learning</a>
+                  <h4>You're enrolled!</h4>
+                  <p>Keep up the great work. 🥰</p>
+
+                <!-- not enrolled -->
+                {% else %}
+
+                  {% if not course.paid %}
+                    <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
+                      <h4>Free course!</h4>
+                      <p>Sign up for free to enrol.</p>
+                    </div>
+
+                  {% elif course.paid %}
+                    <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Pay with card.</a>
+                      <h4>${{ course.amount }} USD</h4>
+                      <p>Use your card to continue.</p>
+                    </div>
+
+                  {% endif %}
+
+                {% endif %}
+
+
+            <!-- no user -->
             {% else %}
-              <a href="#" class="btn btn-block btn-lg btn-watermelon">Enroll for free</a>
+
+              {% if course.guest_access %}
+                <a href="{{ course.lessons[0].permalink }}" class="btn btn-block btn-lg btn-watermelon">Start course</a>
+                <h4>Free course!</h4>
+                <p>No need to make an account.  🥰</p>
+
+              {% elif not course.paid %}
+                <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
+                  <h4>Free course!</h4>
+                  <p>Sign up for free to enrol.  🥰</p>
+                </div>
+
+              {% elif course.paid %}
+                <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
+                  <h4>${{ course.amount }} USD</h4>
+                  <p>Sign up to pay.</p>
+                </div>
+
+
+              {% endif %}              
+
             {% endif %}
 
-            <h4>Free forever!</h4>
-            <p>This one is on us. 🥰</p>
           </div>
         </div>
       </div>
@@ -77,7 +143,7 @@
               <dt><i class="far fa-clock"></i> Course length &amp; workload:</dt>
               <dd>{{ course.workload_summary|default("") }}</dd>
               <dt><i class="far fa-tag"></i> Cost:</dt>
-              <dd>Free forever!</dd> <!-- DEV: select from (free | paid | funded) -->
+              <dd>Free course!</dd> <!-- DEV: select from (free | paid | funded) -->
               {% if course.skill_level %}
                 <dt><i class="far fa-university"></i> Skill:</dt>
                 <dd>{{ course.skill_level }}</dd>
@@ -125,17 +191,19 @@
         <p class="fit_cta_tnc">You need to make a free account to continue.</p>
       </div>
     </div>
+
   {% elif not course.paid and course.visibility == "public" %}
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
         <form method="post" action="/enroll/{{ course.slug }}">
-          <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start the course
+          <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Pay with credit card
           </button>
-          <p class="fit_cta_tnc">This course is <a href="/product/pricing">completely free</a> forever!</p>
+          <p class="fit_cta_tnc">This is a paid course.</p>
         </form>
       </div>
     </div>
+
   {% elif not course.paid and course.visibility == "code" %}
     <div class="fit_cta">
       <div class="fit_course">
@@ -155,6 +223,7 @@
   {#
 
       <!-- DEV: this version is for a course that requires explicit user invites from the teacher. Not used yet! -->
+
       <div class="fit_cta">
         <div class="fit_course">
           <h3>Ready to begin?</h3>

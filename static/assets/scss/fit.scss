@@ -130,6 +130,7 @@ footer{z-index: 1500;}
 .fit_survey{z-index: 2200;}
 
 
+
 .fit_medium_rare{z-index: 2000;}
 .fit_medium_rare .fit_rare{z-index: 2100;}
 .fit_medium_rare .fit_medium{z-index: 2200;}
@@ -142,6 +143,13 @@ footer{z-index: 1500;}
 
 .fit_fancyplace.labelled label,
 .fit_wysiwyg label{z-index: 2350;}
+
+
+// cropping
+.fit_cropper .fa-user{z-index: 2400;}
+.fit_cropper .placeholder{z-index: 2410;}
+.fit_cropper .fit_upload_dropzone{z-index: 2430;}
+
 
 
 header{z-index: 3000;}
@@ -1096,8 +1104,12 @@ Bleh:;
 	}
 }
 
-.fit_cropper .fit_upload_dropzone i{position: absolute; top:0; right:0; font-size:1.5rem; padding: 1rem; background: rgba(0,0,0,0.1); border-bottom-left-radius: $border_rad_lg;}
-.fit_cropper .fit_upload_dropzone:hover i{background: $blue;}
+.fit_cropper{background: $bg;}
+.fit_pane .fit_cropper{background: #fff;}
+.fit_cropper .fit_upload_dropzone .fa-upload{position: absolute; top:0; right:0; font-size:1.5rem; padding: 1rem; background: rgba(0,0,0,0.1); border-bottom-left-radius: $border_rad_lg;}
+.fit_cropper .fit_upload_dropzone:hover .fa-upload{background: $blue;}
+
+.fit_cropper .fa-user{font-size: 5rem; position: absolute; top:50%; left: 50%; margin: -2.5rem 0 0 -2.5rem; color:$text_lightest;}
 
 .fit_cropper input[type="file"]{display: none;}
 
@@ -1105,7 +1117,7 @@ Bleh:;
 
 // Square upload thing
 .fit_squarelogo{margin-bottom: 1rem; width: 300px; height: 300px; border:1px solid $border_light; border-radius: $border_rad_lg; position: relative; overflow: hidden;}
-.fit_squarelogo img{max-width: 100%; border-radius: $border_rad_lg;}
+.fit_squarelogo img{max-width: 100%; border-radius: $border_rad_lg; position: relative;}
 
 .fit_cta{background: $watermelon; padding: 2rem 0 5rem; margin-top: 3rem;}
 .fit_cta .fit_course h3{color: #fff;}
@@ -1138,11 +1150,16 @@ Bleh:;
 
 .fit_avatared{position: relative; padding-left: 4rem;}
 .fit_avatar,
-.fit_avatar img{width: 2.5rem; height: 2.5rem; border-radius: 999rem; overflow: hidden; position: absolute; top:0; left: 0;}
+.fit_avatar img{width: 2.5rem; height: 2.5rem; border-radius: 999rem; overflow: hidden; position: absolute; top:0; left: 0; background: $bg_dark; display: flex; align-items:center; justify-content: center;}
 .fit_avatar{top:1rem;}
 
+h1.fit_avatared,
 h2.fit_avatared{padding-left: 3.5rem;}
+h1.fit_avatared .fit_avatar img,
 h2.fit_avatared .fit_avatar img{width:2.5rem; height: 2.5rem;}
+
+h1.fit_avatared .fit_avatar .fa-user,
+h2.fit_avatared .fit_avatar .fa-user{font-size: 1.3rem; color:#fff;}
 
 // edit form
 form.fit_user_edit{max-width: 30rem;}

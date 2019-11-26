@@ -23,9 +23,14 @@
 
     	<h1 class="fit_avatared">
     		<a href="{{ current_user.profile_picture_url }}" target="_blank" class="fit_avatar">
-    			<img src="{{ current_user.profile_picture_url }}" alt="user">
+          {% if current_user.profile_picture %}
+    		    <img src="{{ current_user.profile_picture_url }}" alt="user">
+          {% else %}
+            <i class="fas fa-user"></i>
+          {% endif %}
     		</a>
     		<span class="fit_txt">{{ current_user.full_name }}.</span>
+
     	</h1> 
 
     	{% include 'partials/form/_errors.html' %}
@@ -66,6 +71,7 @@
 		                <img src="{{ current_user.profile_picture_url }}" alt="user">
 		              {% else %}
 		                <img class="placeholder" src="/static/assets/images/defaults/spacer.gif" alt="spacer">
+                    <i class="fal fa-user"></i>
 		              {% endif %}
 		              <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone><i class="fas fa-upload"></i></a>
 		                <input id="profile_picture" name="profile_picture" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input>
