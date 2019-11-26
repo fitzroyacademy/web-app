@@ -540,6 +540,12 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn > .fit_txt:first-child{padding-left: 1.5rem;}
 .fit_btn > .fit_txt:last-child{padding-right: 1.5rem;}
 
+
+// let's do weird limited ones
+.fit_btn.widthlimit .fit_txt{max-width: 10rem; overflow: hidden;}
+.fit_btn.widthlimit .fit_txt:before{content: ''; background: linear-gradient(270deg, #fff, rgba(255,0,255,0)); display: block; position: absolute; top:0; bottom:0; right: 0; width: 3rem;}
+
+
 // BIG mode for large buttons!
 .fit_btn_lg{font-size: 1.5rem;}
 .fit_btn_lg > .fit_txt{font-size: 1.4rem;}
@@ -851,8 +857,8 @@ header .fit_btn:first-child{margin-left: -1rem;}
 	.fit_vidya_shrink:hover{background: $black_50; color:#fff; transform: scale(1.1); }
 
 	// squish!
-	.fit_vidya.squished.squished .fit_vidya_shrink .fa-expand-alt{opacity: 1;}
-	.fit_vidya.squished.squished .fit_vidya_shrink .fa-compress-alt{opacity: 0;}
+	.fit_vidya.squished .fit_vidya_shrink .fa-expand-alt{opacity: 1;}
+	.fit_vidya.squished .fit_vidya_shrink .fa-compress-alt{opacity: 0;}
 }
 
 // ---------------------------------------------------------------------------------
@@ -2352,9 +2358,9 @@ html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 // spinny saver button
 .fit_btn_saver > i{animation-duration: 1s;}
 .fit_btn_saver > *{display: none;}
-.fit_btn_saver > .save{display: flex;}
-.fit_btn_saver > .saved{}
+.fit_btn_saver > .saved{display: flex;}
 .fit_btn_saver > .saving{}
+.fit_btn_saver > .error{}
 
 html.loading_spinner .fit_btn_saver > span{display: none;}
 html.loading_spinner .fit_btn_saver > .saving{display: flex;}
@@ -2362,8 +2368,12 @@ html.loading_spinner .fit_btn_saver > .saving{display: flex;}
 html.loading_check .fit_btn_saver > span{display: none;}
 html.loading_check .fit_btn_saver > .saved{display: flex;}
 
+html.loading_error .fit_btn_saver > span{display: none;}
+html.loading_error .fit_btn_saver > .error{display: flex;}
+
 header .fit_btn_saver .error{color: $red;}
-header .fit_btn_saver .saved{color: $new_green;}
+header .fit_btn_saver .saving{color: $new_green;}
+header .fit_btn_saver .saved{color: $text_light;}
 
 // ------------------------------------------------------------------------------------
 // Edit FAQs
@@ -2387,9 +2397,16 @@ header .fit_btn_saver .saved{color: $new_green;}
 .fit_radio_icons{}
 .fit_radio_icons.columned{column-count:2;}
 
+.fit_radio_icons.columned > * {
+	-webkit-column-break-inside: avoid;
+	          page-break-inside: avoid;
+	               break-inside: avoid;
+}
+
 .fit_radio_icons input[type="radio"] {visibility: hidden; position: absolute; top:0; left: 0;}
 .fit_radio_icons label {padding: 0 0 .75rem 1.5rem; display: block; cursor: pointer; color:$text_lighter; font-weight: normal;}
-.fit_radio_icons label > i{font-size: 1.4rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
+.fit_radio_icons label:hover{color:$text;}
+.fit_radio_icons label > i{font-size: 1.3rem; position: absolute; top:.25rem; left: 0; width: 2rem; text-align: center;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
 .fit_radio_icons input:checked + label{color: $brand;}

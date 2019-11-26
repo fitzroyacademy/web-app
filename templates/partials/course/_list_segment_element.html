@@ -3,10 +3,10 @@
         <img src="{{ segment.thumbnail }}" alt="course">
     </div>
     <a class="fit_txt"
-       href="#"
        data-toggle="modal"
        data-target="#fit_modal_add_{{ segment.type }}_segment"
-       data-fit-segment-id="{{ segment.id }}">{{ segment.title }}</a>
+       data-fit-segment-id="{{ segment.id }}"
+       href="#">{{ segment.title }}</a>
 
     <div class="sub buttonset">
         <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>

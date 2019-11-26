@@ -34,7 +34,6 @@
         </a>
 
         <a class="fit_btn_saver">
-          <!-- <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save <span class="d-none d-sm-inline-block">changes</span></span></span> -->
           <span class="fit_btn saved"><i class="fal fa-check-circle"></i><span class="fit_txt">Saved</span></span>
           <span class="fit_btn saving"><i class="fas fa-spin fa-spinner-third"></i><span class="fit_txt">Saving...</span></span>
           <span class="fit_btn error"><i class="fas fa-exclamation-square"></i><span class="fit_txt">Error! Try again?</span></span>
@@ -44,9 +43,9 @@
     <!-- Course > lesson -->
     {% elif url_is('lesson.retrieve') %}
       <div class="left">
-        <a href="/course/{{ course.slug }}/edit" class="fit_btn"> 
+        <a href="/course/{{ course.slug }}/edit" class="fit_btn widthlimit"> 
           <i class="fal fa-arrow-left"></i>
-          <span class="fit_txt">Course</span>
+          <span class="fit_txt">{{ course.title }}</span>
         </a>
 
         {% if lesson %}
@@ -57,7 +56,6 @@
         {% endif %}
 
         <a class="fit_btn_saver" data-fit-save-lesson-changes>
-          <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save changes</span></span>
           <span class="fit_btn saved"><i class="fal fa-check-circle"></i><span class="fit_txt">Saved</span></span>
           <span class="fit_btn saving"><i class="fas fa-spin fa-spinner-third"></i><span class="fit_txt">Saving...</span></span>
           <span class="fit_btn error"><i class="fas fa-exclamation-square"></i><span class="fit_txt">Error! Try again?</span></span>
@@ -67,13 +65,12 @@
     <!-- Course > lesson > segment -->
     {% elif url_is('segment.add_edit_segment') %}
       <div class="left">
-        <a href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit" class="fit_btn"> 
+        <a href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit" class="fit_btn widthlimit">
           <i class="fal fa-arrow-left"></i>
           <span class="fit_txt">{{ lesson.title }}</span>
         </a>
 
         <a class="fit_btn_saver">
-          <span class="fit_btn save"><i class="fal fa-check"></i><span class="fit_txt" data-snackbar-alert="you're amazing, saved baby.">Save changes</span></span>
           <span class="fit_btn saved"><i class="fal fa-check-circle"></i><span class="fit_txt">Saved</span></span>
           <span class="fit_btn saving"><i class="fas fa-spin fa-spinner-third"></i><span class="fit_txt">Saving...</span></span>
           <span class="fit_btn error"><i class="fas fa-exclamation-square"></i><span class="fit_txt">Error! Try again?</span></span>

@@ -115,7 +115,7 @@
               {% if not introduction %}
               <a class="fit_btn solid secondary add-segment"
                 href="#"
-                 data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
+                data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
                 <i class="fas fa-plus"></i>
                 <span class="fit_txt">Add an intro video</span>
               </a>
@@ -136,7 +136,7 @@
                      data-fit-lesson-id="{{ lesson.id }}"
                      data-fit-sortable-list>
                     {% for segment in segments %}
-                        {% include "partials/course/_list_segment_element.html" %}
+                      {% include "partials/course/_list_segment_element.html" %}
                     {% endfor %}
                 </div>
               </div>
