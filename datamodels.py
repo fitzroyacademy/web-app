@@ -422,9 +422,7 @@ class Course(BaseModel):
                                sa.and_(cls.visibility == "institute", cls.institute == institute))
         return (
             cls.objects()
-            .filter(
-                cls.guest_access == True, query, cls.draft == False
-            )
+            .filter(query, cls.draft == False)
             .all()
         )
 
