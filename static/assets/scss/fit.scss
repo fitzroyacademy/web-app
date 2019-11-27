@@ -543,7 +543,7 @@ header .fit_btn:hover > .fit_txt:after,
 
 // let's do weird limited ones
 .fit_btn.widthlimit .fit_txt{max-width: 10rem; overflow: hidden;}
-.fit_btn.widthlimit .fit_txt:before{content: ''; background: linear-gradient(270deg, #fff, rgba(255,0,255,0)); display: block; position: absolute; top:0; bottom:0; right: 0; width: 3rem;}
+.fit_btn.widthlimit .fit_txt:before{content: ''; background: linear-gradient(270deg, #fff, rgba(255,0,255,0)); display: block; position: absolute; top:0; bottom:0; right: 0; width: 3rem; border-right:1.5rem solid #fff;}
 
 
 // BIG mode for large buttons!
