@@ -78,11 +78,12 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None, institu
         db = datamodels.get_session()
         db.add(instance)
         db.commit()
-        if resource_id:
-            return jsonify({"message": "Resource updated"})
-        else:
-            return jsonify({"message": "Resource created",
-                            "html": render_resource_list_element(course=course, lesson=lesson, resource=instance)})
+
+        return jsonify({
+            "html": render_resource_list_element(course=course, lesson=lesson, resource=instance),
+            "message": "Resource updated" if resource_id else "Resource created",
+            "id": instance.id
+        })
     else:
         errors = [error for error in form.errors.values()]
 
