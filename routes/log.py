@@ -29,7 +29,8 @@ def add_event(event_type):
               'segment_id': segment_id,
               'user_id': user_id,
               'user_status': seg.user_status(user),
-              'unlocks': None
+              'unlocks': None,
+              'progress': seg.user_progress(user)
             }
             n = seg.next
             if n and n.locked and n.prereqs_met(user) is True:
@@ -41,10 +42,12 @@ def add_event(event_type):
             if segment_id not in d or d[segment_id] < progress:
                 d[segment_id] = progress
             session["anon_progress"] = json.dumps(d)
+            seg = datamodels.get_segment(segment_id)
             d = {
               'segment_id': segment_id,
               'user_status': seg.user_status(user=None, progress=progress),
-              'unlocks': None
+              'unlocks': None,
+              'progress': progress
             }
             n = seg.next
             if n and n.locked and n.prereqs_met(None, progress=progress) is True:
