@@ -43,7 +43,6 @@ def add_event(event_type):
             session["anon_progress"] = json.dumps(d)
             d = {
               'segment_id': segment_id,
-              'user_id': user_id,
               'user_status': seg.user_status(user=None, progress=progress),
               'unlocks': None
             }
