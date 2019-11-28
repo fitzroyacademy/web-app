@@ -1,7 +1,16 @@
 {% macro link_to(endpoint, title) -%}
-    <a href="{{ url_for(endpoint) }}" class="{{ 'active' if url_is(endpoint) }}">{{ title }}</a>
+  <a href="{{ url_for(endpoint) }}" class="{{ 'active' if url_is(endpoint) }}">{{ title }}</a>
 {%- endmacro %}
 
 {% macro active_link(endpoint) -%}
-	{{ 'active' if url_is(endpoint) }}
+  {{ 'active' if url_is(endpoint) }}
 {%- endmacro %}
+
+{% macro wysiwyg(name, content="", buttons=[]) %}
+<div class="fit_wysiwyg" data-fit-wysiwyg data-fit-wysiwyg-buttons="{{ buttons|join(' ') }}">
+  <div data-fit-wysiwyg-preview="{{ name }}">
+    {% if content %}{{ content|safe }}{% endif %}
+  </div>
+  <textarea data-fit-wysiwyg-raw name="{{ name }}" style="display: none"></textarea>
+</div>
+{% endmacro %}

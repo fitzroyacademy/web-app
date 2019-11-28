@@ -112,10 +112,9 @@
               <dt><i class="far fa-info-square"></i> What you&rsquo;ll learn</dt>
               <dd>
                 <div class="form-group">
-                  <div class="fit_wysiwyg">
-                    <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if course.summary_html %}{{ course.summary_html|safe }}{% endif %}</div>
-                  </div>
-                  <textarea id="course_summary" name="course_summary" style="display: none"></textarea>
+                  <form>
+                  {{ wysiwyg('course_summary', course.summary_html) }}
+                  </form>
                 </div>
               </dd>
               

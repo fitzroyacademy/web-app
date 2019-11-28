@@ -717,10 +717,13 @@ $( document ).ready(function() {
       }
     };
     xhr.open('POST', url);
-    let f = new FormData();
-    for (let k in data) f.append(k, data[k]);
+    let f = data;
+    if (!(data instanceof FormData)) {
+      f = new FormData();
+      for (let k in data) f.append(k, data[k]);
+    }
     if (typeof csrf_token !== 'undefined' && csrf_token) {
-      f.append("csrf_token", csrf_token)
+      f.append("csrf_token", csrf_token);
     };
     xhr.send(f);
   }
@@ -1209,7 +1212,6 @@ $( document ).ready(function() {
       "text_segment_content": description,
       "video_types": formData.get("video_types"),
       "permissions": formData.get("permissions")
-
     };
 
     post(url, data, (responseText, xhr) => {
@@ -1335,22 +1337,34 @@ $( document ).ready(function() {
   // ------------------------------------------------------------
   // medium wysiwyg edito stuff
 
-  let autolist = new AutoList();
-  let fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
-      buttonLabels: 'fontawesome',
-      extensions: {
-          'autolist': autolist
-      }, 
-      toolbar: {
-          buttons: ['h2', 'h3', 'bold', 'anchor', 'quote', 'unorderedlist','orderedlist']
-      }
-  });
 
   delegate('[data-fit-wysiwyg]', 'submit', (e,t) => {
     let p = t.closest('[data-fit-wysiwyg]');
     let preview = p.querySelector('[data-fit-wysiwyg-preview]');
     let textarea = p.querySelector('textarea');
     textarea.value = preview.innerHTML;
+  });
+
+  delegate("[data-fit-wysiwyg-preview]", 'click', (e, t) => {
+    let form = t.closest('form');
+    let p = t.closest('[data-fit-wysiwyg]');
+    if (p.fit_editor) return;
+    // Initialize the editor.
+    let autolist = new AutoList();
+    let preview  = p.querySelector('[data-fit-wysiwyg-preview]');
+    let textarea  = p.querySelector('[data-fit-wysiwyg-raw]');
+    let buttons = (p.dataset.fitWysiwygButtons || "").trim();
+    let toolbar = (buttons) ? {buttons: buttons.split(/\s/)} : null;
+    let editor = new MediumEditor(preview, {
+      buttonLabels: 'fontawesome',
+      extensions: {'autolist': autolist },
+      toolbar: toolbar
+    });
+    editor.subscribe('editableInput', () => {
+      textarea.textContent = preview.innerHTML;
+      post(form.action, new FormData(form));
+    });
+    p.fit_editor = editor;
   });
 
 /* Image upload widget code. */
