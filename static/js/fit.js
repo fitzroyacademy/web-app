@@ -752,9 +752,13 @@ $( document ).ready(function() {
     nextSegment(true);  // Autoplay next, stop at lesson end.
   }
 
+  let _lastRecordedPercent = 0;
   function handleVideoProgress(percent, lastPercent) {
-    let id = _fitz_video.data.media.hashedId;
     percent = Math.floor(percent*100);  // Avoid floating point hassles.
+    // Don't choke the server with minute progress changes.
+    if (percent - _lastRecordedPercent <= 1) return;
+    _lastRecordedPercent = percent;
+    let id = _fitz_video.data.media.hashedId;
     let active_segments = document.querySelectorAll('[data-fit-segment].active');
     let segment_id = active_segments[0].dataset.fitSegment;
     post('/event/progress', {segment_id:segment_id, percent:percent}, (e, xhr, data)=>{
@@ -855,6 +859,7 @@ $( document ).ready(function() {
   }
 
   function nextSegment(stopAtLessonEnd) {
+    _lastRecordedPercent = 0;  // This needs a refactor.
     let current = document.querySelector('a[data-fit-segment].active');
     let next = current.nextElementSibling;
     if (!next && !stopAtLessonEnd) {
