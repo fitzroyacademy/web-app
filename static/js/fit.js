@@ -1405,10 +1405,9 @@ $( document ).ready(function() {
             p.classList.remove('fit_upload_cropping');
             let reader = new FileReader();
             reader.onload = (e) => {
+              img.onload = null;
               img.src = e.target.result;
-              // cropper.destroy() doesn't seem to clean this up?
-              p.querySelector('.cropper-container').remove();
-              img.classList.remove('cropper-hidden');
+              cropper.destroy();
               save.removeEventListener('click', saveCroppedImage);
             };
             reader.readAsDataURL(blob);
