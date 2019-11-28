@@ -855,6 +855,14 @@ class Segment(OrderedBase):
             return progress.progress
         return 0
 
+    def user_status(self, user, progress=None):
+        p = progress or self.user_progress(user)
+        if p > 95:
+            return "complete"
+        if p > 10:
+            return "touched"
+        return ""
+
     def save_user_progress(self, user, percent):
         return save_segment_progress(self.id, user.id, percent)
 

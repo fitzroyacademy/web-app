@@ -755,9 +755,18 @@ $( document ).ready(function() {
   function handleVideoProgress(percent, lastPercent) {
     let id = _fitz_video.data.media.hashedId;
     percent = Math.floor(percent*100);  // Avoid floating point hassles.
-    let active_segment = document.querySelector('[data-fit-segment].active');
-    let segment_id = active_segment.dataset.fitSegment;
-    post('/event/progress', {segment_id:segment_id, percent:percent}, ()=>{});
+    let active_segments = document.querySelectorAll('[data-fit-segment].active');
+    let segment_id = active_segments[0].dataset.fitSegment;
+    post('/event/progress', {segment_id:segment_id, percent:percent}, (e, xhr, data)=>{
+      let d = JSON.parse(data);
+      let s = d.user_status;
+      if (!s) return;
+      for (let l of active_segments) {
+        if (s !== 'touched') l.classList.remove('touched');
+        if (s !== 'complete') l.classList.remove('complete');
+        l.classList.add(s);
+      }
+    });
   }
 
   function handleVideoTime(seconds) {
@@ -835,11 +844,14 @@ $( document ).ready(function() {
     }
 
     // Change the active state of segment link on the lesson links panel.
-    let t = document.querySelector(`[data-fit-segment="${sid}"]`);
-    if (!t) return;
+    let t = document.querySelectorAll(`[data-fit-segment="${sid}"]`);
+    if (t.length == 0) return;
     for (let l of document.querySelectorAll('[data-fit-segment].active')) {
       l.classList.remove('active');
-    } t.classList.add('active');
+    }
+    for (let l of t) {
+      l.classList.add('active');
+    }
   }
 
   function nextSegment(stopAtLessonEnd) {
