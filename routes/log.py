@@ -28,8 +28,12 @@ def add_event(event_type):
             d = {
               'segment_id': segment_id,
               'user_id': user_id,
-              'user_status': seg.user_status(user)
+              'user_status': seg.user_status(user),
+              'unlocks': None
             }
+            n = seg.next
+            if n and n.locked and n.prereqs_met(user) is True:
+                d['unlocks'] = n.id
             return json.dumps(d)
         else:
             sess = session.get("anon_progress", "{}")
@@ -40,8 +44,12 @@ def add_event(event_type):
             d = {
               'segment_id': segment_id,
               'user_id': user_id,
-              'user_status': seg.user_status(user=None, progress=progress)
+              'user_status': seg.user_status(user=None, progress=progress),
+              'unlocks': None
             }
+            n = seg.next
+            if n and n.locked and n.prereqs_met(None, progress=progress) is True:
+                d['unlocks'] = n.id
             return json.dumps(d)
     else:
         return event_type

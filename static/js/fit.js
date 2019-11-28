@@ -766,9 +766,14 @@ $( document ).ready(function() {
       let s = d.user_status;
       if (!s) return;
       for (let l of active_segments) {
-        if (s !== 'touched') l.classList.remove('touched');
-        if (s !== 'complete') l.classList.remove('complete');
+        for (let status of ['touched', 'complete', 'locked']) {
+          if (s !== status) l.classList.remove(status);
+        }
         l.classList.add(s);
+      }
+      if (d.unlocks) {
+        let unlocked = document.querySelectorAll(`[data-fit-segment="${d.unlocks}"]`)
+        for (let l of unlocked) l.classList.remove('locked');
       }
     });
   }

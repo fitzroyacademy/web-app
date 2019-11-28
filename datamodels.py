@@ -831,6 +831,25 @@ class Segment(OrderedBase):
         return "video_wistia"
 
     @property
+    def previous(self):
+        i = self.lesson.segments.index(self)
+        if i == 0:
+            return None
+        return self.lesson.segments[i-1]
+
+    @property
+    def next(self):
+        i = self.lesson.segments.index(self)
+        if i == len(self.lesson.segments)-1:
+            return None
+        return self.lesson.segments[i+1]
+
+    @property
+    def locked(self):
+        """ Returns True if this segment has barriers applied to it. """
+        return True
+
+    @property
     def permalink(self):
         return url_for(
             "segment.view",
@@ -856,12 +875,19 @@ class Segment(OrderedBase):
         return 0
 
     def user_status(self, user, progress=None):
+        if self.prereqs_met(user, progress=progress) is False:
+            return "locked"
         p = progress or self.user_progress(user)
         if p > 95:
             return "complete"
         if p > 10:
             return "touched"
         return ""
+
+    def prereqs_met(self, user, progress=None):
+        if self.previous is None:
+            return True
+        return self.previous.user_status(user, progress=progress) is "complete"
 
     def save_user_progress(self, user, percent):
         return save_segment_progress(self.id, user.id, percent)
