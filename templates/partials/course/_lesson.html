@@ -171,11 +171,13 @@
           </div><!-- pane -->
 
           <!-- <h3>Further reading.</h3> -->
-          <div class="fit_wysiwyg further">
-            <label for="fit_wysiwyg_editor">Further reading (appears under resource links)</label>
-            <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if lesson.further_reading %}{{ lesson.further_reading|safe }}{% endif %}</div>
-          </div>
-          <textarea id="further_reading" name="further_reading" style="display: none;" data-fit-lesson-edit></textarea>
+
+            <div class="form-group">
+            <form>
+                <label for="fit_wysiwyg_editor">Further reading (appears under resource links)</label>
+                {{ wysiwyg('further_reading', lesson.further_reading) }}
+            </form>
+            </div>
           <!-- <small class="form-text text-muted">This appears below any links in the resources tab.</small> -->
 
         </div><!-- col -->
@@ -183,7 +185,9 @@
 
 
     </form>
-    </div>
+
+
+
 
   </article>
 </main>

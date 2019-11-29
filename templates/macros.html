@@ -8,7 +8,7 @@
 
 {% macro wysiwyg(name, content="", buttons=[]) %}
 <div class="fit_wysiwyg" data-fit-wysiwyg data-fit-wysiwyg-buttons="{{ buttons|join(' ') }}">
-  <div data-fit-wysiwyg-preview="{{ name }}">
+  <div data-fit-wysiwyg-preview="{{ name }}" style="width: 100%; min-height: 50px; border: 1px solid #d5d8d9; padding: 0 5px 0 5px">
     {% if content %}{{ content|safe }}{% endif %}
   </div>
   <textarea data-fit-wysiwyg-raw name="{{ name }}" style="display: none"></textarea>
