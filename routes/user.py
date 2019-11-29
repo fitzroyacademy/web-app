@@ -91,6 +91,7 @@ def create(institute=""):
     Create a new user.
     """
     db = datamodels.get_session()
+
     # We'll roll in better validation with form error integration in beta; this is
     # to prevent mass assignment vulnerabilities.
     form = AddUserForm(request.form)
@@ -133,7 +134,7 @@ def create(institute=""):
         flash("Thanks for registering, " + user.full_name + "!")
     else:
         data["errors"] = form.errors
-    return redirect(url_for(request.args.get("from", "index")))
+    return redirect(request.args.get("from", "/"))
 
 
 @blueprint.subdomain_route("/enroll/<course_slug>", methods=["POST"])
