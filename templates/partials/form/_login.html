@@ -54,15 +54,13 @@
         <input type="hidden" id="username_userset" class="form-control" maxlength="20" name="username_userset" value="" placeholder="username" required data-fit-slug-set>
         <input type="hidden" value="generatednamegoeshereomg" id="username" name="username" data-fit-slug-reveal-secret>
 
-        <input type="hidden" name="last_page" data-fit-lastpage value="{{ request.full_path }}" />
-
         <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
       </form>      
     </div><!-- register -->
 
     <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
       {% include 'partials/form/_errors.html' %}
-      <form class="form" action="{{ url_for('user.login') }}?from={{ request.rule }}" method="post">
+      <form class="form" action="{{ url_for('user.login') }}?from={{ request.path }}" method="post">
         {{ form.csrf_token }}
         
         <div class="fit_fancyplace">
@@ -74,8 +72,6 @@
           <label for="login_password">Password</label>
           <input type="password" id="login_password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
-
-        <input type="hidden" name="last_page" data-fit-lastpage value="{{ request.full_path }}" />
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>

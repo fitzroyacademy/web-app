@@ -191,7 +191,7 @@ def login(institute=""):
                         d = json.loads(session["anon_progress"])
                         user.merge_anonymous_data(d)
                         session.pop("anon_progress")
-                    return redirect(request.form.get("last_page", ""))
+                    return redirect(request.args.get("from", "/"))
         else:
             data["errors"].append("Username or email and password are required")
     else:
