@@ -38,7 +38,9 @@ class BaseModel(Base):
     def __getattr__(self, item):
         if item.endswith("_url"):
             return self._image_field_url(item[:-4])
+
         return super().__getattr__(item)
+
 
     def _image_field_url(self, field):
         image_field = getattr(self, field, None)
@@ -865,6 +867,19 @@ class Segment(OrderedBase):
         elif not self._thumbnail:
             return "http://placekitten.com/640/360"
         return self._thumbnail
+
+    def set_duration(self):
+        self.duration_seconds = 0
+        if self.external_id and "wistia.com" in self.url:
+            url = "http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/{}?embedType=async&videoWidth=640".format(
+                self.external_id
+            )
+
+            try:
+                data = requests.get(url).json()
+                self.duration_seconds = int(data["duration"])
+            except:
+                pass
 
     def user_progress(self, user):
         if user is None:

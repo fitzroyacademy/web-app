@@ -127,3 +127,13 @@ def clone_model(model, **kwargs):
 
     clone = model.__class__(**data)
     return clone
+
+
+def retrieve_wistia_id(url):
+
+    url_parts = url.split("wistia.com/medias/")
+    if len(url_parts) > 0:
+        external_id = url_parts[1].split("/")[0]
+        return external_id
+
+    return ""

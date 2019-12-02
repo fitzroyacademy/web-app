@@ -10,7 +10,7 @@ from utils import stubs
 from .decorators import login_required, teacher_required, enrollment_required
 from .blueprint import SubdomainBlueprint
 from .render_partials import render_intro, render_segment_list_element
-from .utils import reorder_items, clone_model
+from .utils import reorder_items, clone_model, retrieve_wistia_id
 
 blueprint = SubdomainBlueprint("segment", __name__, template_folder="templates")
 
@@ -227,9 +227,15 @@ def add_edit_segment(
                 # ToDo: validate URL
                 instance.title = request.form["segment_name"]
                 instance.url = request.form["segment_url"]
+                if "wistia.com" in instance.url:
+                    instance.external_id = retrieve_wistia_id(instance.url)
+                    instance.set_duration()
+                elif "youtube.com" in instance.url:
+                    instance.duration_seconds = 0
+                else:
+                    return jsonify({"message": "Wrong video provider"}), 400
                 instance.slug = slug
                 instance.type = "video"
-                instance.duration_seconds = 0
                 instance.permission = permission
                 instance.video_type = video_type
 
