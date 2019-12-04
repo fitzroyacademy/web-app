@@ -364,7 +364,7 @@ def set_options(
             return jsonify({"success": False, "message": "Add lessons first."}), 400
         value = on_or_off == "draft"
     elif option in ["guest_access", "paid"]:
-        value = on_or_off in ["ON", "on"]
+        value = on_or_off in ["ON", "on", "paid"]
     elif option == "visibility" and on_or_off in ["public", "code", "institute"]:
         value = on_or_off
 

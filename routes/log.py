@@ -25,13 +25,33 @@ def add_event(event_type):
             progress = request.form["percent"]
             seg = datamodels.get_segment(segment_id)
             sup = seg.save_user_progress(user, progress)
-            return json.dumps(dump(sup))
+            d = {
+              'segment_id': segment_id,
+              'user_id': user_id,
+              'user_status': seg.user_status(user),
+              'unlocks': None,
+              'progress': seg.user_progress(user)
+            }
+            n = seg.next
+            if n and n.locked and n.prereqs_met(user) is True:
+                d['unlocks'] = n.id
+            return json.dumps(d)
         else:
             sess = session.get("anon_progress", "{}")
             d = json.loads(sess)
             if segment_id not in d or d[segment_id] < progress:
                 d[segment_id] = progress
             session["anon_progress"] = json.dumps(d)
+            seg = datamodels.get_segment(segment_id)
+            d = {
+              'segment_id': segment_id,
+              'user_status': seg.user_status(user=None, progress=progress),
+              'unlocks': None,
+              'progress': progress
+            }
+            n = seg.next
+            if n and n.locked and n.prereqs_met(None, progress=progress) is True:
+                d['unlocks'] = n.id
             return json.dumps(d)
     else:
         return event_type

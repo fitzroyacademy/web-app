@@ -717,10 +717,13 @@ $( document ).ready(function() {
       }
     };
     xhr.open('POST', url);
-    let f = new FormData();
-    for (let k in data) f.append(k, data[k]);
+    let f = data;
+    if (!(data instanceof FormData)) {
+      f = new FormData();
+      for (let k in data) f.append(k, data[k]);
+    }
     if (typeof csrf_token !== 'undefined' && csrf_token) {
-      f.append("csrf_token", csrf_token)
+      f.append("csrf_token", csrf_token);
     };
     xhr.send(f);
   }
@@ -752,12 +755,30 @@ $( document ).ready(function() {
     nextSegment(true);  // Autoplay next, stop at lesson end.
   }
 
+  let _lastRecordedPercent = 0;
   function handleVideoProgress(percent, lastPercent) {
-    let id = _fitz_video.data.media.hashedId;
     percent = Math.floor(percent*100);  // Avoid floating point hassles.
-    let active_segment = document.querySelector('[data-fit-segment].active');
-    let segment_id = active_segment.dataset.fitSegment;
-    post('/event/progress', {segment_id:segment_id, percent:percent}, ()=>{});
+    // Don't choke the server with minute progress changes.
+    if (percent - _lastRecordedPercent <= 1) return;
+    _lastRecordedPercent = percent;
+    let id = _fitz_video.data.media.hashedId;
+    let active_segments = document.querySelectorAll('[data-fit-segment].active');
+    let segment_id = active_segments[0].dataset.fitSegment;
+    post('/event/progress', {segment_id:segment_id, percent:percent}, (e, xhr, data)=>{
+      let d = JSON.parse(data);
+      let s = d.user_status;
+      if (!s) return;
+      for (let l of active_segments) {
+        for (let status of ['touched', 'complete', 'locked']) {
+          if (s !== status) l.classList.remove(status);
+        }
+        l.classList.add(s);
+      }
+      if (d.unlocks) {
+        let unlocked = document.querySelectorAll(`[data-fit-segment="${d.unlocks}"]`)
+        for (let l of unlocked) l.classList.remove('locked');
+      }
+    });
   }
 
   function handleVideoTime(seconds) {
@@ -835,14 +856,18 @@ $( document ).ready(function() {
     }
 
     // Change the active state of segment link on the lesson links panel.
-    let t = document.querySelector(`[data-fit-segment="${sid}"]`);
-    if (!t) return;
+    let t = document.querySelectorAll(`[data-fit-segment="${sid}"]`);
+    if (t.length == 0) return;
     for (let l of document.querySelectorAll('[data-fit-segment].active')) {
       l.classList.remove('active');
-    } t.classList.add('active');
+    }
+    for (let l of t) {
+      l.classList.add('active');
+    }
   }
 
   function nextSegment(stopAtLessonEnd) {
+    _lastRecordedPercent = 0;  // This needs a refactor.
     let current = document.querySelector('a[data-fit-segment].active');
     let next = current.nextElementSibling;
     if (!next && !stopAtLessonEnd) {
@@ -1187,7 +1212,6 @@ $( document ).ready(function() {
       "text_segment_content": description,
       "video_types": formData.get("video_types"),
       "permissions": formData.get("permissions")
-
     };
 
     post(url, data, (responseText, xhr) => {
@@ -1313,22 +1337,34 @@ $( document ).ready(function() {
   // ------------------------------------------------------------
   // medium wysiwyg edito stuff
 
-  let autolist = new AutoList();
-  let fit_medium = new MediumEditor('#fit_wysiwyg_editor', {
-      buttonLabels: 'fontawesome',
-      extensions: {
-          'autolist': autolist
-      }, 
-      toolbar: {
-          buttons: ['h2', 'h3', 'bold', 'anchor', 'quote', 'unorderedlist','orderedlist']
-      }
-  });
 
   delegate('[data-fit-wysiwyg]', 'submit', (e,t) => {
     let p = t.closest('[data-fit-wysiwyg]');
     let preview = p.querySelector('[data-fit-wysiwyg-preview]');
     let textarea = p.querySelector('textarea');
     textarea.value = preview.innerHTML;
+  });
+
+  delegate("[data-fit-wysiwyg-preview]", 'click', (e, t) => {
+    let form = t.closest('form');
+    let p = t.closest('[data-fit-wysiwyg]');
+    if (p.fit_editor) return;
+    // Initialize the editor.
+    let autolist = new AutoList();
+    let preview  = p.querySelector('[data-fit-wysiwyg-preview]');
+    let textarea  = p.querySelector('[data-fit-wysiwyg-raw]');
+    let buttons = (p.dataset.fitWysiwygButtons || "").trim();
+    let toolbar = (buttons) ? {buttons: buttons.split(/\s/)} : null;
+    let editor = new MediumEditor(preview, {
+      buttonLabels: 'fontawesome',
+      extensions: {'autolist': autolist },
+      toolbar: toolbar
+    });
+    editor.subscribe('editableInput', () => {
+      textarea.textContent = preview.innerHTML;
+      post(form.action, new FormData(form));
+    });
+    p.fit_editor = editor;
   });
 
 /* Image upload widget code. */
@@ -1369,10 +1405,9 @@ $( document ).ready(function() {
             p.classList.remove('fit_upload_cropping');
             let reader = new FileReader();
             reader.onload = (e) => {
+              img.onload = null;
               img.src = e.target.result;
-              // cropper.destroy() doesn't seem to clean this up?
-              p.querySelector('.cropper-container').remove();
-              img.classList.remove('cropper-hidden');
+              cropper.destroy();
               save.removeEventListener('click', saveCroppedImage);
             };
             reader.readAsDataURL(blob);

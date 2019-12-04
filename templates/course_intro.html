@@ -182,7 +182,15 @@
 
     </div>  
 
-  {% if not course.guest_access and not current_user %}
+  {% if course.guest_access and course.visibility == "public" and not current_user %}
+      <div class="fit_cta">
+      <div class="fit_course">
+        <h3>Ready to begin?</h3>
+        <a href="{{ course.lessons[0].permalink }}" class="btn btn-light btn-hg btn-drop" role="button">Start course</a>
+        <p class="fit_cta_tnc">Free course! No need to make an account.</p>
+      </div>
+    </div>
+  {% elif not course.guest_access and course.visibility == "public" and not current_user %}
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
@@ -191,7 +199,7 @@
       </div>
     </div>
 
-  {% elif not course.paid and course.visibility == "public" %}
+  {% elif course.paid and course.visibility == "public" %}
     <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>

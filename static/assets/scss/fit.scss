@@ -629,6 +629,7 @@ header .fit_btn:hover > .fit_txt:after,
 // but then there's 'state':
 .fit_btn.locked > [class*="fa-"]:before{content: "\f023";}
 .fit_btn.complete > [class*="fa-"]:before{content: "\f00c";}
+.fit_btn.touched > [class*="fa-"]:before{content: "\f5d0";}
 
 
 // and some colours and things for status:

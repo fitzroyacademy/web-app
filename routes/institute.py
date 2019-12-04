@@ -2,7 +2,6 @@ from uuid import uuid4
 
 from slugify import slugify
 from flask import (
-    Blueprint,
     render_template,
     request,
     redirect,
@@ -19,8 +18,9 @@ from dataforms import AddInstituteForm, AjaxCSRFTokenForm
 from routes.decorators import login_required
 from routes.utils import generate_thumbnail
 from routes.render_partials import render_teacher
+from routes.blueprint import SubdomainBlueprint
 
-blueprint = Blueprint("institute", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("institute", __name__, template_folder="templates")
 
 @blueprint.route("/add", methods=["GET", "POST"])
 @login_required
@@ -70,7 +70,7 @@ def add(user):
     return render_template("partials/institute/_add.html", **data)
 
 
-@blueprint.route("/edit", methods=["GET"], subdomain="<institute>")
+@blueprint.subdomain_route("/edit", methods=["GET"])
 @login_required
 def retrieve(user, institute=""):
 
@@ -79,6 +79,9 @@ def retrieve(user, institute=""):
     if institute is None:
         flash("No such institute.")
         return redirect('/')
+
+    if not institute.is_admin(user):
+        return redirect("/")
 
     data = {"form": AjaxCSRFTokenForm(),
             "institute": institute,
@@ -92,9 +95,13 @@ def retrieve(user, institute=""):
     return render_template("institute.html", **data)
 
 
-@blueprint.route("/edit", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/edit", methods=["POST"])
 @login_required
 def edit(user, institute=""):
+
+    if not institute:
+        return jsonify({"success": False, "message": "Well, no. You can\'t edit this institute. :)"}), 400
+
     institute = datamodels.Institute.find_by_slug(institute)
 
     if not institute or (not user.super_admin and not institute.is_admin(user)):
@@ -152,9 +159,7 @@ def edit(user, institute=""):
     return jsonify({"success": True})
 
 
-@blueprint.route(
-    "/edit/user/remove/<int:user_id>/<access_type>", methods=["POST"], subdomain="<institute>"
-)
+@blueprint.subdomain_route("/edit/user/remove/<int:user_id>/<access_type>", methods=["POST"])
 @login_required
 def remove_user(user, user_id=None, access_type="teacher", institute=""):
 
@@ -178,7 +183,7 @@ def remove_user(user, user_id=None, access_type="teacher", institute=""):
     )
 
 
-@blueprint.route("/edit/add/<access_level>", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/edit/add/<access_level>", methods=["POST"])
 @login_required
 def add_user(user, institute="", access_level="teacher"):
     institute = datamodels.Institute.find_by_slug(institute)
@@ -223,7 +228,7 @@ def add_user(user, institute="", access_level="teacher"):
         }
     )
 
-@blueprint.route("/edit/slug", methods=["POST"], subdomain="<institute>")
+@blueprint.subdomain_route("/edit/slug", methods=["POST"])
 @login_required
 def change_slug(user, institute=""):
     institute = datamodels.Institute.find_by_slug(institute)
