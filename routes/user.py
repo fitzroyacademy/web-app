@@ -9,12 +9,13 @@ from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm
 from utils.base import get_current_user
 from .decorators import login_required
 from .utils import generate_thumbnail
+from .blueprint import SubdomainBlueprint
 
-blueprint = Blueprint("user", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")
 
 
-@blueprint.route("/user/<slug>", methods=["GET"])
-def view(slug):
+@blueprint.subdomain_route("/user/<slug>", methods=["GET"])
+def view(slug, institute=""):
     """ View a user's profile. """
     user_id = slug
     user = datamodels.get_user(user_id)
@@ -22,15 +23,15 @@ def view(slug):
     return render_template("user.html", **data)
 
 
-@blueprint.route("/edit", methods=["GET"])
+@blueprint.subdomain_route("/edit", methods=["GET"])
 @login_required
-def retrieve(user):
+def retrieve(user, institute=""):
 
     return render_template("user_edit.html", **{"form": EditUserForm()})
 
-@blueprint.route("/edit", methods=["POST"])
+@blueprint.subdomain_route("/edit", methods=["POST"])
 @login_required
-def edit(user):
+def edit(user, institute=""):
     """
     Edit the current user.
     """
@@ -84,8 +85,8 @@ def edit(user):
         return jsonify(data)
 
 
-@blueprint.route("/register", methods=["POST"])
-def create():
+@blueprint.subdomain_route("/register", methods=["POST"])
+def create(institute=""):
     """
     Create a new user.
     """
@@ -135,8 +136,8 @@ def create():
     return redirect(url_for(request.args.get("from", "index")))
 
 
-@blueprint.route("/enroll/<course_slug>", methods=["POST"])
-def enroll(course_slug):
+@blueprint.subdomain_route("/enroll/<course_slug>", methods=["POST"])
+def enroll(course_slug, institute=""):
     """
     Enroll a user into a course.
     """
@@ -168,8 +169,8 @@ def enroll(course_slug):
     return redirect(course.lessons[0].permalink)
 
 
-@blueprint.route("/login", methods=["GET", "POST"])
-def login():
+@blueprint.subdomain_route("/login", methods=["GET", "POST"])
+def login(institute=""):
     """ Validiate login and save current user to session. """
     data = {"errors": [], "form": LoginForm()}
     if request.method == "POST":
@@ -198,16 +199,19 @@ def login():
         return render_template("login.html", **data)
 
 
-@blueprint.route("/logout", methods=["POST"])
+@blueprint.subdomain_route("/logout", methods=["POST"])
 @login_required
-def logout(user):
+def logout(user, institute=""):
     """ Clear session data, logging the current user out. """
-    session.clear()
+    keys = [key for key in session.keys() if key != "csrf"]
+    for key in keys:
+        session.pop(key)
+
     return redirect(url_for("index"))
 
 
-@blueprint.route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
-def set_preference(preference_tag, on_or_off):
+@blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
+def set_preference(preference_tag, on_or_off, institute=""):
     """ Set a user preference. """
     user = get_current_user()
     if user is None:

@@ -1282,8 +1282,13 @@ $( document ).ready(function() {
             showAlertSnackbar(res["message"]);
             $('[data-fit-modal-add-resource-link]').modal('hide');
             if ("html" in res) {
-              let container = document.querySelector('[data-fit-sortable-list-resources]');
-              container.innerHTML = container.innerHTML + res['html'];
+              let resourceEl = document.querySelector(`[data-resource-el-id-${res['id']}]`);
+              if (resourceEl) {
+                resourceEl.outerHTML = res['html'];
+              } else {
+                  let container = document.querySelector('[data-fit-sortable-list-resources]');
+                  container.innerHTML = container.innerHTML + res['html'];
+              }
               showAlertSnackbar(res['message'])
             }
         } else if (xhr.status == 400) {
