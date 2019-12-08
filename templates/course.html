@@ -29,8 +29,7 @@
 
 
   {% if active_segment %}
-  {% if active_segment.user_status(current_user) == "locked" %}
-      <article>
+      <article data-fit-vidya-locked style="display: none;">
         <div class="fit_segment_locked">
           <i class="fal fa-lock"></i>
           <h1>Locked.</h1>
@@ -38,13 +37,11 @@
           <!-- <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete all previous segments first.</a> -->
         </div>
       </article>
-  {% else %}
-      <article>
+      <article data-fit-vidya-unlocked>
         <div class="fit_vidya">
           {% include 'partials/course/_active_segment.html' %}
         </div>
       </article>
-  {% endif %}
 
   <aside>
     {% with lesson = active_lesson %}

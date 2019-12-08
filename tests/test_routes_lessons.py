@@ -240,10 +240,12 @@ class TestLessonsRoutes(unittest.TestCase):
         self.assertEqual(len(course.lessons), 3)
         self.assertEqual(response.json["success_url"], "/course/abc-123/edit")
         lessons = datamodels.Lesson.get_ordered_items()
-        self.assertEqual(lessons[0].order, 1)
-        self.assertEqual(lessons[0].title, "lesson 1")
-        self.assertEqual(lessons[1].order, 2)
-        self.assertEqual(lessons[1].title, "lesson 3")
+        self.assertEqual(lessons[0].order, 0)
+        self.assertEqual(lessons[0].title, "intro")
+        self.assertEqual(lessons[1].order, 1)
+        self.assertEqual(lessons[1].title, "lesson 1")
+        self.assertEqual(lessons[2].order, 2)
+        self.assertEqual(lessons[2].title, "lesson 3")
 
     def test_delete_wrong_lesson_id(self):
         course = self.make_standard_course(guest_access=True)

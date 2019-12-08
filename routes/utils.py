@@ -97,7 +97,7 @@ def reorder_items(request, cls, objects):
                 400,
             )
 
-        # Let's check if numbers are correct
+        # Let's check if numbers are correct. In addition make sure that intro elements are excluded from reordering.
         list_of_objects = [obj.id for obj in objects if obj.order != 0]
 
         if set(items_order).difference(set(list_of_objects)) or set(

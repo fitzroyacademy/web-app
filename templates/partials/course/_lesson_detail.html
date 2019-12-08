@@ -8,7 +8,7 @@
 
   <div class="fit_body courselist collapse show" id="fit_lesson_list">
     <div class="fit_lesson_asider">
-      {% for lesson in course.lessons %}
+      {% for lesson in course.get_ordered_lessons() %}
         {% include 'partials/course/_nav_lesson.html' %}
       {% endfor %}
     </div>
@@ -23,7 +23,7 @@
 
   <div class="fit_body collapse show" id="fit_lesson_resources">
     <div class="fit_body_content">
-      {% for resource in lesson.resources %}
+      {% for resource in lesson.ordered_resources %}
         <div class="fit_resource_link_wrap">
           <a class="fit_btn resource_link {{ resource.type.label }} {{ 'featured' if resource.featured }}" href="{{ resource.permalink }}" target="_blank">
             <i class="fas {{ resource.icon }} lg"></i>

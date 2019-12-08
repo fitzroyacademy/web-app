@@ -2,13 +2,14 @@ from uuid import uuid4
 
 from flask import render_template, request, jsonify, redirect, flash, abort
 from slugify import slugify
+from sqlalchemy.exc import IntegrityError
 
 import datamodels
 from dataforms import AjaxCSRFTokenForm
 from enums import SegmentPermissionEnum, VideoTypeEnum
 from utils import stubs
-from .decorators import login_required, teacher_required, enrollment_required
 from .blueprint import SubdomainBlueprint
+from .decorators import login_required, teacher_required, enrollment_required
 from .render_partials import render_intro, render_segment_list_element
 from .utils import reorder_items, clone_model, retrieve_wistia_id
 
@@ -31,7 +32,7 @@ def course_delete_segment(
         db.delete(segment)
         db.commit()
 
-        list_of_items = [l.id for l in datamodels.Segment.get_ordered_items()]
+        list_of_items = [l.id for l in datamodels.Segment.get_ordered_items() if l.order != 0]  # do not reorder intro segment
         if list_of_items:
             datamodels.Segment.reorder_items(list_of_items)
 
@@ -177,7 +178,7 @@ def add_edit_segment(
 
         if slug and (
             datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None
-            or slug == instance.slug
+            or slug == instance.slug or editing
         ):
             if not editing:
                 if content_type in ["intro_text", "intro_video"]:
@@ -240,18 +241,19 @@ def add_edit_segment(
                 instance.video_type = video_type
 
             db.add(instance)
-            db.commit()
+            try:
+                db.commit()
+            except IntegrityError:
+                db.rollback()
+                return jsonify({"message": "Chose different name for this segment."}), 400
 
             response = {
                 "message": "Segment {} {}".format(
                     instance.title, "edited" if editing else "added"
-                )
+                ),
+                "html": render_segment_list_element(course=course, lesson=lesson, segment=instance),
+                "id": instance.id
             }
-
-            if not editing:
-                response["html"] = render_segment_list_element(
-                    course=course, lesson=lesson, segment=instance
-                )
 
             return jsonify(response), 200
         else:

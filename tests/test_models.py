@@ -331,7 +331,8 @@ class TestModels(unittest.TestCase):
 
         # User doesn't have any progress
         self.assertIsNone(datamodels.get_segment_progress(segment.id, user.id))
-        self.assertEqual(segment.user_progress(None), 0)
+        with app.test_request_context():
+            self.assertEqual(segment.user_progress(None), 0)
         self.assertEqual(segment.user_progress(user), 0)
 
         # User has progress

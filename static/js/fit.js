@@ -769,14 +769,10 @@ $( document ).ready(function() {
       let s = d.user_status;
       if (!s) return;
       for (let l of active_segments) {
-        for (let status of ['touched', 'complete', 'locked']) {
+        for (let status of ['touched', 'completed', 'locked']) {
           if (s !== status) l.classList.remove(status);
         }
         l.classList.add(s);
-      }
-      if (d.unlocks) {
-        let unlocked = document.querySelectorAll(`[data-fit-segment="${d.unlocks}"]`)
-        for (let l of unlocked) l.classList.remove('locked');
       }
     });
   }
@@ -829,10 +825,19 @@ $( document ).ready(function() {
   function loadSegment(sid, lid) {
     // Load the video.
     get('/_segment/'+sid+'.json', (e, xhr, data) => {
+      let unlockedPane = document.querySelector("[data-fit-vidya-unlocked]");
+      let lockedPane = document.querySelector("[data-fit-vidya-locked]");
       if (e) console.error(e);
       data = JSON.parse(data);
+      if (!data.locked){
+      unlockedPane.style.display = "block";
+      lockedPane.style.display = "none";
       _fitz_video.replaceWith(data.active_segment.external_id);
       _fitz_video.play();
+      } else {
+        unlockedPane.style.display = "none";
+        lockedPane.style.display = "block";
+      }
     });
 
     // Reload the lesson details, if the lesson has changed.
@@ -1221,8 +1226,13 @@ $( document ).ready(function() {
           $('[data-fit-add-edit-segment-modal]').modal('hide');
 
           if ("html" in res) {
-            let container = document.querySelector('[data-fit-sortable-list]');
-            container.innerHTML = container.innerHTML + res['html'];
+            if (segmentId) {
+                let segmentEl = document.querySelector(`[data-segment-el-id-${res['id']}]`);
+                segmentEl.outerHTML = res['html'];
+            } else {
+                let container = document.querySelector('[data-fit-sortable-list]');
+                container.innerHTML = container.innerHTML + res['html'];
+            }
           }
         } else {
           showAlertSnackbar(res['message']);
@@ -1244,9 +1254,12 @@ $( document ).ready(function() {
                 if (res['segment_type'] == 'video') {
                   event.currentTarget.querySelector('#segment_name').value = res['title'];
                   event.currentTarget.querySelector('#segment_url').value = res['segment_url'];
-                  event.currentTarget.querySelector(`#${res['video_type']}`).checked = true;
-                  event.currentTarget.querySelector(`#${res['permission']}`).checked = true;
-
+                  if (res['video_type']){
+                    event.currentTarget.querySelector(`#${res['video_type']}`).checked = true;
+                  }
+                  if (res['permission']){
+                    event.currentTarget.querySelector(`#${res['permission']}`).checked = true;
+                  }
                 } else {
                   event.currentTarget.querySelector('#segment_name').value = res['title'];
                   event.currentTarget.querySelector('#fit_wysiwyg_editor').innerHTML = res['text'];

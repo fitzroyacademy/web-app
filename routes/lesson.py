@@ -205,7 +205,7 @@ def course_delete_lesson(user, course, course_slug, lesson_id, institute=""):
         db.delete(lesson)
         db.commit()
 
-        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_items()]
+        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_items() if l.order != 0]
         if list_of_lessons:
             datamodels.Lesson.reorder_items(list_of_lessons)
 

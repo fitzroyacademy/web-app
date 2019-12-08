@@ -2,6 +2,7 @@ import json
 import random
 
 from flask import Blueprint, render_template
+from utils.base import get_current_user
 
 import datamodels
 from utils.database import dump
@@ -19,7 +20,8 @@ def segment(segment_id):
     active_segment = datamodels.get_segment(segment_id)
     if active_segment is None:
         raise "Segment not found: %s".format(segment_id)
-    data = {"active_segment": active_segment}
+    data = {"active_segment": active_segment,
+            "locked": active_segment.locked(get_current_user())}
     if ext is "json":
         dumped_data = dump(data["active_segment"])
         data["active_segment"] = dumped_data
@@ -60,5 +62,10 @@ def lesson_resources(lesson_id):
     lesson = datamodels.get_lesson(lesson_id)
     if lesson is None:
         return {"error": "Lesson not found"}
-    data = {"students": students, "lesson": lesson}
+    data = {"students": students,
+            "lesson": lesson,
+            "course": lesson.course,
+            "active_segment": lesson.segments[0] if lesson.segments else None,
+            "active_lesson": lesson
+            }
     return render_template("partials/course/_lesson_detail.html", **data)

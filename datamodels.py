@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime, timedelta
 from os import environ
 
@@ -5,7 +7,7 @@ import requests
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from flask import current_app as app
-from flask import url_for
+from flask import url_for, session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -60,7 +62,7 @@ class OrderedBase(BaseModel):
 
     @classmethod
     def get_ordered_items(cls):
-        return cls.objects().filter(cls.order > 0).order_by(cls.order)
+        return cls.objects().filter(cls.order >= 0).order_by(cls.order)
 
     @classmethod
     def ordered_items_for_parent(cls, parent, key):
@@ -719,11 +721,7 @@ class Lesson(OrderedBase):
 
     @property
     def ordered_resources(self):
-        return (
-            Resource.objects()
-            .filter_by(lesson_id=self.id)
-            .order_by(Resource.order)
-        )
+        return Resource.ordered_items_for_parent(self, "lesson_id")
 
     @property
     def permalink(self):
@@ -751,7 +749,7 @@ class Lesson(OrderedBase):
         return str(timedelta(seconds=self.duration_seconds))
 
     def get_ordered_segments(self):
-        return Segment.get_ordered_items().filter(Segment.lesson_id == self.id)
+        return Segment.ordered_items_for_parent(self, "lesson_id")
 
     def user_progress_percent(self, user):
         if len(self.segments) is 0:
@@ -900,13 +898,23 @@ class Segment(OrderedBase):
             if not ids:
                 return False
 
-            qs_progress = SegmentUserProgress.objects().filter(
-                SegmentUserProgress.user_id==user.id,
-                SegmentUserProgress.segment_id.in_(ids),
-                SegmentUserProgress.progress > SegmentStatusThreshold.completed
-            )
+            if user:
+                qs_progress = SegmentUserProgress.objects().filter(
+                    SegmentUserProgress.user_id==user.id,
+                    SegmentUserProgress.segment_id.in_(ids),
+                    SegmentUserProgress.progress > SegmentStatusThreshold.completed
+                )
+                return qs_progress.count() != len(ids)
+            else:
+                # ToDo: remove this from models and move to request context
+                anon_progress = json.loads(session.get("anon_progress", "{}"))
 
-            return qs_progress.count() != len(ids)
+                for key in ids:
+                    if anon_progress.get(str(key), 0) < SegmentStatusThreshold.completed:
+                        return True
+
+                return False
+
         else:
             qs = qs.filter(Segment.permission.in_((SegmentPermissionEnum.hard_barrier,
                                                    SegmentPermissionEnum.barrier)))
@@ -945,8 +953,9 @@ class Segment(OrderedBase):
                 pass
 
     def user_progress(self, user):
-        if user is None:
-            return 0
+        if user is None:  # ToDo: remove this from models and move to request context
+            anon_progress = json.loads(session.get("anon_progress", "{}"))
+            return anon_progress.get(str(self.id), 0)
         progress = get_segment_progress(self.id, user.id)
         if progress:
             return progress.progress

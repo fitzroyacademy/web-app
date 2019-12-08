@@ -116,9 +116,11 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             response.json["success_url"],
             "/course/abc-123/lessons/{}/edit".format(l1.id),
         )
-        lessons = datamodels.Segment.get_ordered_items()
-        self.assertEqual(lessons[0].order, 1)
-        self.assertEqual(lessons[0].title, "Segment 1")
+        segments = datamodels.Segment.get_ordered_items()
+        self.assertEqual(segments[0].order, 0)
+        self.assertEqual(segments[0].title, "Segment Intro")
+        self.assertEqual(segments[1].order, 1)
+        self.assertEqual(segments[1].title, "Segment 1")
 
     def test_delete_wrong_segment_id(self):
         l1 = self.make_standard_course_lesson(
