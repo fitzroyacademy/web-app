@@ -28,9 +28,14 @@
     <!-- Course -->
     {% elif url_is('course.retrieve') %}
       <div class="left">
-        <a href="/course/{{ course.slug }}" class="fit_btn"> 
+        <a href="#link-to-institute-plz" class="fit_btn widthlimit"> 
           <i class="fal fa-arrow-left"></i>
-          <span class="fit_txt">View live</span>
+          <span class="fit_txt">Institute name</span>
+        </a>
+
+        <a href="{{ course.permalink }}" class="fit_btn"> 
+          <i class="fal fa-external-link"></i>
+          <span class="fit_txt">Live</span>
         </a>
 
         <a class="fit_btn_saver">
@@ -130,7 +135,7 @@
               <span class="d-none d-md-inline-block">{{ current_user.last_name }}</span>
             </span>
             <span class="fit_pic circle"> 
-              {% if current_user.profile_picture %}
+              {% if current_user.profile_picture_url %}
                 <img src="{{ current_user.profile_picture_url }}" alt="user">
               {% else %}
                 <i class="fal fa-user"></i>
