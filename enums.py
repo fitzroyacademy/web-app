@@ -1,6 +1,19 @@
 import enum
 
 
+class SegmentStatus(object):
+    accessible = "accessible"
+    completed = "completed"
+    locked = "locked"
+    touched = "touched"
+
+
+class SegmentStatusThreshold(object):
+    accessible = 0
+    completed = 95
+    touched = 10
+
+
 class VideoTypeEnum(enum.Enum):
     standard = "standard"
     resources = "resources"

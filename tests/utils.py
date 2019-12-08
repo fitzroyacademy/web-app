@@ -3,7 +3,7 @@ import datetime
 from slugify import slugify
 
 import datamodels
-from enums import SegmentPermissionEnum, ResourceTypeEnum
+from enums import SegmentPermissionEnum, ResourceTypeEnum, VideoTypeEnum
 from app import app
 
 
@@ -62,16 +62,23 @@ class ObjectsGenerator(object):
         thumbnail="thumbnail_1",
         title="Segment",
         duration_seconds=200,
-        url="fitzroyacademy.com",
+        url="fitzroyacademy.com/some_external_video_id",
         order=1,
         slug=None,
         type="text",
         permission=None,
+        video_type=None
     ):
         if slug is None:
             slug = slugify(title)
         if permission is None:
             permission = SegmentPermissionEnum.normal
+        if type=="text":
+            video_type = None
+        else:
+            if video_type is None:
+                video_type = VideoTypeEnum.standard
+
         segment = datamodels.Segment(
             title=title,
             duration_seconds=duration_seconds,
@@ -83,6 +90,7 @@ class ObjectsGenerator(object):
             slug=slug,
             type=type,
             permission=permission,
+            video_type=video_type
         )
         return segment
 

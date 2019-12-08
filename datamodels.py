@@ -10,7 +10,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum, InstitutePermissionEnum
+from enums import VideoTypeEnum, SegmentPermissionEnum, ResourceTypeEnum, InstitutePermissionEnum, \
+    SegmentStatus, SegmentStatusThreshold
 
 Base = declarative_base()
 
@@ -428,6 +429,13 @@ class Course(BaseModel):
             .all()
         )
 
+    def get_ordered_segments(self):
+        session = get_session()
+
+        return session.query(Segment).join(Lesson). \
+            filter(Lesson._is_deleted==False, Lesson.course_id==self.id). \
+            order_by(Lesson.order, Segment.order)
+
     @property
     def number_of_resources(self):
         return Resource.objects().outerjoin(Resource.lesson).filter(Lesson.course_id == self.id).count()
@@ -669,6 +677,31 @@ class Lesson(OrderedBase):
         return value
 
     @property
+    def previous(self):
+        items = self.ordered_items_for_parent(parent=self.course, key="course_id").all()
+        i = items.index(self)
+        if i == 0:
+            return None
+
+        return items[i - 1]
+
+    @property
+    def next(self):
+        items = self.ordered_items_for_parent(parent=self.course, key="course_id").all()
+        i = items.index(self)
+        if i == len(items) - 1:
+            return None
+        return items[i + 1]
+
+    @property
+    def last_segment(self):
+        return Segment.objects().filter(Segment.lesson_id == self.id).order_by(sa.desc(Segment.order)).first()
+
+    @property
+    def first_segment(self):
+        return Segment.ordered_items_for_parent(self, "lesson_id").first()
+
+    @property
     def segments_queryset(self):
         if not self._segments_queryset:
             self._segments_queryset = Segment.objects().filter_by(
@@ -834,22 +867,52 @@ class Segment(OrderedBase):
 
     @property
     def previous(self):
-        i = self.lesson.segments.index(self)
-        if i == 0:
+        segments = self.ordered_items_for_parent(parent=self.lesson, key="lesson_id").all()
+        i = segments.index(self)
+        previous_lesson = self.lesson.previous
+        if i == 0 and previous_lesson is None:
             return None
-        return self.lesson.segments[i-1]
+        elif i == 0 and previous_lesson is not None:
+            return previous_lesson.last_segment
+        else:
+            return segments[i-1]
 
     @property
     def next(self):
-        i = self.lesson.segments.index(self)
-        if i == len(self.lesson.segments)-1:
+        segments = self.ordered_items_for_parent(parent=self.lesson, key="lesson_id").all()
+        i = segments.index(self)
+        next_lesson = self.lesson.next
+        if i == len(segments)-1 and next_lesson is None:
             return None
-        return self.lesson.segments[i+1]
+        elif i == len(segments) - 1 and next_lesson is not None:
+            return next_lesson.first_segment
+        return segments[i+1]
 
-    @property
-    def locked(self):
-        """ Returns True if this segment has barriers applied to it. """
-        return True
+    def locked(self, user):
+        """ Returns True if this segment is locked for a given user. """
+        qs = self.lesson.course.get_ordered_segments().\
+            filter(sa.or_(sa.and_(Lesson.order == self.lesson.order, Segment.order < self.order),
+                          Lesson.order < self.lesson.order))
+
+        if self.permission == SegmentPermissionEnum.hard_barrier:
+
+            ids = [s.id for s in qs]
+            if not ids:
+                return False
+
+            qs_progress = SegmentUserProgress.objects().filter(
+                SegmentUserProgress.user_id==user.id,
+                SegmentUserProgress.segment_id.in_(ids),
+                SegmentUserProgress.progress > SegmentStatusThreshold.completed
+            )
+
+            return qs_progress.count() != len(ids)
+        else:
+            qs = qs.filter(Segment.permission.in_((SegmentPermissionEnum.hard_barrier,
+                                                   SegmentPermissionEnum.barrier)))
+
+            barriers = list(qs)
+            return barriers[-1].user_progress(user) < SegmentStatusThreshold.completed if barriers else False
 
     @property
     def permalink(self):
@@ -890,19 +953,16 @@ class Segment(OrderedBase):
         return 0
 
     def user_status(self, user, progress=None):
-        if self.prereqs_met(user, progress=progress) is False:
-            return "locked"
-        p = progress or self.user_progress(user)
-        if p > 95:
-            return "complete"
-        if p > 10:
-            return "touched"
-        return ""
 
-    def prereqs_met(self, user, progress=None):
-        if self.previous is None:
-            return True
-        return self.previous.user_status(user, progress=progress) is "complete"
+        if self.locked(user):
+            return SegmentStatus.locked
+
+        p = progress or self.user_progress(user)
+        if p > SegmentStatusThreshold.completed:
+            return SegmentStatus.completed
+        if p > SegmentStatusThreshold.touched:
+            return SegmentStatus.touched
+        return SegmentStatus.accessible
 
     def save_user_progress(self, user, percent):
         return save_segment_progress(self.id, user.id, percent)

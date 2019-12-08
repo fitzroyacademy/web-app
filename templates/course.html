@@ -15,7 +15,7 @@
       <div class="fit fit_hider">
          <a class="fit_btn subtle" href="#" data-fit-minleft>
           <i class="fas fa-chevron-left"></i>
-          <span class="fit_txt">Hide</span> 
+          <span class="fit_txt">Hide</span>
         </a>
       </div>
       {% if active_segment %}
@@ -29,24 +29,34 @@
 
 
   {% if active_segment %}
-  <article>
-    <div class="fit_vidya">
-      {% include 'partials/course/_active_segment.html' %}
-    </div>
-
-  </article>
+  {% if active_segment.user_status(current_user) == "locked" %}
+      <article>
+        <div class="fit_segment_locked">
+          <i class="fal fa-lock"></i>
+          <h1>Locked.</h1>
+          <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete the previous segment first.</a>
+          <!-- <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete all previous segments first.</a> -->
+        </div>
+      </article>
+  {% else %}
+      <article>
+        <div class="fit_vidya">
+          {% include 'partials/course/_active_segment.html' %}
+        </div>
+      </article>
+  {% endif %}
 
   <aside>
     {% with lesson = active_lesson %}
       {% include 'partials/course/_lesson_detail.html' %}
     {% endwith %}
-  </aside>  
+  </aside>
   {% else %}
       <article>
       No content. :(
       </article>
   {% endif %}
-  
+
 </main>
 
 {% endblock %}

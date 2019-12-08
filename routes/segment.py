@@ -318,5 +318,6 @@ def view(course_slug, lesson_slug, segment_slug, institute=""):
         "active_lesson": lesson,
         "active_segment": segment,
         "course": course,
+        "form": AjaxCSRFTokenForm()
     }
     return render_template("course.html", **data)

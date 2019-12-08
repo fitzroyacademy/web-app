@@ -186,8 +186,11 @@
       <div class="fit_cta">
       <div class="fit_course">
         <h3>Ready to begin?</h3>
-        <a href="{{ course.lessons[0].permalink }}" class="btn btn-light btn-hg btn-drop" role="button">Start course</a>
-        <p class="fit_cta_tnc">Free course! No need to make an account.</p>
+        <form method="post" action="/enroll/{{ course.slug }}">
+          <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start course
+          </button>
+          <p class="fit_cta_tnc">Free course! No need to make an account.</p>
+        </form>
       </div>
     </div>
   {% elif not course.guest_access and course.visibility == "public" and not current_user %}
