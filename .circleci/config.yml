@@ -70,8 +70,8 @@ jobs:
             docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:latest
 
 
-      - run:
-          name: Deploy application
-          command: |
-              source scripts/assume-role.sh
-              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app-alpha --force-new-deployment --region us-east-2
+#      - run:
+#          name: Deploy application
+#          command: |
+#              source scripts/assume-role.sh
+#              aws ecs update-service --cluster sandbox-web-app-cluster --service web-app-alpha --force-new-deployment --region us-east-2
