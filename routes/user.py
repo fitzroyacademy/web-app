@@ -109,14 +109,14 @@ def create(institute=""):
             user.email = form.email.data
             user.first_name = form.first_name.data
             user.last_name = form.last_name.data
-            user.username = form.username.data
+            user.username = user.available_username(form.username.data)
             setattr(user, "password", form.password.data)
             db.add(user)
             db.commit()
         except IntegrityError:
             db.rollback()
             flash("This username is already taken")
-            return render_template("login.html", **data)
+            return redirect("/")
         except Exception as e:
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)

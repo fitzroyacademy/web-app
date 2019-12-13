@@ -3,11 +3,12 @@
     <span class="d-none d-sm-inline-block">{{ current_user.first_name }}</span>
     <span class="d-none d-md-inline-block">{{ current_user.last_name }}</span>
   </span>
-  <span class="fit_pic circle"> 
-    <!-- DEV: if profile picture exists show: -->
-      <img src="{{ current_user.profile_picture_url }}" alt="user">
-    <!-- DEV: otherwise, show this icon:
-      <i class="fal fa-user"></i>
-     -->
+  <span class="fit_pic circle">
+      {% if current_user.profile_picture %}
+          <img src="{{ current_user.profile_picture_url }}" alt="user">
+      {% else %}
+            <i class="fas fa-user" style="opacity: 100;"></i>
+      {% endif %}
+
   </span>
 </a>

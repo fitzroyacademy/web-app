@@ -82,13 +82,22 @@
                 {% else %}
 
                   {% if not course.paid %}
-                    <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
+                    <form method="post" action="/enroll/{{ course.slug}}">
+                        <button type="submit" class="btn btn-block btn-lg btn-watermelon" role="button">
+                            Enroll
+                        </button>
+                        <p class="fit_cta_tnc">{{ subtitle }}</p>
+                    </form>
                     <h4>Free course!</h4>
-                    <p>Sign up for free to enrol.</p>
-
+                    <p>Sign up for free to start the course</p>
 
                   {% elif course.paid %}
-                    <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Pay with card.</a>
+                    <form method="post" action="/enroll/{{ course.slug}}">
+                        <button type="submit" class="btn btn-block btn-lg btn-watermelon" role="button">
+                            Pay with card.
+                        </button>
+                        <p class="fit_cta_tnc">{{ subtitle }}</p>
+                    </form>
                     <h4>${{ course.amount }} USD</h4>
                     <p>Use your card to continue.</p>
 
@@ -102,14 +111,19 @@
             {% else %}
 
               {% if course.guest_access %}
-                <a href="{{ course.lessons[0].permalink }}" class="btn btn-block btn-lg btn-watermelon">Start course</a>
+                <form method="post" action="/enroll/{{ course.slug}}">
+                        <button type="submit" class="btn btn-block btn-lg btn-watermelon" role="button">
+                            Start course
+                        </button>
+                        <p class="fit_cta_tnc">{{ subtitle }}</p>
+                    </form>
                 <h4>Free course!</h4>
                 <p>No need to make an account.  🥰</p>
 
               {% elif not course.paid %}
                 <a href="#" data-fit-userpanel class="btn btn-block btn-lg btn-watermelon">Make an account.</a>
                 <h4>Free course!</h4>
-                <p>Sign up for free to enrol.  🥰</p>
+                <p>Sign up for free to enrol. </p>
 
 
               {% elif course.paid %}
@@ -183,16 +197,9 @@
     </div>  
 
   {% if course.guest_access and course.visibility == "public" and not current_user %}
-      <div class="fit_cta">
-      <div class="fit_course">
-        <h3>Ready to begin?</h3>
-        <form method="post" action="/enroll/{{ course.slug }}">
-          <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Start course
-          </button>
-          <p class="fit_cta_tnc">Free course! No need to make an account.</p>
-        </form>
-      </div>
-    </div>
+      {% with title="Start course", subtitle="Free course! No need to make an account.", course_slug=course.slug %}
+          {% include 'partials/course/_enroll_form.html' %}
+      {% endwith %}
   {% elif not course.guest_access and course.visibility == "public" and not current_user %}
     <div class="fit_cta">
       <div class="fit_course">
@@ -203,16 +210,9 @@
     </div>
 
   {% elif course.paid and course.visibility == "public" %}
-    <div class="fit_cta">
-      <div class="fit_course">
-        <h3>Ready to begin?</h3>
-        <form method="post" action="/enroll/{{ course.slug }}">
-          <button type="submit" class="btn btn-light btn-hg btn-drop" role="button"><i class="fas fa-rocket"></i> Pay with credit card
-          </button>
-          <p class="fit_cta_tnc">This is a paid course.</p>
-        </form>
-      </div>
-    </div>
+      {% with title="Pay with credit card", subtitle="This is a paid course.", course_slug=course.slug %}
+          {% include 'partials/course/_enroll_form.html' %}
+      {% endwith %}
 
   {% elif not course.paid and course.visibility == "code" %}
     <div class="fit_cta">

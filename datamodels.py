@@ -2,6 +2,7 @@ import json
 
 from datetime import datetime, timedelta
 from os import environ
+from uuid import uuid4
 
 import requests
 import sqlalchemy as sa
@@ -127,6 +128,13 @@ class User(BaseModel):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    @classmethod
+    def available_username(cls, username):
+        if cls.objects().filter(cls.username==username).first():
+            username = username[:45] + '-' + str(uuid4())[:4]
+
+        return username
 
     @property
     def full_name(self):
