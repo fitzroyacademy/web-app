@@ -4,7 +4,6 @@ from uuid import uuid4
 
 import jinja2
 from flask import Blueprint, request
-import flask
 
 blueprint = Blueprint("filters", __name__)
 
