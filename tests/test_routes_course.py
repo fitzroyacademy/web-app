@@ -191,12 +191,13 @@ class TestCourseRoutes(unittest.TestCase):
         self.session.add(lesson)
         segment = self.make_segment(lesson=lesson, thumbnail="thumbnail_1")
         self.session.add(segment)
+        u1 = self.makeUser(email="home@teachers.com", id=2, username="the_teacher")
+        self.session.add(u1)
+        self.session.commit()
 
         s = app.test_client()
 
         # user has permission to set course options
-        u1 = self.makeUser(email="home@teachers.com", id=2, username="the_teacher")
-        self.session.add(u1)
         course.add_instructor(u1)
 
         with s.session_transaction() as sess:
@@ -233,6 +234,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=2, username="the_teacher")
         self.session.add(user)
+        self.session.commit()
         course.add_instructor(user)
 
         s = app.test_client()
@@ -337,17 +339,14 @@ class TestCourseRoutes(unittest.TestCase):
         self.session.add(course)
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
-        self.session.add(user)
-        course.add_instructor(user)
-
         user1 = self.makeUser(email="home1@teachers.com", id=2, username="the_teacher1")
-        self.session.add(user1)
-        course.add_instructor(user1)
-
         user2 = self.makeUser(email="home2@teachers.com", id=3, username="the_teacher3")
         self.session.add(user2)
-
+        self.session.add(user1)
+        self.session.add(user)
         self.session.commit()
+        course.add_instructor(user)
+        course.add_instructor(user1)
 
         self.assertEqual(len(course.instructors), 2)
 
@@ -386,6 +385,7 @@ class TestCourseRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
         self.session.add(user)
+        self.session.commit()
         course.add_instructor(user)
 
         user1 = self.makeUser(email="home1@teachers.com", id=2, username="the_teacher1")

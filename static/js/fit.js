@@ -822,6 +822,24 @@ $( document ).ready(function() {
   });
   render_student_chart(studentSel);
 
+  function lockSegments(locked_segments, fromId, hard=false) {
+    let lock = false;
+    let segments = document.querySelectorAll('a[data-fit-segment-link]');
+    let segId = null;
+    for (let i = 0; i < segments.length; i++) {
+      let seg = segments[i];
+      seg.classList.remove("locked");
+      segId = parseInt(seg.dataset["fitSegment"]);
+      if (locked_segments.includes(segId)) {
+        if (fromId != segId && !hard) {
+            seg.classList.add("locked");
+            seg.classList.remove("accessible");
+        }
+      }
+    }
+
+  }
+
   function loadSegment(sid, lid) {
     // Load the video.
     get('/_segment/'+sid+'.json', (e, xhr, data) => {
@@ -837,6 +855,14 @@ $( document ).ready(function() {
       } else {
         unlockedPane.style.display = "none";
         lockedPane.style.display = "block";
+      }
+
+      if (data["barrier_id"]) {
+        let hard = false;
+        if (data["barrier_type"] == "hard_barrier") {
+          hard = true
+        }
+        lockSegments(data["locked_segments"], data["barrier_id"], hard)
       }
     });
 

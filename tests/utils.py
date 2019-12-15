@@ -3,12 +3,17 @@ import datetime
 from slugify import slugify
 
 import datamodels
-from enums import SegmentPermissionEnum, ResourceTypeEnum, VideoTypeEnum
+from datamodels.enums import SegmentPermissionEnum, ResourceTypeEnum, VideoTypeEnum
 from app import app
 
 
 def make_authorized_call(
-    url, user, data=None, expected_status_code=200, follow_redirects=False, method="post"
+    url,
+    user,
+    data=None,
+    expected_status_code=200,
+    follow_redirects=False,
+    method="post",
 ):
     s = app.test_client()
     with s.session_transaction() as sess:
@@ -25,7 +30,13 @@ def make_authorized_call(
 class ObjectsGenerator(object):
     @staticmethod
     def make_standard_course(
-        code="ABC123", guest_access=False, title="ABC 123", slug=None, draft=False, visibility="public", paid=False
+        code="ABC123",
+        guest_access=False,
+        title="ABC 123",
+        slug=None,
+        draft=False,
+        visibility="public",
+        paid=False,
     ):
         if slug is None:
             slug = slugify(title)
@@ -36,7 +47,7 @@ class ObjectsGenerator(object):
             guest_access=guest_access,
             draft=draft,
             paid=paid,
-            visibility=visibility
+            visibility=visibility,
         )
         return course
 
@@ -67,13 +78,13 @@ class ObjectsGenerator(object):
         slug=None,
         type="text",
         permission=None,
-        video_type=None
+        video_type=None,
     ):
         if slug is None:
             slug = slugify(title)
         if permission is None:
             permission = SegmentPermissionEnum.normal
-        if type=="text":
+        if type == "text":
             video_type = None
         else:
             if video_type is None:
@@ -90,21 +101,21 @@ class ObjectsGenerator(object):
             slug=slug,
             type=type,
             permission=permission,
-            video_type=video_type
+            video_type=video_type,
         )
         return segment
 
     @staticmethod
     def make_resource(
-            lesson,
-            title="Resource 1",
-            url="https://fitzroyacademy.com/blah-blah-blah",
-            featured=False,
-            language="EN",
-            description="Some long text describing this resource which is optional",
-            order=1,
-            slug=None,
-            resource_type=None,
+        lesson,
+        title="Resource 1",
+        url="https://fitzroyacademy.com/blah-blah-blah",
+        featured=False,
+        language="EN",
+        description="Some long text describing this resource which is optional",
+        order=1,
+        slug=None,
+        resource_type=None,
     ):
         if resource_type is None:
             resource_type = ResourceTypeEnum.google_doc
@@ -119,7 +130,7 @@ class ObjectsGenerator(object):
             order=order,
             lesson=lesson,
             slug=slug,
-            type=resource_type
+            type=resource_type,
         )
         return resource
 

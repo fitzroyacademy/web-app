@@ -1,6 +1,6 @@
 from wtforms import Form, StringField, validators, TextAreaField, FileField, BooleanField
 
-from enums import ResourceTypeEnum
+from datamodels.enums import ResourceTypeEnum
 from werkzeug.utils import cached_property
 
 from flask import session, current_app

@@ -1,4 +1,3 @@
-import datetime
 import unittest
 import datamodels
 from app import app
@@ -17,6 +16,124 @@ class TestUserEnrollment(ObjectsGenerator, unittest.TestCase):
 
     def tearDown(self):
         datamodels._clear_session_for_tests()
+
+    def test_user_create(self):
+        s = app.test_client()
+
+        self.assertEqual(datamodels.User.objects().count(), 1)
+        s.post(
+            "/register",
+            data={
+                "first_name": "Tom",
+                "last_name": "Riddle",
+                "username": "Tom Riddle",
+                "email": "lord_voldemort@hogwart.com",
+                "password": "password",
+            },
+            follow_redirects=True,
+        )
+
+        self.assertEqual(datamodels.User.objects().count(), 2)
+        new_user = datamodels.User.find_by_email("lord_voldemort@hogwart.com")
+        self.assertEqual(new_user.username, "tom-riddle")
+
+        with s.session_transaction() as sess:
+            self.assertEqual(sess["user_id"], new_user.id)
+
+    def test_user_create_same_username(self):
+        s = app.test_client()
+
+        self.assertEqual(datamodels.User.objects().count(), 1)
+        s.post(
+            "/register",
+            data={
+                "first_name": "Tom",
+                "last_name": "Riddle",
+                "username": "homer",
+                "email": "lord_voldemort@hogwart.com",
+                "password": "password",
+            },
+            follow_redirects=True,
+        )
+
+        self.assertEqual(datamodels.User.objects().count(), 2)
+        new_user = datamodels.User.find_by_email("lord_voldemort@hogwart.com")
+        self.assertNotEqual(new_user.username, "homer")
+        self.assertTrue(
+            new_user.username.startswith("homer")
+        )  # username starts with homer but contains part of UUID4
+
+    def test_user_login_success(self):
+        s = app.test_client()
+
+        s.post("/login", data={"email": self.user.email, "password": "password"})
+
+        with s.session_transaction() as sess:
+            self.assertEqual(sess["user_id"], self.user.id)
+
+    def test_user_login_failed(self):
+        s = app.test_client()
+
+        # No such user
+        response = s.post(
+            "/login",
+            data={"email": "no_such_user@userdatabase.com", "password": "password"},
+            follow_redirects=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Bad username or password, try again" in str(response.data))
+
+        with s.session_transaction() as sess:
+            with self.assertRaises(KeyError):
+                id = sess["user_id"]
+
+        # Wrong password
+        response = s.post(
+            "/login",
+            data={"email": self.user.email, "password": "super_wrong_password"},
+            follow_redirects=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Bad username or password, try again" in str(response.data))
+
+        with s.session_transaction() as sess:
+            with self.assertRaises(KeyError):
+                id = sess["user_id"]
+
+    def test_user_login_no_credentials(self):
+        s = app.test_client()
+
+        # no password provided
+        response = s.post(
+            "/login",
+            data={"email": "no_such_user@userdatabase.com", "password": ""},
+            follow_redirects=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            "Username or email and password are required" in str(response.data)
+        )
+
+        with s.session_transaction() as sess:
+            with self.assertRaises(KeyError):
+                id = sess["user_id"]
+
+        # no email provided
+        response = s.post(
+            "/login", data={"email": "", "password": "asdfas"}, follow_redirects=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            "Username or email and password are required" in str(response.data)
+        )
+
+        with s.session_transaction() as sess:
+            with self.assertRaises(KeyError):
+                id = sess["user_id"]
 
     def test_free_access_no_code_no_login_anonymous_user(self):
         """

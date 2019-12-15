@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint, render_template, session, request, url_for, redirect, flash, abort, jsonify
+from flask import render_template, session, request, url_for, redirect, flash, abort, jsonify
 from sqlalchemy.exc import IntegrityError
 
 import datamodels
@@ -12,6 +12,11 @@ from .utils import generate_thumbnail
 from .blueprint import SubdomainBlueprint
 
 blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")
+
+
+def merge_anonymous_data(user_id, data):
+    for seg_id in data:
+        datamodels.SegmentUserProgress.save_user_progress(seg_id, user_id, int(data[seg_id]))
 
 
 @blueprint.subdomain_route("/user/<slug>", methods=["GET"])
@@ -120,16 +125,17 @@ def create(institute=""):
         except Exception as e:
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)
-        if "anon_progress" in session:
-            d = json.loads(session["anon_progress"])
-            user.merge_anonymous_data(d)
-            session.pop("anon_progress")
         if "enrollments" in session:
             d = json.loads(session["enrollments"])
             for id in d:
                 course = datamodels.Course.find_by_id(int(id))
                 if course:
                     course.enroll(user)
+        if "anon_progress" in session:
+            d = json.loads(session["anon_progress"])
+            merge_anonymous_data(user.id, d)
+            session.pop("anon_progress")
+
         session["user_id"] = user.id
         flash("Thanks for registering, " + user.full_name + "!")
     else:
@@ -189,7 +195,7 @@ def login(institute=""):
                     session["user_id"] = user.id
                     if "anon_progress" in session:
                         d = json.loads(session["anon_progress"])
-                        user.merge_anonymous_data(d)
+                        merge_anonymous_data(user.id, d)
                         session.pop("anon_progress")
                     return redirect(request.args.get("from", "/"))
         else:

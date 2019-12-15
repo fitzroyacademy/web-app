@@ -1,6 +1,21 @@
 import enum
 
 
+PreferenceTags = [
+    "emails_from_teachers",
+    "emails_from_site",
+    "data_research",
+    "data_show_name",
+    "data_show_email",
+]
+
+
+class CourseAccess(object):
+    student = 1
+    teacher = 2
+    admin = 3
+
+
 class SegmentStatus(object):
     accessible = "accessible"
     completed = "completed"
@@ -26,8 +41,12 @@ class VideoTypeEnum(enum.Enum):
 
 class SegmentPermissionEnum(enum.Enum):
     normal = "normal"  # Normal Can be skipped
-    barrier = "barrier"  # Soft barrier Only this segment must be completed to continue (but not previous)
-    hard_barrier = "hard barrier"  # Hard barrier This and every prior segment must be completed to continue
+    barrier = (
+        "barrier"
+    )  # Soft barrier Only this segment must be completed to continue (but not previous)
+    hard_barrier = (
+        "hard barrier"
+    )  # Hard barrier This and every prior segment must be completed to continue
     hidden = "hidden"  # Hidden Not shown to students, visible only to teachers
     paid = "paid"  # You shall not pass if you haven't paid
 

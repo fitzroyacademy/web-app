@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 
 import datamodels
 from dataforms import AjaxCSRFTokenForm
-from enums import SegmentPermissionEnum, VideoTypeEnum
+from datamodels.enums import SegmentPermissionEnum, VideoTypeEnum
 from utils import stubs
 from .blueprint import SubdomainBlueprint
 from .decorators import login_required, teacher_required, enrollment_required

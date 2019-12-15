@@ -2,7 +2,7 @@ import datetime
 import unittest
 
 import datamodels
-from enums import InstitutePermissionEnum
+from datamodels.enums import InstitutePermissionEnum, CourseAccess
 from app import app
 
 
@@ -107,8 +107,9 @@ class TestModels(unittest.TestCase):
     def test_student_enrollment(self):
         u = self.makeUser(id=1)
         self.session.add(u)
-        c = self.make_standard_course(slug='abc')
+        c = self.make_standard_course(slug="abc")
         self.session.add(c)
+        self.session.commit()
         c.enroll(u)
         u2 = datamodels.get_user(1)
         u3 = self.makeUser(id=2, email="marge@simpsons.com", username="marge")
@@ -116,10 +117,8 @@ class TestModels(unittest.TestCase):
         c.enroll(u3)
         self.assertEqual(len(u2.courses), 1)
         self.assertEqual(u2.courses[0].id, 1)
-        self.assertEqual(
-            u2.course_enrollments[0].access_level, datamodels.COURSE_ACCESS_STUDENT
-        )
-        c2 = datamodels.get_course_by_slug('abc')
+        self.assertEqual(u2.course_enrollments[0].access_level, CourseAccess.student)
+        c2 = datamodels.get_course_by_slug("abc")
         self.assertEqual(len(c2.students), 2)
 
     def test_student_progress(self):
@@ -127,7 +126,7 @@ class TestModels(unittest.TestCase):
         u2 = self.makeUser(id=2, email="marge@simpsons.com", username="marge")
         self.session.add(u1)
         self.session.add(u2)
-        c = self.make_standard_course(slug='abc')
+        c = self.make_standard_course(slug="abc")
         self.session.add(c)
         c.enroll(u1)
         c.enroll(u2)
@@ -292,7 +291,9 @@ class TestModels(unittest.TestCase):
         )
         self.assertEqual(institute2.users[0].user.id, user.id)
         self.assertEqual(institute2.users[0].institute.id, institute2.id)
-        self.assertEqual(institute2.users[0].access_level, InstitutePermissionEnum.teacher)
+        self.assertEqual(
+            institute2.users[0].access_level, InstitutePermissionEnum.teacher
+        )
 
     def test_program_creation(self):
         self.assertEqual(len(self.session.query(datamodels.Program).all()), 0)
@@ -320,7 +321,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(self.session.query(datamodels.ProgramEnrollment).all()), 1)
         self.assertEqual(program2.users[0].user.id, user.id)
 
-    def test_get_segment_progress(self):
+    def test_get_user_progress(self):
         course = self.make_standard_course()
         self.session.add(course)
         lesson = self.make_standard_course_lesson(course=course)
@@ -330,7 +331,9 @@ class TestModels(unittest.TestCase):
         self.session.add(user, segment)
 
         # User doesn't have any progress
-        self.assertIsNone(datamodels.get_segment_progress(segment.id, user.id))
+        self.assertIsNone(
+            datamodels.SegmentUserProgress.find_user_progress(segment.id, user.id)
+        )
         with app.test_request_context():
             self.assertEqual(segment.user_progress(None), 0)
         self.assertEqual(segment.user_progress(user), 0)
@@ -341,7 +344,9 @@ class TestModels(unittest.TestCase):
         )
         self.session.add(progress)
 
-        progress = datamodels.get_segment_progress(segment.id, user.id)
+        progress = datamodels.SegmentUserProgress.find_user_progress(
+            segment.id, user.id
+        )
         self.assertIsInstance(progress, datamodels.SegmentUserProgress)
         self.assertEqual(progress.progress, 20)
         self.assertEqual(segment.user_progress(user), 20)
@@ -356,9 +361,9 @@ class TestModels(unittest.TestCase):
         self.session.add(user, segment)
 
         self.assertEqual(segment.user_progress(user), 0)
-        datamodels.save_segment_progress(segment.id, user.id, 30)
+        datamodels.SegmentUserProgress.save_user_progress(segment.id, user.id, 30)
         self.assertEqual(segment.user_progress(user), 30)
-        datamodels.save_segment_progress(segment.id, user.id, 50)
+        datamodels.SegmentUserProgress.save_user_progress(segment.id, user.id, 50)
         self.assertEqual(segment.user_progress(user), 50)
 
     def test_lesson_progress(self):
@@ -428,6 +433,7 @@ class TestModels(unittest.TestCase):
         self.session.add(seg_b)
         self.session.add(seg_c)
         self.session.add(seg_d)
+        self.session.commit()
         course.enroll(user)
         course_b.enroll(user)
         self.assertEqual(user.course_progress, 0)

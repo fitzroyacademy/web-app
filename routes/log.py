@@ -3,7 +3,6 @@ import json
 from flask import Blueprint, session, request
 
 import datamodels
-from utils.database import dump
 
 blueprint = Blueprint("log", __name__, template_folder="templates")
 

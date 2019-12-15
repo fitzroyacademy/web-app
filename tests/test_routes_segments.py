@@ -4,7 +4,7 @@ from app import app
 import re
 
 from .utils import make_authorized_call, ObjectsGenerator
-from enums import VideoTypeEnum, SegmentPermissionEnum
+from datamodels.enums import VideoTypeEnum, SegmentPermissionEnum
 
 
 class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
@@ -19,6 +19,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
                 email="home@teachers.com", id=1, username="the_teacher"
             )
             self.session.add(self.user)
+            self.session.commit()
             self.course.add_instructor(self.user)
 
     def tearDown(self):
@@ -183,7 +184,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l2.id),
             user=self.user,
             data={},
-            expected_status_code=400
+            expected_status_code=400,
         )
 
         self.assertEqual(len(l1.segments), 0)
@@ -206,7 +207,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/text".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=200
+            expected_status_code=200,
         )
 
         self.assertEqual(len(l1.segments), 1)
@@ -234,7 +235,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.assertEqual(len(l1.segments), 0)
         # Can't create segment with such name
         self.assertTrue(
-            re.search("create segment with such name.", response.json['message'])
+            re.search("create segment with such name.", response.json["message"])
         )
 
         data = {"segment_name": "Segment numero 1"}
@@ -247,9 +248,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.assertEqual(len(l1.segments), 0)
         print(response.json)
         self.assertTrue(
-            re.search(
-                "Segment description is required", response.json['message']
-            )
+            re.search("Segment description is required", response.json["message"])
         )
 
         data = {
@@ -361,7 +360,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             url="/course/abc-123/lessons/{}/segments/add/some_action".format(l1.id),
             user=self.user,
             data=data,
-            expected_status_code=400
+            expected_status_code=400,
         )
 
         self.assertEqual(len(l1.segments), 0)
@@ -427,7 +426,9 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         )
         self.assertEqual(len(l1.segments), 1)
         # Can't create segment with such name
-        self.assertEqual("Can't create segment with such name.", response.json["message"])
+        self.assertEqual(
+            "Can't create segment with such name.", response.json["message"]
+        )
 
     def test_add_segment_same_slug_different_lesson(self):
         l1 = self.make_standard_course_lesson(

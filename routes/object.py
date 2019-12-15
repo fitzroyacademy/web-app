@@ -1,11 +1,12 @@
 import json
 import random
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 from utils.base import get_current_user
 
 import datamodels
 from utils.database import dump
+from routes.utils import find_segment_barrier
 
 blueprint = Blueprint("object", __name__, template_folder="templates")
 
@@ -13,6 +14,9 @@ blueprint = Blueprint("object", __name__, template_folder="templates")
 @blueprint.route("/_segment/<segment_id>")
 def segment(segment_id):
     """ Returns a partial JSON dump of a Lesson Segment by ID. """
+
+    current_user = get_current_user()
+
     ext = None
     if segment_id.endswith(".json"):
         ext = "json"
@@ -20,8 +24,23 @@ def segment(segment_id):
     active_segment = datamodels.get_segment(segment_id)
     if active_segment is None:
         raise "Segment not found: %s".format(segment_id)
+
+    course = active_segment.lesson.course
+    barrier = find_segment_barrier(current_user, course)
+    ordered_segments = list(course.get_ordered_segments())
+    locked_segments = [ordered_segments[i].id for i in range(ordered_segments.index(barrier), len(ordered_segments))]
+
+    if not current_user:
+        anon_progress = json.loads(session.get("anon_progress", "{}"))
+    else:
+        anon_progress = {}
+
     data = {"active_segment": active_segment,
-            "locked": active_segment.locked(get_current_user())}
+            "locked": active_segment.locked(current_user, anon_progress),
+            "barrier_id": barrier.id if barrier else None,
+            "barrier_type": barrier.permission.name if barrier else None,
+            "locked_segments": locked_segments
+            }
     if ext is "json":
         dumped_data = dump(data["active_segment"])
         data["active_segment"] = dumped_data

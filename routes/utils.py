@@ -137,3 +137,12 @@ def retrieve_wistia_id(url):
         return external_id
 
     return ""
+
+
+def find_segment_barrier(current_user, course):
+    barriers = course.get_ordered_segments(only_barriers=True)
+    for barrier in barriers:
+        if barrier.user_status(current_user) != "completed":
+            return barrier
+
+    return None

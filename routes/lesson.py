@@ -5,11 +5,12 @@ from slugify import slugify
 
 import datamodels
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
-from enums import (
+from datamodels.enums import (
     ResourceTypeEnum,
     RESOURCE_CONTENT_IMG,
     VideoTypeEnum,
     SegmentPermissionEnum,
+    CourseAccess
 )
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
@@ -278,8 +279,8 @@ def add_teacher(user, course, course_slug, lesson_id, institute=""):
     )
 
     if enrolment.access_level not in [
-        datamodels.COURSE_ACCESS_ADMIN,
-        datamodels.COURSE_ACCESS_TEACHER,
+        CourseAccess.admin,
+        CourseAccess.teacher,
     ]:
         return jsonify({"success": False, "message": "User must be a teacher"}), 400
 

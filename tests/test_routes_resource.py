@@ -18,6 +18,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
                 email="home@teachers.com", id=1, username="the_teacher"
             )
             self.session.add(self.user)
+            self.session.commit()
             self.course.add_instructor(self.user)
 
             self.lesson1 = self.make_standard_course_lesson(

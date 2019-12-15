@@ -13,8 +13,8 @@ def get_seconds(dur):
 
 
 def dump(obj, seen=None):
-    if not isinstance(obj, datamodels.Base):
-        if isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], datamodels.Base):
+    if not isinstance(obj, datamodels.base.Base):
+        if isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], datamodels.base.Base):
             o = []
             for i in obj:
                 o.append(dump(i, seen=seen))
@@ -34,7 +34,7 @@ def dump(obj, seen=None):
         except TypeError:
             if isinstance(data, sa.orm.query.Query):
                 fields[f[4:]] = None
-            elif isinstance(data, datamodels.Base):
+            elif isinstance(data, datamodels.base.Base):
                 if id(data) in seen:
                     fields[f] = None
                 else:

@@ -18,9 +18,7 @@ class TestCourseRoutes(ObjectsGenerator, unittest.TestCase):
         c = self.make_standard_course()
         self.session.add(c)
         self.session.commit()
-        l1 = self.make_standard_course_lesson(
-            title="intro", course=c, order=0
-        )
+        l1 = self.make_standard_course_lesson(title="intro", course=c, order=0)
         self.session.add(l1)
         self.session.commit()
         s1 = self.make_segment(
@@ -40,8 +38,8 @@ class TestCourseRoutes(ObjectsGenerator, unittest.TestCase):
         response = s.post("/event/progress", data={"segment_id": 1, "percent": 33})
 
         d = json.loads(response.data)
-        self.assertEqual(d['segment_id'], '1')
-        self.assertEqual(d['progress'], 33)
+        self.assertEqual(d["segment_id"], "1")
+        self.assertEqual(d["progress"], 33)
 
         with s.session_transaction() as sess:
             self.assertIn("anon_progress", sess)
@@ -58,7 +56,7 @@ class TestCourseRoutes(ObjectsGenerator, unittest.TestCase):
         response = s.post("/event/progress", data={"segment_id": 1, "percent": 34})
 
         d = json.loads(response.data)
-        self.assertEqual(d['segment_id'], '1')
+        self.assertEqual(d["segment_id"], "1")
 
         with s.session_transaction() as sess:
             self.assertIn("anon_progress", sess)
@@ -75,7 +73,7 @@ class TestCourseRoutes(ObjectsGenerator, unittest.TestCase):
         response = s.post("/event/progress", data={"segment_id": 1, "percent": 10})
 
         d = json.loads(response.data)
-        self.assertEqual(d['segment_id'], '1')
+        self.assertEqual(d["segment_id"], "1")
 
         with s.session_transaction() as sess:
             self.assertIn("anon_progress", sess)
@@ -96,16 +94,18 @@ class TestCourseRoutes(ObjectsGenerator, unittest.TestCase):
 
         self.mockSegments()
 
-        response = make_authorized_call("/event/progress", user=u, data={"segment_id": 1, "percent": 10})
+        response = make_authorized_call(
+            "/event/progress", user=u, data={"segment_id": 1, "percent": 10}
+        )
 
         d = json.loads(response.data)
-        self.assertEqual(d['segment_id'], '1')
+        self.assertEqual(d["segment_id"], "1")
 
         s = app.test_client()
         with s.session_transaction() as sess:
             self.assertNotIn("anon_progress", sess)
 
         d = json.loads(response.data)
-        self.assertEqual(d['segment_id'], '1')
-        self.assertEqual(d['user_id'], 1)
-        self.assertEqual(d['progress'], 10)
+        self.assertEqual(d["segment_id"], "1")
+        self.assertEqual(d["user_id"], 1)
+        self.assertEqual(d["progress"], 10)

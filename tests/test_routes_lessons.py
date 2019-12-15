@@ -86,6 +86,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
         self.session.add(user)
+        self.session.commit()
         course.add_instructor(user)
 
         l1 = self.make_standard_course_lesson(
@@ -158,6 +159,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
         self.session.add(user)
+        self.session.commit()
         course.add_instructor(user)
 
         l1 = self.make_standard_course_lesson(
@@ -185,6 +187,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
         self.session.add(user)
+        self.session.commit()
         course.add_instructor(user)
 
         l1 = self.make_standard_course_lesson(
@@ -214,6 +217,7 @@ class TestLessonsRoutes(unittest.TestCase):
 
         user = self.makeUser(email="home@teachers.com", id=1, username="the_teacher")
         self.session.add(user)
+        self.session.commit()
         course.add_instructor(user)
 
         l1 = self.make_standard_course_lesson(
