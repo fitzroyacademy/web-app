@@ -4,6 +4,7 @@ from flask import render_template, session, request, url_for, redirect, flash, a
 from sqlalchemy.exc import IntegrityError
 
 import datamodels
+from datamodels.enums import PreferenceTags
 from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm
 
 from utils.base import get_current_user
@@ -223,7 +224,7 @@ def set_preference(preference_tag, on_or_off, institute=""):
     user = get_current_user()
     if user is None:
         return "No user"
-    if preference_tag not in datamodels.PreferenceTags:
+    if preference_tag not in PreferenceTags:
         flash("Unknown preference.")
         return "Unknown preference tag."
     if on_or_off in ["ON", "on"]:
