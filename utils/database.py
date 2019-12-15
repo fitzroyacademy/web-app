@@ -95,10 +95,9 @@ def reseed():
     c.add_instructor(datamodels.get_user(2))  # Marge
 
     c.enroll(datamodels.get_user(3))  # Bart
-    c.enroll(datamodels.get_user(3))  # Lisa
-    c.enroll(datamodels.get_user(3))  # Maggie
+    c.enroll(datamodels.get_user(4))  # Lisa
+    c.enroll(datamodels.get_user(5))  # Maggie
     session.add(c)
-
     session.commit()
 
     for i, lesson in enumerate(stubs.lessons):

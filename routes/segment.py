@@ -5,9 +5,9 @@ from slugify import slugify
 from sqlalchemy.exc import IntegrityError
 
 import datamodels
+from charts.student_progress import get_course_progress, get_students_progress
 from dataforms import AjaxCSRFTokenForm
 from datamodels.enums import SegmentPermissionEnum, VideoTypeEnum
-from utils import stubs
 from .blueprint import SubdomainBlueprint
 from .decorators import login_required, teacher_required, enrollment_required
 from .render_partials import render_intro, render_segment_list_element
@@ -314,11 +314,11 @@ def view(course_slug, lesson_slug, segment_slug, institute=""):
 
     course = datamodels.get_course_by_slug(course_slug)
     lesson = datamodels.Lesson.find_by_slug(course_slug, lesson_slug)
-
     data = {
-        "students": stubs.student_completion,
+        "students": get_students_progress(lesson.course),
         "active_lesson": lesson,
         "active_segment": segment,
+        "course_progress": get_course_progress(lesson.course),
         "course": course,
         "form": AjaxCSRFTokenForm()
     }

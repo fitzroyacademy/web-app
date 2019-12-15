@@ -2,11 +2,13 @@
   <div class="fit_chart">
     <div class="fit_chart_svg" id="fit_chart"></div>
     <div class="fit_chart_x">
-      <a href="#" class="tick" data-toggle="tooltip" data-placement="top" title="Name of lesson here"><img src="/static/assets/images/lessons/public-campaigning.jpg" alt="course"></a>
-      <a href="#" class="tick" data-toggle="tooltip" data-placement="top" title="Name of lesson here"><img src="/static/assets/images/lessons/agile-project-management.jpg" alt="course"></a>
-      <a href="#" class="tick" data-toggle="tooltip" data-placement="top" title="Name of lesson here"><img src="/static/assets/images/lessons/community-integration.jpg" alt="course"></a>
-      <a href="#" class="tick" data-toggle="tooltip" data-placement="top" title="Name of lesson here"><img src="/static/assets/images/lessons/empathy-mapping.jpg" alt="course"></a>
-      <a href="#" class="tick" data-toggle="tooltip" data-placement="top" title="Name of lesson here"><img src="/static/assets/images/lessons/social-outcomes-reporting.jpg" alt="course"></a>
+      {% for lesson in course_progress.lessons %}
+      <a href="#" class="tick"
+         data-toggle="tooltip"
+         data-fit-lesson-details
+         data-fit-avg-progress="{{ lesson.avg }}"
+         data-placement="top" title="{{ lesson.title }}"><img src="{{ lesson.thumbnail }}" alt="course"></a>
+      {% endfor %}
     </div>
   </div>
   <div class="fit_body person_active" id="fit_lesson_stats">
@@ -25,89 +27,11 @@
       </form>
       
       <div class="fit_student_list">
-        
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="{{ url_for('static', filename='assets/images/defaults/face.jpg') }}" alt="image">
-          </div>
-          <span class="fit_txt">Clare Carmody <span class="badge badge-pill badge-primary">admin</span></span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>
-        </a>        
 
-        <a class="fit_btn active">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="image">
-          </div>
-          <span class="fit_txt">Jenny Huang</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 92%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>
-
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/men/24.jpg" alt="image">
-          </div>
-          <span class="fit_txt">John Smith</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>
-
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="image">
-          </div>
-          <span class="fit_txt">Rithy Thul</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>
-
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/men/92.jpg" alt="image">
-          </div>
-          <span class="fit_txt">Muhammad Khalil</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>        
-
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="image">
-          </div>
-          <span class="fit_txt">Zhang Wei</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>
-
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/women/16.jpg" alt="image">
-          </div>
-          <span class="fit_txt">Sally Simpson</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>
-
-        <a href="#" class="fit_btn">
-          <div class="fit_pic">
-            <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="image">
-          </div>
-          <span class="fit_txt">Tim Timoythful</span>
-          <span class="fit_time">
-            <span class="progress"><div class="progress-bar" role="progressbar" style="width: 45%" aria-valuemin="0" aria-valuemax="100"></div></span>
-          </span>                
-        </a>
-
+          {% include 'partials/_student_list.html' %}
 
       </div><!-- fit_student_list -->
     </div>
   </div>
 </div>
+

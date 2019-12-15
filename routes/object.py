@@ -83,6 +83,7 @@ def lesson_resources(lesson_id):
         return {"error": "Lesson not found"}
     data = {"students": students,
             "lesson": lesson,
+            "lessons": lesson.course.get_ordered_lessons(),
             "course": lesson.course,
             "active_segment": lesson.segments[0] if lesson.segments else None,
             "active_lesson": lesson

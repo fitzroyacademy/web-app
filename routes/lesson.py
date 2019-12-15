@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, jsonify, flash, abort
 from slugify import slugify
 
 import datamodels
+from charts.student_progress import get_course_progress, get_students_progress
 from dataforms import AddLessonForm, LessonQAForm, AjaxCSRFTokenForm, AddResourceForm
 from datamodels.enums import (
     ResourceTypeEnum,
@@ -179,7 +180,7 @@ def retrieve(user, course, course_slug, lesson_id, institute=""):
         "teachers": [
             render_teacher(obj.user, course, lesson) for obj in lesson.teachers
         ],
-        "segments": lesson.normal_segments,
+        "segments": list(lesson.get_ordered_segments())[1:],
         "questions": [
             render_question_answer(course, lesson, question)
             for question in ordered_questions
@@ -229,9 +230,10 @@ def view(course_slug, lesson_slug, institute=""):
 
     segment = lesson.segments[0] if lesson.segments else None
     data = {
-        "students": stubs.student_completion,
+        "students": get_students_progress(course),
         "active_lesson": lesson,
         "active_segment": segment,
+        "course_progress": get_course_progress(course),
         "course": course,
         "form": AjaxCSRFTokenForm(),  # need to pass this form in case of guest enrolled for a course
     }

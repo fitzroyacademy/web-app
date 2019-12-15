@@ -585,14 +585,22 @@ $( document ).ready(function() {
   function render_student_chart(student_selector) {
 
     let colors = ['#333'];
+
+    let lessonDetails = document.querySelectorAll('[data-fit-lesson-details]');
+    let classAverage = [];
+    for (let l of lessonDetails) {
+      classAverage.push(l.dataset.fitAvgProgress);
+    }
+    console.log(classAverage);
     let series = [
-      {name: 'Class Average', data: [50, 50, 10, 50, 0]}
+      {name: 'Class Average', data: classAverage},
     ];
 
     let students = document.querySelectorAll(student_selector);
 
     for (let s of students) {
-      colors.push(s.dataset.fitChartColor);
+      //colors.push(s.dataset.fitChartColor);
+      colors.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
       series.push({
         name: s.dataset.fitStudentName,
         data: s.dataset.fitStudentCompletion.split(';').map((s) => parseInt(s))

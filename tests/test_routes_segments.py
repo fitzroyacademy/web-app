@@ -524,7 +524,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             re.search("Segment duplicated", response.get_data(as_text=True))
         )
 
-    def test_get_segment_veiw(self):
+    def test_get_segment_view(self):
         l1 = self.make_standard_course_lesson(
             title="intro", course=self.course, order=0, slug="intro"
         )
