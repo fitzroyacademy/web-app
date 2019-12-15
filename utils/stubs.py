@@ -73,10 +73,21 @@ students = [
     },
 ]
 
-segments = []
-segments.append(
-    [
-        {
+segments = [
+        [{
+            "type": "video",
+            "title": "Introduction",
+            "duration": "1:12",  # -> duration seconds
+            "external_id": "4ub59urk8l",
+            "url": "https://fitzroyacademy.wistia.com/medias/4ub59urk8l",
+            # language = en
+            "id": "seg_0",
+            "order": 0,
+            "template": "video_wistia",  # pop
+            "lesson_id": "00",  # ignore (matches segment index)
+            "course_id": "00",  # ignore (matches segment index)
+        }],
+        [{
             "type": "video",
             "title": "Introduction",
             "duration": "1:12",  # -> duration seconds
@@ -84,9 +95,9 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/4ub59urk8l",
             # language = en
             "id": "seg_a",
-            # "order", add
+            "order": 0,
             "template": "video_wistia",  # pop
-            "lesson_id": "00",  # ignore (matches segment index)
+            "lesson_id": "01",  # ignore (matches segment index)
             "course_id": "00",  # ignore (matches segment index)
         },
         {
@@ -97,7 +108,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_b",
-            "lesson_id": "00",
+            "order": 1,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -108,7 +120,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_c",
-            "lesson_id": "00",
+            "order": 2,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -119,7 +132,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_d",
-            "lesson_id": "00",
+            "order": 3,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -130,7 +144,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_e",
-            "lesson_id": "00",
+            "order": 4,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -141,7 +156,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_f",
-            "lesson_id": "00",
+            "order": 5,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -152,7 +168,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_g",
-            "lesson_id": "00",
+            "order": 6,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -163,7 +180,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_h",
-            "lesson_id": "00",
+            "order": 7,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -174,7 +192,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_i",
-            "lesson_id": "00",
+            "order": 8,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -185,7 +204,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_j",
-            "lesson_id": "00",
+            "order": 9,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -196,7 +216,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_k",
-            "lesson_id": "00",
+            "order": 10,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -207,7 +228,8 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_l",
-            "lesson_id": "00",
+            "order": 11,
+            "lesson_id": "01",
             "course_id": "00",
         },
         {
@@ -218,22 +240,19 @@ segments.append(
             "template": "video_wistia",
             "type": "video",
             "id": "seg_m",
-            "lesson_id": "00",
+            "order": 12,
+            "lesson_id": "01",
             "course_id": "00",
-        },
-    ]
-)
-
-segments.append(
-    [
-        {
+        }],  # Lesson 2 starts here
+        [{
             "title": "Introduction",
             "duration": "1:30",
             "external_id": "xmgvld0tjy",
             "url": "https://fitzroyacademy.wistia.com/medias/xmgvld0tjy",
             "template": "video_wistia",
             "id": "seg_n",
-            "lesson_id": "01",
+            "order": 0,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
         },
@@ -244,7 +263,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/nrd9n1i0th",
             "template": "video_wistia",
             "id": "seg_o",
-            "lesson_id": "01",
+            "order": 1,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
         },
@@ -255,7 +275,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/ik28rwd8xh",
             "template": "video_wistia",
             "id": "seg_p",
-            "lesson_id": "01",
+            "order": 2,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
         },
@@ -266,7 +287,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/5qr1imh89q",
             "template": "video_wistia",
             "id": "seg_q",
-            "lesson_id": "01",
+            "order": 3,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
         },
@@ -277,7 +299,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/i4fv1tzbke",
             "template": "video_wistia",
             "id": "seg_r",
-            "lesson_id": "01",
+            "order": 4,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
         },
@@ -288,7 +311,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/8r42r8wd4e",
             "template": "video_wistia",
             "id": "seg_s",
-            "lesson_id": "01",
+            "order": 5,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
         },
@@ -299,23 +323,20 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/kolppnbfaj",
             "template": "video_wistia",
             "id": "seg_t",
-            "lesson_id": "01",
+            "order": 6,
+            "lesson_id": "02",
             "course_id": "00",
             "type": "video",
-        },
-    ]
-)
-
-segments.append(
-    [
-        {
+        }],  # Lesson 3 starts here
+        [{
             "title": "Introduction",
             "duration": "1:22",
             "external_id": "nxdknxgjg4",
             "url": "https://fitzroyacademy.wistia.com/medias/nxdknxgjg4",
             "template": "video_wistia",
             "id": "598pejq0ahbmr92hdjgcx",
-            "lesson_id": "02",
+            "order": 0,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "vide",
         },
@@ -326,7 +347,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/bftwqod4cr",
             "template": "video_wistia",
             "id": "bpp1dfgexztukgyhdrqvk",
-            "lesson_id": "02",
+            "order": 1,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "vide",
         },
@@ -337,7 +359,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/tsni6veh6m",
             "template": "video_wistia",
             "id": "2plze9cgsb2ifhwb0ai9da",
-            "lesson_id": "02",
+            "order": 3,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
         },
@@ -348,7 +371,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/nleir20ny1",
             "template": "video_wistia",
             "id": "sj93fnzjlef0mvhaoiolb1s",
-            "lesson_id": "02",
+            "order": 4,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
         },
@@ -359,7 +383,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/jgqhh7dogk",
             "template": "video_wistia",
             "id": "nu9dmhwz7gsr4edpsrac1",
-            "lesson_id": "02",
+            "order": 5,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
         },
@@ -370,7 +395,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/13juax70dj",
             "template": "video_wistia",
             "id": "ouvwnfb2zz89vzag7l6jv",
-            "lesson_id": "02",
+            "order": 6,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
         },
@@ -381,7 +407,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/z32ayrtmdo",
             "template": "video_wistia",
             "id": "ptrrx6iowybe0ppxwv0wmq",
-            "lesson_id": "02",
+            "order": 7,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
         },
@@ -392,7 +419,8 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/ee8f50jiig",
             "template": "video_wistia",
             "id": "0zg5s4y4g3ynyrk05e1qpf",
-            "lesson_id": "02",
+            "order": 8,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
         },
@@ -403,20 +431,21 @@ segments.append(
             "url": "https://fitzroyacademy.wistia.com/medias/2jlicc2t0e",
             "template": "video_wistia",
             "id": "i6it0ta9sf7s90p8lu3z",
-            "lesson_id": "02",
+            "order": 9,
+            "lesson_id": "03",
             "course_id": "00",
             "type": "video",
-        },
+        }],
     ]
-)
 
 lessons = [
     {
         "id": "00",  # pop
         "course_id": "00",  # pop
-        "slug": "how-to-have-good-ideas",
-        "title": "How to have good ideas",
+        "slug": "introduction",
+        "title": "How to have good ideas - introduction",
         "segments": segments[0],
+        "order": 0,
         "active": True,
         "resources": [
             {
@@ -430,11 +459,31 @@ lessons = [
         ],
     },
     {
-        "id": "01",
+        "id": "01",  # pop
+        "course_id": "00",  # pop
+        "slug": "how-to-have-good-ideas",
+        "title": "How to have good ideas",
+        "segments": segments[1],
+        "order": 1,
+        "active": True,
+        "resources": [
+            {
+                "id": "res_a",  # -> slug
+                "title": "Good ideas reference sheet",
+                "type": "google_doc",
+                "lang": "en",  # -> language
+                "featured": True,
+                "url": "https://docs.google.com/document/d/1rQkOtFhmFFHzEizFJXpdvU4M1YGez5jIsXUHWpKyif4/edit#heading=h.i32sbgppwg0k",
+            }
+        ],
+    },
+    {
+        "id": "02",
         "slug": "how-to-sell-when-you-hate-selling",
         "course_id": "00",
         "title": "How to sell when you hate selling",
-        "segments": segments[1],
+        "segments": segments[2],
+        "order": 2,
         "active": True,
         "resources": [
             {
@@ -456,11 +505,12 @@ lessons = [
         ],
     },
     {
-        "id": "02",
+        "id": "03",
         "slug": "growth-forecasting",
         "course_id": "00",
         "title": "Growth forecasting",
-        "segments": segments[2],
+        "segments": segments[3],
+        "order": 3,
         "active": True,
         "resources": [
             {
@@ -498,6 +548,48 @@ lessons = [
         ],
     },
 ]
+
+
+user_segment_progress = [
+    {"email": "bart@simpsons.com",
+     "lessons": [{"lesson_id": "00",
+                  "progress": {"seg_0": 100}
+                   },
+                 {"lesson_id": "01",
+                  "progress": {"seg_a": 100, "seg_b":75, "seg_c": 80, "seg_d": 100, "seg_e": 15}
+                   },
+                 {"lesson_id": "02",
+                  "progress": {"seg_n": 15, "seg_o":20, "seg_p": 80, "seg_q": 100}
+                   },
+                 ]
+     },
+    {"email": "lisa@simpsons.com",
+     "lessons": [{"lesson_id": "00",
+                  "progress": {"seg_0": 98}
+                   },
+                 {"lesson_id": "01",
+                  "progress": {"seg_a": 87, "seg_b":100, "seg_c": 20, "seg_d": 77, "seg_e": 90}
+                   },
+                 {"lesson_id": "02",
+                  "progress": {"seg_n": 70, "seg_o":80, "seg_p": 11, "seg_q": 66}
+                   },
+                 ]
+     },
+    {"email": "maggie@simpsons.com",
+     "lessons": [{"lesson_id": "00",
+                  "progress": {"seg_0": 70}
+                   },
+                 {"lesson_id": "01",
+                  "progress": {"seg_a": 12, "seg_b":13, "seg_c": 35, "seg_d": 40, "seg_e": 78}
+                   },
+                 {"lesson_id": "02",
+                  "progress": {"seg_n": 55, "seg_o":0, "seg_p": 55, "seg_q": 100}
+                   },
+                 ]
+
+     }
+]
+
 
 
 courses = [{"lessons": [lessons[0], lessons[1], lessons[2]]}]

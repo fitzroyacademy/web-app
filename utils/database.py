@@ -88,9 +88,18 @@ def reseed():
         workload_title="",
         workload_subtitle="",
     )
+    session.add(c)
+    session.commit()
+
     c.add_instructor(datamodels.get_user(1))  # Homer
     c.add_instructor(datamodels.get_user(2))  # Marge
+
+    c.enroll(datamodels.get_user(3))  # Bart
+    c.enroll(datamodels.get_user(3))  # Lisa
+    c.enroll(datamodels.get_user(3))  # Maggie
     session.add(c)
+
+    session.commit()
 
     for i, lesson in enumerate(stubs.lessons):
         lesson = copy.deepcopy(lesson)
@@ -98,7 +107,6 @@ def reseed():
         segments = lesson.pop("segments")
         lesson.pop("id")
         lesson.pop("course_id")
-        lesson["order"] = i
         lesson["language"] = "en"
         l = datamodels.Lesson(**lesson)
         l.course = c
@@ -112,7 +120,6 @@ def reseed():
             segment.pop("course_id")
             segment.pop("template")  # ultimately derived from external URL
             segment["slug"] = segment.pop("id")
-            segment["order"] = j
             segment["language"] = "en"
             s = datamodels.Segment(**segment)
             l.segments.append(s)
@@ -128,6 +135,15 @@ def reseed():
             l.resources.append(r)
             session.add(r)
         session.commit()
+
+    for user_progress in stubs.user_segment_progress:
+        user = datamodels.User.find_by_email(user_progress["email"])
+        for l in user_progress["lessons"]:
+            for slug, progress in l["progress"].items():
+                # we can search segments by slug because in stubs segments slugs are unique
+                segment = datamodels.Segment.objects().filter(datamodels.Segment.slug==slug).first()
+                datamodels.SegmentUserProgress.save_user_progress(segment.id, user.id, progress)
+
 
     # default institute, whitout subdomain
     fitz_institute = datamodels.Institute(name="Fitzroyacademy", logo="", slug="")
