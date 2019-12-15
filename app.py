@@ -1,6 +1,4 @@
-import datetime
 from os import environ
-from uuid import uuid4
 
 import jinja2
 import sass
@@ -9,11 +7,11 @@ from werkzeug.routing import BuildError
 from werkzeug.utils import import_string
 
 import commands
+import template_filters
 import context_preprocessor
 import routes
 import routes.course
 import routes.error
-from utils.base import get_current_user
 from utils.database import dump
 
 
@@ -42,6 +40,9 @@ app.register_blueprint(commands.bp, cli_group='utils')
 # Register app context processor
 app.register_blueprint(context_preprocessor.bp)
 
+# Register app template filters
+app.register_blueprint(template_filters.blueprint)
+
 
 app.add_url_rule(app.static_url_path + '/<path:filename>',
                  endpoint='static',
@@ -65,13 +66,11 @@ def before_route(endpoint, values):
                              endpoint in subdomain_endpoints]) and values is not None:
         values.pop('institute', None)
 
-@app.route('/')
-def index():
-    return routes.course.index()
 
-def compile_sass():
-    sass.compile(dirname=("static/assets/scss", 'static/css'))
-
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 @jinja2.contextfunction
 def get_vars(c):
@@ -88,69 +87,6 @@ def get_vars(c):
     return methods
 app.jinja_env.globals.update(get_vars=get_vars)
 
-@app.after_request
-def add_header(response):
-    response.headers['Cache-Control'] = 'no-store'
-    return response
-
-@app.template_filter()
-def join_names(users):
-    if users is None:
-        return ""
-    names = []
-    for user in users:
-        names.append(user.full_name)
-    return ", ".join(names)
-
-@app.template_filter()
-def cents_to_dolars(amount):
-    return amount/100.0
-
-@app.template_filter()
-def format_time(seconds):
-    t = str(datetime.timedelta(seconds=seconds)).split(':')
-    hours = int(t[0])
-    minutes = int(t[1])
-    out = ""
-    if hours > 0:
-        out += "{} hour".format(hours)
-        if hours > 1:
-            out += "s"
-    if hours > 0 and minutes > 0:
-        out += ", "
-    if minutes > 0:
-        out += "{} minute".format(minutes)
-        if minutes > 1:
-            out += "s"
-    return out
-
-@app.template_filter()
-def hhmmss(seconds):
-    out = str(datetime.timedelta(seconds=seconds))
-    if seconds < 3600:
-        out = out[2:]
-
-    return out if not out.startswith("0") else out[1:]
-
-@app.template_filter()
-def hhmm(seconds):
-    out = str(datetime.timedelta(seconds=seconds)).split(":")
-    return "{}:{}".format(out[0], out[1])
-
-def uuid():
-    return "{}".format(uuid4().hex)
-app.jinja_env.globals.update(uuid=uuid)
-
-def get_logo(institute):
-
-    if institute:
-        logo_url = institute.logo_url
-        if logo_url:
-            return '<img src="{}">'.format(logo_url)
-
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 897 1337"><path d="M896.926,417.590 L0.097,416.434 L0.056,119.532 L0.058,119.532 L0.024,119.525 L298.280,0.028 L297.542,119.532 L298.114,119.532 L298.088,119.525 L596.343,0.028 L596.792,119.532 L598.755,119.532 L598.721,119.525 L896.975,0.028 L896.926,417.590 ZM683.424,1022.533 L369.742,1023.094 L368.821,1336.982 L0.072,1335.695 L0.063,650.350 L683.424,650.350 L683.424,1022.533 ZM0.056,650.350 L0.063,650.350 L0.056,650.350 Z"></path></svg>'
-app.jinja_env.globals.update(get_logo=get_logo)
-
 def url4(*args, **kwargs):
     try:
         # For subdomains url_for is building url with server name and schema, and we would like to keep relative path.
@@ -161,14 +97,10 @@ def url4(*args, **kwargs):
         return "#"
 app.jinja_env.globals.update(url_for=url4)
 
-def url_is(*endpoints):
-    return (request.endpoint in endpoints)
-app.jinja_env.globals.update(url_is=url_is)
 
-def teacher_of(course):
-    current_user = get_current_user()
-    return current_user and current_user.teaches(course)
-app.jinja_env.globals.update(teacher_of=teacher_of)
+@app.route('/')
+def index():
+    return routes.course.index()
 
 # This route needs to live here forever because it requires access to the app.
 @app.route('/api', methods=["GET"])
@@ -176,6 +108,8 @@ def api():
     docs = routes.dump_api(app)
     return render_template('url_fors.html', controllers=docs)
 
+def compile_sass():
+    sass.compile(dirname=("static/assets/scss", 'static/css'))
 
 if __name__ == "__main__":
     app.logger.info("Building SASS")
