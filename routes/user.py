@@ -214,7 +214,7 @@ def logout(user, institute=""):
     for key in keys:
         session.pop(key)
 
-    return redirect(url_for("index"))
+    return redirect(url_for("course.index"))
 
 
 @blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])

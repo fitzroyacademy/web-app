@@ -72,6 +72,7 @@ def add_header(response):
     response.headers['Cache-Control'] = 'no-store'
     return response
 
+# Those globals needs to live here forever because they require an access to the app.
 @jinja2.contextfunction
 def get_vars(c):
     if app.debug != True:
@@ -96,11 +97,6 @@ def url4(*args, **kwargs):
             flash("{}".format(e))
         return "#"
 app.jinja_env.globals.update(url_for=url4)
-
-
-@app.route('/')
-def index():
-    return routes.course.index()
 
 # This route needs to live here forever because it requires access to the app.
 @app.route('/api', methods=["GET"])
