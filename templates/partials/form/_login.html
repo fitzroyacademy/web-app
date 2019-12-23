@@ -11,7 +11,7 @@
 
   <div class="tab-content" id="tabContent">
     <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
-      <form class="form" action="{{ url_for('user.create') }}?from={{ request.path }}" method="post">
+      <form class="form" action="{{ url_for('user.create') }}?last_page={{ request.path }}" method="post">
         
         {{ form.csrf_token }}
         <div class="row">
@@ -60,7 +60,7 @@
 
     <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
       {% include 'partials/form/_errors.html' %}
-      <form class="form" action="{{ url_for('user.login') }}?from={{ request.path }}" method="post">
+      <form class="form" action="{{ url_for('user.login') }}?last_page={{ request.path }}" method="post">
         {{ form.csrf_token }}
         
         <div class="fit_fancyplace">

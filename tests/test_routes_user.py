@@ -1,3 +1,4 @@
+import json
 import unittest
 import datamodels
 from app import app
@@ -263,3 +264,50 @@ class TestUserEnrollment(ObjectsGenerator, unittest.TestCase):
         )
 
         self.assertTrue(course.is_student(self.user.id))
+
+
+class TestUserSettings(ObjectsGenerator, unittest.TestCase):
+    def setUp(self):
+        with app.app_context():
+            self.session = datamodels.get_session()
+
+        self.user = self.makeUser()
+        self.session.add(self.user)
+        self.session.commit()
+
+    def tearDown(self):
+        datamodels._clear_session_for_tests()
+
+    def test_set_setting_anonymous(self):
+        s = app.test_client()
+
+        response = s.post("/user/settings/set", data={"key": "hardware", "value": "macbook"})
+
+        d = json.loads(response.data)
+        self.assertEqual(d["key"], "hardware")
+        self.assertEqual(d["value"], "macbook")
+
+        with s.session_transaction() as sess:
+            self.assertIn("custom_settings", sess)
+            custom_settings = json.loads(sess["custom_settings"])
+            self.assertEqual(custom_settings["hardware"], "macbook")
+
+    def test_set_setting_logged_in(self):
+        response = make_authorized_call("/user/settings/set", self.user,
+                                        data={"key": "hardware", "value": "macbook"})
+
+        d = json.loads(response.data)
+        self.assertEqual(d["key"], "hardware")
+        self.assertEqual(d["value"], "macbook")
+
+        custom_settings = self.user.get_custom_settings()
+        self.assertEqual(custom_settings['hardware'], "macbook")
+
+    def test_set_settings_wrong_data(self):
+        make_authorized_call("/user/settings/set", self.user,
+                             data={"key": "", "value": "macbook"},
+                             expected_status_code=400)
+
+        make_authorized_call("/user/settings/set", self.user,
+                             data={"key": "hardware", "value": ""},
+                             expected_status_code=400)

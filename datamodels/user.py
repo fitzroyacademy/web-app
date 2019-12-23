@@ -30,6 +30,7 @@ class User(BaseModel):
     institutes = orm.relationship("InstituteEnrollment", back_populates="user")
     programs = orm.relationship("ProgramEnrollment", back_populates="user")
     course_enrollments = orm.relationship("CourseEnrollment", back_populates="user")
+    custom_settings = orm.relationship("CustomSetting", back_populates="user")
 
     @hybrid_property
     def password(self):
@@ -83,6 +84,9 @@ class User(BaseModel):
     @classmethod
     def find_by_email(cls, email):
         return cls.objects().filter(cls.email == email).first()
+
+    def get_custom_settings(self):
+        return {obj.key: obj.value for obj in self.custom_settings}
 
 
 class UserPreference(BaseModel):

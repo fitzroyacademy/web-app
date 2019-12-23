@@ -29,6 +29,7 @@ from .institute import (
     InstituteEnrollment,
     get_program_by_slug,
 )
+from .custom_settings import CustomSetting
 from .base import get_session, _clear_session_for_tests
 
 

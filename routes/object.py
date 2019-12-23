@@ -7,6 +7,7 @@ from utils.base import get_current_user
 import datamodels
 from utils.database import dump
 from routes.utils import find_segment_barrier
+from charts.student_progress import get_course_progress, get_students_progress
 
 blueprint = Blueprint("object", __name__, template_folder="templates")
 
@@ -51,41 +52,17 @@ def segment(segment_id):
 @blueprint.route("/_lesson_resources/<lesson_id>")
 def lesson_resources(lesson_id):
     """ Returns a partial JSON dump of a Lesson Resource by ID. """
-    students = [
-        {
-            "id": "1",
-            "name": "Alice",
-            "completion": ";".join(str(v) for v in random.sample(range(100), 5)),
-            "progress": random.randrange(50, 100),
-            "color": "#e809db",
-            "admin": False,
-        },
-        {
-            "id": "2",
-            "name": "Bob",
-            "completion": ";".join(str(v) for v in random.sample(range(100), 5)),
-            "progress": random.randrange(10, 50),
-            "color": "#0f7ff4",
-            "admin": False,
-        },
-        {
-            "id": "3",
-            "name": "Eve",
-            "completion": ";".join(str(v) for v in random.sample(range(100), 5)),
-            "progress": random.randrange(50, 100),
-            "color": "#666",
-            "admin": True,
-        },
-    ]
 
     lesson = datamodels.get_lesson(lesson_id)
+    course = lesson.course
     if lesson is None:
         return {"error": "Lesson not found"}
-    data = {"students": students,
+    data = {"students": get_students_progress(course),
             "lesson": lesson,
             "lessons": lesson.course.get_ordered_lessons(),
             "course": lesson.course,
             "active_segment": lesson.segments[0] if lesson.segments else None,
-            "active_lesson": lesson
+            "active_lesson": lesson,
+            "course_progress": get_course_progress(course)
             }
     return render_template("partials/course/_lesson_detail.html", **data)

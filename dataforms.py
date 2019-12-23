@@ -82,3 +82,8 @@ class LessonQAForm(CSRFBaseForm):
 
 class ReorderForm(CSRFBaseForm):
     items_order = StringField("Ordered items", [validators.required()])
+
+
+class CustomSettingForm(CSRFBaseForm):
+    key = StringField("Key", [validators.required(), validators.Length(min=1, max=16)])
+    value = StringField("Value", [validators.required(), validators.Length(min=1, max=64)])

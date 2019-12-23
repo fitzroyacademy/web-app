@@ -591,7 +591,7 @@ $( document ).ready(function() {
     for (let l of lessonDetails) {
       classAverage.push(l.dataset.fitAvgProgress);
     }
-    console.log(classAverage);
+
     let series = [
       {name: 'Class Average', data: classAverage},
     ];

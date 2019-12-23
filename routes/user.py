@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 
 import datamodels
 from datamodels.enums import PreferenceTags
-from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm
+from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm, CustomSettingForm
 
 from utils.base import get_current_user
 from .decorators import login_required
@@ -34,6 +34,7 @@ def view(slug, institute=""):
 def retrieve(user, institute=""):
 
     return render_template("user_edit.html", **{"form": EditUserForm()})
+
 
 @blueprint.subdomain_route("/edit", methods=["POST"])
 @login_required
@@ -122,7 +123,7 @@ def create(institute=""):
         except IntegrityError:
             db.rollback()
             flash("This username is already taken")
-            return redirect("/")
+            return redirect(redirect(request.args.get("last_page", "/")))
         except Exception as e:
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)
@@ -198,7 +199,7 @@ def login(institute=""):
                         d = json.loads(session["anon_progress"])
                         merge_anonymous_data(user.id, d)
                         session.pop("anon_progress")
-                    return redirect(request.args.get("from", "/"))
+                    return redirect(request.args.get("last_page", "/"))
         else:
             data["errors"].append("Username or email and password are required")
     else:
@@ -219,11 +220,9 @@ def logout(user, institute=""):
 
 
 @blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
-def set_preference(preference_tag, on_or_off, institute=""):
+@login_required
+def set_preference(user, preference_tag, on_or_off, institute=""):
     """ Set a user preference. """
-    user = get_current_user()
-    if user is None:
-        return "No user"
     if preference_tag not in PreferenceTags:
         flash("Unknown preference.")
         return "Unknown preference tag."
@@ -236,3 +235,24 @@ def set_preference(preference_tag, on_or_off, institute=""):
         return "Unknown preference setting."
     user.set_preference(preference_tag, value)
     return ""
+
+
+@blueprint.subdomain_route("/user/settings/set", methods=["POST"])
+def set_user_setting(institute=""):
+    form = CustomSettingForm(request.form)
+    user = get_current_user()
+    if form.validate():
+        key = form.key.data
+        value = form.value.data
+        if user:
+            try:
+                datamodels.CustomSetting.set_setting(key, value, user)
+            except ValueError:
+                return jsonify({"message": "There is no such setting available"}), 400
+        else:
+            custom_settings = json.loads(session.get("custom_settings", "{}"))
+            custom_settings[key] = value
+            session["custom_settings"] = json.dumps(custom_settings)
+        return jsonify({"key": key, "value": value})
+    else:
+        return jsonify({"message": "Both key and value must be provided"}), 400
