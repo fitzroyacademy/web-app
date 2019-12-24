@@ -27,7 +27,7 @@ from .institute import (
     InstituteEnrollment,
     get_program_by_slug,
 )
-from .custom_settings import CustomSetting
+from .custom_settings import CustomSetting, CUSTOM_SETTINGS_KEYS
 from .base import get_session, _clear_session_for_tests
 
 
@@ -75,4 +75,5 @@ __all__ = [
     "_clear_session_for_tests",
     "get_user",
     "get_user_by_email",
+    "CUSTOM_SETTINGS_KEYS",
 ]

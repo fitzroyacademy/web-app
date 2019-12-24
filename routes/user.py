@@ -264,11 +264,10 @@ def set_user_setting(institute=""):
     if form.validate():
         key = form.key.data
         value = form.value.data
+        if key not in datamodels.CUSTOM_SETTINGS_KEYS:
+            return jsonify({"message": "There is no such setting available"}), 400
         if user:
-            try:
-                datamodels.CustomSetting.set_setting(key, value, user)
-            except ValueError:
-                return jsonify({"message": "There is no such setting available"}), 400
+            datamodels.CustomSetting.set_setting(key, value, user)
         else:
             custom_settings = get_session_data(session, "custom_settings")
             custom_settings[key] = value
