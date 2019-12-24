@@ -1,4 +1,6 @@
+import hashlib
 import io
+import json
 import os
 from datetime import datetime
 
@@ -7,9 +9,6 @@ from PIL import Image
 from flask import current_app, jsonify
 
 from dataforms import ReorderForm
-
-import hashlib
-
 
 ALLOWED_MIMETYPES = ["png", "jpg", "jpeg", "gif"]
 THUMBNAIL_SIZES = {
@@ -44,7 +43,7 @@ def generate_thumbnail(file, thumbnail_type):
     if not file:
         return None
 
-    ext = file.content_type.split('/')[-1]
+    ext = file.content_type.split("/")[-1]
     if ext not in ALLOWED_MIMETYPES:
         return ""
 
@@ -55,7 +54,7 @@ def generate_thumbnail(file, thumbnail_type):
     filename = "{}_{}_thumb_{}.{}".format(
         now.strftime("%Y-%m-%d-%H-%M-%S-%f"),
         hashlib.md5(file.read()).hexdigest(),
-        "x".join('{}'.format(n) for n in THUMBNAIL_SIZES[thumbnail_type]),
+        "x".join("{}".format(n) for n in THUMBNAIL_SIZES[thumbnail_type]),
         ext,
     )
 
@@ -146,3 +145,11 @@ def find_segment_barrier(current_user, course):
             return barrier
 
     return None
+
+
+def get_session_data(session_obj, key):
+    return json.loads(session_obj.get(key, "{}"))
+
+
+def set_session_data(session_obj, key, data):
+    session_obj[key] = json.dumps(data)

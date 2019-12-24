@@ -9,7 +9,7 @@ from flask import (
     current_app,
     jsonify,
     abort,
-    make_response
+    make_response,
 )
 
 import datamodels
@@ -21,6 +21,7 @@ from routes.render_partials import render_teacher
 from routes.blueprint import SubdomainBlueprint
 
 blueprint = SubdomainBlueprint("institute", __name__, template_folder="templates")
+
 
 @blueprint.route("/add", methods=["GET", "POST"])
 @login_required
@@ -41,9 +42,7 @@ def add(user):
                 slug = slug[:46] + "-" + str(uuid4())[:3]
 
             institute = datamodels.Institute(
-                name=form.name.data,
-                description=form.description.data,
-                slug=slug
+                name=form.name.data, description=form.description.data, slug=slug
             )
 
             if "cover_image" in request.files:
@@ -62,7 +61,11 @@ def add(user):
 
             protocol = "https" if request.url.startswith("https") else "http"
 
-            return redirect("{}://{}.{}/institute/edit".format(protocol, slug, current_app.config["SERVER_NAME"]))
+            return redirect(
+                "{}://{}.{}/institute/edit".format(
+                    protocol, slug, current_app.config["SERVER_NAME"]
+                )
+            )
         else:
             for key, value in form.errors.items():
                 flash("Field {}: {}".format(key, ",".join(value)))
@@ -78,19 +81,28 @@ def retrieve(user, institute=""):
 
     if institute is None:
         flash("No such institute.")
-        return redirect('/')
+        return redirect("/")
 
     if not institute.is_admin(user):
         return redirect("/")
 
-    data = {"form": AjaxCSRFTokenForm(),
-            "institute": institute,
-            "teachers": [render_teacher(obj, institute=institute) for obj in institute.teachers],
-            "admins": [render_teacher(obj, institute=institute, user_type="admin") for obj in institute.admins],
-            "managers": [render_teacher(obj, institute=institute, user_type="manager") for obj in institute.managers],
-            "cover_image": institute.cover_image_url,
-            "logo": institute.logo_url
-            }
+    data = {
+        "form": AjaxCSRFTokenForm(),
+        "institute": institute,
+        "teachers": [
+            render_teacher(obj, institute=institute) for obj in institute.teachers
+        ],
+        "admins": [
+            render_teacher(obj, institute=institute, user_type="admin")
+            for obj in institute.admins
+        ],
+        "managers": [
+            render_teacher(obj, institute=institute, user_type="manager")
+            for obj in institute.managers
+        ],
+        "cover_image": institute.cover_image_url,
+        "logo": institute.logo_url,
+    }
 
     return render_template("institute.html", **data)
 
@@ -100,7 +112,15 @@ def retrieve(user, institute=""):
 def edit(user, institute=""):
 
     if not institute:
-        return jsonify({"success": False, "message": "Well, no. You can\'t edit this institute. :)"}), 400
+        return (
+            jsonify(
+                {
+                    "success": False,
+                    "message": "Well, no. You can't edit this institute. :)",
+                }
+            ),
+            400,
+        )
 
     institute = datamodels.Institute.find_by_slug(institute)
 
@@ -148,7 +168,7 @@ def edit(user, institute=""):
                         "message": "Couldn't upload picture. Try again or use different file format",
                     }
                 ),
-                400
+                400,
             )
 
         institute.logo = filename
@@ -159,7 +179,9 @@ def edit(user, institute=""):
     return jsonify({"success": True})
 
 
-@blueprint.subdomain_route("/edit/user/remove/<int:user_id>/<access_type>", methods=["POST"])
+@blueprint.subdomain_route(
+    "/edit/user/remove/<int:user_id>/<access_type>", methods=["POST"]
+)
 @login_required
 def remove_user(user, user_id=None, access_type="teacher", institute=""):
 
@@ -169,17 +191,28 @@ def remove_user(user, user_id=None, access_type="teacher", institute=""):
         raise abort(404, "No such institute or you don't have permissions to edit it")
 
     if user.id == user_id and access_type == InstitutePermissionEnum.admin.name:
-        return jsonify({"success": False, "message": "You can't remove yourself from an admin role"}), 400
+        return (
+            jsonify(
+                {
+                    "success": False,
+                    "message": "You can't remove yourself from an admin role",
+                }
+            ),
+            400,
+        )
 
     user_to_remove = datamodels.get_user(user_id)
     if not user_to_remove:
         return jsonify({"success": False, "message": "No such user"}), 400
 
-
     removed = institute.remove_user(user_to_remove, access_type)
 
     return jsonify(
-        {"success": removed, "teacher_id": user_id, "message": "User removed from role {}".format(access_type)}
+        {
+            "success": removed,
+            "teacher_id": user_id,
+            "message": "User removed from role {}".format(access_type),
+        }
     )
 
 
@@ -224,9 +257,12 @@ def add_user(user, institute="", access_level="teacher"):
         {
             "success": True,
             "message": "Successfully added!",
-            "teacher": render_teacher(new_user, institute=institute, user_type=access_level.name),
+            "teacher": render_teacher(
+                new_user, institute=institute, user_type=access_level.name
+            ),
         }
     )
+
 
 @blueprint.subdomain_route("/edit/slug", methods=["POST"])
 @login_required
@@ -266,4 +302,10 @@ def change_slug(user, institute=""):
 
     protocol = "https" if request.url.startswith("https") else "http"
 
-    return jsonify({"redirect_url": "{}://{}.{}/institute/edit".format(protocol, slug, current_app.config["SERVER_NAME"])})
+    return jsonify(
+        {
+            "redirect_url": "{}://{}.{}/institute/edit".format(
+                protocol, slug, current_app.config["SERVER_NAME"]
+            )
+        }
+    )

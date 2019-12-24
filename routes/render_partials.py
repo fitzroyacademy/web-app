@@ -15,12 +15,13 @@ def render_teacher(user, course=None, lesson=None, institute=None, user_type="te
 
     obj = course or institute
 
-    data = {"user": user,
-            "obj": obj,
-            "lesson": lesson,
-            "data_type": data_type,
-            "user_type": user_type
-            }
+    data = {
+        "user": user,
+        "obj": obj,
+        "lesson": lesson,
+        "data_type": data_type,
+        "user_type": user_type,
+    }
 
     return render_template("partials/course/_teacher.html", **data)
 
@@ -32,16 +33,12 @@ def render_intro(introduction):
 
 
 def render_segment_list_element(course, lesson, segment):
-    data = {"segment": segment,
-            "course": course,
-            "lesson": lesson}
+    data = {"segment": segment, "course": course, "lesson": lesson}
 
     return render_template("partials/course/_list_segment_element.html", **data)
 
 
 def render_resource_list_element(course, lesson, resource):
-    data = {"resource": resource,
-            "course": course,
-            "lesson": lesson}
+    data = {"resource": resource, "course": course, "lesson": lesson}
 
     return render_template("partials/course/_list_resource_element.html", **data)

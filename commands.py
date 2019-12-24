@@ -1,5 +1,6 @@
 import boto3
 import click
+from botocore.exceptions import ClientError
 from flask import Blueprint, current_app
 
 from utils.database import reseed

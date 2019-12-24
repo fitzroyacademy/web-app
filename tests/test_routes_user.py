@@ -3,6 +3,8 @@ import unittest
 import datamodels
 from app import app
 
+from routes.utils import get_session_data, set_session_data
+
 from .utils import make_authorized_call, ObjectsGenerator
 
 
@@ -281,7 +283,7 @@ class TestUserSettings(ObjectsGenerator, unittest.TestCase):
     def test_set_setting_anonymous(self):
         s = app.test_client()
 
-        response = s.post("/user/settings/set", data={"key": "hardware", "value": "macbook"})
+        response = s.post("/user/settings", data={"key": "hardware", "value": "macbook"})
 
         d = json.loads(response.data)
         self.assertEqual(d["key"], "hardware")
@@ -289,25 +291,46 @@ class TestUserSettings(ObjectsGenerator, unittest.TestCase):
 
         with s.session_transaction() as sess:
             self.assertIn("custom_settings", sess)
-            custom_settings = json.loads(sess["custom_settings"])
+            custom_settings = get_session_data(sess, "custom_settings")
             self.assertEqual(custom_settings["hardware"], "macbook")
 
     def test_set_setting_logged_in(self):
-        response = make_authorized_call("/user/settings/set", self.user,
+        response = make_authorized_call("/user/settings", self.user,
                                         data={"key": "hardware", "value": "macbook"})
 
-        d = json.loads(response.data)
-        self.assertEqual(d["key"], "hardware")
-        self.assertEqual(d["value"], "macbook")
+        self.assertEqual(response.json["key"], "hardware")
+        self.assertEqual(response.json["value"], "macbook")
 
         custom_settings = self.user.get_custom_settings()
         self.assertEqual(custom_settings['hardware'], "macbook")
 
     def test_set_settings_wrong_data(self):
-        make_authorized_call("/user/settings/set", self.user,
+        make_authorized_call("/user/settings", self.user,
                              data={"key": "", "value": "macbook"},
                              expected_status_code=400)
 
-        make_authorized_call("/user/settings/set", self.user,
+        make_authorized_call("/user/settings", self.user,
                              data={"key": "hardware", "value": ""},
                              expected_status_code=400)
+
+    def test_get_settings_logged_in(self):
+        datamodels.CustomSetting.set_setting("foo", "bar", self.user)
+        datamodels.CustomSetting.set_setting("oof", "rab", self.user)
+
+        response = make_authorized_call("/user/settings", self.user,
+                                        expected_status_code=200,
+                                        method="GET"
+                                        )
+
+        self.assertEqual(response.json["foo"], "bar")
+        self.assertEqual(response.json["oof"], "rab")
+
+    def test_get_settings_anonymous(self):
+        s = app.test_client()
+        with s.session_transaction() as sess:
+            set_session_data(sess, "custom_settings", {"foo": "bar", "oof": "rab"})
+
+        response = s.get("/user/settings")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json["foo"], "bar")
+        self.assertEqual(response.json["oof"], "rab")

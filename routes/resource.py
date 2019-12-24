@@ -79,16 +79,24 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None, institu
         db.add(instance)
         db.commit()
 
-        return jsonify({
-            "html": render_resource_list_element(course=course, lesson=lesson, resource=instance),
-            "message": "Resource updated" if resource_id else "Resource created",
-            "id": instance.id
-        })
+        return jsonify(
+            {
+                "html": render_resource_list_element(
+                    course=course, lesson=lesson, resource=instance
+                ),
+                "message": "Resource updated" if resource_id else "Resource created",
+                "id": instance.id,
+            }
+        )
     else:
         errors = [error for error in form.errors.values()]
 
-    return jsonify({"message": "There were errors when saving resource data",
-                    "errors": errors}), 400
+    return (
+        jsonify(
+            {"message": "There were errors when saving resource data", "errors": errors}
+        ),
+        400,
+    )
 
 
 @blueprint.subdomain_route(

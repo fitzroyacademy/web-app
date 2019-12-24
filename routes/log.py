@@ -25,10 +25,10 @@ def add_event(event_type):
             seg = datamodels.get_segment(segment_id)
             seg.save_user_progress(user, progress)
             d = {
-              'segment_id': segment_id,
-              'user_id': user_id,
-              'user_status': seg.user_status(user),
-              'progress': seg.user_progress(user)
+                "segment_id": segment_id,
+                "user_id": user_id,
+                "user_status": seg.user_status(user),
+                "progress": seg.user_progress(user),
             }
 
             return json.dumps(d)
@@ -40,9 +40,9 @@ def add_event(event_type):
             session["anon_progress"] = json.dumps(d)
             seg = datamodels.get_segment(segment_id)
             d = {
-              'segment_id': segment_id,
-              'user_status': seg.user_status(user=None, progress=progress),
-              'progress': progress
+                "segment_id": segment_id,
+                "user_status": seg.user_status(user=None, progress=progress),
+                "progress": progress,
             }
             return json.dumps(d)
     else:

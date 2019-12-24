@@ -990,7 +990,7 @@ $( document ).ready(function() {
     formData[key] = e.target.value;
     post(e.target.formAction, formData, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             // do something clever
         } else {
             showAlertSnackbar(responseJSON["message"])
@@ -1027,7 +1027,7 @@ $( document ).ready(function() {
     }
 
     post(url, {slug: value}, (responseText, xhr) => {
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             window.location.href = JSON.parse(xhr.response)['redirect_url']
         } else {
                 console.log('DEV: give me some message')
@@ -1058,7 +1058,7 @@ $( document ).ready(function() {
 
         let alert = document.querySelector(`[data-${userType}-action-alert]`);
         alert.style.display = "none";
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             let teacherDiv = t.closest('[data-fit-user]');
             if (teacherDiv) {
                 teacherDiv.remove()
@@ -1098,7 +1098,7 @@ $( document ).ready(function() {
         let alert = document.querySelector(`[data-${userType}-action-alert]`);
         let responseJSON = JSON.parse(xhr.response);
         alert.style.display = "block";
-        if (xhr.status == 400) {
+        if (xhr.status === 400) {
             alert.classList.remove('alert-success');
             alert.classList.add('alert-danger');
         } else {
@@ -1141,9 +1141,9 @@ $( document ).ready(function() {
 
     post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
-        if (xhr.status == 400) {
+        if (xhr.status === 400) {
             showAlertSnackbar(responseJSON['message'])
-        } else if (xhr.status == 200) {
+        } else if (xhr.status === 200) {
             $('[data-fit-sortable-list-questions]').append(responseJSON['html']);
             showAlertSnackbar(responseJSON['message'])
         } else {
@@ -1164,7 +1164,7 @@ $( document ).ready(function() {
 
     post(url, {question: question.value, answer: answer.value}, (responseText, xhr) => {
         let responseJSON = JSON.parse(xhr.response);
-        if (xhr.status == 400 || xhr.status == 200) {
+        if (xhr.status === 400 || xhr.status === 200) {
             showAlertSnackbar(responseJSON['message'])
         } else {
             showAlertSnackbar("Unknown error")
@@ -1185,7 +1185,7 @@ $( document ).ready(function() {
       $('[data-fit-modal-add-segment]').modal('hide');
       let segmentType = t.dataset['fitSegmentType'];
       let modalObj = null;
-      if (segmentType == 'text') {
+      if (segmentType === 'text') {
           modalObj = $('[data-fit-add-text-segment-modal]');
           modalObj[0].querySelector('[data-fit-segment-name]').value = "";
           modalObj[0].querySelector('[data-fit-wysiwyg-preview]').innerHTML = "";
@@ -1208,7 +1208,7 @@ $( document ).ready(function() {
 
     post(form.action, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             showAlertSnackbar(res["message"]);
             $('[data-fit-add-edit-segment-modal]').modal('hide');
             if ("html" in res) {
@@ -1255,7 +1255,7 @@ $( document ).ready(function() {
 
     post(url, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
           showAlertSnackbar(res["message"]);
           $('[data-fit-add-edit-segment-modal]').modal('hide');
 
@@ -1283,9 +1283,9 @@ $( document ).ready(function() {
         let segmentId = event.relatedTarget.dataset['fitSegmentId'];
         get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}`,
             (responseText, xhr) => {
-              if (xhr.status == 200) {
+              if (xhr.status === 200) {
                 let res = JSON.parse(xhr.response);
-                if (res['segment_type'] == 'video') {
+                if (res['segment_type'] === 'video') {
                   event.currentTarget.querySelector('#segment_name').value = res['title'];
                   event.currentTarget.querySelector('#segment_url').value = res['segment_url'];
                   if (res['video_type']){
@@ -1316,7 +1316,7 @@ $( document ).ready(function() {
     form.action = event.relatedTarget.href;
     if (event.relatedTarget.dataset['resourceId']) {
       get(event.relatedTarget.href, (responseText, xhr) => {
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             let res = JSON.parse(xhr.response);
             resourceTitle.value = res["title"];
             resourceDescription.innerHTML = res["description"];
@@ -1349,7 +1349,7 @@ $( document ).ready(function() {
     };
     post(form.action, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             showAlertSnackbar(res["message"]);
             $('[data-fit-modal-add-resource-link]').modal('hide');
             if ("html" in res) {
@@ -1362,7 +1362,7 @@ $( document ).ready(function() {
               }
               showAlertSnackbar(res['message'])
             }
-        } else if (xhr.status == 400) {
+        } else if (xhr.status === 400) {
             showAlertSnackbar(res['message'])
         } else {
             showAlertSnackbar("Unknown error")
@@ -1373,7 +1373,7 @@ $( document ).ready(function() {
   delegate('[data-confirm-delete]', 'click', (e, t) => {
     e.preventDefault();
     post(t.href, {}, (responseText, xhr) => {
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
             window.location.href = JSON.parse(xhr.response)['success_url']
         } else {
                 showAlertSnackbar(JSON.parse(xhr.response)['message'])
@@ -1426,7 +1426,6 @@ $( document ).ready(function() {
     }
     let p = t.closest('[data-fit-image-uploader]');
     p.classList.add('fit_upload_cropping');
-    let dropzone = p.querySelector('[data-fit-image-dropzone]');
     let input = p.querySelector('[data-fit-image-input]');
     let img = p.querySelector('img');
     let oheight = p.offsetHeight;
@@ -1511,6 +1510,17 @@ $( document ).ready(function() {
     }
   });
 
-
+  delegate('[data-fit-custom-setting]', 'click', (e, t) => {
+    let key = t.dataset['fitCustomSettingsKey'];
+    let value = t.dataset['fitCustomSettingsValue'];
+    post('/user/settings', {key: key, value: value}, (responseText, xhr) => {
+        if (xhr.status === 200) {
+          // DEV: do some cool stuff with setting
+          showAlertSnackbar("Setting added")
+        } else {
+          showAlertSnackbar(JSON.parse(xhr.response)['message'])
+        }
+    })
+  })
 
 });

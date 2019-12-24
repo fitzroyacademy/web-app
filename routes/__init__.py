@@ -1,6 +1,17 @@
 import sys
 
-from . import user, course, lesson, object, error, log, segment, pages, resource, institute
+from . import (
+    user,
+    course,
+    lesson,
+    object,
+    error,
+    log,
+    segment,
+    pages,
+    resource,
+    institute,
+)
 
 
 def attach(app):

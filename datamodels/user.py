@@ -57,7 +57,7 @@ class User(BaseModel):
     @property
     def course_progress(self):
         courses = self.courses
-        if len(courses) is 0:
+        if len(courses) == 0:
             return 100
         total = 0
         for course in courses:

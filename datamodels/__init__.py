@@ -1,6 +1,5 @@
 from .course import (
     Course,
-    CourseEnrollment,
     Segment,
     Lesson,
     LessonQA,
@@ -18,7 +17,6 @@ from .course import (
     get_lesson_by_slug,
     get_segment,
     get_segment_by_slug,
-    SegmentUserProgress,
 )
 from .enrollments import CourseEnrollment, get_enrollment
 from .user import UserPreference, User
@@ -40,3 +38,41 @@ def get_user(user_id):
 
 def get_user_by_email(email):
     return User.find_by_email(email)
+
+
+__all__ = [
+    "Course",
+    "CourseEnrollment",
+    "Segment",
+    "Lesson",
+    "LessonQA",
+    "LessonResourceUserAccess",
+    "LessonTranslation",
+    "CourseTranslation",
+    "SegmentTranslation",
+    "SegmentStatus",
+    "SegmentStatusThreshold",
+    "Resource",
+    "SegmentUserProgress",
+    "get_course_by_slug",
+    "get_course_by_code",
+    "get_lesson",
+    "get_lesson_by_slug",
+    "get_segment",
+    "get_segment_by_slug",
+    "SegmentUserProgress",
+    "CourseEnrollment",
+    "get_enrollment",
+    "UserPreference",
+    "User",
+    "Program",
+    "ProgramEnrollment",
+    "Institute",
+    "InstituteEnrollment",
+    "get_program_by_slug",
+    "CustomSetting",
+    "get_session",
+    "_clear_session_for_tests",
+    "get_user",
+    "get_user_by_email",
+]

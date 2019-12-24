@@ -32,7 +32,9 @@ def course_delete_segment(
         db.delete(segment)
         db.commit()
 
-        list_of_items = [l.id for l in datamodels.Segment.get_ordered_items() if l.order != 0]  # do not reorder intro segment
+        list_of_items = [
+            l.id for l in datamodels.Segment.get_ordered_items() if l.order != 0
+        ]  # do not reorder intro segment
         if list_of_items:
             datamodels.Segment.reorder_items(list_of_items)
 
@@ -178,7 +180,8 @@ def add_edit_segment(
 
         if slug and (
             datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None
-            or slug == instance.slug or editing
+            or slug == instance.slug
+            or editing
         ):
             if not editing:
                 if content_type in ["intro_text", "intro_video"]:
@@ -245,14 +248,19 @@ def add_edit_segment(
                 db.commit()
             except IntegrityError:
                 db.rollback()
-                return jsonify({"message": "Chose different name for this segment."}), 400
+                return (
+                    jsonify({"message": "Chose different name for this segment."}),
+                    400,
+                )
 
             response = {
                 "message": "Segment {} {}".format(
                     instance.title, "edited" if editing else "added"
                 ),
-                "html": render_segment_list_element(course=course, lesson=lesson, segment=instance),
-                "id": instance.id
+                "html": render_segment_list_element(
+                    course=course, lesson=lesson, segment=instance
+                ),
+                "id": instance.id,
             }
 
             return jsonify(response), 200
@@ -320,6 +328,6 @@ def view(course_slug, lesson_slug, segment_slug, institute=""):
         "active_segment": segment,
         "course_progress": get_course_progress(lesson.course),
         "course": course,
-        "form": AjaxCSRFTokenForm()
+        "form": AjaxCSRFTokenForm(),
     }
     return render_template("course.html", **data)

@@ -1,6 +1,6 @@
 from sqlalchemy import func
 
-from datamodels import SegmentUserProgress, get_session, Lesson, Segment, Course
+from datamodels import SegmentUserProgress, get_session, Lesson, Segment
 
 
 def get_course_progress(course):
@@ -76,7 +76,6 @@ def get_lessons_total_progress(course):
     session = get_session()
 
     total_progress = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)).\
-        join(Segment).join(Lesson).filter(Lesson.course_id==course.id).group_by(Lesson.id).all()
-
+        join(Segment).join(Lesson).filter(Lesson.course_id == course.id).group_by(Lesson.id).all()
 
     return {Segment.find_by_id(progress.segment_id).lesson.id: value for progress, value in total_progress}

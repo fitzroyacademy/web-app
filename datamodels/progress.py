@@ -31,10 +31,7 @@ class SegmentUserProgress(BaseModel):
             .filter(cls.segment_id == segment_id)
             .filter(cls.user_id == user_id)
         )
-        try:
-            return q.first()
-        except:
-            return None
+        return q.first()
 
     @classmethod
     def save_user_progress(cls, segment_id, user_id, percent):

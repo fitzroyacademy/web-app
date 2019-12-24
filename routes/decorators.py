@@ -43,7 +43,6 @@ def teacher_required(function):
 
 
 def enrollment_required(function):
-
     @wraps(function)
     def decorated_function(course_slug, lesson_slug, *args, **kwargs):
         # check if user (logged in or anonymous) is enrolled

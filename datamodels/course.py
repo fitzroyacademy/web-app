@@ -76,7 +76,7 @@ class Course(BaseModel):
                     cls.visibility == "public",
                     sa.and_(cls.visibility == "institute", cls.institute == institute),
                 )
-        return cls.objects().filter(query, cls.draft == False).all()
+        return cls.objects().filter(query, cls.draft.is_(False)).all()
 
     def get_ordered_segments(self, only_barriers=False):
         db = get_session()
@@ -84,7 +84,7 @@ class Course(BaseModel):
         queryset = (
             db.query(Segment)
             .join(Lesson)
-            .filter(Lesson._is_deleted == False, Lesson.course_id == self.id)
+            .filter(Lesson._is_deleted.is_(False), Lesson.course_id == self.id)
         )
 
         if only_barriers:
@@ -192,7 +192,7 @@ class Course(BaseModel):
         db.commit()
 
     def user_progress(self, user):
-        if len(self.lessons) is 0:
+        if len(self.lessons) == 0:
             return 100
         total = 0
         for lesson in self.lessons:
@@ -323,7 +323,7 @@ class Lesson(OrderedBase):
         return Segment.ordered_items_for_parent(self, "lesson_id")
 
     def user_progress_percent(self, user):
-        if len(self.segments) is 0:
+        if len(self.segments) == 0:
             return 100
         total = 0
         for segment in self.segments:

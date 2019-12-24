@@ -1,7 +1,7 @@
 check:
-	black --check routes app.py config.py datamodels.py models.py util.py
+	black --check routes app.py config.py datamodels utils
+	nosetests --with-coverage --cover-package=datamodels,routes --cover-html --cover-html-dir=coverreport --cover-xml
 	flake8 $(git diff --cached --name-only | grep "\.py$" | tr "\n" " ")
-    nosetests --cover-package=routes.course,datamodels
 
 format:
-	black routes app.py config.py datamodels.py models.py util.py
+	black routes app.py config.py datamodels utils

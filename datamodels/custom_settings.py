@@ -25,8 +25,7 @@ class CustomSetting(BaseModel):
             raise ValueError("There is no such key")
 
         if obj is None:
-            obj = CustomSetting(
-                key=key, value=value, user=user)
+            obj = CustomSetting(key=key, value=value, user=user)
         else:
             obj.value = value
         s = get_session()

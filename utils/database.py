@@ -14,7 +14,11 @@ def get_seconds(dur):
 
 def dump(obj, seen=None):
     if not isinstance(obj, datamodels.base.Base):
-        if isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], datamodels.base.Base):
+        if (
+            isinstance(obj, list)
+            and len(obj) > 0
+            and isinstance(obj[0], datamodels.base.Base)
+        ):
             o = []
             for i in obj:
                 o.append(dump(i, seen=seen))
@@ -39,7 +43,7 @@ def dump(obj, seen=None):
                     fields[f] = None
                 else:
                     fields[f] = dump(data, seen)
-            elif callable(data) and f.startswith("get_"):
+            elif callable(data) and f.startswith("get_") and isinstance(data, property):
                 _data = data()
                 if isinstance(_data, sa.orm.query.Query):
                     fields[f[4:]] = None
@@ -53,7 +57,6 @@ def dump(obj, seen=None):
                     else:
                         fields[f].append(dump(o, seen))
     return fields
-
 
 
 def reseed():
@@ -78,10 +81,11 @@ def reseed():
         info="Start here! Basic business models and customer discovery, to pitching for investment. ❤️ 🚀",
         workload_summary="This course will take 20-30 hours on average, and is best done in teams.",
         summary_html="""
-	<p><strong>Go from zero to one:</strong> From a basic idea to early customers, business models and getting the numbers right.</p>
-	<p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
-	<p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
-	""",
+        <p><strong>Go from zero to one:</strong> From a basic idea to early customers, business models and getting the numbers right.</p>
+        <p>We don't need any previous business experience, but by the end you'll cover quite complex topics like financial modelling, </p>
+        <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour
+        change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
+        """,
         preview_thumbnail="/static/assets/images/lessons/customer-interviews.jpg",
         guest_access=True,
         draft=False,
@@ -107,10 +111,10 @@ def reseed():
         lesson.pop("id")
         lesson.pop("course_id")
         lesson["language"] = "en"
-        l = datamodels.Lesson(**lesson)
-        l.course = c
-        c.lessons.append(l)
-        session.add(l)
+        new_lesson = datamodels.Lesson(**lesson)
+        new_lesson.course = c
+        c.lessons.append(new_lesson)
+        session.add(new_lesson)
         session.commit()
         for j, segment in enumerate(segments):
             segment = copy.deepcopy(segment)
@@ -121,8 +125,8 @@ def reseed():
             segment["slug"] = segment.pop("id")
             segment["language"] = "en"
             s = datamodels.Segment(**segment)
-            l.segments.append(s)
-            s.lesson = l
+            new_lesson.segments.append(s)
+            s.lesson = new_lesson
             session.add(s)
         for j, resource in enumerate(resources):
             resource = copy.deepcopy(resource)
@@ -130,19 +134,24 @@ def reseed():
             resource["slug"] = resource.pop("id")
             resource["order"] = j
             r = datamodels.Resource(**resource)
-            r.lesson = l
-            l.resources.append(r)
+            r.lesson = new_lesson
+            new_lesson.resources.append(r)
             session.add(r)
         session.commit()
 
     for user_progress in stubs.user_segment_progress:
         user = datamodels.User.find_by_email(user_progress["email"])
-        for l in user_progress["lessons"]:
-            for slug, progress in l["progress"].items():
+        for lesson in user_progress["lessons"]:
+            for slug, progress in lesson["progress"].items():
                 # we can search segments by slug because in stubs segments slugs are unique
-                segment = datamodels.Segment.objects().filter(datamodels.Segment.slug==slug).first()
-                datamodels.SegmentUserProgress.save_user_progress(segment.id, user.id, progress)
-
+                segment = (
+                    datamodels.Segment.objects()
+                    .filter(datamodels.Segment.slug == slug)
+                    .first()
+                )
+                datamodels.SegmentUserProgress.save_user_progress(
+                    segment.id, user.id, progress
+                )
 
     # default institute, whitout subdomain
     fitz_institute = datamodels.Institute(name="Fitzroyacademy", logo="", slug="")

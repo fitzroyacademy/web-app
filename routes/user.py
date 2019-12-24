@@ -1,15 +1,30 @@
 import json
 
-from flask import render_template, session, request, url_for, redirect, flash, abort, jsonify
+from flask import (
+    render_template,
+    session,
+    request,
+    url_for,
+    redirect,
+    flash,
+    abort,
+    jsonify,
+)
 from sqlalchemy.exc import IntegrityError
 
 import datamodels
 from datamodels.enums import PreferenceTags
-from dataforms import AddUserForm, EditUserForm, LoginForm, AjaxCSRFTokenForm, CustomSettingForm
+from dataforms import (
+    AddUserForm,
+    EditUserForm,
+    LoginForm,
+    AjaxCSRFTokenForm,
+    CustomSettingForm,
+)
 
 from utils.base import get_current_user
 from .decorators import login_required
-from .utils import generate_thumbnail
+from .utils import generate_thumbnail, get_session_data, set_session_data
 from .blueprint import SubdomainBlueprint
 
 blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")
@@ -17,7 +32,9 @@ blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")
 
 def merge_anonymous_data(user_id, data):
     for seg_id in data:
-        datamodels.SegmentUserProgress.save_user_progress(seg_id, user_id, int(data[seg_id]))
+        datamodels.SegmentUserProgress.save_user_progress(
+            seg_id, user_id, int(data[seg_id])
+        )
 
 
 @blueprint.subdomain_route("/user/<slug>", methods=["GET"])
@@ -128,13 +145,13 @@ def create(institute=""):
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)
         if "enrollments" in session:
-            d = json.loads(session["enrollments"])
-            for id in d:
-                course = datamodels.Course.find_by_id(int(id))
+            d = get_session_data(session, "enrollments")
+            for course_id in d:
+                course = datamodels.Course.find_by_id(int(course_id))
                 if course:
                     course.enroll(user)
         if "anon_progress" in session:
-            d = json.loads(session["anon_progress"])
+            d = get_session_data(session, "anon_progress")
             merge_anonymous_data(user.id, d)
             session.pop("anon_progress")
 
@@ -156,7 +173,10 @@ def enroll(course_slug, institute=""):
 
     course_code = request.form.get("course_code", "")
 
-    if course.visibility == "code" and course_code.lower() != course.course_code.lower():
+    if (
+        course.visibility == "code"
+        and course_code.lower() != course.course_code.lower()
+    ):
         flash("Wrong course code")
         return redirect("/course/{}".format(course.slug))
 
@@ -237,7 +257,7 @@ def set_preference(user, preference_tag, on_or_off, institute=""):
     return ""
 
 
-@blueprint.subdomain_route("/user/settings/set", methods=["POST"])
+@blueprint.subdomain_route("/user/settings", methods=["POST"])
 def set_user_setting(institute=""):
     form = CustomSettingForm(request.form)
     user = get_current_user()
@@ -250,9 +270,22 @@ def set_user_setting(institute=""):
             except ValueError:
                 return jsonify({"message": "There is no such setting available"}), 400
         else:
-            custom_settings = json.loads(session.get("custom_settings", "{}"))
+            custom_settings = get_session_data(session, "custom_settings")
             custom_settings[key] = value
-            session["custom_settings"] = json.dumps(custom_settings)
+            set_session_data(session, "custom_settings", custom_settings)
         return jsonify({"key": key, "value": value})
     else:
-        return jsonify({"message": "Both key and value must be provided"}), 400
+        if "csrf_token" in form.errors:
+            msg = "CSRF token missing"
+        else:
+            msg = "Both key and value must be provided"
+        return jsonify({"message": msg}), 400
+
+
+@blueprint.subdomain_route("/user/settings", methods=["GET"])
+def get_user_settings(institute=""):
+    user = get_current_user()
+    if user:
+        return jsonify(user.get_custom_settings())
+    else:
+        return get_session_data(session, "custom_settings")

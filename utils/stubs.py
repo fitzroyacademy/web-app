@@ -74,7 +74,8 @@ students = [
 ]
 
 segments = [
-        [{
+    [
+        {
             "type": "video",
             "title": "Introduction",
             "duration": "1:12",  # -> duration seconds
@@ -86,8 +87,10 @@ segments = [
             "template": "video_wistia",  # pop
             "lesson_id": "00",  # ignore (matches segment index)
             "course_id": "00",  # ignore (matches segment index)
-        }],
-        [{
+        }
+    ],
+    [
+        {
             "type": "video",
             "title": "Introduction",
             "duration": "1:12",  # -> duration seconds
@@ -243,8 +246,10 @@ segments = [
             "order": 12,
             "lesson_id": "01",
             "course_id": "00",
-        }],  # Lesson 2 starts here
-        [{
+        },
+    ],  # Lesson 2 starts here
+    [
+        {
             "title": "Introduction",
             "duration": "1:30",
             "external_id": "xmgvld0tjy",
@@ -327,8 +332,10 @@ segments = [
             "lesson_id": "02",
             "course_id": "00",
             "type": "video",
-        }],  # Lesson 3 starts here
-        [{
+        },
+    ],  # Lesson 3 starts here
+    [
+        {
             "title": "Introduction",
             "duration": "1:22",
             "external_id": "nxdknxgjg4",
@@ -435,8 +442,9 @@ segments = [
             "lesson_id": "03",
             "course_id": "00",
             "type": "video",
-        }],
-    ]
+        },
+    ],
+]
 
 lessons = [
     {
@@ -551,45 +559,67 @@ lessons = [
 
 
 user_segment_progress = [
-    {"email": "bart@simpsons.com",
-     "lessons": [{"lesson_id": "00",
-                  "progress": {"seg_0": 100}
-                   },
-                 {"lesson_id": "01",
-                  "progress": {"seg_a": 100, "seg_b":75, "seg_c": 80, "seg_d": 100, "seg_e": 15}
-                   },
-                 {"lesson_id": "02",
-                  "progress": {"seg_n": 15, "seg_o":20, "seg_p": 80, "seg_q": 100}
-                   },
-                 ]
-     },
-    {"email": "lisa@simpsons.com",
-     "lessons": [{"lesson_id": "00",
-                  "progress": {"seg_0": 98}
-                   },
-                 {"lesson_id": "01",
-                  "progress": {"seg_a": 87, "seg_b":100, "seg_c": 20, "seg_d": 77, "seg_e": 90}
-                   },
-                 {"lesson_id": "02",
-                  "progress": {"seg_n": 70, "seg_o":80, "seg_p": 11, "seg_q": 66}
-                   },
-                 ]
-     },
-    {"email": "maggie@simpsons.com",
-     "lessons": [{"lesson_id": "00",
-                  "progress": {"seg_0": 70}
-                   },
-                 {"lesson_id": "01",
-                  "progress": {"seg_a": 12, "seg_b":13, "seg_c": 35, "seg_d": 40, "seg_e": 78}
-                   },
-                 {"lesson_id": "02",
-                  "progress": {"seg_n": 55, "seg_o":0, "seg_p": 55, "seg_q": 100}
-                   },
-                 ]
-
-     }
+    {
+        "email": "bart@simpsons.com",
+        "lessons": [
+            {"lesson_id": "00", "progress": {"seg_0": 100}},
+            {
+                "lesson_id": "01",
+                "progress": {
+                    "seg_a": 100,
+                    "seg_b": 75,
+                    "seg_c": 80,
+                    "seg_d": 100,
+                    "seg_e": 15,
+                },
+            },
+            {
+                "lesson_id": "02",
+                "progress": {"seg_n": 15, "seg_o": 20, "seg_p": 80, "seg_q": 100},
+            },
+        ],
+    },
+    {
+        "email": "lisa@simpsons.com",
+        "lessons": [
+            {"lesson_id": "00", "progress": {"seg_0": 98}},
+            {
+                "lesson_id": "01",
+                "progress": {
+                    "seg_a": 87,
+                    "seg_b": 100,
+                    "seg_c": 20,
+                    "seg_d": 77,
+                    "seg_e": 90,
+                },
+            },
+            {
+                "lesson_id": "02",
+                "progress": {"seg_n": 70, "seg_o": 80, "seg_p": 11, "seg_q": 66},
+            },
+        ],
+    },
+    {
+        "email": "maggie@simpsons.com",
+        "lessons": [
+            {"lesson_id": "00", "progress": {"seg_0": 70}},
+            {
+                "lesson_id": "01",
+                "progress": {
+                    "seg_a": 12,
+                    "seg_b": 13,
+                    "seg_c": 35,
+                    "seg_d": 40,
+                    "seg_e": 78,
+                },
+            },
+            {
+                "lesson_id": "02",
+                "progress": {"seg_n": 55, "seg_o": 0, "seg_p": 55, "seg_q": 100},
+            },
+        ],
+    },
 ]
-
 
 
 courses = [{"lessons": [lessons[0], lessons[1], lessons[2]]}]

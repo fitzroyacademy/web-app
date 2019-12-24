@@ -11,7 +11,7 @@ from datamodels.enums import (
     RESOURCE_CONTENT_IMG,
     VideoTypeEnum,
     SegmentPermissionEnum,
-    CourseAccess
+    CourseAccess,
 )
 from routes.decorators import login_required, teacher_required, enrollment_required
 from routes.utils import generate_thumbnail, reorder_items
@@ -206,7 +206,9 @@ def course_delete_lesson(user, course, course_slug, lesson_id, institute=""):
         db.delete(lesson)
         db.commit()
 
-        list_of_lessons = [l.id for l in datamodels.Lesson.get_ordered_items() if l.order != 0]
+        list_of_lessons = [
+            l.id for l in datamodels.Lesson.get_ordered_items() if l.order != 0
+        ]
         if list_of_lessons:
             datamodels.Lesson.reorder_items(list_of_lessons)
 
@@ -279,10 +281,7 @@ def add_teacher(user, course, course_slug, lesson_id, institute=""):
         course.id, new_teacher.id
     )
 
-    if enrolment.access_level not in [
-        CourseAccess.admin,
-        CourseAccess.teacher,
-    ]:
+    if enrolment.access_level not in [CourseAccess.admin, CourseAccess.teacher]:
         return jsonify({"success": False, "message": "User must be a teacher"}), 400
 
     lesson.teachers.append(enrolment)
@@ -359,7 +358,7 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""
         return jsonify(
             {
                 "message": "Question saved",
-                "html": render_question_answer(course, lesson, qa)
+                "html": render_question_answer(course, lesson, qa),
             }
         )
 
