@@ -27,11 +27,17 @@ def segment(segment_id):
 
     course = active_segment.lesson.course
     barrier = find_segment_barrier(current_user, course)
-    ordered_segments = list(course.get_ordered_segments())
-    locked_segments = [
-        ordered_segments[i].id
-        for i in range(ordered_segments.index(barrier), len(ordered_segments))
-    ]
+    teaches_course = current_user.teaches(course) if current_user else False
+
+    ordered_segments = list(course.get_ordered_segments(show_hidden=teaches_course))
+    locked_segments = (
+        [
+            ordered_segments[i].id
+            for i in range(ordered_segments.index(barrier), len(ordered_segments))
+        ]
+        if barrier
+        else []
+    )
 
     if not current_user:
         anon_progress = json.loads(session.get("anon_progress", "{}"))
@@ -42,7 +48,7 @@ def segment(segment_id):
         "active_segment": active_segment,
         "locked": active_segment.locked(current_user, anon_progress),
         "barrier_id": barrier.id if barrier else None,
-        "barrier_type": barrier.permission.name if barrier else None,
+        "barrier_type": barrier.barrier.name if barrier else None,
         "locked_segments": locked_segments,
     }
     if ext == "json":

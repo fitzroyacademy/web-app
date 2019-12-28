@@ -1,8 +1,8 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 
-from .base import BaseModel, Base, get_session
-from .enums import CourseAccess
+from datamodels.base import BaseModel, Base, get_session
+from datamodels.enums import CourseAccess
 
 
 lesson_user_enrollment_association_table = sa.Table(

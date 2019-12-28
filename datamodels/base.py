@@ -51,6 +51,12 @@ class BaseModel(Base):
         return session.query(cls).filter(cls._is_deleted == deleted)
 
     def __getattr__(self, item):
+        """
+        This method causes problems while debugging. If you get exception
+        AttributeError: 'super' object has no attribute '__getattr__'
+        look for attribute name that doesn't exist in a class, which might be different from "item"
+        but it's either "item" or an attribute inside method/property "item".
+        """
         if item.endswith("_url"):
             return self._image_field_url(item[:-4])
 
@@ -71,6 +77,8 @@ class BaseModel(Base):
 
 class OrderedBase(BaseModel):
     __abstract__ = True
+    order_parent_name = ""
+    order_parent_key = ""
 
     order = sa.Column(sa.Integer)
 
@@ -79,8 +87,13 @@ class OrderedBase(BaseModel):
         return cls.objects().filter(cls.order >= 0).order_by(cls.order)
 
     @classmethod
-    def ordered_items_for_parent(cls, parent, key):
-        return cls.objects().filter(getattr(cls, key) == parent.id).order_by(cls.order)
+    def ordered_items_for_parent(cls, parent, key="", desc=False):
+        key = key or cls.order_parent_key
+        if desc:
+            ordered_by = sa.desc(cls.order)
+        else:
+            ordered_by = cls.order
+        return cls.objects().filter(getattr(cls, key) == parent.id).order_by(ordered_by)
 
     @classmethod
     def reorder_items(cls, items_order):
@@ -106,3 +119,55 @@ class OrderedBase(BaseModel):
             ]
             if list_of_items:
                 cls.reorder_items(list_of_items)
+
+    @property
+    def previous(self):
+        parent = self.get_parent()
+        items = self.ordered_items_for_parent(parent, key=self.order_parent_key).all()
+        i = items.index(self)
+        previous_parent = (
+            parent.previous if parent and self.is_parent_ordered(parent) else None
+        )
+        if i == 0 and previous_parent is None:
+            return None
+        elif i == 0 and previous_parent is not None:
+            return previous_parent.last_child(self)
+        else:
+            return items[i - 1]
+
+    @property
+    def next(self):
+        parent = self.get_parent()
+        if parent:
+            items = self.ordered_items_for_parent(
+                parent=parent, key=self.order_parent_key
+            ).all()
+        else:
+            items = self.get_ordered_items().all()
+
+        i = items.index(self)
+        next_parent = parent.next if parent and self.is_parent_ordered(parent) else None
+        if i == len(items) - 1 and next_parent is None:
+            return None
+        elif i == len(items) - 1 and next_parent is not None:
+            return next_parent.first_child(self)
+        return items[i + 1]
+
+    def last_child(self, child):
+        """
+        Should be implemented only for classes that acts as parents for ordered children
+        """
+        raise NotImplementedError
+
+    def first_child(self, child):
+        """
+        Should be implemented only for classes that acts as parents for ordered children
+        """
+        raise NotImplementedError
+
+    def get_parent(self):
+        return getattr(self, self.order_parent_name) if self.order_parent_name else None
+
+    @staticmethod
+    def is_parent_ordered(parent):
+        return hasattr(parent, "order_parent_key") if parent else False

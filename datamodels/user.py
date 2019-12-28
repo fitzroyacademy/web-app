@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .base import BaseModel, get_session
 from .enums import PreferenceTags
 
-from .course import CourseEnrollment
+from datamodels.course import CourseEnrollment
 
 
 class User(BaseModel):

@@ -39,7 +39,7 @@ class VideoTypeEnum(enum.Enum):
     bonus = "bonus"
 
 
-class SegmentPermissionEnum(enum.Enum):
+class SegmentBarrierEnum(enum.Enum):
     normal = "normal"  # Normal Can be skipped
     barrier = (
         "barrier"
@@ -49,6 +49,7 @@ class SegmentPermissionEnum(enum.Enum):
     )  # Hard barrier This and every prior segment must be completed to continue
     hidden = "hidden"  # Hidden Not shown to students, visible only to teachers
     paid = "paid"  # You shall not pass if you haven't paid
+    login = "login"  # You shall not pass if you're not logged in
 
 
 class ResourceTypeEnum(enum.Enum):

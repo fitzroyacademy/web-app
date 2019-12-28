@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import datamodels
 from charts.student_progress import get_course_progress, get_students_progress
 from dataforms import AjaxCSRFTokenForm
-from datamodels.enums import SegmentPermissionEnum, VideoTypeEnum
+from datamodels.enums import SegmentBarrierEnum, VideoTypeEnum
 from .blueprint import SubdomainBlueprint
 from .decorators import login_required, teacher_required, enrollment_required
 from .render_partials import render_intro, render_segment_list_element
@@ -25,7 +25,7 @@ blueprint = SubdomainBlueprint("segment", __name__, template_folder="templates")
 def course_delete_segment(
     user, course, course_slug, lesson_id, segment_id, institute=""
 ):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
     if segment and lesson and segment.lesson_id == lesson_id:
         db = datamodels.get_session()
@@ -51,7 +51,7 @@ def course_delete_segment(
 @login_required
 @teacher_required
 def reorder_segments(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return (
             jsonify({"success": False, "message": "Course does not match lesson"}),
@@ -76,7 +76,7 @@ def retrieve(user, course, course_slug, lesson_id, segment_id, institute=""):
                 "segment_url": segment.url,
                 "segment_type": segment.type,
                 "video_type": segment.video_type.value if segment.video_type else "",
-                "permission": segment.permission.value if segment.permission else "",
+                "permission": segment.barrier.value if segment.barrier else "",
                 "title": segment.title,
                 "text": segment.text,
             }
@@ -91,7 +91,7 @@ def retrieve(user, course, course_slug, lesson_id, segment_id, institute=""):
 @login_required
 @teacher_required
 def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
         return jsonify({"message": "Lesson do not match course"}), 400
@@ -110,7 +110,7 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
         db.commit()
         return jsonify({"message": "Intro video updated"})
 
-    segment = datamodels.Segment.find_by_slug(course_slug, lesson.slug, slug)
+    segment = datamodels.find_segment_by_slugs(course_slug, lesson.slug, slug)
     if segment and segment.order != 0:
         slug = slug + "-" + uuid4()[:3]
 
@@ -118,7 +118,7 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
         url=request.form["segment_url"],
         type="video",
         video_type=VideoTypeEnum.standard,
-        permission=SegmentPermissionEnum.normal,
+        barrier=SegmentBarrierEnum.normal,
         duration_seconds=0,
         order=0,
         lesson=lesson,
@@ -152,7 +152,7 @@ def add_edit_segment(
     segment_id=None,
     institute="",
 ):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
         return jsonify({"message": "Lesson do not match course"}), 400
@@ -179,7 +179,7 @@ def add_edit_segment(
         db = datamodels.get_session()
 
         if slug and (
-            datamodels.Segment.find_by_slug(course.slug, lesson.slug, slug) is None
+            datamodels.find_segment_by_slugs(course.slug, lesson.slug, slug) is None
             or slug == instance.slug
             or editing
         ):
@@ -212,13 +212,13 @@ def add_edit_segment(
                 instance.type = "text"
                 if not editing:
                     instance.duration_seconds = 0
-                instance.permission = SegmentPermissionEnum.normal
+                instance.barrier = SegmentBarrierEnum.normal
             else:
                 if "segment_url" not in request.form or not request.form["segment_url"]:
                     return jsonify({"message": "Segment URL is requied"}), 400
 
-                permission = getattr(
-                    SegmentPermissionEnum,
+                barrier = getattr(
+                    SegmentBarrierEnum,
                     request.form.get("permissions", "normal"),
                     "normal",
                 )
@@ -240,7 +240,7 @@ def add_edit_segment(
                     return jsonify({"message": "Wrong video provider"}), 400
                 instance.slug = slug
                 instance.type = "video"
-                instance.permission = permission
+                instance.barrier = barrier
                 instance.video_type = video_type
 
             db.add(instance)
@@ -277,7 +277,7 @@ def add_edit_segment(
 @login_required
 @teacher_required
 def copy_segment(user, course, course_slug, lesson_id, segment_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     segment = datamodels.Segment.find_by_id(segment_id)
 
     if not lesson or segment and segment.lesson_id != lesson.id:
@@ -291,7 +291,9 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id, institute="")
 
     if (
         segment_copy.slug
-        and datamodels.Segment.find_by_slug(course.slug, lesson.slug, segment_copy.slug)
+        and datamodels.find_segment_by_slugs(
+            course.slug, lesson.slug, segment_copy.slug
+        )
         is None
     ):
         db = datamodels.get_session()
@@ -316,12 +318,12 @@ def view(course_slug, lesson_slug, segment_slug, institute=""):
     and segment set to be active.
     """
 
-    segment = datamodels.get_segment_by_slug(course_slug, lesson_slug, segment_slug)
+    segment = datamodels.find_segment_by_slugs(course_slug, lesson_slug, segment_slug)
     if not segment:
         return abort(404)
 
     course = datamodels.get_course_by_slug(course_slug)
-    lesson = datamodels.Lesson.find_by_slug(course_slug, lesson_slug)
+    lesson = datamodels.get_lesson_by_slugs(course_slug, lesson_slug)
     data = {
         "students": get_students_progress(lesson.course),
         "active_lesson": lesson,

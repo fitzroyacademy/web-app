@@ -10,7 +10,7 @@ from datamodels.enums import (
     ResourceTypeEnum,
     RESOURCE_CONTENT_IMG,
     VideoTypeEnum,
-    SegmentPermissionEnum,
+    SegmentBarrierEnum,
     CourseAccess,
 )
 from routes.decorators import login_required, teacher_required, enrollment_required
@@ -45,7 +45,7 @@ def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
 
         slug = "intro-lesson"
         if (
-            datamodels.Lesson.find_by_slug(course.slug, "intro-lesson") is not None
+            datamodels.get_lesson_by_slugs(course.slug, "intro-lesson") is not None
             and not intro_lesson
         ):
             slug = slug + "-" + str(uuid4())[:3]
@@ -68,7 +68,7 @@ def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
                 lesson=intro_lesson,
                 order=0,
                 type="video",
-                permission=SegmentPermissionEnum.normal,
+                barrier=SegmentBarrierEnum.normal,
                 video_type=VideoTypeEnum.standard,
                 url=request.form["segment_url"],
                 duration_seconds=0,
@@ -113,7 +113,7 @@ def add(user, course, course_slug, lesson_id=None, institute=""):
 @login_required
 @teacher_required
 def edit(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         raise abort(404, "No such lesson")
 
@@ -122,7 +122,7 @@ def edit(user, course, course_slug, lesson_id, institute=""):
 
     if "title" in request.form:
         slug = slugify(request.form["title"])
-        if datamodels.Lesson.find_by_slug(course_slug, slug) is not None:
+        if datamodels.get_lesson_by_slugs(course_slug, slug) is not None:
             return (
                 jsonify({"success": False, "message": "Use different lesson name"}),
                 400,
@@ -160,7 +160,7 @@ def edit(user, course, course_slug, lesson_id, institute=""):
 @login_required
 @teacher_required
 def retrieve(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         raise abort(404, "No such lesson")
 
@@ -200,7 +200,7 @@ def retrieve(user, course, course_slug, lesson_id, institute=""):
 @teacher_required
 def course_delete_lesson(user, course, course_slug, lesson_id, institute=""):
 
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if lesson:
         db = datamodels.get_session()
         db.delete(lesson)
@@ -224,7 +224,7 @@ def view(course_slug, lesson_slug, institute=""):
     Retrieves and displays a particular course, with the specified lesson
     and its first segment set to be active.
     """
-    lesson = datamodels.get_lesson_by_slug(course_slug, lesson_slug)
+    lesson = datamodels.get_lesson_by_slugs(course_slug, lesson_slug)
     if lesson is None:
         return redirect("/404")
     course = lesson.course
@@ -249,7 +249,7 @@ def view(course_slug, lesson_slug, institute=""):
 @login_required
 @teacher_required
 def add_teacher(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not AjaxCSRFTokenForm(request.form).validate():
         return jsonify({"success": False, "message": "CSRF token required"}), 400
@@ -305,7 +305,7 @@ def add_teacher(user, course, course_slug, lesson_id, institute=""):
 @login_required
 @teacher_required
 def delete_teacher(user, course, course_slug, lesson_id, teacher_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
         return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
@@ -329,7 +329,7 @@ def delete_teacher(user, course, course_slug, lesson_id, teacher_id, institute="
 @login_required
 @teacher_required
 def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not AjaxCSRFTokenForm(request.form).validate():
         return jsonify({"message": "CSRF token required"}), 400
@@ -371,7 +371,7 @@ def add_lesson_qa(user, course, course_slug, lesson_id, qa_id=None, institute=""
 @login_required
 @teacher_required
 def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
         return jsonify({"success": False, "message": "Wrong lesson or course"}), 400
@@ -397,7 +397,7 @@ def delete_lesson_qa(user, course, course_slug, lesson_id, qa_id, institute=""):
 @login_required
 @teacher_required
 def reorder_lesson_qa(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
 
     if not lesson:
         return jsonify({"success": False, "message": "Wrong lesson or course"}), 400

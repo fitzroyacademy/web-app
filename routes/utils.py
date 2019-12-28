@@ -139,10 +139,11 @@ def retrieve_wistia_id(url):
 
 
 def find_segment_barrier(current_user, course):
-    barriers = course.get_ordered_segments(only_barriers=True)
-    for barrier in barriers:
-        if barrier.user_status(current_user) != "completed":
-            return barrier
+    segments = course.get_ordered_segments(only_barriers=True)
+    for segment in segments:
+        segment.user = current_user
+        if not segment.can_view() and not segment.is_hidden_segment():
+            return segment
 
     return None
 

@@ -4,7 +4,7 @@ from app import app
 import re
 
 from .utils import make_authorized_call, ObjectsGenerator
-from datamodels.enums import VideoTypeEnum, SegmentPermissionEnum
+from datamodels.enums import VideoTypeEnum, SegmentBarrierEnum
 
 
 class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
@@ -289,7 +289,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.assertEqual(len(l1.segments), 1)
         self.assertEqual(l1.segments[0].title, data["segment_name"])
         self.assertEqual(l1.segments[0].video_type, VideoTypeEnum.standard)
-        self.assertEqual(l1.segments[0].permission, SegmentPermissionEnum.normal)
+        self.assertEqual(l1.segments[0].barrier, SegmentBarrierEnum.normal)
         self.assertEqual(l1.segments[0].order, 1)
         self.assertTrue(
             re.search("Segment Video segment added", response.json["message"])
@@ -395,7 +395,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             follow_redirects=True,
         )
 
-        segment = datamodels.get_segment_by_slug(
+        segment = datamodels.find_segment_by_slugs(
             "abc-123", l1.slug, "the-third-segment"
         )
         self.assertIsNotNone(segment)
@@ -519,7 +519,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.assertEqual(s2.order, 2)
         self.assertEqual(s1.text, s2.text)
         self.assertEqual(s1.type, s2.type)
-        self.assertEqual(s1.permission, s2.permission)
+        self.assertEqual(s1.barrier, s2.barrier)
         self.assertTrue(
             re.search("Segment duplicated", response.get_data(as_text=True))
         )

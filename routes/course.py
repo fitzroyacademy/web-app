@@ -30,9 +30,7 @@ blueprint = SubdomainBlueprint("course", __name__, template_folder="templates")
 def index(institute=""):
     """ Shows all courses the user has access to. """
     data = {
-        "public_courses": datamodels.Course.list_public_courses(
-            institute_slug=institute
-        ),
+        "public_courses": datamodels.list_public_courses(institute_slug=institute),
         "form": LoginForm(),
     }
 
@@ -51,7 +49,6 @@ def view(slug, institute=""):
         return redirect("/404")
     elif course.draft and len(course.lessons) == 0:
         return redirect("/course/{}/edit".format(course.slug))
-
     return render_template(
         "course_intro.html",
         course=course,

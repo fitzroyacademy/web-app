@@ -166,7 +166,7 @@ class TestModels(unittest.TestCase):
             code="DEF456", title="Bar Course", guest_access=True
         )
         self.session.add(c)
-        c_results = datamodels.Course.list_public_courses()
+        c_results = datamodels.list_public_courses()
         for result in c_results:
             if result.course_code == "DEF456":
                 c = result
@@ -216,11 +216,11 @@ class TestModels(unittest.TestCase):
         lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 
-        lesson2 = datamodels.get_lesson_by_slug(course.slug, lesson.slug)
+        lesson2 = datamodels.get_lesson_by_slugs(course.slug, lesson.slug)
         self.assertIsNotNone(lesson2)
 
         # No such lesson
-        lesson2 = datamodels.get_lesson_by_slug(course.slug, "no_such_lesson")
+        lesson2 = datamodels.get_lesson_by_slugs(course.slug, "no_such_lesson")
         self.assertIsNone(lesson2)
 
     def test_get_lesson_thumbnail(self):

@@ -1,24 +1,16 @@
-from .course import (
-    Course,
+from .course import Course, CourseTranslation, Resource
+from .segments import (
     Segment,
-    Lesson,
-    LessonQA,
-    LessonResourceUserAccess,
-    LessonTranslation,
-    CourseTranslation,
     SegmentTranslation,
     SegmentStatus,
     SegmentStatusThreshold,
-    Resource,
+    BarrierSegment,
     SegmentUserProgress,
-    get_course_by_slug,
-    get_course_by_code,
-    get_lesson,
-    get_lesson_by_slug,
-    get_segment,
-    get_segment_by_slug,
 )
-from .enrollments import CourseEnrollment, get_enrollment
+
+from .lessons import Lesson, LessonQA, LessonResourceUserAccess, LessonTranslation
+
+from datamodels.enrollments import CourseEnrollment, get_enrollment
 from .user import UserPreference, User
 from .institute import (
     Program,
@@ -29,15 +21,17 @@ from .institute import (
 )
 from .custom_settings import CustomSetting, CUSTOM_SETTINGS_KEYS
 from .base import get_session, _clear_session_for_tests
-
-
-# ToDo: remove this legacy code at some point
-def get_user(user_id):
-    return User.find_by_id(user_id)
-
-
-def get_user_by_email(email):
-    return User.find_by_email(email)
+from .utils import (
+    list_public_courses,
+    find_segment_by_slugs,
+    get_course_by_slug,
+    get_course_by_code,
+    get_lesson,
+    get_lesson_by_slugs,
+    get_segment,
+    get_user,
+    get_user_by_email,
+)
 
 
 __all__ = [
@@ -52,15 +46,14 @@ __all__ = [
     "SegmentTranslation",
     "SegmentStatus",
     "SegmentStatusThreshold",
+    "BarrierSegment",
     "Resource",
     "SegmentUserProgress",
     "get_course_by_slug",
     "get_course_by_code",
     "get_lesson",
-    "get_lesson_by_slug",
+    "get_lesson_by_slugs",
     "get_segment",
-    "get_segment_by_slug",
-    "SegmentUserProgress",
     "CourseEnrollment",
     "get_enrollment",
     "UserPreference",
@@ -76,4 +69,6 @@ __all__ = [
     "get_user",
     "get_user_by_email",
     "CUSTOM_SETTINGS_KEYS",
+    "list_public_courses",
+    "find_segment_by_slugs",
 ]

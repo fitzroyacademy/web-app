@@ -5,7 +5,7 @@ import datamodels
 from app import app
 
 from .utils import ObjectsGenerator
-from datamodels.enums import SegmentPermissionEnum, SegmentStatus
+from datamodels.enums import SegmentBarrierEnum, SegmentStatus
 
 
 class TestUserProgress(ObjectsGenerator, unittest.TestCase):
@@ -84,8 +84,8 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
     # def test_two_soft_barriers_first_done(self):
     #
     #     self.session.commit()
-    #     self.l1s2.permission = SegmentPermissionEnum.barrier
-    #     self.l2s2.permission = SegmentPermissionEnum.barrier
+    #     self.l1s2.permission = SegmentBarrierEnum.barrier
+    #     self.l2s2.permission = SegmentBarrierEnum.barrier
     #     self.session.add(self.l1s2)
     #     self.session.add(self.l2s2)
     #     self.session.commit()
@@ -117,7 +117,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         including lessons after this segment.
         """
 
-        self.l1s2.permission = SegmentPermissionEnum.barrier
+        self.l1s2.barrier = SegmentBarrierEnum.barrier
         self.session.add(self.l1s2)
         self.session.commit()
 
@@ -135,7 +135,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         """
         When a course has a soft barrier, which was finished by student then all subsequent segments are accessible.
         """
-        self.l1s2.permission = SegmentPermissionEnum.barrier
+        self.l1s2.barrier = SegmentBarrierEnum.barrier
         self.session.add(self.l1s2)
         self.session.commit()
 
@@ -163,8 +163,8 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         -- all segments after the second barrier are locked
         """
         self.session.commit()
-        self.l1s2.permission = SegmentPermissionEnum.barrier
-        self.l2s2.permission = SegmentPermissionEnum.barrier
+        self.l1s2.barrier = SegmentBarrierEnum.barrier
+        self.l2s2.barrier = SegmentBarrierEnum.barrier
         self.session.add(self.l1s2)
         self.session.add(self.l2s2)
         self.session.commit()
@@ -191,7 +191,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         A course has a hard barrier. Assume that at least one segment prior the hard barrier is not completed then all
          segments after the hard barrier are locked.
         """
-        self.l1s2.permission = SegmentPermissionEnum.barrier
+        self.l1s2.barrier = SegmentBarrierEnum.barrier
         self.session.add(self.l1s2)
         self.session.commit()
 
@@ -215,7 +215,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         A course has a hard barrier. Assume that at least one segment prior the hard barrier is not completed then all
          segments after the hard barrier are locked.
         """
-        self.l1s2.permission = SegmentPermissionEnum.hard_barrier
+        self.l1s2.barrier = SegmentBarrierEnum.hard_barrier
         self.session.add(self.l1s2)
         self.session.commit()
 
@@ -248,7 +248,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         the hard barrier all segments after it are locked. A student completes the hard barrier. All segments after it
         are accessible.
         """
-        self.l1s2.permission = SegmentPermissionEnum.hard_barrier
+        self.l1s2.barrier = SegmentBarrierEnum.hard_barrier
         self.session.add(self.l1s2)
         self.session.commit()
 

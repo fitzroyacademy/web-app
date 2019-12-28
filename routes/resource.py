@@ -20,7 +20,7 @@ blueprint = SubdomainBlueprint("resource", __name__, template_folder="templates"
 @login_required
 @teacher_required
 def delete_resource(user, course, course_slug, lesson_id, resource_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
     if lesson and resource and lesson.id == resource.lesson_id:
         resource.delete(resource, parent=lesson, key="lesson_id")
@@ -38,7 +38,7 @@ def delete_resource(user, course, course_slug, lesson_id, resource_id, institute
 @login_required
 @teacher_required
 def reorder_resources(user, course, course_slug, lesson_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return "Lesson not found", 400
     return reorder_items(request, datamodels.Resource, lesson.resources)
@@ -54,7 +54,7 @@ def reorder_resources(user, course, course_slug, lesson_id, institute=""):
 @login_required
 @teacher_required
 def add_resource(user, course, course_slug, lesson_id, resource_id=None, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return abort(404)
 
@@ -106,7 +106,7 @@ def add_resource(user, course, course_slug, lesson_id, resource_id=None, institu
 @login_required
 @teacher_required
 def edit_resource(user, course, course_slug, lesson_id, resource_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
 
     if not lesson or resource and resource.lesson_id != lesson.id:
@@ -130,7 +130,7 @@ def edit_resource(user, course, course_slug, lesson_id, resource_id, institute="
 @login_required
 @teacher_required
 def copy_resource(user, course, course_slug, lesson_id, resource_id, institute=""):
-    lesson = datamodels.Lesson.find_by_course_slug_and_id(course.slug, lesson_id)
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     resource = datamodels.Resource.find_by_id(resource_id)
 
     if not lesson or resource and resource.lesson_id != lesson.id:

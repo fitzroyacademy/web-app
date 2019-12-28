@@ -3,7 +3,7 @@ import json
 import sqlalchemy as sa
 from flask import session
 
-from .base import BaseModel, get_session
+from datamodels.base import BaseModel, get_session
 
 
 class SegmentUserProgress(BaseModel):

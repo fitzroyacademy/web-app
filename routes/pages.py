@@ -14,9 +14,7 @@ blueprint = SubdomainBlueprint("pages", __name__)
 def index(institute=""):
     """ Shows all courses the user has access to. """
     data = {
-        "public_courses": datamodels.Course.list_public_courses(
-            institute_slug=institute
-        ),
+        "public_courses": datamodels.list_public_courses(institute_slug=institute),
         "form": LoginForm(),
     }
 
