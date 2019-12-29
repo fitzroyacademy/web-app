@@ -12,7 +12,6 @@ import context_preprocessor
 import routes
 import routes.course
 import routes.error
-from utils.database import dump
 
 
 app = Flask("FitzroyFrontend")
@@ -99,7 +98,6 @@ def get_vars(c):
             continue
         if k in ["config", "g", "session"]:
             continue
-        methods.append({"name": k, "dump": dump(v)})
     return methods
 
 
