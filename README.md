@@ -1,4 +1,4 @@
-{# web-app
+# web-app
 
 Simple staging ground for our UX templates.
 
@@ -126,6 +126,12 @@ docker exec -it $(docker ps -f name="fitzroy-academy" -q) python /app/reseed.py
 2. Run `docker volume rm [volume name]`
 
 ---
+
+# Testing, debugging and profiling
+
+You can run tests with `make check` before you might want to run `make format` which will run `black` formatting.
+
+For profiling just run `python3.7 profiler` and you will get 30 most time consuming methods for each request.
 
 # Structure and taxonomy:
 
