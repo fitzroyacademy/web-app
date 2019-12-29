@@ -24,7 +24,8 @@ from dataforms import (
 
 from utils.base import get_current_user
 from .decorators import login_required
-from .utils import generate_thumbnail, get_session_data, set_session_data
+from .utils import get_session_data, set_session_data
+from utils.images import generate_thumbnail
 from .blueprint import SubdomainBlueprint
 
 blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")

@@ -74,6 +74,11 @@ class BaseModel(Base):
             else image_field
         )
 
+    def save(self):
+        db_session = get_session()
+        db_session.add(self)
+        db_session.commit()
+
 
 class OrderedBase(BaseModel):
     __abstract__ = True

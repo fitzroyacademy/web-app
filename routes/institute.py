@@ -16,7 +16,7 @@ import datamodels
 from datamodels.enums import InstitutePermissionEnum
 from dataforms import AddInstituteForm, AjaxCSRFTokenForm
 from routes.decorators import login_required
-from routes.utils import generate_thumbnail
+from utils.images import generate_thumbnail
 from routes.render_partials import render_teacher
 from routes.blueprint import SubdomainBlueprint
 

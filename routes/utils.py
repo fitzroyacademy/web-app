@@ -1,83 +1,11 @@
-import hashlib
-import io
 import json
-import os
-from datetime import datetime
 
-import boto3
-from PIL import Image
-from flask import current_app, jsonify
+from flask import jsonify
 
 from dataforms import ReorderForm
 
-ALLOWED_MIMETYPES = ["png", "jpg", "jpeg", "gif"]
-THUMBNAIL_SIZES = {
-    "cover": (800, 450),
-    "square_s": (128, 128),
-    "square_m": (256, 256),
-    "square_l": (512, 512),
-}
-
-CLOUD_FRONT_URL = "http://assets.alpha.new.fitzroyacademy.com/"
-
-
-def upload_file_to_s3(file, s3, bucket_name, filename=None):
-
-    if not hasattr(file, "filename") and not filename:
-        raise ValueError("Provide either filename or file object")
-
-    filename = filename if filename else file.filename
-
-    try:
-        s3.upload_fileobj(file, bucket_name, filename)
-
-    except Exception as e:
-        print("Something Happened: ", e)
-        return ""
-
-    return "{}{}".format(CLOUD_FRONT_URL, filename)
-
-
-def generate_thumbnail(file, thumbnail_type):
-
-    if not file:
-        return None
-
-    ext = file.content_type.split("/")[-1]
-    if ext not in ALLOWED_MIMETYPES:
-        return ""
-
-    now = datetime.now()
-    im = Image.open(file)
-    im.thumbnail(THUMBNAIL_SIZES[thumbnail_type])
-
-    filename = "{}_{}_thumb_{}.{}".format(
-        now.strftime("%Y-%m-%d-%H-%M-%S-%f"),
-        hashlib.md5(file.read()).hexdigest(),
-        "x".join("{}".format(n) for n in THUMBNAIL_SIZES[thumbnail_type]),
-        ext,
-    )
-
-    if current_app.config["DEBUG"] or current_app.config["TESTING"]:
-        file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
-        im.save(file_path)
-    else:
-        s3 = boto3.client(
-            "s3",
-            aws_access_key_id=current_app.config["S3_KEY"],
-            aws_secret_access_key=current_app.config["S3_SECRET"],
-            region_name="us-east-2",
-        )
-        b = io.BytesIO()
-        im.save(b, im.format)
-        b.seek(0)
-        filename = upload_file_to_s3(b, s3, current_app.config["S3_BUCKET"], filename)
-
-    return filename
-
 
 def reorder_items(request, cls, objects):
-
     form = ReorderForm(request.form)
 
     if request.method == "POST" and form.validate():

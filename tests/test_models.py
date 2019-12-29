@@ -64,7 +64,7 @@ class TestModels(unittest.TestCase):
     @staticmethod
     def make_segment(
         lesson,
-        thumbnail="thumbnail_1",
+        thumbnail="https://some_fancy_url_without_thumbnail_1.com/thumbnail.jpg",
         title="Segment",
         duration_seconds=200,
         url="fitzroyacademy.com",
@@ -232,10 +232,10 @@ class TestModels(unittest.TestCase):
         self.assertEqual(lesson.thumbnail, "")
 
         s1 = self.make_segment(lesson=lesson)
-        s2 = self.make_segment(lesson=lesson, thumbnail="thumbnail_2")
+        s2 = self.make_segment(lesson=lesson, thumbnail="https://some_fancy_url_without_thumbnail_1.com/thumbnail2.jpg")
         self.session.add(s1, s2)
 
-        self.assertEqual(lesson.thumbnail, "thumbnail_1")
+        self.assertEqual(lesson.thumbnail, "https://some_fancy_url_without_thumbnail_1.com/thumbnail.jpg")
 
     def test_password(self):
         u = self.makeUser()

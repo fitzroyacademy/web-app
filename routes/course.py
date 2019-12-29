@@ -19,7 +19,7 @@ from routes.blueprint import SubdomainBlueprint
 import datamodels
 from dataforms import AddCourseForm, AjaxCSRFTokenForm, LoginForm, AddLessonForm
 from routes.decorators import login_required, teacher_required
-from routes.utils import generate_thumbnail
+from utils.images import generate_thumbnail
 
 from routes.render_partials import render_teacher
 

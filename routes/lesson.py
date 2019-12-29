@@ -14,7 +14,8 @@ from datamodels.enums import (
     CourseAccess,
 )
 from routes.decorators import login_required, teacher_required, enrollment_required
-from routes.utils import generate_thumbnail, reorder_items
+from routes.utils import reorder_items
+from utils.images import generate_thumbnail
 from .render_partials import render_question_answer, render_teacher, render_intro
 from .blueprint import SubdomainBlueprint
 

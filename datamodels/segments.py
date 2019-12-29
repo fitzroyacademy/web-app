@@ -13,7 +13,7 @@ from .enums import (
     SegmentStatusThreshold,
 )
 
-from utils.general import fetch_thumbnail
+from utils.images import fetch_thumbnail_from_wistia
 from .progress import SegmentUserProgress
 
 
@@ -195,7 +195,8 @@ class Segment(BarrierSegment, OrderedBase):
     @property
     def thumbnail(self):
         if not self._thumbnail and self.external_id:
-            self._thumbnail = fetch_thumbnail(self.external_id)
+            self._thumbnail = fetch_thumbnail_from_wistia(self.external_id)
+            self.save()
         elif not self._thumbnail:
             return "http://placekitten.com/640/360"
         return self._thumbnail
