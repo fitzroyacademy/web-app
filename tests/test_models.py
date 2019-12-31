@@ -187,12 +187,29 @@ class TestModels(unittest.TestCase):
     def test_segment_creation(self):
         c = self.make_standard_course()
         self.session.add(c)
-        l = self.make_standard_course_lesson(course=c)
-        self.session.add(l)
-        s = self.make_segment(lesson=l)
-        self.session.add(s)
-        s = datamodels.get_segment(1)
-        self.assertEqual(s.title, "Segment")
+        lesson = self.make_standard_course_lesson(course=c)
+        self.session.add(lesson)
+        segment = datamodels.Segment(
+            title="Some example segment",
+            duration_seconds=120,
+            url="https://super-cool.com/kitty.jpg",
+            language="EN",
+            order=1,
+            _thumbnail="https://super-cool.com/kitty.jpg",
+            lesson=lesson,
+            type="video",
+            video_type=datamodels.enums.VideoTypeEnum.interview,
+            external_id="123asd123",
+            slug="some-example-segment",
+            barrier=datamodels.enums.SegmentBarrierEnum.normal
+        )
+        self.session.add(segment)
+        segment = datamodels.get_segment(1)
+        self.assertEqual(segment.title, "Some example segment")
+        self.assertEqual(segment.duration_seconds, 120)
+        self.assertEqual(segment.order, 1)
+        self.assertEqual(segment.lesson.title, lesson.title)
+        self.assertEqual(segment.type, "video")
 
     def test_course_duration(self):
         course = self.make_standard_course()

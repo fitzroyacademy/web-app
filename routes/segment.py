@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import datamodels
 from charts.student_progress import get_course_progress, get_students_progress
 from dataforms import AjaxCSRFTokenForm
-from datamodels.enums import SegmentBarrierEnum, VideoTypeEnum
+from datamodels.enums import SegmentBarrierEnum, VideoTypeEnum, SegmentType
 from .blueprint import SubdomainBlueprint
 from .decorators import login_required, teacher_required, enrollment_required
 from .render_partials import render_intro, render_segment_list_element
@@ -74,7 +74,7 @@ def retrieve(user, course, course_slug, lesson_id, segment_id, institute=""):
         return jsonify(
             {
                 "segment_url": segment.url,
-                "segment_type": segment.type,
+                "segment_type": segment.type.name,
                 "video_type": segment.video_type.value if segment.video_type else "",
                 "permission": segment.barrier.value if segment.barrier else "",
                 "title": segment.title,
@@ -101,13 +101,10 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
     if not AjaxCSRFTokenForm(request.form).validate():
         return jsonify({"message": "Invalid CSRF token"}), 400
 
-    db = datamodels.get_session()
-
     segment = lesson.intro_segment
     if segment:
         segment.url = request.form["segment_url"]
-        db.add(segment)
-        db.commit()
+        segment.save()
         return jsonify({"message": "Intro video updated"})
 
     segment = datamodels.find_segment_by_slugs(course_slug, lesson.slug, slug)
@@ -116,7 +113,7 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
 
     segment = datamodels.Segment(
         url=request.form["segment_url"],
-        type="video",
+        type=SegmentType.video,
         video_type=VideoTypeEnum.standard,
         barrier=SegmentBarrierEnum.normal,
         duration_seconds=0,
@@ -127,8 +124,7 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
         text=request.form.get("text_segment_content", "Intro segment video"),
     )
 
-    db.add(segment)
-    db.commit()
+    segment.save()
 
     return jsonify({"message": "Intro video added.", "html": render_intro(segment)})
 
@@ -209,7 +205,7 @@ def add_edit_segment(
                 instance.title = request.form["segment_name"]
                 instance.text = request.form["text_segment_content"]
                 instance.slug = slug
-                instance.type = "text"
+                instance.type = SegmentType.text
                 if not editing:
                     instance.duration_seconds = 0
                 instance.barrier = SegmentBarrierEnum.normal
@@ -239,7 +235,7 @@ def add_edit_segment(
                 else:
                     return jsonify({"message": "Wrong video provider"}), 400
                 instance.slug = slug
-                instance.type = "video"
+                instance.type = SegmentType.video
                 instance.barrier = barrier
                 instance.video_type = video_type
 
@@ -296,9 +292,8 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id, institute="")
         )
         is None
     ):
-        db = datamodels.get_session()
-        db.add(segment_copy)
-        db.commit()
+
+        segment_copy.save()
 
         flash("Segment duplicated")
 

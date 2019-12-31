@@ -4,6 +4,7 @@ import json
 import sqlalchemy as sa
 
 import datamodels
+from datamodels.enums import SegmentType
 from utils import stubs
 
 
@@ -124,6 +125,7 @@ def reseed():
             segment.pop("template")  # ultimately derived from external URL
             segment["slug"] = segment.pop("id")
             segment["language"] = "en"
+            segment["type"] = SegmentType.video
             s = datamodels.Segment(**segment)
             new_lesson.segments.append(s)
             s.lesson = new_lesson

@@ -39,6 +39,12 @@ class VideoTypeEnum(enum.Enum):
     bonus = "bonus"
 
 
+class SegmentType(enum.Enum):
+    video = "video"
+    text = "text"
+    survey = "survey"
+
+
 class SegmentBarrierEnum(enum.Enum):
     normal = "normal"  # Normal Can be skipped
     barrier = (
@@ -79,3 +85,9 @@ class InstitutePermissionEnum(enum.Enum):
     admin = "Administrator"
     manager = "Program manager"
     teacher = "Teacher"
+
+
+class SurveyTypeEnum(enum.Enum):
+    plain_text = "Plain text"
+    emoji = "Questions with emoji"
+    points_scale = "X point scale"

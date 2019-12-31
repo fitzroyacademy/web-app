@@ -2,10 +2,11 @@ import unittest
 import datamodels
 from app import app
 
+from datamodels.enums import SegmentType
 from .utils import ObjectsGenerator
 
 
-class TestUserProgress(ObjectsGenerator, unittest.TestCase):
+class TestSegments(ObjectsGenerator, unittest.TestCase):
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
@@ -58,3 +59,25 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
         self.assertEqual(self.l0s1.next.id, self.l1s1.id)
         self.assertEqual(self.l1s1.next.id, self.l1s2.id)
         self.assertIsNone(self.l1s2.next)
+
+    def test_add_video_segment(self):
+        segment = self.make_segment(self.l0, slug="test-type-video", order=2, title="Test type", type=SegmentType.video)
+        self.session.add(segment)
+        self.session.commit()
+        segment = datamodels.find_segment_by_slugs(self.course.slug, self.l0.slug, "test-type-video")
+        self.assertEqual(segment.type, SegmentType.video)
+
+    def test_add_text_segment(self):
+        segment = self.make_segment(self.l0, slug="test-type-text", order=2, title="Test type", type=SegmentType.text)
+        self.session.add(segment)
+        self.session.commit()
+        segment = datamodels.find_segment_by_slugs(self.course.slug, self.l0.slug, "test-type-text")
+        self.assertEqual(segment.type, SegmentType.text)
+
+    def test_add_survey_segment(self):
+        segment = self.make_segment(self.l0, slug="test-type-survey",
+                                    order=2, title="Test type", type=SegmentType.survey)
+        self.session.add(segment)
+        self.session.commit()
+        segment = datamodels.find_segment_by_slugs(self.course.slug, self.l0.slug, "test-type-survey")
+        self.assertEqual(segment.type, SegmentType.survey)

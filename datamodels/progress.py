@@ -1,9 +1,6 @@
-import json
-
 import sqlalchemy as sa
-from flask import session
 
-from datamodels.base import BaseModel, get_session
+from datamodels.base import BaseModel
 
 
 class SegmentUserProgress(BaseModel):
@@ -15,10 +12,11 @@ class SegmentUserProgress(BaseModel):
     user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"))
 
     @classmethod
-    def user_progress(cls, segment_id, user_id):
-        if user_id is None:  # ToDo: remove this from models and move to request context
-            anon_progress = json.loads(session.get("anon_progress", "{}"))
-            return anon_progress.get(str(segment_id), 0)
+    def user_progress(cls, segment_id, user_id, anonymous_progress=None):
+        if anonymous_progress is None or not isinstance(anonymous_progress, dict):
+            anonymous_progress = {}
+        if user_id is None:
+            return anonymous_progress.get(str(segment_id), 0)
         progress = cls.find_user_progress(segment_id, user_id)
         if progress:
             return progress.progress
@@ -35,15 +33,14 @@ class SegmentUserProgress(BaseModel):
 
     @classmethod
     def save_user_progress(cls, segment_id, user_id, percent):
-        session = get_session()
+
         user_progress = cls.find_user_progress(segment_id, user_id)
         percent = int(percent)
         if user_progress is None:
-            user_progress = cls(
+            user_progress = SegmentUserProgress(
                 segment_id=segment_id, user_id=user_id, progress=percent
             )
         elif user_progress.progress < percent:
             user_progress.progress = percent
-        session.add(user_progress)
-        session.commit()
+        user_progress.save()
         return user_progress

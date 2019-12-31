@@ -6,11 +6,13 @@ import sqlalchemy.orm as orm
 from flask import url_for
 
 from .base import OrderedBase, Base
+from .surveys import Survey
 from .enums import (
     VideoTypeEnum,
     SegmentBarrierEnum,
     SegmentStatus,
     SegmentStatusThreshold,
+    SegmentType,
 )
 
 from utils.images import fetch_thumbnail_from_wistia
@@ -22,13 +24,17 @@ class BarrierSegment(Base):
     barrier = sa.Column(sa.Enum(SegmentBarrierEnum), nullable=True)
     user = None
 
-    def can_view(self):
-        return self.__can_view_dispatcher()
+    def can_view(self, user=None, anonymous_progress=None):
+        return self.__can_view_dispatcher(user, anonymous_progress)
 
     def is_hidden_segment(self):
         return self.barrier == SegmentBarrierEnum.hidden
 
-    def __can_view_dispatcher(self):
+    def __can_view_dispatcher(self, user=None, anonymous_progress=None):
+
+        if anonymous_progress is None or not isinstance(anonymous_progress, dict):
+            anonymous_progress = {}
+
         perm_name = self.barrier.name
         handler = getattr(self, "_can_view_{}".format(perm_name), None)
 
@@ -38,25 +44,27 @@ class BarrierSegment(Base):
                 "Dispatcher for permission {} not implemented".format(perm_name)
             )
 
-        return handler()
+        return handler(user, anonymous_progress)
 
-    def _can_view_normal(self):
+    def _can_view_normal(self, user, anonymous_progress: dict):
         return True
 
-    def _can_view_paid(self):
+    def _can_view_paid(self, user, anonymous_progress: dict):
         return False
 
-    def _can_view_login(self):
-        return self.user is not None
+    def _can_view_login(self, user, anonymous_progress: dict):
+        return user is not None
 
-    def _can_view_barrier(self):
-        return self.user_status(self.user) == "completed"
+    def _can_view_barrier(self, user, anonymous_progress: dict):
+        progress = anonymous_progress.get(str(self.id), 0)
+        return self.user_status(user, progress) == "completed"
 
-    def _can_view_hard_barrier(self):
-        return self.user_status(self.user) == "completed"
+    def _can_view_hard_barrier(self, user, anonymous_progress: dict):
+        progress = anonymous_progress.get(str(self.id), 0)
+        return self.user_status(user, progress) == "completed"
 
-    def _can_view_hidden(self):
-        return self.user.teaches(self.lesson.course)
+    def _can_view_hidden(self, user, anonymous_progress: dict):
+        return user.teaches(self.lesson.course) if user else False
 
     def user_status(self, user, progress=None):
 
@@ -70,12 +78,7 @@ class BarrierSegment(Base):
             return SegmentStatus.touched
         return SegmentStatus.accessible
 
-    def locked(self, user, anonymous_progress=None):
-        """ Returns True if this segment is locked for a given user. """
-
-        if anonymous_progress is None:
-            anonymous_progress = {}
-
+    def get_prior_segments(self):
         qs = self.lesson.course.get_ordered_segments().filter(
             sa.or_(
                 sa.and_(
@@ -85,9 +88,14 @@ class BarrierSegment(Base):
                 self.lesson.__class__.order < self.lesson.order,
             )
         )
+        return qs
+
+    def locked(self, user, anonymous_progress=None):
+        """ Returns True if this segment is locked for a given user. """
+
+        qs = self.get_prior_segments()
 
         if self.barrier == SegmentBarrierEnum.hard_barrier:
-
             ids = [s.id for s in qs]
             if not ids:
                 return False
@@ -108,27 +116,29 @@ class BarrierSegment(Base):
                         return True
 
                 return False
-
+        elif self.barrier == SegmentBarrierEnum.paid:
+            return not self.can_view(user)
         else:
-            qs = qs.filter(self.barrier_filter())
+            if user is None and self.barrier == SegmentBarrierEnum.login:
+                return True
 
-            barriers = list(qs)
+            barriers = list(qs.filter(self.barrier_filter(with_login=user is None)))
             return (
-                barriers[-1].user_progress(user) < SegmentStatusThreshold.completed
-                if barriers and barriers[-1].barrier != SegmentBarrierEnum.login
+                not barriers[-1].can_view(user, anonymous_progress)
+                if barriers
                 else False
             )
 
     @classmethod
-    def barrier_filter(cls):
-        return cls.barrier.in_(
-            (
-                SegmentBarrierEnum.hard_barrier,
-                SegmentBarrierEnum.barrier,
-                SegmentBarrierEnum.paid,
-                SegmentBarrierEnum.login,
-            )
-        )
+    def barrier_filter(cls, with_login=True):
+        barriers = [
+            SegmentBarrierEnum.hard_barrier,
+            SegmentBarrierEnum.barrier,
+            SegmentBarrierEnum.paid,
+        ]
+        if with_login:
+            barriers.append(SegmentBarrierEnum.login)
+        return cls.barrier.in_(barriers)
 
     @classmethod
     def filter_out_hidden(cls):
@@ -144,14 +154,14 @@ class BarrierSegment(Base):
         )
 
 
-class Segment(BarrierSegment, OrderedBase):
+class Segment(BarrierSegment, Survey, OrderedBase):
     __tablename__ = "lesson_segments"
 
     order_parent_name = "lesson"
     order_parent_key = "lesson_id"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    type = sa.Column(sa.String)
+    type = sa.Column(sa.Enum(SegmentType), nullable=True)
     video_type = sa.Column(sa.Enum(VideoTypeEnum), nullable=True)
     title = sa.Column(sa.String)
     text = sa.Column(sa.String)
@@ -215,8 +225,10 @@ class Segment(BarrierSegment, OrderedBase):
                 if not self.duration_seconds:
                     self.duration_seconds = 0
 
-    def user_progress(self, user):
-        return SegmentUserProgress.user_progress(self.id, user.id if user else None)
+    def user_progress(self, user, anonymous_progress=None):
+        return SegmentUserProgress.user_progress(
+            self.id, user.id if user else None, anonymous_progress
+        )
 
     def save_user_progress(self, user, percent):
         return SegmentUserProgress.save_user_progress(self.id, user.id, percent)

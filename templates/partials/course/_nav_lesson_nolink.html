@@ -11,7 +11,7 @@
     <div class="fit_body fit_segments">
       {% for segment in lesson.segments %}
         <div 
-          class="fit_btn {{ segment.type }}" 
+          class="fit_btn {{ segment.type.name }}"
           data-fit-segment="{{ segment.id }}" 
           data-fit-parent="{{ segment.lesson_id }}"
         >

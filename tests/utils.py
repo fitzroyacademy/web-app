@@ -3,7 +3,7 @@ import datetime
 from slugify import slugify
 
 import datamodels
-from datamodels.enums import SegmentBarrierEnum, ResourceTypeEnum, VideoTypeEnum
+from datamodels.enums import SegmentBarrierEnum, ResourceTypeEnum, VideoTypeEnum, SegmentType
 from app import app
 
 
@@ -76,7 +76,7 @@ class ObjectsGenerator(object):
         url="fitzroyacademy.com/some_external_video_id",
         order=1,
         slug=None,
-        type="text",
+        type=SegmentType.text,
         barrier=None,
         video_type=None,
     ):
