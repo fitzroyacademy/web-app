@@ -42,3 +42,11 @@ def render_resource_list_element(course, lesson, resource):
     data = {"resource": resource, "course": course, "lesson": lesson}
 
     return render_template("partials/course/_list_resource_element.html", **data)
+
+
+def render_segment_modal(segment_type, course, lesson):
+    return render_template(
+        "partials/modal/_add_{}_segment.html".format(segment_type),
+        course=course,
+        lesson=lesson,
+    )

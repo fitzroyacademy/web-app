@@ -35,11 +35,13 @@ class Survey(Base):
         assert "survey_type_name" in survey_template
         assert "survey_type_description" in survey_template
         assert "survey_type_icon" in survey_template
+        assert "survey_type_icon_type" in survey_template
         assert survey_template["survey_type"] in cls.list_survey_types()
         if survey_template["survey_type"] == "emoji":
             assert "choice_questions" in survey_template
             for question in survey_template["choice_questions"]:
-                assert "icon_link" in question
+                assert "icon" in question
+                assert "icon_type" in question
                 assert "single_word" in question
                 assert "short_sentence" in question
                 assert "id" in question

@@ -1184,21 +1184,42 @@ $( document ).ready(function() {
   delegate('[data-fit-add-edit-segment]', 'click', (e, t) => {
       $('[data-fit-modal-add-segment]').modal('hide');
       let segmentType = t.dataset['fitSegmentType'];
-      let modalObj = null;
-      if (segmentType === 'text') {
-          modalObj = $('[data-fit-add-text-segment-modal]');
-          modalObj[0].querySelector('[data-fit-segment-name]').value = "";
-          modalObj[0].querySelector('[data-fit-wysiwyg-preview]').innerHTML = "";
-          modalObj.modal('show');
+      let modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
+      if (modalObj.length === 0) {
+        // defer loading modals content till it's needed
+        let wrapperModal = t.closest("[data-fit-modal-add-segment]");
+        let courseSlug = wrapperModal.dataset['fitCourseSlug'];
+        let lessonId = wrapperModal.dataset['fitLessonId'];
+        get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentType}`, (responseText, xhr) => {
+          let res = JSON.parse(xhr.response);
+          if (xhr.status === 400) {
+            showAlertSnackbar(res["message"]);
+          } else if (xhr.status === 200) {
+            let parser = new DOMParser();
+            var html = parser.parseFromString(res["html"], 'text/html');
+            document.body.append(html.body.firstChild);
+            modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
+            modalObj.modal('show');
+          } else {
+            showAlertSnackbar("Something went wrong");
+          }
+        })
       } else {
-          modalObj = $('[data-fit-add-video-segment-modal]');
-          modalObj[0].querySelector('[data-fit-segment-name]').value = "";
-          modalObj[0].querySelector('[data-fit-segment-url]').value = "";
-          modalObj[0].querySelector('[data-fit-segment-standard]').checked = true;
-          modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
-          modalObj.modal('show');
+        if (segmentType === 'text') {
+            modalObj[0].querySelector('[data-fit-segment-name]').value = "";
+            modalObj[0].querySelector('[data-fit-wysiwyg-preview]').innerHTML = ""; }
+        else if (segmentType === 'survey') {
+          // do some stuff here
+        } else {
+            modalObj[0].querySelector('[data-fit-segment-name]').value = "";
+            modalObj[0].querySelector('[data-fit-segment-url]').value = "";
+            modalObj[0].querySelector('[data-fit-segment-standard]').checked = true;
+            modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
+        }
+        modalObj.modal('show');
+        modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
       }
-      modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
+
   });
 
   delegate('[data-fit-add-intro-submit]', 'click', (e, t) => {

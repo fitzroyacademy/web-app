@@ -21,21 +21,25 @@ class TestSegments(ObjectsGenerator, unittest.TestCase):
                 "survey_type_name": "Happiness",
                 "survey_type_description": "3 faces, from angry to happy, with labels.",
                 "survey_type_icon": "https://some-fancy-url-with-very-fancy-icon",
+                "survey_type_icon_type": "url",
                 "answer_template": {"survey_id": "",
                                     "reason_response": "",
                                     "chosen_answer": ""},
                 "choice_questions": [{
-                    "icon_link": "https://again-again-and-so-on.png",
+                    "icon": "https://again-again-and-so-on.png",
+                    "icon_type": "url",
                     "single_word": "Terrible",
                     "short_sentence": "I feel terrible",
                     "id": ""
                 }, {
-                    "icon_link": "https://again-again-and-so-on-2.png",
+                    "icon": "https://again-again-and-so-on-2.png",
+                    "icon_type": "url",
                     "single_word": "Bad",
                     "short_sentence": "I feel pretty bad",
                     "id": ""
                 }, {
-                    "icon_link": "https://again-again-and-so-on-3.png",
+                    "icon": "https://again-again-and-so-on-3.png",
+                    "icon_type": "url",
                     "single_word": "Amazing",
                     "short_sentence": "OMG I feel amazing!",
                     "id": ""
@@ -83,18 +87,3 @@ class TestSegments(ObjectsGenerator, unittest.TestCase):
         self.assertNotEqual(survey.questions_template, "")
         self.assertNotEqual(survey.answer_template, "")
         self.assertTrue(isinstance(survey.questions_template, str))
-
-    def test_get_survey_questions(self):
-        pass
-
-    def test_get_survey_answers_template(self):
-        pass
-
-    def test_edit_survey_segment(self):
-        pass
-
-    def test_view_survey_segment(self):
-        pass
-
-    def test_add_answer_to_survey(self):
-        pass

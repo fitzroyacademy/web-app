@@ -8,6 +8,7 @@ SURVEYS_TEMPLATES = [
         "survey_type_name": "Plain text",
         "survey_type_description": "Simple text box for students to type their thoughts.",
         "survey_type_icon": "https://some-fancy-url-with-very-fancy-icon",
+        "survey_type_icon_type": "url",
         "answer_template": {"survey_id": "plain_text_1", "reason_response": ""},
     },
     {
@@ -19,6 +20,7 @@ SURVEYS_TEMPLATES = [
         "survey_type_name": "Happiness",
         "survey_type_description": "3 faces, from angry to happy, with labels.",
         "survey_type_icon": "https://some-fancy-url-with-very-fancy-icon",
+        "survey_type_icon_type": "url",
         "answer_template": {
             "survey_id": "",
             "reason_response": "",
@@ -26,37 +28,43 @@ SURVEYS_TEMPLATES = [
         },
         "choice_questions": [
             {
-                "icon_link": "https://again-again-and-so-on.png",
+                "icon": "https://again-again-and-so-on.png",
+                "icon_type": "url",
                 "single_word": "Terrible",
                 "short_sentence": "I feel terrible",
                 "id": "",
             },
             {
-                "icon_link": "https://again-again-and-so-on-2.png",
+                "icon": "https://again-again-and-so-on-2.png",
+                "icon_type": "url",
                 "single_word": "Bad",
                 "short_sentence": "I feel pretty bad",
                 "id": "",
             },
             {
-                "icon_link": "https://again-again-and-so-on-3.png",
+                "icon": "https://again-again-and-so-on-3.png",
+                "icon_type": "url",
                 "single_word": "Meh",
                 "short_sentence": "Meh, not sure",
                 "id": "",
             },
             {
-                "icon_link": "https://again-again-and-so-on-3.png",
+                "icon": "https://again-again-and-so-on-3.png",
+                "icon_type": "url",
                 "single_word": "Good",
                 "short_sentence": "Overall pretty good",
                 "id": "",
             },
             {
-                "icon_link": "https://again-again-and-so-on-3.png",
+                "icon": "https://again-again-and-so-on-3.png",
+                "icon_type": "url",
                 "single_word": "Great",
                 "short_sentence": "Feeling great, thanks!",
                 "id": "",
             },
             {
-                "icon_link": "https://again-again-and-so-on-3.png",
+                "icon": "https://again-again-and-so-on-3.png",
+                "icon_type": "url",
                 "single_word": "Amazing",
                 "short_sentence": "OMG I feel amazing!",
                 "id": "",
@@ -72,6 +80,7 @@ SURVEYS_TEMPLATES = [
         "survey_type_name": "Thumbs",
         "survey_type_description": "Simple thumbs up / thumbs down selector",
         "survey_type_icon": "https://some-fancy-url-with-very-fancy-icon",
+        "survey_type_icon_type": "url",
         "answer_template": {
             "survey_id": "emoji_thumbs_1",
             "reason_response": "",
@@ -79,13 +88,15 @@ SURVEYS_TEMPLATES = [
         },
         "choice_questions": [
             {
-                "icon_link": "https://again-again-and-so-on.png",
+                "icon": "https://again-again-and-so-on.png",
+                "icon_type": "url",
                 "single_word": "Great",
                 "short_sentence": "Feeling great, thanks!",
                 "id": "",
             },
             {
-                "icon_link": "https://again-again-and-so-on-2.png",
+                "icon": "https://again-again-and-so-on-2.png",
+                "icon_type": "url",
                 "single_word": "I'm stuck!",
                 "short_sentence": "I am stuck and I need some help.",
                 "id": "",
@@ -101,6 +112,7 @@ SURVEYS_TEMPLATES = [
         "survey_type_name": "Thumbs",
         "survey_type_description": "Simple thumbs up / thumbs down selector",
         "survey_type_icon": "https://some-fancy-url-with-very-fancy-icon",
+        "survey_type_icon_type": "url",
         "answer_template": {
             "survey_id": "emoji_thumbs_1",
             "reason_response": "",

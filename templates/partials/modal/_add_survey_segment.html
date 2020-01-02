@@ -1,0 +1,242 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_survey_segment"
+     data-fit-add-edit-segment-modal data-fit-add-survey-segment-modal>
+  <form id="survey-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/text"
+        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        method="POST"
+        data-fit-add-edit-segment-form
+        data-fit-course-slug="{{ course.slug }}"
+        data-fit-lesson-id="{{ lesson.id }}"
+        data-fit-segment-id=""
+        data-fit-segment-type="survey"
+        data-fit-wysiwyg>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Survey segment.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="fit_fancyplace">
+              <label for="survey_question">Question</label>
+              <input type="text" class="form-control" name="survey_question" value="" id="survey_question" placeholder="E.g. How are you going with the course so far?" required data-fit-fancyplace>
+          </div>
+
+          <h3>Type:</h3>
+          {% include "partials/surveys/_type_choicer.html" %}
+
+          <hr>
+
+        <div class="active" data-fit-perm-type="survey_type" data-fit-perm-detail="plain_text">
+
+          <h3>Plain text:</h3>
+
+          <div class="form-row">
+            <div class="col">
+              <label for="">Minimum response length (characters)</label>
+              <input type="url" class="form-control" name="free_text_minlength" value="" id="minimum_length" placeholder="E.g. 100" value="100">
+            </div>
+            <div class="col"></div>
+          </div>
+
+        </div>
+
+        <div class="" data-fit-perm-type="survey_type" data-fit-perm-detail="happiness">
+
+        <h3>Happiness:</h3>
+
+          <table class="table fit_label_table">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Single word. <small>Under the icon.</small></th>
+                <th>Short sentence. <small>In the button text.</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th><i class="fal fa-angry"></i></th>
+                <td><input type="text" class="form-control" name="happiness_label_angry_short" placeholder="Terrible" value="Terrible"></td>
+                <td><input type="text" class="form-control" name="happiness_label_angry_long" placeholder="I feel terrible" value="I feel terrible"></td>
+              </tr>
+              <tr>
+                <th><i class="fal fa-frown"></i></th>
+                <td><input type="text" class="form-control" name="happiness_label_bad_short" placeholder="Bad" value="Bad"></td>
+                <td><input type="text" class="form-control" name="happiness_label_bad_long" placeholder="I feel pretty bad" value="I feel pretty bad"></td>
+              </tr>
+              <tr>
+                <th><i class="fal fa-meh"></i></th>
+                <td><input type="text" class="form-control" name="happiness_label_meh_short" placeholder="Meh" value="Meh"></td>
+                <td><input type="text" class="form-control" name="happiness_label_meh_long" placeholder="Meh, not sure" value="Meh, not sure"></td>
+              </tr>
+              <tr>
+                <th><i class="fal fa-smile"></i></th>
+                <td><input type="text" class="form-control" name="happiness_label_good_short" placeholder="Good" value="Good"></td>
+                <td><input type="text" class="form-control" name="happiness_label_good_long" placeholder="Overall pretty good" value="Overall pretty good"></td>
+              </tr>
+              <tr>
+                <th><i class="fal fa-grin"></i></th>
+                <td><input type="text" class="form-control" name="happiness_label_great_short" placeholder="Great" value="Great"></td>
+                <td><input type="text" class="form-control" name="happiness_label_great_long" placeholder="Feeling great, thanks!" value="Feeling great, thanks!"></td>
+              </tr>
+              <tr>
+                <th><i class="fal fa-grin-stars"></i></th>
+                <td><input type="text" class="form-control" name="happiness_label_amazing_short" placeholder="Amazing!" value="Amazing!"></td>
+                <td><input type="text" class="form-control" name="happiness_label_amazing_long" placeholder="OMG I feel amazing!" value="OMG I feel amazing!"></td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <!-- DEV: This appears 3 times. How do we deal? -->
+          <div class="form-row">
+            <div class="col">
+              <label>Require clarification (free text box):</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" name="free_text_require">
+                  </div>
+                </div>
+                <input type="text" class="form-control" name="free_text_entry" placeholder="Question, e.g. Why do you feel that way?" value="Why do you feel that way?">
+              </div>
+            </div>
+            <div class="col">
+              <label for="">Minimum response length (characters)</label>
+              <input type="url" class="form-control" name="free_text_minlength" value="" id="minimum_length" placeholder="E.g. 100" value="100">
+            </div>
+          </div>
+
+        </div><!-- happiness -->
+
+        <div class="" data-fit-perm-type="survey_type" data-fit-perm-detail="ten">
+
+          <h3>Ten point scale:</h3>
+
+          <table class="table fit_label_table">
+            <thead>
+              <tr>
+                <th>Left label <small>Under the 1.</small></th>
+                <th>Right label <small>Under the 10.</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" name="ten_label_left" placeholder="Absolutely not" value="Absolutely not"></td>
+                <td><input type="text" class="form-control" name="ten_label_right" placeholder="Definitely!" value="Definitely!"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-row">
+            <div class="col">
+              <label>Require clarification (free text box):</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" name="free_text_require">
+                  </div>
+                </div>
+                <input type="text" class="form-control" name="free_text_entry" placeholder="Question, e.g. Why do you feel that way?" value="Why do you feel that way?">
+              </div>
+            </div>
+            <div class="col">
+              <label for="">Minimum response length (characters)</label>
+              <input type="url" class="form-control" name="free_text_minlength" value="" id="minimum_length" placeholder="E.g. 100" value="100">
+            </div>
+          </div>
+
+        </div><!-- ten -->
+
+
+        <div class="" data-fit-perm-type="survey_type" data-fit-perm-detail="thumbs">
+
+          <h3>Thumbs:</h3>
+
+          <table class="table fit_label_table">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Single word. <small>Under the icon.</small></th>
+                <th>Short sentence. <small>In the button text.</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th><i class="fal fa-thumbs-up"></i></th>
+                <td><input type="text" class="form-control" name="thumbs_label_up_short" placeholder="Great" value="Great"></td>
+                <td><input type="text" class="form-control" name="thumbs_label_up_long" placeholder="Feeling great, thanks!" value="Feeling great, thanks!"></td>
+              </tr>
+              <tr>
+                <th><i class="fal fa-thumbs-down"></i></th>
+                <td><input type="text" class="form-control" name="thumbs_label_down_short" placeholder="I'm stuck!" value="I'm stuck!"></td>
+                <td><input type="text" class="form-control" name="thumbs_label_down_short" placeholder="I am stuck and I need some help." value="I am stuck and I need some help."></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-row">
+            <div class="col">
+              <label>Require clarification (free text box):</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" name="free_text_require">
+                  </div>
+                </div>
+                <input type="text" class="form-control" name="free_text_entry" placeholder="Question, e.g. Why do you feel that way?" value="Why do you feel that way?">
+              </div>
+            </div>
+            <div class="col">
+              <label for="">Minimum response length (characters)</label>
+              <input type="url" class="form-control" name="free_text_minlength" value="" id="minimum_length" placeholder="E.g. 100" value="100">
+            </div>
+          </div>
+
+        </div><!-- ten -->
+
+        <hr>
+
+        <h3>Permissions:</h3>
+        <div class="form-group fit_radio_icons" data-fit-radio-icons="">
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" checked="checked" value="normal" id="normal" name="permissions">
+            <label class="form-check-label" for="normal">
+              <i class="fal fa-circle" aria-hidden="true"></i> Normal
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="barrier" value="barrier" name="permissions">
+            <label class="form-check-label" for="barrier">
+              <i class="fal fa-lock" aria-hidden="true"></i> Barrier
+              <small class="form-text text-muted">Students must complete this, and all segments prior to this one to progress.</small>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="hidden" value="hidden" name="permissions">
+            <label class="form-check-label" for="hidden">
+              <i class="fal fa-eye" aria-hidden="true"></i> Hidden
+              <small class="form-text text-muted">Hidden from students. Use this to temporarily disable segments.</small>
+            </label>
+          </div>
+        </div>
+
+        <div class="fit_pane d-flex justify-content-between">
+          <button class="btn btn-lg btn-primary"><i class="fal fa-check" aria-hidden="true"></i>  Save</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit"
+                name="intro_lesson"
+                class="btn btn-primary"
+                data-fit-segment-add-edit-submit
+        >Save changes</button>
+      </div>
+    </div>
+  </form>
+</div>

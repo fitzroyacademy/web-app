@@ -10,7 +10,11 @@ from dataforms import AjaxCSRFTokenForm
 from datamodels.enums import SegmentBarrierEnum, VideoTypeEnum, SegmentType
 from .blueprint import SubdomainBlueprint
 from .decorators import login_required, teacher_required, enrollment_required
-from .render_partials import render_intro, render_segment_list_element
+from .render_partials import (
+    render_intro,
+    render_segment_list_element,
+    render_segment_modal,
+)
 from .utils import reorder_items, clone_model, retrieve_wistia_id
 
 blueprint = SubdomainBlueprint("segment", __name__, template_folder="templates")
@@ -127,6 +131,25 @@ def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
     segment.save()
 
     return jsonify({"message": "Intro video added.", "html": render_intro(segment)})
+
+
+@blueprint.subdomain_route(
+    "/<course_slug>/lessons/<int:lesson_id>/segments/<string:content_type>",
+    methods=["GET"],
+)
+@login_required
+@teacher_required
+def render_segment_content(
+    user, course, course_slug, lesson_id, content_type, institute=""
+):
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
+    if not lesson:
+        return jsonify({"message": "Lesson do not match course"}), 400
+
+    if content_type not in [s.name for s in SegmentType]:
+        return jsonify({"message": "Wrong segment type"}), 400
+
+    return jsonify({"html": render_segment_modal(content_type, course, lesson)})
 
 
 @blueprint.subdomain_route(
