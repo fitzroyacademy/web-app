@@ -1,0 +1,54 @@
+<div class="{% if survey.default %}active{% endif %}" data-fit-pane-type="survey_type" data-fit-pane-detail="{{ survey.survey_id }}">
+
+    <h3>{{ survey.survey_type_name }}:</h3>
+
+    <table class="table fit_label_table">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Single word. <small>Under the icon.</small></th>
+            <th>Short sentence. <small>In the button text.</small></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for question in survey.choice_questions %}
+        <tr>
+            <th>
+                {% if question.icon_type == "css" %}
+                    <i class="{{ question.icon }}"></i>
+                {% elif question.icon_type == "url" %}
+                    <img src="{{ question.icon }}" alt="">
+                {% endif %}
+            </th>
+            <td><input type="text" class="form-control" name="{{ question.label_name }}_short" placeholder="{{ question.single_word }}"
+                       value="{{ question.single_word }}"></td>
+            <td><input type="text" class="form-control" name="{{ question.label_name }}_long" placeholder="{{ question.short_sentence }}"
+                       value="{{ question.short_sentence }}"></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="form-row">
+        <div class="col">
+            <label>Require clarification (free text box):</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" name="free_text_require">
+                    </div>
+                </div>
+                <input type="text" class="form-control" name="free_text_entry"
+                       placeholder="Question, e.g. Why do you feel that way?" value="Why do you feel that way?">
+            </div>
+        </div>
+        <div class="col">
+            <label for="minimum_length_{{ survey.survey_id }}">Minimum response length (characters)</label>
+            <input type="url" class="form-control" name="free_text_minlength"
+                   placeholder="E.g. 100" value="100"
+                   id="minimum_length_{{ survey.survey_id }}"
+            >
+        </div>
+    </div>
+
+</div>

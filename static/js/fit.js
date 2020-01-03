@@ -1542,6 +1542,14 @@ $( document ).ready(function() {
           showAlertSnackbar(JSON.parse(xhr.response)['message'])
         }
     })
+  });
+
+  delegate('[data-fit-toggl-pane-trigger]', 'click', (e, t) => {
+    let pane = t.value;
+    let type = t.dataset['fitPaneType'];
+
+    $('[data-fit-pane-detail][data-fit-pane-type="' + type + '"]').removeClass('active');
+    $('[data-fit-pane-detail=' + pane + ']').addClass('active');
   })
 
 });

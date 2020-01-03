@@ -1,0 +1,20 @@
+<div class="form-group fit_radio_icons columned" data-fit-radio-icons="">
+    {% for survey_type in surveys_type_choices %}
+
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="{{ survey_type.survey_id }}" value="{{ survey_type.survey_id }}"
+               name="survey_types" data-fit-pane-type="survey_type" data-fit-toggl-pane-trigger
+               {% if survey_type.default %}checked="checked"{% endif %}
+        >
+        <label class="form-check-label watermelon" for="{{ survey_type.survey_id }}">
+            {% if survey_type.surve_type_icon_type == "url" %}
+            {% else %}
+                <i class="{{ survey_type.survey_type_icon }}" aria-hidden="true"></i>
+            {% endif %}
+            {{survey_type.survey_type_name}}
+            <small class="form-text text-muted">{{ survey_type.survey_type_description }}</small>
+        </label>
+    </div>
+
+    {% endfor %}
+</div>

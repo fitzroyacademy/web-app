@@ -44,9 +44,26 @@ def render_resource_list_element(course, lesson, resource):
     return render_template("partials/course/_list_resource_element.html", **data)
 
 
-def render_segment_modal(segment_type, course, lesson):
+def render_segment_modal(segment_type, course, lesson, surveys):
+
+    data = {"course": course, "lesson": lesson}
+
+    if segment_type == "survey":
+
+        type_choices_html = render_template(
+            "partials/surveys/_type_choices.html", surveys_type_choices=surveys
+        )
+
+        rendered_survey_types = [
+            render_template(
+                "partials/surveys/_type_{}.html".format(survey["survey_type"]),
+                survey=survey,
+            )
+            for survey in surveys
+        ]
+
+        data["type_choices_html"] = type_choices_html
+        data["rendered_survey_types"] = rendered_survey_types
     return render_template(
-        "partials/modal/_add_{}_segment.html".format(segment_type),
-        course=course,
-        lesson=lesson,
+        "partials/modal/_add_{}_segment.html".format(segment_type), **data
     )

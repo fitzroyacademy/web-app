@@ -2335,6 +2335,8 @@ html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 // course edit stuff:
 [data-fit-perm-detail]{display: none}
 [data-fit-perm-detail].active{display: block;}
+[data-fit-pane-detail]{display: none}
+[data-fit-pane-detail].active{display: block;}
 
 // forms within the summary
 .fit_summary_icons{padding-right: 1rem;}

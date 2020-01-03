@@ -149,7 +149,11 @@ def render_segment_content(
     if content_type not in [s.name for s in SegmentType]:
         return jsonify({"message": "Wrong segment type"}), 400
 
-    return jsonify({"html": render_segment_modal(content_type, course, lesson)})
+    surveys = datamodels.Segment.list_types_templates()
+
+    return jsonify(
+        {"html": render_segment_modal(content_type, course, lesson, surveys)}
+    )
 
 
 @blueprint.subdomain_route(

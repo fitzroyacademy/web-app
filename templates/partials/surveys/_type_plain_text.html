@@ -1,0 +1,14 @@
+<div class="{% if survey.default %}active{% endif %}" data-fit-pane-type="survey_type" data-fit-pane-detail="{{ survey.survey_id }}">
+
+    <h3>{{ survey.survey_type_name }}:</h3>
+
+    <div class="form-row">
+        <div class="col">
+            <label for="minimum_length_{{ survey.survey_id }}">Minimum response length (characters)</label>
+            <input type="url" class="form-control" name="free_text_minlength" id="minimum_length_{{ survey.survey_id }}"
+                   placeholder="E.g. 100" value="100">
+        </div>
+        <div class="col"></div>
+    </div>
+
+</div>
