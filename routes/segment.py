@@ -2,11 +2,11 @@ from uuid import uuid4
 
 from flask import render_template, request, jsonify, redirect, flash, abort
 from slugify import slugify
-from sqlalchemy.exc import IntegrityError
+from wtforms.validators import ValidationError
 
 import datamodels
 from charts.student_progress import get_course_progress, get_students_progress
-from dataforms import AjaxCSRFTokenForm
+from dataforms import AjaxCSRFTokenForm, AddSegmentForm
 from datamodels.enums import SegmentBarrierEnum, VideoTypeEnum, SegmentType
 from .blueprint import SubdomainBlueprint
 from .decorators import login_required, teacher_required, enrollment_required
@@ -175,115 +175,108 @@ def add_edit_segment(
     segment_id=None,
     institute="",
 ):
-    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
+    if (
+        content_type not in ["text", "video", "intro_video", "survey"]
+        and not segment_id
+    ):
+        return jsonify({"message": "Wrong action"}), 400
 
+    form = AddSegmentForm(request.form)
+    if not form.validate():
+        return jsonify({"message": form.errors}), 400
+
+    lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
     if not lesson:
         return jsonify({"message": "Lesson do not match course"}), 400
 
-    if segment_id:
+    if segment_id:  # Case of an existing segment
         instance = datamodels.Segment.find_by_id(segment_id)
         if not instance or instance.lesson_id != lesson.id:
             return jsonify({"message": "No such segment for this lesson"}), 400
-        editing = True
-        content_type = instance.type
-    else:
+        content_type = instance.type.name
+    else:  # Case of a new segment
         instance = datamodels.Segment()
         instance.lesson_id = lesson.id
-        editing = False
 
-    if content_type not in ["text", "video", "intro_video"]:
-        return jsonify({"message": "Wrong action"}), 400
+        if content_type == "intro_video":
+            if datamodels.Segment.first(lesson_id=lesson_id, order=0):
+                return jsonify({"message": "Intro segment already exists"}), 400
+            else:
+                instance.order = 0
+        else:
+            instance.order = lesson.get_ordered_segments().count() + 1
 
-    if request.method == "POST":
-        segment_name = (
-            request.form["segment_name"] if "segment_name" in request.form else ""
-        )
-        slug = slugify(request.form["segment_name"]) if segment_name else None
-        db = datamodels.get_session()
-
-        if slug and (
+    segment_name = form.segment_name.data
+    slug = slugify(segment_name)
+    if not (
+        slug
+        and (
             datamodels.find_segment_by_slugs(course.slug, lesson.slug, slug) is None
             or slug == instance.slug
-            or editing
+        )
+    ):
+        return jsonify({"message": "Can't create segment with such name."}), 400
+
+    if content_type == "text":
+        if (
+            "text_segment_content" not in request.form
+            or not request.form["text_segment_content"]
         ):
-            if not editing:
-                if content_type in ["intro_text", "intro_video"]:
-                    if datamodels.Segment.first(lesson_id=lesson_id, order=0):
-                        return jsonify({"message": "Intro segment already exists"}), 400
-                    else:
-                        instance.order = 0
-                else:
-                    instance.order = lesson.get_ordered_segments().count() + 1
+            return jsonify({"message": "Segment description is required"}), 400
 
-            if content_type in ["text", "intro_text"]:
-                if (
-                    "text_segment_content" not in request.form
-                    or not request.form["text_segment_content"]
-                ):
-                    return jsonify({"message": "Segment description is required"}), 400
+        instance.title = request.form["segment_name"]
+        instance.text = request.form["text_segment_content"]
+        instance.slug = slug
+        instance.type = SegmentType.text
+        if not segment_id:
+            instance.duration_seconds = 0
+            instance.barrier = SegmentBarrierEnum.normal
+    elif content_type in ["video", "video_intro"]:
+        if "segment_url" not in request.form or not request.form["segment_url"]:
+            return jsonify({"message": "Segment URL is requied"}), 400
 
-                instance.title = request.form["segment_name"]
-                instance.text = request.form["text_segment_content"]
-                instance.slug = slug
-                instance.type = SegmentType.text
-                if not editing:
-                    instance.duration_seconds = 0
-                instance.barrier = SegmentBarrierEnum.normal
-            else:
-                if "segment_url" not in request.form or not request.form["segment_url"]:
-                    return jsonify({"message": "Segment URL is requied"}), 400
+        barrier = getattr(
+            SegmentBarrierEnum, request.form.get("permissions", "normal"), "normal"
+        )
+        video_type = getattr(
+            VideoTypeEnum, request.form.get("video_types", "standard"), "standard"
+        )
 
-                barrier = getattr(
-                    SegmentBarrierEnum,
-                    request.form.get("permissions", "normal"),
-                    "normal",
-                )
-                video_type = getattr(
-                    VideoTypeEnum,
-                    request.form.get("video_types", "standard"),
-                    "standard",
-                )
-
-                # ToDo: validate URL
-                instance.title = request.form["segment_name"]
-                instance.url = request.form["segment_url"]
-                if "wistia.com" in instance.url:
-                    instance.external_id = retrieve_wistia_id(instance.url)
-                    instance.set_duration()
-                elif "youtube.com" in instance.url:
-                    instance.duration_seconds = 0
-                else:
-                    return jsonify({"message": "Wrong video provider"}), 400
-                instance.slug = slug
-                instance.type = SegmentType.video
-                instance.barrier = barrier
-                instance.video_type = video_type
-
-            db.add(instance)
-            try:
-                db.commit()
-            except IntegrityError:
-                db.rollback()
-                return (
-                    jsonify({"message": "Chose different name for this segment."}),
-                    400,
-                )
-
-            response = {
-                "message": "Segment {} {}".format(
-                    instance.title, "edited" if editing else "added"
-                ),
-                "html": render_segment_list_element(
-                    course=course, lesson=lesson, segment=instance
-                ),
-                "id": instance.id,
-            }
-
-            return jsonify(response), 200
+        # ToDo: validate URL
+        instance.title = request.form["segment_name"]
+        instance.url = request.form["segment_url"]
+        if "wistia.com" in instance.url:
+            instance.external_id = retrieve_wistia_id(instance.url)
+            instance.set_duration()
+        elif "youtube.com" in instance.url:
+            instance.duration_seconds = 0
         else:
-            return jsonify({"message": "Can't create segment with such name."}), 400
+            return jsonify({"message": "Wrong video provider"}), 400
+        instance.slug = slug
+        instance.type = SegmentType.video
+        instance.barrier = barrier
+        instance.video_type = video_type
+    elif content_type == "survey":
+        return jsonify({"message": "Surveys not supported"}), 400
+    else:
+        return jsonify({"message": "Content not supported"}), 400
 
-    return jsonify({"message": "Oh snap..."})
+    try:
+        instance.save()
+    except ValidationError:
+        return jsonify({"message": "Chose different name for this segment."}), 400
+
+    response = {
+        "message": "Segment {} {}".format(
+            instance.title, "edited" if segment_id else "added"
+        ),
+        "html": render_segment_list_element(
+            course=course, lesson=lesson, segment=instance
+        ),
+        "id": instance.id,
+    }
+
+    return jsonify(response), 200
 
 
 @blueprint.subdomain_route(

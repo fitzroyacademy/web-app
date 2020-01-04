@@ -203,15 +203,33 @@
 
 <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-<script>let editor = new MediumEditor('#fit_wysiwyg_editor');</script>
 <script>let editorResource = new MediumEditor('#fit_wysiwyg_resource');
 let furtherReading = document.getElementById("further_reading");
-let evt = new CustomEvent('change');
+</script>
 
-    editor.subscribe('editableInput', function (e, editable) {
-        furtherReading.value = editor.getContent();
-        furtherReading.dispatchEvent(evt);
-    });
+<script>
+// probably there is more elegant way to add editor to dynamically loaded content.
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (!mutation.addedNodes) return;
+
+    for (var i = 0; i < mutation.addedNodes.length; i++) {
+      // do things to your newly added nodes here
+      var node = mutation.addedNodes[i];
+      if (node.id === 'fit_modal_add_text_segment') {
+          let editor = new MediumEditor('#fit_wysiwyg_editor');
+          observer.disconnect()
+      }
+    }
+  })
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: false,
+    characterData: false
+})
 </script>
 
 {% endblock %}

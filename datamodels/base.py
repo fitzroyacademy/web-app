@@ -83,6 +83,7 @@ class BaseModel(Base):
             db_session.add(self)
             db_session.commit()
         except IntegrityError:
+            db_session.rollback()
             raise ValidationError("Invalid data.")
 
     @classmethod

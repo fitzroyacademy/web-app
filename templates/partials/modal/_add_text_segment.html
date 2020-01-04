@@ -20,7 +20,6 @@
       <div class="modal-body">
 
         <div class="fit_course intro">
-
           <div class="form-group">
             <input type="text" class="form-control form-control-lg"
                    name="segment_name" value="{% if segment %}{{ segment.title }}{% endif %}"
@@ -29,12 +28,10 @@
                    data-fit-segment-name>
 
           </div>
-
           <div class="fit_wysiwyg">
             <div id="fit_wysiwyg_editor" data-fit-wysiwyg-preview>{% if segment %}{{ segment.text|safe }}{% endif %}</div>
           </div>
           <textarea id="text_segment_content" name="text_segment_content" style="display: none"></textarea>
-
         </div>
 
       </div>

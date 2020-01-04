@@ -183,7 +183,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         response = make_authorized_call(
             url="/course/abc-123/lessons/{}/segments/add/text".format(l2.id),
             user=self.user,
-            data={},
+            data={"segment_name": "Fantastic job."},
             expected_status_code=400,
         )
 
@@ -234,8 +234,8 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         )
         self.assertEqual(len(l1.segments), 0)
         # Can't create segment with such name
-        self.assertTrue(
-            re.search("create segment with such name.", response.json["message"])
+        self.assertEqual(
+            response.json["message"]['segment_name'][0], "This field is required."
         )
 
         data = {"segment_name": "Segment numero 1"}
@@ -246,7 +246,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             expected_status_code=400,
         )
         self.assertEqual(len(l1.segments), 0)
-        print(response.json)
+
         self.assertTrue(
             re.search("Segment description is required", response.json["message"])
         )
@@ -262,9 +262,8 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             expected_status_code=400,
         )
         self.assertEqual(len(l1.segments), 0)
-        self.assertTrue(
-            re.search("create segment with such name.", response.json["message"])
-        )
+        self.assertEqual(
+            response.json["message"]["segment_name"][0], "This field is required.")
 
     def test_add_video_segment(self):
         l1 = self.make_standard_course_lesson(

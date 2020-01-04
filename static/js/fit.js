@@ -1181,43 +1181,94 @@ $( document ).ready(function() {
     $('[data-fit-modal-add-lesson]').modal('show');
   });
 
+  function getModalSegment(courseSlug, lessonId, segmentType, segmentId=null) {
+    let modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
+    if (modalObj.length === 0) {
+      get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentType}`, (responseText, xhr) => {
+        let res = JSON.parse(xhr.response);
+        if (xhr.status === 400) {
+          showAlertSnackbar(res["message"]);
+        } else if (xhr.status === 200) {
+          let parser = new DOMParser();
+          var html = parser.parseFromString(res["html"], 'text/html');
+          document.body.append(html.body.firstChild);
+          modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
+          if (segmentId) {
+            addSegmentModalContent(modalObj[0], courseSlug, lessonId, segmentId);
+          }
+          modalObj.modal('show')
+        } else {
+          showAlertSnackbar("Something went wrong");
+        }
+      })
+    }
+    return modalObj
+  }
+
+  function addSegmentModalContent(modal, courseSlug, lessonId, segmentId) {
+    get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}`,
+            (responseText, xhr) => {
+              if (xhr.status === 200) {
+                let res = JSON.parse(xhr.response);
+                if (res['segment_type'] === 'video') {
+                  modal.querySelector('#segment_name').value = res['title'];
+                  modal.querySelector('#segment_url').value = res['segment_url'];
+                  if (res['video_type']){
+                    modal.querySelector(`#${res['video_type']}`).checked = true;
+                  }
+                  if (res['permission']){
+                    modal.querySelector(`#${res['permission']}`).checked = true;
+                  }
+                } else {
+                  modal.querySelector('#segment_name').value = res['title'];
+                  modal.querySelector('#fit_wysiwyg_editor').innerHTML = res['text'];
+                }
+                modal.querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = segmentId;
+              } else {
+                showAlertSnackbar("Oh snap, something went wrong. Try again.")
+              }
+        });
+  }
+
+  delegate('[data-fit-edit-segment-action]', 'click', (e, t) => {
+    let segmentType = t.dataset['fitSegmentType'];
+    let segmentId = t.dataset['fitSegmentId'];
+    let container = t.closest('[data-fit-list-elements-container]');
+    let courseSlug = container.dataset['fitCourseSlug'];
+    let lessonId = container.dataset['fitLessonId'];
+    let modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
+    if (modalObj.length > 0) {
+      addSegmentModalContent(modalObj[0], courseSlug, lessonId, segmentId);
+      modalObj.modal('show')
+    } else {
+      getModalSegment(courseSlug, lessonId, segmentType, segmentId);
+    }
+  });
+
   delegate('[data-fit-add-edit-segment]', 'click', (e, t) => {
       $('[data-fit-modal-add-segment]').modal('hide');
       let segmentType = t.dataset['fitSegmentType'];
+      let wrapperModal = t.closest("[data-fit-modal-add-segment]");
+      let courseSlug = wrapperModal.dataset['fitCourseSlug'];
+      let lessonId = wrapperModal.dataset['fitLessonId'];
       let modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
-      if (modalObj.length === 0) {
-        // defer loading modals content till it's needed
-        let wrapperModal = t.closest("[data-fit-modal-add-segment]");
-        let courseSlug = wrapperModal.dataset['fitCourseSlug'];
-        let lessonId = wrapperModal.dataset['fitLessonId'];
-        get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentType}`, (responseText, xhr) => {
-          let res = JSON.parse(xhr.response);
-          if (xhr.status === 400) {
-            showAlertSnackbar(res["message"]);
-          } else if (xhr.status === 200) {
-            let parser = new DOMParser();
-            var html = parser.parseFromString(res["html"], 'text/html');
-            document.body.append(html.body.firstChild);
-            modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
-            modalObj.modal('show');
-          } else {
-            showAlertSnackbar("Something went wrong");
-          }
-        })
-      } else {
+
+      if (modalObj.length > 0) {
         if (segmentType === 'text') {
-            modalObj[0].querySelector('[data-fit-segment-name]').value = "";
-            modalObj[0].querySelector('[data-fit-wysiwyg-preview]').innerHTML = ""; }
-        else if (segmentType === 'survey') {
+          modalObj[0].querySelector('[data-fit-segment-name]').value = "";
+          modalObj[0].querySelector('[data-fit-wysiwyg-preview]').innerHTML = "";
+        } else if (segmentType === 'survey') {
           // do some stuff here
         } else {
-            modalObj[0].querySelector('[data-fit-segment-name]').value = "";
-            modalObj[0].querySelector('[data-fit-segment-url]').value = "";
-            modalObj[0].querySelector('[data-fit-segment-standard]').checked = true;
-            modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
+          modalObj[0].querySelector('[data-fit-segment-name]').value = "";
+          modalObj[0].querySelector('[data-fit-segment-url]').value = "";
+          modalObj[0].querySelector('[data-fit-segment-standard]').checked = true;
+          modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
         }
         modalObj.modal('show');
         modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
+      } else {
+        getModalSegment(courseSlug, lessonId, segmentType)
       }
 
   });
@@ -1294,37 +1345,6 @@ $( document ).ready(function() {
         }
     });
 
-  });
-
-  $('#fit_modal_add_text_segment,#fit_modal_add_video_segment').on('show.bs.modal', function(event){
-    if (event.relatedTarget && event.relatedTarget.dataset['fitSegmentId']) {
-        let container = event.relatedTarget.closest('[data-fit-list-elements-container]');
-        let courseSlug = container.dataset['fitCourseSlug'];
-        let lessonId = container.dataset['fitLessonId'];
-        let segmentId = event.relatedTarget.dataset['fitSegmentId'];
-        get(`/course/${courseSlug}/lessons/${lessonId}/segments/${segmentId}`,
-            (responseText, xhr) => {
-              if (xhr.status === 200) {
-                let res = JSON.parse(xhr.response);
-                if (res['segment_type'] === 'video') {
-                  event.currentTarget.querySelector('#segment_name').value = res['title'];
-                  event.currentTarget.querySelector('#segment_url').value = res['segment_url'];
-                  if (res['video_type']){
-                    event.currentTarget.querySelector(`#${res['video_type']}`).checked = true;
-                  }
-                  if (res['permission']){
-                    event.currentTarget.querySelector(`#${res['permission']}`).checked = true;
-                  }
-                } else {
-                  event.currentTarget.querySelector('#segment_name').value = res['title'];
-                  event.currentTarget.querySelector('#fit_wysiwyg_editor').innerHTML = res['text'];
-                }
-                event.currentTarget.querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = segmentId;
-              } else {
-                showAlertSnackbar("Oh snap, something went wrong. Try again.")
-              }
-        })
-    }
   });
 
   $('#fit_modal_add_resource_link').on('show.bs.modal', function(event){

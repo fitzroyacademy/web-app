@@ -2794,6 +2794,11 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 .medium-editor-toolbar ul li:first-child button{border-radius: $border_rad_xl 0 0 $border_rad_xl;}
 .medium-editor-toolbar ul li:last-child button{border-radius: 0 $border_rad_xl $border_rad_xl 0;}
 
+.medium-editor-toolbar {
+	// to make it visible in modals
+	z-index: 6000!important;
+}
+
 
 
 

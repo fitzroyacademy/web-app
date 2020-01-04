@@ -87,3 +87,7 @@ class ReorderForm(CSRFBaseForm):
 class CustomSettingForm(CSRFBaseForm):
     key = StringField("Key", [validators.required(), validators.Length(min=1, max=16)])
     value = StringField("Value", [validators.required(), validators.Length(min=1, max=64)])
+
+
+class AddSegmentForm(CSRFBaseForm):
+    segment_name = StringField("Segment name", [validators.required(), validators.Length(min=1, max=256)])
