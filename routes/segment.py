@@ -208,14 +208,7 @@ def add_edit_segment(
         ):
             if not editing:
                 if content_type in ["intro_text", "intro_video"]:
-                    if (
-                        db.query(datamodels.Segment)
-                        .filter(
-                            datamodels.Segment.lesson_id == lesson_id,
-                            datamodels.Segment.order == 0,
-                        )
-                        .first()
-                    ):
+                    if datamodels.Segment.first(lesson_id=lesson_id, order=0):
                         return jsonify({"message": "Intro segment already exists"}), 400
                     else:
                         instance.order = 0

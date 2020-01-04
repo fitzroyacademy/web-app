@@ -2,6 +2,8 @@ from os import environ
 
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
+from sqlalchemy.exc import IntegrityError
+from wtforms.validators import ValidationError
 
 from flask import current_app as app
 from flask import url_for
@@ -47,6 +49,7 @@ class BaseModel(Base):
 
     @classmethod
     def objects(cls, deleted=False):
+        # ToDo: add objects manager
         session = get_session()
         return session.query(cls).filter(cls._is_deleted == deleted)
 
@@ -75,9 +78,45 @@ class BaseModel(Base):
         )
 
     def save(self):
+        try:
+            db_session = get_session()
+            db_session.add(self)
+            db_session.commit()
+        except IntegrityError:
+            raise ValidationError("Invalid data.")
+
+    @classmethod
+    def _query(cls, **kwargs):
         db_session = get_session()
-        db_session.add(self)
-        db_session.commit()
+        q = db_session.query(cls).filter_by(_is_deleted=False).filter_by(**kwargs)
+        return q
+
+    @classmethod
+    def first(cls, **kwargs):
+        return cls._query(**kwargs).first()
+
+    def delete(self, hard=False):
+        if hard:
+            db_session = get_session()
+            db_session.delete(self)
+            db_session.commit()
+        else:
+            self._is_deleted = True
+            self.save()
+
+    @classmethod
+    def paginated_list(cls, page=1, page_size=None, order_by=None, desc=False):
+        if page_size is None:
+            page_size = app.config.get("PAGE_SIZE", 10)
+        db_session = get_session()
+        q = db_session.query(cls)
+        if order_by is not None:
+            if desc is True:
+                order = sa.desc(order_by)
+            else:
+                order = order_by
+            q = q.order_by(order)
+        return q.limit(page_size).offset(page_size * (page - 1)).all()
 
 
 class OrderedBase(BaseModel):
