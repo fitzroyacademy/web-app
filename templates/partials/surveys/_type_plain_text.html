@@ -5,8 +5,8 @@
     <div class="form-row">
         <div class="col">
             <label for="minimum_length_{{ survey.survey_id }}">Minimum response length (characters)</label>
-            <input type="url" class="form-control" name="free_text_minlength" id="minimum_length_{{ survey.survey_id }}"
-                   placeholder="E.g. 100" value="100">
+            <input class="form-control" name="free_text_minlength_{{ survey.survey_id }}" id="minimum_length_{{ survey.survey_id }}"
+                   placeholder="E.g. 100" value="{{ survey.free_text_minlength }}" step=1 type="number">
         </div>
         <div class="col"></div>
     </div>

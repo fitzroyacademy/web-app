@@ -117,7 +117,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
             response.json["success_url"],
             "/course/abc-123/lessons/{}/edit".format(l1.id),
         )
-        segments = datamodels.Segment.get_ordered_items()
+        segments = l1.get_ordered_segments()
         self.assertEqual(segments[0].order, 0)
         self.assertEqual(segments[0].title, "Segment Intro")
         self.assertEqual(segments[1].order, 1)

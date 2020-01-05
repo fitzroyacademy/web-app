@@ -15,7 +15,7 @@ from .render_partials import (
     render_segment_list_element,
     render_segment_modal,
 )
-from .utils import reorder_items, clone_model, retrieve_wistia_id
+from .utils import reorder_items, clone_model, retrieve_wistia_id, SurveyViewInterface
 
 blueprint = SubdomainBlueprint("segment", __name__, template_folder="templates")
 
@@ -37,8 +37,9 @@ def course_delete_segment(
         db.commit()
 
         list_of_items = [
-            l.id for l in datamodels.Segment.get_ordered_items() if l.order != 0
+            l.id for l in lesson.get_ordered_segments() if l.order != 0
         ]  # do not reorder intro segment
+
         if list_of_items:
             datamodels.Segment.reorder_items(list_of_items)
 
@@ -75,16 +76,21 @@ def retrieve(user, course, course_slug, lesson_id, segment_id, institute=""):
     segment = datamodels.Segment.find_by_id(segment_id)
 
     if lesson and lesson.course_id == course.id and segment.lesson_id == lesson.id:
-        return jsonify(
-            {
-                "segment_url": segment.url,
-                "segment_type": segment.type.name,
-                "video_type": segment.video_type.value if segment.video_type else "",
-                "permission": segment.barrier.value if segment.barrier else "",
-                "title": segment.title,
-                "text": segment.text,
-            }
-        )
+        data = {
+            "segment_url": segment.url,
+            "segment_type": segment.type.name,
+            "video_type": segment.video_type.value if segment.video_type else "",
+            "permission": segment.barrier.value if segment.barrier else "",
+            "title": segment.title,
+            "text": segment.text,
+        }
+        if segment.type == SegmentType.survey:
+            writer = SurveyViewInterface(survey_type=segment.survey_type.name)
+            template = segment.get_questions_template()
+            data["survey_type"] = segment.survey_type.name
+            data["survey_id"] = template["survey_id"]
+            data["survey"] = writer.serialize_survey_data_for_view(template)
+        return jsonify(data)
 
     return jsonify({"message": "Segment doesn't match a course lesson."}), 400
 
@@ -197,6 +203,7 @@ def add_edit_segment(
     else:  # Case of a new segment
         instance = datamodels.Segment()
         instance.lesson_id = lesson.id
+        instance.duration_seconds = 0
 
         if content_type == "intro_video":
             if datamodels.Segment.first(lesson_id=lesson_id, order=0):
@@ -204,7 +211,8 @@ def add_edit_segment(
             else:
                 instance.order = 0
         else:
-            instance.order = lesson.get_ordered_segments().count() + 1
+            last_segment = lesson.last_child(instance)
+            instance.order = last_segment.order + 1 if last_segment else 1
 
     segment_name = form.segment_name.data
     slug = slugify(segment_name)
@@ -217,6 +225,13 @@ def add_edit_segment(
     ):
         return jsonify({"message": "Can't create segment with such name."}), 400
 
+    barrier = getattr(
+        SegmentBarrierEnum, request.form.get("permissions", "normal"), "normal"
+    )
+    instance.barrier = barrier
+    instance.title = request.form["segment_name"]
+    instance.slug = slug
+
     if content_type == "text":
         if (
             "text_segment_content" not in request.form
@@ -224,40 +239,41 @@ def add_edit_segment(
         ):
             return jsonify({"message": "Segment description is required"}), 400
 
-        instance.title = request.form["segment_name"]
         instance.text = request.form["text_segment_content"]
-        instance.slug = slug
         instance.type = SegmentType.text
-        if not segment_id:
-            instance.duration_seconds = 0
-            instance.barrier = SegmentBarrierEnum.normal
     elif content_type in ["video", "video_intro"]:
         if "segment_url" not in request.form or not request.form["segment_url"]:
             return jsonify({"message": "Segment URL is requied"}), 400
 
-        barrier = getattr(
-            SegmentBarrierEnum, request.form.get("permissions", "normal"), "normal"
-        )
         video_type = getattr(
             VideoTypeEnum, request.form.get("video_types", "standard"), "standard"
         )
 
         # ToDo: validate URL
-        instance.title = request.form["segment_name"]
         instance.url = request.form["segment_url"]
         if "wistia.com" in instance.url:
             instance.external_id = retrieve_wistia_id(instance.url)
             instance.set_duration()
         elif "youtube.com" in instance.url:
-            instance.duration_seconds = 0
+            # ToDo: maybe remove this for now?
+            pass
         else:
             return jsonify({"message": "Wrong video provider"}), 400
-        instance.slug = slug
         instance.type = SegmentType.video
-        instance.barrier = barrier
         instance.video_type = video_type
     elif content_type == "survey":
-        return jsonify({"message": "Surveys not supported"}), 400
+        survey_id = request.form.get("survey_types", None)
+        instance.type = SegmentType.survey
+        if not survey_id:
+            return jsonify({"message": "Survey type not provided."}), 400
+
+        reader = SurveyViewInterface(survey_id=survey_id)
+        template = reader.read_questions_template_from_view(data=request.form)
+        try:
+            instance.save_questions_template(template)
+        except (AssertionError, ValueError) as e:
+            msg = str(e)
+            return jsonify({"message": msg if msg else "Some error occurred"}), 400
     else:
         return jsonify({"message": "Content not supported"}), 400
 

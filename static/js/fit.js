@@ -93,6 +93,7 @@ $( document ).ready(function() {
   });
 
   function showAlertSnackbar(text){
+    // DEV: need to unpack if text is dict: field_name: message
     Snackbar.show({
       text: text,
       pos: 'bottom-center',
@@ -1018,13 +1019,7 @@ $( document ).ready(function() {
     let instituteSlug = t.dataset.courseSlug;
     let p = t.closest('[data-fit-change-slug]');
     let value = p.querySelector('[data-slug-value]').value;
-    let utl = '';
-
-    if (courseSlug) {
-        url = `/course/${courseSlug}/edit/slug`;
-    } else {
-        url = '/institute/edit/slug';
-    }
+    let url = courseSlug ? `/course/${courseSlug}/edit/slug` : '/institute/edit/slug';
 
     post(url, {slug: value}, (responseText, xhr) => {
         if (xhr.status === 200) {
@@ -1210,8 +1205,8 @@ $( document ).ready(function() {
             (responseText, xhr) => {
               if (xhr.status === 200) {
                 let res = JSON.parse(xhr.response);
+                modal.querySelector('#segment_name').value = res['title'];
                 if (res['segment_type'] === 'video') {
-                  modal.querySelector('#segment_name').value = res['title'];
                   modal.querySelector('#segment_url').value = res['segment_url'];
                   if (res['video_type']){
                     modal.querySelector(`#${res['video_type']}`).checked = true;
@@ -1219,9 +1214,35 @@ $( document ).ready(function() {
                   if (res['permission']){
                     modal.querySelector(`#${res['permission']}`).checked = true;
                   }
-                } else {
-                  modal.querySelector('#segment_name').value = res['title'];
+                } else if (res['segment_type'] === 'text') {
                   modal.querySelector('#fit_wysiwyg_editor').innerHTML = res['text'];
+                } else if (res['segment_type'] === 'survey') {
+                  if (res['permission']){
+                    modal.querySelector(`#${res['permission']}`).checked = true;
+                  }
+                  let choice_questions = res['survey']['choice_questions'] || null;
+                  function updateSurvey(partialDict) {
+                    Object.entries(partialDict).forEach(([key, value]) => {
+                    if (typeof value === 'boolean') {
+                      modal.querySelector(`input[name=${key}]`).checked = value;
+                    } else {
+                      modal.querySelector(`input[name=${key}]`).value = value;
+                    }
+                  });
+                  }
+
+                  if (choice_questions) {
+                      delete res['survey']['choice_questions'];
+                    for (let question of choice_questions) {
+                      updateSurvey(question)
+                    }
+                  }
+
+                  // activate proper survey pane
+                  modal.querySelector(`#${res['survey_id']}`).checked = true;
+                  activatePane(res['survey_id'], "survey_type");
+                  updateSurvey(res['survey'])
+
                 }
                 modal.querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = segmentId;
               } else {
@@ -1306,7 +1327,6 @@ $( document ).ready(function() {
     let previewWysiwyg = form.querySelector('[data-fit-wysiwyg-preview]');
     let description = "";
     let url = '';
-
     if (previewWysiwyg) {
       description = previewWysiwyg.innerHTML;
     }
@@ -1317,13 +1337,11 @@ $( document ).ready(function() {
       url = `/course/${courseSlug}/lessons/${lessonId}/segments/add/${segmentType}`
     }
 
-    let data = {
-      "segment_url": formData.get("segment_url"),
-      "segment_name": formData.get("segment_name"),
-      "text_segment_content": description,
-      "video_types": formData.get("video_types"),
-      "permissions": formData.get("permissions")
-    };
+    let data = {};
+    for (let key of formData.keys()) {
+      data[key] = formData.get(key)
+    }
+    data['text_segment_content'] = description;
 
     post(url, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
@@ -1564,12 +1582,16 @@ $( document ).ready(function() {
     })
   });
 
+  function activatePane(pane, paneType) {
+    $('[data-fit-pane-detail][data-fit-pane-type="' + paneType + '"]').removeClass('active');
+    $('[data-fit-pane-detail=' + pane + ']').addClass('active');
+  }
+
   delegate('[data-fit-toggl-pane-trigger]', 'click', (e, t) => {
     let pane = t.value;
     let type = t.dataset['fitPaneType'];
 
-    $('[data-fit-pane-detail][data-fit-pane-type="' + type + '"]').removeClass('active');
-    $('[data-fit-pane-detail=' + pane + ']').addClass('active');
+    activatePane(pane, type)
   })
 
 });
