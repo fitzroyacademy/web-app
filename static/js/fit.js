@@ -421,130 +421,6 @@ $( document ).ready(function() {
 
   */
 
-
-  // ------------------------------------------------------------
-  $('[data-fit_iconselects]').each(function(e) {
-    let selected = '';
-    let icon_color = '';
-
-    $(this).find('[data-fit_iconselect]').on("click", function(i, e) {
-
-      $(this).siblings('[data-fit_iconselect]').addBack().removeClass('active').addClass('inactive');
-      
-      $(this).removeClass('inactive').addClass('active');
-      $(this).parents('[data-fit_iconselects]').addClass('active');
-
-      icon_color = $(this).find('i').css('color');
-      language = $(this).data('fit_iconselect');
-
-
-      // if there is a why, show it
-      if (typeof $(this).data('fit_triggerwhy') !== 'undefined')
-      {
-        $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('show');
-      }
-      else
-      {
-        $(this).parents('[data-fit_iconselect_parent]').find('[data-fit_feedback_why]').collapse('hide'); 
-      }
-
-      // find and enable the go button, set the colour.
-      // we only set the colour and gather info if it ISN'T 'fit_gather',
-      // passing fit_gather means get the data and colour from the button
-      let gobutton = $('[data-fit_iconselects_submit]');
-
-
-      // if it wasn't previously selected:
-      if (typeof $(this).attr('data-fit_iconselect_previously') !== "undefined")
-      {
-        gobutton
-        .text(gobutton.data('fit_iconselects_disabled'))
-        .prop("disabled", true)
-        .addClass('btn-secondary')
-        .removeClass('btn-primary');
-      }
-      else
-      {
-        // do something fancy if it's a 'fit_gather' button:
-        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
-        {
-          gobutton
-          .text(language)
-          .prop("disabled", false)
-          .css('background-color', icon_color)
-        }
-        else
-        {
-          gobutton
-          .text(gobutton.data('fit_iconselects_submit'))
-          .prop("disabled", false)
-          .removeClass('btn-secondary')
-          .addClass('btn-primary');
-        }
-      }
-
-      // wuh oh, what if there's a textarea? Then disable it again until changed
-      // if it has a force value....
-      if ($('[data-fit_feedback_why_input]').val().length < $('[data-fit_survey_force]').data('fit_survey_force')) {
-        gobutton.prop("disabled", true);
-      }
-
-      console.log(language);
-
-    });
-  });
-
-
-  // set the counter value
-  if ($('[data-fit_survey_force_counter]').length > 0)
-  {
-    $('[data-fit_survey_force_counter_total]').text($('[data-fit_survey_force]').data('fit_survey_force'));
-    $('[data-fit_survey_force_counter]').text($('[data-fit_survey_force]').val().length);
-  }
-
-  $('[data-fit_survey_force]').on({
-    'change, keyup': function(e) {
-
-      let gobutton = $('[data-fit_iconselects_submit]');
-      let vallength = $(this).val().length;
-
-      // if the length is good:
-      if (vallength > $(this).data('fit_survey_force')){
-        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
-        {
-          gobutton.prop("disabled", false);
-        }
-        else {
-          gobutton
-          .text(gobutton.data('fit_iconselects_submit'))
-          .prop("disabled", false)
-          .removeClass('btn-secondary')
-          .addClass('btn-primary');
-        }
-      }
-
-      // otherwise disable it
-      else {
-        if (gobutton.data('fit_iconselects_submit') == 'fit_gather')
-        {
-          gobutton.prop("disabled", true);
-        }
-        else {
-          gobutton
-          .text(gobutton.data('fit_iconselects_disabled'))
-          .prop("disabled", true)
-          .addClass('btn-secondary')
-          .removeClass('btn-primary');
-        }
-      }
-
-      // set the counter
-      $('[data-fit_survey_force_counter]').text(vallength);
-
-    }
-  });
-
-
   // escape to close (27 is escape apparently)
   $(document).keydown(function(e) {
     if (e.keyCode == 27) {
@@ -854,17 +730,34 @@ $( document ).ready(function() {
     get('/_segment/'+sid+'.json', (e, xhr, data) => {
       let unlockedPane = document.querySelector("[data-fit-vidya-unlocked]");
       let lockedPane = document.querySelector("[data-fit-vidya-locked]");
+      let dataContainer;
       if (e) console.error(e);
       data = JSON.parse(data);
-      if (!data.locked){
-      unlockedPane.style.display = "block";
-      lockedPane.style.display = "none";
-      _fitz_video.replaceWith(data.active_segment.external_id);
-      _fitz_video.play();
-      } else {
-        unlockedPane.style.display = "none";
-        lockedPane.style.display = "block";
+      if (!data.locked) {
+        unlockedPane.style.display = "block";
+        lockedPane.style.display = "none";
+        activatePane(data['segment_type'] + "_content", "segment_display_content");
+        if (data['segment_type'] === 'video') {
+          _fitz_video.replaceWith(data.active_segment.external_id);
+          _fitz_video.play();
+        } else if (data['segment_type'] === 'text') {
+          dataContainer = document.querySelector('[data-fit-pane-detail="text_content"]');
+          dataContainer.innerHTML = "";
+          let parser = new DOMParser();
+          let html = parser.parseFromString(data['html'], 'text/html');
+          dataContainer.append(html.body.firstChild);
+        } else if (data['segment_type'] === 'survey') {
+          dataContainer = document.querySelector('[data-fit-pane-detail="survey_content"]');
+          dataContainer.innerHTML = "";
+          let parser = new DOMParser();
+          let html = parser.parseFromString(data['html'], 'text/html');
+          dataContainer.append(html.body.firstChild);
+        } else {
+          unlockedPane.style.display = "none";
+          lockedPane.style.display = "block";
+        }
       }
+
 
       if (data["barrier_id"]) {
         let hard = false;
@@ -1185,7 +1078,7 @@ $( document ).ready(function() {
           showAlertSnackbar(res["message"]);
         } else if (xhr.status === 200) {
           let parser = new DOMParser();
-          var html = parser.parseFromString(res["html"], 'text/html');
+          let html = parser.parseFromString(res["html"], 'text/html');
           document.body.append(html.body.firstChild);
           modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
           if (segmentId) {
@@ -1592,6 +1485,116 @@ $( document ).ready(function() {
     let type = t.dataset['fitPaneType'];
 
     activatePane(pane, type)
-  })
+  });
+
+
+  delegate('[data-fit_iconselect]', 'click', function(e, t) {
+    let selected = '';
+    let icon_color = '';
+    let iconselectParentContainer = t.closest('[data-fit_iconselects]');
+    let parentContainer = t.closest('[data-fit_iconselect_parent]');
+    iconselectParentContainer.classList.add('active');
+    let siblings = iconselectParentContainer.querySelectorAll('[data-fit_iconselect]');
+    for (let i = 0; i < siblings.length; ++i) {
+       siblings[i].classList.add('inactive');
+       siblings[i].classList.remove('active');
+    }
+
+    t.classList.remove('inactive');
+    t.classList.add('active');
+
+    icon_color = window.getComputedStyle(t.querySelector('i')).getPropertyValue("color");
+    let language = t.dataset['fit_iconselect'];
+    let whyContainer = parentContainer.querySelector('[data-fit_feedback_why]');
+
+      // if there is a why, show it
+      if (typeof t.dataset['fit_triggerwhy'] !== 'undefined')
+      {
+        $(whyContainer).collapse('show');
+      }
+      else
+      {
+        $(whyContainer).collapse('hide');
+      }
+
+      // find and enable the go button, set the colour.
+      // we only set the colour and gather info if it ISN'T 'fit_gather',
+      // passing fit_gather means get the data and colour from the button
+      let gobutton = parentContainer.querySelector('[data-fit_iconselects_submit]');
+
+      // if it wasn't previously selected:
+      if (!typeof t.getAttribute('data-fit_iconselect_previously'))
+      {
+        gobutton.setAttribute('content', gobutton.dataset['fit_iconselects_disabled']);
+        gobutton.setAttribute("disabled", true);
+        gobutton.classList.add('btn-secondary');
+        gobutton.classList.remove('btn-primary')
+      }
+      else
+      {
+        // do something fancy if it's a 'fit_gather' button:
+        if (gobutton.dataset['fit_iconselects_submit'] === 'fit_gather')
+        {
+          gobutton.innerHTML = language;
+          gobutton.disabled = false;
+          gobutton.style.backgroundColor = icon_color;
+        }
+        else
+        {
+          gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
+          gobutton.disabled = false;
+          gobutton.classList.remove('btn-secondary');
+          gobutton.classList.add('btn-primary')
+        }
+      }
+
+      // wuh oh, what if there's a textarea? Then disable it again until changed
+      // if it has a force value....
+      if ($('[data-fit_feedback_why_input]').value) {
+      if ($('[data-fit_feedback_why_input]').value.length < $('[data-fit_survey_force]').data('fit_survey_force')) {
+        gobutton.setAttribute("disabled", true);
+        }}
+
+    });
+
+  delegate('[data-fit_survey_force]', 'keyup', (e, t) => {
+      // DEV: write this without jQuery ?
+      let gobutton = $('[data-fit_iconselects_submit]');
+      let target = $(t);
+      let vallength = target.val().length;
+
+      // if the length is good:
+      if (vallength > target.data('fit_survey_force')){
+        if (gobutton.data('fit_iconselects_submit') === 'fit_gather')
+        {
+          gobutton.prop("disabled", false);
+        }
+        else {
+          gobutton
+          .text(gobutton.data('fit_iconselects_submit'))
+          .prop("disabled", false)
+          .removeClass('btn-secondary')
+          .addClass('btn-primary');
+        }
+      }
+
+      // otherwise disable it
+      else {
+        if (gobutton.data('fit_iconselects_submit') === 'fit_gather')
+        {
+          gobutton.prop("disabled", true);
+        }
+        else {
+          gobutton
+          .text(gobutton.data('fit_iconselects_disabled'))
+          .prop("disabled", true)
+          .addClass('btn-secondary')
+          .removeClass('btn-primary');
+        }
+      }
+
+      // set the counter
+      $('[data-fit_survey_force_counter]').text(vallength);
+  });
 
 });

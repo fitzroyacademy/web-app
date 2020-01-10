@@ -44,18 +44,32 @@ def segment(segment_id):
     else:
         anon_progress = {}
 
+    if active_segment.type == datamodels.SegmentType.text:
+        html = render_template(
+            "partials/segments/_text.html", active_segment=active_segment
+        )
+    elif active_segment.type == datamodels.SegmentType.survey:
+        html = render_template(
+            "partials/segments/survey/{}.html".format(active_segment.survey_type.name),
+            active_segment=active_segment,
+        )
+    else:
+        html = ""
+
     data = {
         "active_segment": active_segment,
+        "segment_type": active_segment.type.name,
         "locked": active_segment.locked(current_user, anon_progress),
         "barrier_id": barrier.id if barrier else None,
         "barrier_type": barrier.barrier.name if barrier else None,
         "locked_segments": locked_segments,
+        "html": html,
     }
     if ext == "json":
         dumped_data = dump(data["active_segment"])
         data["active_segment"] = dumped_data
         return json.dumps(data)
-    return render_template("partials/_active_segment.html", **data)
+    return render_template("partials/course/_active_segment.html", **data)
 
 
 @blueprint.route("/_lesson_resources/<lesson_id>")

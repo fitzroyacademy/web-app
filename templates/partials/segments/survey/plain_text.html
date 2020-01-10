@@ -1,0 +1,27 @@
+<div class="fit_survey" data-fit_iconselect_parent>
+  {% with template = active_segment.get_questions_template() %}
+  <h2>
+    {{ active_segment.title }}
+    {% if template.free_text_minlength > 0 %}
+        <span class="fit_why_count">
+          <span data-fit_survey_force_counter></span>
+          / minimum
+          <span data-fit_survey_force_counter_total>{{ template.free_text_minlength }}</span>
+        </span>
+    {% endif %}
+  </h2>
+
+  <div class="fit_survey_why" data-fit_feedback_why>
+    <div class="form-group">
+      <textarea class="form-control" data-fit_feedback_why_input data-fit_survey_force="{{ template.free_text_minlength }}" id="reason" rows="5"></textarea>
+    </div>
+  </div>
+
+  <div class="fit_survey_submit">
+    <button type="button" disabled data-fit_iconselects_submit="Save answer" data-fit_iconselects_disabled="Please enter an answer" class="btn btn-lg btn-secondary">Please enter an answer</button>
+    {% if active_segment.barrier %}
+    <button type="button" class="btn btn-lg btn-outline-secondary">Skip</button>
+    {% endif %}
+  </div>
+  {% endwith %}
+</div>

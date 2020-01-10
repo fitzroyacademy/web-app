@@ -120,7 +120,7 @@ SURVEYS_TEMPLATES = [
         "free_text_require": False,
         "survey_type": "points_scale",
         "survey_type_name": "10 points scale",
-        "survey_type_description": "Simple thumbs up / thumbs down selector",
+        "survey_type_description": "Numbers from 1 to 10 with labels.",
         "survey_type_icon": "fal fa-tachometer-fast",
         "survey_type_icon_type": "css",
         "answer_template": {

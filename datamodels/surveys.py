@@ -8,6 +8,7 @@ from .survey_templates import SURVEYS_TEMPLATES
 
 class Survey(Base):
     __abstract__ = True
+    __survey_template = {}
 
     survey_type = sa.Column(sa.Enum(SurveyTypeEnum), nullable=True, default=None)
     questions_template = sa.Column(sa.String, default="")
@@ -101,12 +102,15 @@ class Survey(Base):
         self.questions_template = json.dumps(survey_data)
 
     def get_questions_template(self):
-        if not self.questions_template:
-            raise ValueError("No questions template added")
-        template = json.loads(self.questions_template)
-        self._survey_template_definition_checker(template)
+        if self.__survey_template:
+            return self.__survey_template
+        else:
+            if not self.questions_template:
+                raise ValueError("No questions template added")
+            self.__survey_template = json.loads(self.questions_template)
+            self._survey_template_definition_checker(self.__survey_template)
 
-        return template
+        return self.__survey_template
 
     def get_answer_template(self):
         if not self.answer_template:

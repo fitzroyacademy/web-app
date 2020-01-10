@@ -6,6 +6,7 @@ from .segments import (
     SegmentStatusThreshold,
     BarrierSegment,
     SegmentUserProgress,
+    SegmentType,
 )
 
 from .lessons import Lesson, LessonQA, LessonResourceUserAccess, LessonTranslation
@@ -71,4 +72,5 @@ __all__ = [
     "CUSTOM_SETTINGS_KEYS",
     "list_public_courses",
     "find_segment_by_slugs",
+    "SegmentType",
 ]

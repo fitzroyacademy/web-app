@@ -191,7 +191,10 @@ class Segment(BarrierSegment, Survey, OrderedBase):
 
     @property
     def template(self):
-        return "video_wistia"
+        if self.type == SegmentType.video:
+            return "video_wistia"
+        else:
+            return self.type.name
 
     @property
     def permalink(self):

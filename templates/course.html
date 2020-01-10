@@ -38,8 +38,27 @@
         </div>
       </article>
       <article data-fit-vidya-unlocked>
-        <div class="fit_vidya">
-          {% include 'partials/course/_active_segment.html' %}
+        <div class="fit_vidya {% if active_segment.type.name == "video" %}active{% endif %}"
+             data-fit-pane-type="segment_display_content"
+             data-fit-pane-detail="video_content"
+        >
+          {% include "partials/segments/_video_wistia.html" %}
+        </div>
+        <div class=" {% if active_segment.type.name == "text" %}active{% endif %}"
+             data-fit-pane-type="segment_display_content"
+             data-fit-pane-detail="text_content"
+        >
+          {% if active_segment.type.name == "text" %}
+          {% include "partials/segments/_text.html" %}
+          {% endif %}
+        </div>
+        <div class="{% if active_segment.type.name == "survey" %}active{% endif %}"
+             data-fit-pane-type="segment_display_content"
+             data-fit-pane-detail="survey_content"
+        >
+          {% if active_segment.type.name == "survey" %}
+          {% include "partials/segments/survey/" + active_segment.survey_type.name + ".html" %}
+          {% endif %}
         </div>
       </article>
 

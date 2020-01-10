@@ -1,0 +1,19 @@
+{% extends "partials/segments/survey/base.html" %}
+
+{% block questions %}
+    {% with template=active_segment.get_questions_template() %}
+   <div class="fit_iconselects numbers" data-fit_iconselects>
+    <a class="fit_iconselect" data-fit_triggerwhy data-fit_iconselect="{{ template.scale_start }}"><i>{{ template.scale_start }}</i><span class="sub">{{ template.left_label }}</span></a>
+    {% for i in range(template.scale_start + 1, template.scale_stop - 1)  %}
+    <a class="fit_iconselect" data-fit_triggerwhy data-fit_iconselect="{{ i }}"><i>{{ i }}</i></a>
+    {% endfor %}
+    <a class="fit_iconselect" data-fit_triggerwhy data-fit_iconselect="{{ template.scale_stop }}"><i>{{ template.scale_stop }}</i><span class="sub">{{ template.right_label }}</span></a>
+  </div>
+    {% endwith %}
+{% endblock %}
+
+{% block skip_button %}{% endblock %}
+
+{% block submit_button %}
+    <button type="button" disabled data-fit_iconselects_submit="Save answer" data-fit_iconselects_disabled="Please choose an answer" class="btn btn-lg btn-secondary">Please choose an answer</button>
+{% endblock %}

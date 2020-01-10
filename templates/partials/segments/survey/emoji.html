@@ -1,0 +1,21 @@
+{% extends "partials/segments/survey/base.html" %}
+
+{% block questions %}
+    {% with template=active_segment.get_questions_template() %}
+    {% set trigger_why="" if active_segment.barrier.name != "normal" else "data-fit_triggerwhy" %}
+  <div class="fit_iconselects" data-fit_iconselects>
+    {% for question in template.choice_questions %}
+    <a class="fit_iconselect " {{ trigger_why }} data-fit_iconselect="{{ question.short_sentence }}">
+      <i class="{{ question.icon }}"></i>
+      <span class="sub">{{ question.single_word }}</span>
+    </a>
+    {% endfor %}
+  </div>
+    {% endwith %}
+{% endblock %}
+
+{% block submit_button %}
+    <button type="button" disabled data-fit_iconselects_submit="fit_gather"
+            data-fit_iconselects_disabled="Please choose an option"
+            class="btn btn-lg btn-secondary">Select an option</button>
+{% endblock %}
