@@ -1489,7 +1489,6 @@ $( document ).ready(function() {
 
 
   delegate('[data-fit_iconselect]', 'click', function(e, t) {
-    let selected = '';
     let icon_color = '';
     let iconselectParentContainer = t.closest('[data-fit_iconselects]');
     let parentContainer = t.closest('[data-fit_iconselect_parent]');
@@ -1506,9 +1505,10 @@ $( document ).ready(function() {
     icon_color = window.getComputedStyle(t.querySelector('i')).getPropertyValue("color");
     let language = t.dataset['fit_iconselect'];
     let whyContainer = parentContainer.querySelector('[data-fit_feedback_why]');
+    let freeTextRequired = (typeof t.dataset['fit_triggerwhy'] !== 'undefined');
 
       // if there is a why, show it
-      if (typeof t.dataset['fit_triggerwhy'] !== 'undefined')
+      if (freeTextRequired)
       {
         $(whyContainer).collapse('show');
       }
@@ -1541,17 +1541,25 @@ $( document ).ready(function() {
         }
         else
         {
-          gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
-          gobutton.disabled = false;
-          gobutton.classList.remove('btn-secondary');
-          gobutton.classList.add('btn-primary')
+          if (freeTextRequired) {
+            gobutton.innerHTML = gobutton.dataset['fit_iconselects_free_text_required'];
+            gobutton.disabled = true;
+            gobutton.classList.add('btn-secondary');
+            gobutton.classList.remove('btn-primary')
+          } else {
+            gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
+            gobutton.disabled = false;
+            gobutton.classList.remove('btn-secondary');
+            gobutton.classList.add('btn-primary')
+          }
         }
       }
 
       // wuh oh, what if there's a textarea? Then disable it again until changed
       // if it has a force value....
-      if ($('[data-fit_feedback_why_input]').value) {
-      if ($('[data-fit_feedback_why_input]').value.length < $('[data-fit_survey_force]').data('fit_survey_force')) {
+      let freeTextInput = $('[data-fit_feedback_why_input]').value;
+      if (freeTextInput.value) {
+      if (freeTextInput.value.length < $('[data-fit_survey_force]').data('fit_survey_force')) {
         gobutton.setAttribute("disabled", true);
         }}
 
@@ -1586,7 +1594,7 @@ $( document ).ready(function() {
         }
         else {
           gobutton
-          .text(gobutton.data('fit_iconselects_disabled'))
+          .text(gobutton.data('fit_iconselects_free_text_required'))
           .prop("disabled", true)
           .addClass('btn-secondary')
           .removeClass('btn-primary');

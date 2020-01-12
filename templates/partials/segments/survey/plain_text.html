@@ -4,7 +4,7 @@
     {{ active_segment.title }}
     {% if template.free_text_minlength > 0 %}
         <span class="fit_why_count">
-          <span data-fit_survey_force_counter></span>
+          <span data-fit_survey_force_counter>0</span>
           / minimum
           <span data-fit_survey_force_counter_total>{{ template.free_text_minlength }}</span>
         </span>
@@ -18,7 +18,10 @@
   </div>
 
   <div class="fit_survey_submit">
-    <button type="button" disabled data-fit_iconselects_submit="Save answer" data-fit_iconselects_disabled="Please enter an answer" class="btn btn-lg btn-secondary">Please enter an answer</button>
+    <button type="button" disabled data-fit_iconselects_submit="Save answer"
+            data-fit_iconselects_disabled="Please enter an answer"
+            data-fit_iconselects_free_text_required="Please enter an answer"
+            class="btn btn-lg btn-secondary">Please enter an answer</button>
     {% if active_segment.barrier %}
     <button type="button" class="btn btn-lg btn-outline-secondary">Skip</button>
     {% endif %}
