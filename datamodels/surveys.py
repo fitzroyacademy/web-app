@@ -1,12 +1,12 @@
 import json
 import sqlalchemy as sa
 
-from .base import Base
+from .base import BaseModel
 from .enums import SurveyTypeEnum
 from .survey_templates import SURVEYS_TEMPLATES
 
 
-class Survey(Base):
+class Survey(BaseModel):
     __abstract__ = True
     __survey_template = {}
 
@@ -121,3 +121,60 @@ class Survey(Base):
         self._survey_answer_template_definition_checker(template, self.survey_type.name)
 
         return template
+
+
+class SurveyResponse(BaseModel):
+    __abstract__ = True
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    answers = sa.Column(sa.String, default="")
+    survey = None
+    user = None
+
+    __serialize_answers = None
+    __is_data_valid = False
+
+    def validate_data(self, chosen_answer="", free_text=""):
+        survey_template = self.survey.get_questions_template()
+        if self.survey.survey_type == SurveyTypeEnum.plain_text and not free_text:
+            raise ValueError("No response provide")
+
+        if self.survey.survey_type != SurveyTypeEnum.plain_text:
+            if survey_template["free_text_require"] and not free_text:
+                raise ValueError("No response provide")
+            if not chosen_answer:
+                raise ValueError("Please choose an answer")
+
+            if self.survey.survey_type == SurveyTypeEnum.emoji:
+                if chosen_answer not in [
+                    str(q["id"]) for q in survey_template["choice_questions"]
+                ]:
+                    raise ValueError("Chosen answer is not valid")
+            else:
+                if chosen_answer not in [
+                    str(i)
+                    for i in range(
+                        survey_template["scale_start"], survey_template["scale_stop"]
+                    )
+                ]:
+                    raise ValueError("Chosen answer is not valid")
+
+        self.__is_data_valid = True
+        return self.serialize_answers(chosen_answer=chosen_answer, free_text=free_text)
+
+    def serialize_answers(self, chosen_answer="", free_text=""):
+        if not self.__serialize_answers:
+            answer_template = self.survey.get_answer_template()
+            if "chosen_answer" in answer_template:
+                answer_template["chosen_answer"] = chosen_answer
+
+            answer_template["free_text_response"] = free_text
+            self.__serialize_answers = answer_template
+        return self.__serialize_answers
+
+    def save_response_for_user(self, user):
+        if not self.__is_data_valid:
+            raise ValueError("Validate data")
+        self.user = user
+        self.answers = json.dumps(self.__serialize_answers)
+        self.save()

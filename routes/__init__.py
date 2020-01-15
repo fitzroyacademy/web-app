@@ -4,7 +4,7 @@ from . import (
     user,
     course,
     lesson,
-    object,
+    course_display,
     error,
     log,
     segment,
@@ -21,7 +21,7 @@ def attach(app):
     app.register_blueprint(segment.blueprint, url_prefix="/course")
     app.register_blueprint(resource.blueprint, url_prefix="/course")
     app.register_blueprint(institute.blueprint, url_prefix="/institute")
-    app.register_blueprint(object.blueprint)
+    app.register_blueprint(course_display.blueprint)
     app.register_blueprint(error.blueprint)
     app.register_blueprint(log.blueprint)
     pages.attach_static_paths(app, "templates/static")

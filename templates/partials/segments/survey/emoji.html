@@ -5,7 +5,9 @@
     {% set trigger_why="" if active_segment.barrier.name != "normal" else "data-fit_triggerwhy" %}
   <div class="fit_iconselects" data-fit_iconselects>
     {% for question in template.choice_questions %}
-    <a class="fit_iconselect " {{ trigger_why }} data-fit_iconselect="{{ question.short_sentence }}">
+    <a class="fit_iconselect " {{ trigger_why }}
+       data-fit_iconselect="{{ question.short_sentence }}"
+       data-fit-question-id="{{ question.id }}">
       <i class="{{ question.icon }}"></i>
       <span class="sub">{{ question.single_word }}</span>
     </a>
@@ -18,5 +20,7 @@
     <button type="button" disabled data-fit_iconselects_submit="fit_gather"
             data-fit_iconselects_disabled="Please choose an option"
             data-fit_iconselects_free_text_required="Please answer the question"
+            data-fit-submit-survey-segment
+            data-fit-segment-id="{{ active_segment.id }}"
             class="btn btn-lg btn-secondary">Select an option</button>
 {% endblock %}

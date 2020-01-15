@@ -3,4 +3,11 @@
     <div>
         {{ active_segment.text|safe }}
     </div>
+
+    <div class="fit_survey_submit">
+        <button type="button" class="btn btn-lg btn-outline-secondary"
+                data-fit-submit-text-segment
+                data-fit-segment-id="{{ active_segment.id }}"
+        >Next</button>
+    </div>
 </div>

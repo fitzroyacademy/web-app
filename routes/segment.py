@@ -1,15 +1,14 @@
 from uuid import uuid4
 
-from flask import render_template, request, jsonify, redirect, flash, abort
+from flask import request, jsonify, redirect, flash
 from slugify import slugify
 from wtforms.validators import ValidationError
 
 import datamodels
-from charts.student_progress import get_course_progress, get_students_progress
 from dataforms import AjaxCSRFTokenForm, AddSegmentForm
 from datamodels.enums import SegmentBarrierEnum, VideoTypeEnum, SegmentType
 from .blueprint import SubdomainBlueprint
-from .decorators import login_required, teacher_required, enrollment_required
+from .decorators import login_required, teacher_required
 from .render_partials import (
     render_intro,
     render_segment_list_element,
@@ -330,30 +329,3 @@ def copy_segment(user, course, course_slug, lesson_id, segment_id, institute="")
         flash("Segment for this lesson with the same slug already exists")
 
     return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson_id))
-
-
-@blueprint.subdomain_route(
-    "<course_slug>/<lesson_slug>/<segment_slug>", methods=["GET"]
-)
-@enrollment_required
-def view(course_slug, lesson_slug, segment_slug, institute=""):
-    """
-    Retrieves and displays a particular course, with the specified lesson
-    and segment set to be active.
-    """
-
-    segment = datamodels.find_segment_by_slugs(course_slug, lesson_slug, segment_slug)
-    if not segment:
-        return abort(404)
-
-    course = datamodels.get_course_by_slug(course_slug)
-    lesson = datamodels.get_lesson_by_slugs(course_slug, lesson_slug)
-    data = {
-        "students": get_students_progress(lesson.course),
-        "active_lesson": lesson,
-        "active_segment": segment,
-        "course_progress": get_course_progress(lesson.course),
-        "course": course,
-        "form": AjaxCSRFTokenForm(),
-    }
-    return render_template("course.html", **data)

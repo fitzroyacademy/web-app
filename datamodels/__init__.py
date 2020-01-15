@@ -7,6 +7,7 @@ from .segments import (
     BarrierSegment,
     SegmentUserProgress,
     SegmentType,
+    SegmentSurveyResponse,
 )
 
 from .lessons import Lesson, LessonQA, LessonResourceUserAccess, LessonTranslation
@@ -73,4 +74,5 @@ __all__ = [
     "list_public_courses",
     "find_segment_by_slugs",
     "SegmentType",
+    "SegmentSurveyResponse",
 ]

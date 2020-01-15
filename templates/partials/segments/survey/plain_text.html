@@ -21,9 +21,13 @@
     <button type="button" disabled data-fit_iconselects_submit="Save answer"
             data-fit_iconselects_disabled="Please enter an answer"
             data-fit_iconselects_free_text_required="Please enter an answer"
+            data-fit-submit-survey-segment
+            data-fit-segment-id="{{ active_segment.id }}"
             class="btn btn-lg btn-secondary">Please enter an answer</button>
     {% if active_segment.barrier %}
-    <button type="button" class="btn btn-lg btn-outline-secondary">Skip</button>
+    <button type="button"
+            data-fit-skip-segment
+            class="btn btn-lg btn-outline-secondary">Skip</button>
     {% endif %}
   </div>
   {% endwith %}

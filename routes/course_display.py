@@ -1,18 +1,21 @@
 import json
 
-from flask import Blueprint, render_template, session
+from flask import render_template, session, abort, request, jsonify
 
 import datamodels
+from routes.blueprint import SubdomainBlueprint
+from dataforms import AjaxCSRFTokenForm
 from charts.student_progress import get_course_progress, get_students_progress
-from routes.utils import find_segment_barrier
+from routes.utils import find_segment_barrier, get_session_data, set_session_data
 from utils.base import get_current_user
 from utils.database import dump
+from routes.decorators import enrollment_required
 
-blueprint = Blueprint("object", __name__, template_folder="templates")
+blueprint = SubdomainBlueprint("course_display", __name__, template_folder="templates")
 
 
 @blueprint.route("/_segment/<segment_id>")
-def segment(segment_id):
+def get_segment_object(segment_id):
     """ Returns a partial JSON dump of a Lesson Segment by ID. """
 
     current_user = get_current_user()
@@ -90,3 +93,72 @@ def lesson_resources(lesson_id):
         "course_progress": get_course_progress(course),
     }
     return render_template("partials/course/_lesson_detail.html", **data)
+
+
+@blueprint.subdomain_route(
+    "/course/<course_slug>/<lesson_slug>/<segment_slug>", methods=["GET"]
+)
+@enrollment_required
+def view(course_slug, lesson_slug, segment_slug, institute=""):
+    """
+    Retrieves and displays a particular course, with the specified lesson
+    and segment set to be active.
+    """
+
+    segment = datamodels.find_segment_by_slugs(course_slug, lesson_slug, segment_slug)
+    if not segment:
+        return abort(404)
+
+    course = datamodels.get_course_by_slug(course_slug)
+    lesson = datamodels.get_lesson_by_slugs(course_slug, lesson_slug)
+    data = {
+        "students": get_students_progress(lesson.course),
+        "active_lesson": lesson,
+        "active_segment": segment,
+        "course_progress": get_course_progress(lesson.course),
+        "course": course,
+        "form": AjaxCSRFTokenForm(),
+    }
+    return render_template("course.html", **data)
+
+
+@blueprint.subdomain_route("/course/survey/submit", methods=["POST"])
+def submit_segment_survey(institute=""):
+    """
+    Handle submitting survey by a student.
+    """
+    segment_id = request.form.get("segment_id", 0)
+    segment = datamodels.Segment.find_by_id(segment_id)
+
+    if not segment or segment.type != datamodels.SegmentType.survey:
+        return jsonify({"message": "No such survey."}), 400
+
+    free_text = request.form.get("free_text", "")
+    chosen_answer = request.form.get("question_id", "")
+
+    survey_response = datamodels.SegmentSurveyResponse(survey=segment)
+    user = get_current_user()
+
+    try:
+        survey_response_data = survey_response.validate_data(
+            free_text=free_text, chosen_answer=chosen_answer
+        )
+    except ValueError as e:
+        return jsonify(str(e)), 400
+
+    if user:
+        try:
+            survey_response.save_response_for_user(user)
+            segment.save_user_progress(user, 100)
+        except ValueError:
+            return jsonify({"message": "You have already answered this question"}), 400
+    else:
+        data = get_session_data(session, "anon_surveys")
+        data[segment_id] = survey_response_data
+        set_session_data(session, "anon_surveys", data)
+
+        data = get_session_data(session, "anon_progress")
+        data[segment_id] = 100
+        set_session_data(session, "anon_progress", data)
+
+    return jsonify({"message": "Survey response saved"})

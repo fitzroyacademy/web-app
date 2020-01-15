@@ -6,7 +6,7 @@ import sqlalchemy.orm as orm
 from flask import url_for
 
 from .base import OrderedBase, Base
-from .surveys import Survey
+from .surveys import Survey, SurveyResponse
 from .enums import (
     VideoTypeEnum,
     SegmentBarrierEnum,
@@ -176,9 +176,10 @@ class Segment(BarrierSegment, Survey, OrderedBase):
     lesson = orm.relationship("Lesson", back_populates="segments")
 
     translations = orm.relationship("SegmentTranslation", back_populates="segment")
+    survey_answers = orm.relationship("SegmentSurveyResponse", back_populates="survey")
 
     __table_args__ = (
-        sa.UniqueConstraint("lesson_id", "slug", name="_lesson_sement_uc"),
+        sa.UniqueConstraint("lesson_id", "slug", name="_lesson_segment_uc"),
     )
 
     @property
@@ -199,7 +200,7 @@ class Segment(BarrierSegment, Survey, OrderedBase):
     @property
     def permalink(self):
         return url_for(
-            "segment.view",
+            "course_display.view",
             segment_slug=self.slug,
             lesson_slug=self.lesson.slug,
             course_slug=self.lesson.course.slug,
@@ -244,6 +245,20 @@ class Segment(BarrierSegment, Survey, OrderedBase):
 
     def last_child(self, child):
         return None
+
+
+class SegmentSurveyResponse(SurveyResponse):
+    __tablename__ = "lesson_segments_survey_response"
+    __table_args__ = (
+        sa.UniqueConstraint(
+            "segment_id", "user_id", name="_segment_survey_response_user_uc"
+        ),
+    )
+
+    segment_id = sa.Column(sa.Integer, sa.ForeignKey("lesson_segments.id"))
+    survey = orm.relationship("Segment", back_populates="survey_answers")
+    user_id = sa.Column("user_id", sa.Integer, sa.ForeignKey("users.id"))
+    user = orm.relationship("User", back_populates="segment_survey_answers")
 
 
 class SegmentTranslation(Base):

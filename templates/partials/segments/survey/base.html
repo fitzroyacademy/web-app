@@ -23,7 +23,9 @@
         </span>
         {% endif %}
       </label>
-      <textarea class="form-control" {% if template.free_text_minlength > 0 %} data-fit_feedback_why_input data-fit_survey_force="{{ template.free_text_minlength }}"{% endif %} id="reason" rows="3"></textarea>
+      <textarea class="form-control" {% if template.free_text_minlength > 0 %}
+                data-fit_feedback_why_input
+                data-fit_survey_force="{{ template.free_text_minlength }}"{% endif %} id="reason" rows="3"></textarea>
     </div>
   </div>
   {% endif %}
@@ -33,7 +35,10 @@
   <div class="fit_survey_submit">
     {% block skip_button %}
         {% if active_segment.barrier and active_segment.barrier.name == "normal" %}
-        <button type="button" class="btn btn-lg btn-outline-secondary">Skip</button>
+        <button type="button"
+                class="btn btn-lg btn-outline-secondary"
+                data-fit-skip-segment
+        >Skip</button>
         {% endif %}
     {% endblock %}
 

@@ -1505,7 +1505,7 @@ $( document ).ready(function() {
     icon_color = window.getComputedStyle(t.querySelector('i')).getPropertyValue("color");
     let language = t.dataset['fit_iconselect'];
     let whyContainer = parentContainer.querySelector('[data-fit_feedback_why]');
-    let freeTextRequired = (typeof t.dataset['fit_triggerwhy'] !== 'undefined');
+    let freeTextRequired = ('fit_triggerwhy' in t.dataset);
 
       // if there is a why, show it
       if (freeTextRequired)
@@ -1522,43 +1522,31 @@ $( document ).ready(function() {
       // passing fit_gather means get the data and colour from the button
       let gobutton = parentContainer.querySelector('[data-fit_iconselects_submit]');
 
-      // if it wasn't previously selected:
-      if (!typeof t.getAttribute('data-fit_iconselect_previously'))
+      // do something fancy if it's a 'fit_gather' button:
+      if (gobutton.dataset['fit_iconselects_submit'] === 'fit_gather')
       {
-        gobutton.setAttribute('content', gobutton.dataset['fit_iconselects_disabled']);
-        gobutton.setAttribute("disabled", true);
-        gobutton.classList.add('btn-secondary');
-        gobutton.classList.remove('btn-primary')
+        gobutton.innerHTML = language;
+        gobutton.disabled = freeTextRequired;
+        gobutton.style.backgroundColor = icon_color;
       }
-      else
-      {
-        // do something fancy if it's a 'fit_gather' button:
-        if (gobutton.dataset['fit_iconselects_submit'] === 'fit_gather')
-        {
-          gobutton.innerHTML = language;
+      else {
+        if (freeTextRequired) {
+          gobutton.innerHTML = gobutton.dataset['fit_iconselects_free_text_required'];
+          gobutton.disabled = true;
+          gobutton.classList.add('btn-secondary');
+          gobutton.classList.remove('btn-primary')
+        } else {
+          gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
           gobutton.disabled = false;
-          gobutton.style.backgroundColor = icon_color;
-        }
-        else
-        {
-          if (freeTextRequired) {
-            gobutton.innerHTML = gobutton.dataset['fit_iconselects_free_text_required'];
-            gobutton.disabled = true;
-            gobutton.classList.add('btn-secondary');
-            gobutton.classList.remove('btn-primary')
-          } else {
-            gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
-            gobutton.disabled = false;
-            gobutton.classList.remove('btn-secondary');
-            gobutton.classList.add('btn-primary')
-          }
+          gobutton.classList.remove('btn-secondary');
+          gobutton.classList.add('btn-primary')
         }
       }
 
       // wuh oh, what if there's a textarea? Then disable it again until changed
       // if it has a force value....
       let freeTextInput = $('[data-fit_feedback_why_input]').value;
-      if (freeTextInput.value) {
+      if (freeTextInput) {
       if (freeTextInput.value.length < $('[data-fit_survey_force]').data('fit_survey_force')) {
         gobutton.setAttribute("disabled", true);
         }}
@@ -1604,5 +1592,43 @@ $( document ).ready(function() {
       // set the counter
       $('[data-fit_survey_force_counter]').text(vallength);
   });
+
+  delegate('[data-fit-submit-text-segment]', 'click', (e, t) => {
+    post('/event/progress', {percent: 100, segment_id: t.dataset['fitSegmentId']});
+    nextSegment(true)
+  });
+
+  delegate('[data-fit-submit-survey-segment]', 'click', (e, t) => {
+    let surveyContainer = t.closest('[data-fit_iconselect_parent]');
+    let choicesContainer = surveyContainer.querySelector('[data-fit_iconselects');
+    let freeTextArea = surveyContainer.querySelector('[data-fit_feedback_why_input]');
+    let freeText = '';
+    let questionId = '';
+    if (freeTextArea) {
+      freeText = freeTextArea.value;
+    }
+
+    if (choicesContainer) {
+      let choice = choicesContainer.querySelector('a[class~="active"]');
+      questionId = choice.dataset['fitQuestionId'];
+    }
+
+    post('/course/survey/submit',
+        {segment_id: t.dataset['fitSegmentId'],
+          free_text: freeText,
+          question_id: questionId
+        },
+        (responseText, xhr) => {
+        if (xhr.status === 200) {
+          showAlertSnackbar("Thank you for submitting answer");
+          nextSegment(true)
+        } else {
+          showAlertSnackbar(JSON.parse(xhr.response)['message'])
+        }});
+  });
+
+  delegate('[data-fit-skip-segment]', 'click', (e, t) => {
+    nextSegment(true)
+  })
 
 });

@@ -31,6 +31,9 @@ class User(BaseModel):
     programs = orm.relationship("ProgramEnrollment", back_populates="user")
     course_enrollments = orm.relationship("CourseEnrollment", back_populates="user")
     custom_settings = orm.relationship("CustomSetting", back_populates="user")
+    segment_survey_answers = orm.relationship(
+        "SegmentSurveyResponse", back_populates="user"
+    )
 
     @hybrid_property
     def password(self):

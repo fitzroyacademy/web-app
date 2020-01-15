@@ -78,8 +78,8 @@ class BaseModel(Base):
         )
 
     def save(self):
+        db_session = get_session()
         try:
-            db_session = get_session()
             db_session.add(self)
             db_session.commit()
         except IntegrityError:
