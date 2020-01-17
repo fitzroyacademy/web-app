@@ -1506,7 +1506,7 @@ $( document ).ready(function() {
     let language = t.dataset['fit_iconselect'];
     let whyContainer = parentContainer.querySelector('[data-fit_feedback_why]');
     let freeTextRequired = ('fit_triggerwhy' in t.dataset);
-
+    let forceResponse = ('fit_force_response' in t.dataset);
       // if there is a why, show it
       if (freeTextRequired)
       {
@@ -1522,34 +1522,37 @@ $( document ).ready(function() {
       // passing fit_gather means get the data and colour from the button
       let gobutton = parentContainer.querySelector('[data-fit_iconselects_submit]');
 
-      // do something fancy if it's a 'fit_gather' button:
-      if (gobutton.dataset['fit_iconselects_submit'] === 'fit_gather')
-      {
-        gobutton.innerHTML = language;
-        gobutton.disabled = freeTextRequired;
-        gobutton.style.backgroundColor = icon_color;
-      }
-      else {
-        if (freeTextRequired) {
-          gobutton.innerHTML = gobutton.dataset['fit_iconselects_free_text_required'];
-          gobutton.disabled = true;
-          gobutton.classList.add('btn-secondary');
-          gobutton.classList.remove('btn-primary')
+      if (gobutton) {
+        // do something fancy if it's a 'fit_gather' button:
+        if (gobutton.dataset['fit_iconselects_submit'] === 'fit_gather') {
+          gobutton.innerHTML = language;
+          gobutton.disabled = freeTextRequired;
+          gobutton.style.backgroundColor = icon_color;
         } else {
-          gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
-          gobutton.disabled = false;
-          gobutton.classList.remove('btn-secondary');
-          gobutton.classList.add('btn-primary')
+          if (freeTextRequired) {
+            gobutton.innerHTML = gobutton.dataset['fit_iconselects_free_text_required'];
+            gobutton.disabled = true;
+            gobutton.classList.add('btn-secondary');
+            gobutton.classList.remove('btn-primary')
+          } else {
+            gobutton.innerHTML = gobutton.dataset['fit_iconselects_submit'];
+            gobutton.disabled = false;
+            gobutton.classList.remove('btn-secondary');
+            gobutton.classList.add('btn-primary')
+          }
         }
       }
 
       // wuh oh, what if there's a textarea? Then disable it again until changed
       // if it has a force value....
-      let freeTextInput = $('[data-fit_feedback_why_input]').value;
-      if (freeTextInput) {
-      if (freeTextInput.value.length < $('[data-fit_survey_force]').data('fit_survey_force')) {
-        gobutton.setAttribute("disabled", true);
-        }}
+      if (freeTextRequired) {
+        let freeTextInput = $('[data-fit_feedback_why_input]').value;
+        if (freeTextInput) {
+          if (freeTextInput.value.length < $('[data-fit_survey_force]').data('fit_survey_force')) {
+            gobutton.setAttribute("disabled", true);
+          }
+        }
+      }
 
     });
 

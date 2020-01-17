@@ -1,0 +1,7 @@
+{% if active_segment.barrier and active_segment.barrier.name == "normal" or survey_response %}
+    <button type="button"
+            class="btn btn-lg btn-outline-secondary"
+            data-fit-skip-segment
+    >{% if survey_response %}Next{% else %}Skip{% endif %}
+    </button>
+{% endif %}

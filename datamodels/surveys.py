@@ -74,7 +74,7 @@ class Survey(BaseModel):
         if require_answer:
             assert "answer_template" in survey_template
             cls._survey_answer_template_definition_checker(
-                survey_template.pop("answer_template"), survey_template["survey_type"]
+                survey_template["answer_template"], survey_template["survey_type"]
             )
 
     @classmethod
@@ -178,3 +178,10 @@ class SurveyResponse(BaseModel):
         self.user = user
         self.answers = json.dumps(self.__serialize_answers)
         self.save()
+
+    def get_response_dict(self):
+        return json.loads(self.answers)
+
+    @classmethod
+    def get_response_for_user(cls, survey, user):
+        return cls.objects().filter(cls.survey == survey, cls.user == user).first()

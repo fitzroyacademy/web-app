@@ -6,7 +6,12 @@ import datamodels
 from routes.blueprint import SubdomainBlueprint
 from dataforms import AjaxCSRFTokenForm
 from charts.student_progress import get_course_progress, get_students_progress
-from routes.utils import find_segment_barrier, get_session_data, set_session_data
+from routes.utils import (
+    find_segment_barrier,
+    get_session_data,
+    set_session_data,
+    get_survey_response_for_student,
+)
 from utils.base import get_current_user
 from utils.database import dump
 from routes.decorators import enrollment_required
@@ -55,6 +60,9 @@ def get_segment_object(segment_id):
         html = render_template(
             "partials/segments/survey/{}.html".format(active_segment.survey_type.name),
             active_segment=active_segment,
+            survey_response=get_survey_response_for_student(
+                current_user, active_segment, session
+            ),
         )
     else:
         html = ""
@@ -115,6 +123,9 @@ def view(course_slug, lesson_slug, segment_slug, institute=""):
         "students": get_students_progress(lesson.course),
         "active_lesson": lesson,
         "active_segment": segment,
+        "survey_response": get_survey_response_for_student(
+            get_current_user(), segment, session
+        ),
         "course_progress": get_course_progress(lesson.course),
         "course": course,
         "form": AjaxCSRFTokenForm(),
@@ -144,7 +155,7 @@ def submit_segment_survey(institute=""):
             free_text=free_text, chosen_answer=chosen_answer
         )
     except ValueError as e:
-        return jsonify(str(e)), 400
+        return jsonify({"message": str(e)}), 400
 
     if user:
         try:

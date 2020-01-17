@@ -1,27 +1,38 @@
 {% extends "partials/segments/survey/base.html" %}
+{% from 'partials/segments/survey/macros.html' import add_active_inactive %}
 
 {% block questions %}
     {% with template=active_segment.get_questions_template() %}
-   <div class="fit_iconselects numbers" data-fit_iconselects>
-    <a class="fit_iconselect" data-fit_triggerwhy
-       data-fit_iconselect="{{ template.scale_start }}"
-       data-fit-question-id="{{ template.scale_start }}"
-    ><i>{{ template.scale_start }}</i><span class="sub">{{ template.left_label }}</span></a>
-    {% for i in range(template.scale_start + 1, template.scale_stop - 1)  %}
-    <a class="fit_iconselect"
-       data-fit_triggerwhy
-       data-fit_iconselect="{{ i }}"
-       data-fit-question-id="{{ i }}"><i>{{ i }}</i></a>
-    {% endfor %}
-    <a class="fit_iconselect"
-       data-fit_triggerwhy
-       data-fit_iconselect="{{ template.scale_stop }}"
-       data-fit-question-id="{{ template.scale_stop }}"><i>{{ template.scale_stop }}</i><span class="sub">{{ template.right_label }}</span></a>
-  </div>
+        {% set trigger_force_anwser = "" if active_segment.barrier.name != "normal" else "data-fit_force_response" %}
+        {% set trigger_why = "" if not template.free_text_require else "data-fit_triggerwhy" %}
+        <div class="fit_iconselects numbers {% if survey_response %}active{% endif %}"
+             data-fit_iconselects>
+            <a class="fit_iconselect {{ add_active_inactive(survey_response, template.scale_start) }}"
+                    {{ trigger_force_anwser }}
+                    {{ trigger_why }}
+               data-fit_iconselect="{{ template.scale_start }}"
+               data-fit-question-id="{{ template.scale_start }}"
+            ><i>{{ template.scale_start }}</i><span class="sub">{{ template.left_label }}</span></a>
+            {% for i in range(template.scale_start + 1, template.scale_stop - 1) %}
+                <a class="fit_iconselect {{ add_active_inactive(survey_response, i) }}"
+                        {{ trigger_force_anwser }}
+                        {{ trigger_why }}
+                   data-fit_iconselect="{{ i }}"
+                   data-fit-question-id="{{ i }}"><i>{{ i }}</i></a>
+            {% endfor %}
+            <a class="fit_iconselect {{ add_active_inactive(survey_response, template.scale_stop) }}"
+                    {{ trigger_force_anwser }}
+                    {{ trigger_why }}
+               data-fit_iconselect="{{ template.scale_stop }}"
+               data-fit-question-id="{{ template.scale_stop }}"><i>{{ template.scale_stop }}</i><span
+                    class="sub">{{ template.right_label }}</span></a>
+        </div>
     {% endwith %}
 {% endblock %}
 
-{% block skip_button %}{% endblock %}
+{% block skip_button %}
+    {% include 'partials/segments/survey/_skip_button.html' %}
+{% endblock %}
 
 {% block submit_button %}
     <button type="button" disabled data-fit_iconselects_submit="Save answer"
@@ -29,5 +40,6 @@
             data-fit_iconselects_free_text_required="Please answer the question"
             data-fit-submit-survey-segment
             data-fit-segment-id="{{ active_segment.id }}"
-            class="btn btn-lg btn-secondary">Please choose an answer</button>
+            class="btn btn-lg btn-secondary">Please choose an answer
+    </button>
 {% endblock %}

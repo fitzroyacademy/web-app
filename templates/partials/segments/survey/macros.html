@@ -1,0 +1,3 @@
+{% macro add_active_inactive(survey_response, id) -%}
+{% if survey_response %}{% if survey_response.chosen_answer == id|string %}active{% else %}inactive{% endif %}{% endif %}
+{%- endmacro %}

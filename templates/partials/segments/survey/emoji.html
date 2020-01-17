@@ -1,18 +1,22 @@
 {% extends "partials/segments/survey/base.html" %}
+{% from 'partials/segments/survey/macros.html' import add_active_inactive %}
 
 {% block questions %}
     {% with template=active_segment.get_questions_template() %}
-    {% set trigger_why="" if active_segment.barrier.name != "normal" else "data-fit_triggerwhy" %}
-  <div class="fit_iconselects" data-fit_iconselects>
-    {% for question in template.choice_questions %}
-    <a class="fit_iconselect " {{ trigger_why }}
-       data-fit_iconselect="{{ question.short_sentence }}"
-       data-fit-question-id="{{ question.id }}">
-      <i class="{{ question.icon }}"></i>
-      <span class="sub">{{ question.single_word }}</span>
-    </a>
-    {% endfor %}
-  </div>
+        {% set trigger_force_answer="" if active_segment.barrier.name != "normal" else "data-fit_force_response" %}
+        {% set trigger_why = "" if not template.free_text_require else "data-fit_triggerwhy" %}
+        <div class="fit_iconselects" data-fit_iconselects>
+            {% for question in template.choice_questions %}
+                <a class="fit_iconselect {{ add_active_inactive(survey_response, question.id) }}"
+                        {{ trigger_force_answer }}
+                        {{ trigger_why }}
+                   data-fit_iconselect="{{ question.short_sentence }}"
+                   data-fit-question-id="{{ question.id }}">
+                    <i class="{{ question.icon }}"></i>
+                    <span class="sub">{{ question.single_word }}</span>
+                </a>
+            {% endfor %}
+        </div>
     {% endwith %}
 {% endblock %}
 
@@ -22,5 +26,6 @@
             data-fit_iconselects_free_text_required="Please answer the question"
             data-fit-submit-survey-segment
             data-fit-segment-id="{{ active_segment.id }}"
-            class="btn btn-lg btn-secondary">Select an option</button>
+            class="btn btn-lg btn-secondary">Select an option
+    </button>
 {% endblock %}
