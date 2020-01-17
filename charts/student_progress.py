@@ -5,8 +5,9 @@ from datamodels import SegmentUserProgress, get_session, Lesson, Segment
 
 def get_course_progress(course):
     ordered_lessons = course.get_ordered_lessons()
-    number_of_students = len(course.students)
-    lessons_total = get_lessons_total_progress(course)
+    students = [s.id for s in course.students]
+    number_of_students = len(students)
+    lessons_total = get_lessons_total_progress(course, students)
     lessons = []
 
     for lesson in ordered_lessons:
@@ -33,10 +34,9 @@ def get_course_progress(course):
 def get_students_progress(course):
     ordered_lessons = [(l.id, l.get_ordered_segments().count()) for l in course.get_ordered_lessons()]
     total_number_of_segments = course.get_ordered_segments().count()
-    students_total = get_students_total_progress(course)
-    students = []
-
     _students = course.students
+    students_total = get_students_total_progress(course, [s.id for s in _students])
+    students = []
 
     for student in _students:
         _temp = {
@@ -61,21 +61,23 @@ def get_students_progress(course):
     return students
 
 
-def get_students_total_progress(course):
+def get_students_total_progress(course, students):
     session = get_session()
 
     total_progress = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)). \
         join(Segment).join(Lesson).filter(Lesson.course_id == course.id). \
+        filter(SegmentUserProgress.user_id.in_(students)). \
         group_by(Lesson.id, SegmentUserProgress.user_id).all()
 
     return {(Segment.find_by_id(progress.segment_id).lesson.id, progress.user_id): value for progress, value in
             total_progress}
 
 
-def get_lessons_total_progress(course):
+def get_lessons_total_progress(course, students):
     session = get_session()
 
-    total_progress = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)).\
+    total_progress = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)). \
+        filter(SegmentUserProgress.user_id.in_(students)). \
         join(Segment).join(Lesson).filter(Lesson.course_id == course.id).group_by(Lesson.id).all()
 
     return {Segment.find_by_id(progress.segment_id).lesson.id: value for progress, value in total_progress}
