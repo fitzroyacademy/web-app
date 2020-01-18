@@ -1,13 +1,14 @@
 from sqlalchemy import func
 
-from datamodels import SegmentUserProgress, get_session, Lesson, Segment
+from datamodels import SegmentUserProgress, get_session, Lesson, Segment, \
+    CourseEnrollment
+from datamodels.enums import CourseAccess
 
 
 def get_course_progress(course):
     ordered_lessons = course.get_ordered_lessons()
-    students = [s.id for s in course.students]
-    number_of_students = len(students)
-    lessons_total = get_lessons_total_progress(course, students)
+    number_of_students = len(course.students)
+    lessons_total = get_lessons_total_progress(course)
     lessons = []
 
     for lesson in ordered_lessons:
@@ -34,8 +35,8 @@ def get_course_progress(course):
 def get_students_progress(course):
     ordered_lessons = [(l.id, l.get_ordered_segments().count()) for l in course.get_ordered_lessons()]
     total_number_of_segments = course.get_ordered_segments().count()
+    students_total = get_students_total_progress(course)
     _students = course.students
-    students_total = get_students_total_progress(course, [s.id for s in _students])
     students = []
 
     for student in _students:
@@ -61,23 +62,27 @@ def get_students_progress(course):
     return students
 
 
-def get_students_total_progress(course, students):
-    session = get_session()
-
-    total_progress = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)). \
-        join(Segment).join(Lesson).filter(Lesson.course_id == course.id). \
-        filter(SegmentUserProgress.user_id.in_(students)). \
+def get_students_total_progress(course):
+    total_progress = _base_total_query(course). \
         group_by(Lesson.id, SegmentUserProgress.user_id).all()
-
     return {(Segment.find_by_id(progress.segment_id).lesson.id, progress.user_id): value for progress, value in
             total_progress}
 
 
-def get_lessons_total_progress(course, students):
+def get_lessons_total_progress(course):
+    total_progress = _base_total_query(course).group_by(Lesson.id).all()
+    return {Segment.find_by_id(progress.segment_id).lesson.id: value for progress, value in total_progress}
+
+
+def _base_total_query(course):
     session = get_session()
 
-    total_progress = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)). \
-        filter(SegmentUserProgress.user_id.in_(students)). \
-        join(Segment).join(Lesson).filter(Lesson.course_id == course.id).group_by(Lesson.id).all()
+    queryset = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)). \
+        join(Segment).join(Lesson). \
+        join(CourseEnrollment,
+             (SegmentUserProgress.user_id == CourseEnrollment.user_id) & (Lesson.course_id == CourseEnrollment.course_id)). \
+        filter(Lesson.course_id == course.id). \
+        filter(CourseEnrollment.access_level == CourseAccess.student). \
+        distinct(SegmentUserProgress.id)
 
-    return {Segment.find_by_id(progress.segment_id).lesson.id: value for progress, value in total_progress}
+    return queryset
