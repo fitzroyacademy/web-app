@@ -34,7 +34,6 @@
           <i class="fal fa-lock"></i>
           <h1>Locked.</h1>
           <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete the previous segment first.</a>
-          <!-- <a href="#" class="btn btn-lg btn-text"><i class="fal fa-chevron-left"></i> Complete all previous segments first.</a> -->
         </div>
       </article>
       <article data-fit-vidya-unlocked>
@@ -57,7 +56,7 @@
              data-fit-pane-detail="survey_content"
         >
           {% if active_segment.type.name == "survey" %}
-          {% include "partials/segments/survey/" + active_segment.survey_type.name + ".html" %}
+            {% include "partials/segments/survey/index.html" %}
           {% endif %}
         </div>
       </article>

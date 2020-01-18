@@ -1,39 +1,39 @@
-<div class="fit_survey" data-fit_iconselect_parent>
-
-  <h2>
+<h2>
     {{ active_segment.title }}
-  </h2>
+</h2>
 
 
-  {% block questions %}
-  {% endblock %}
+{% block questions %}
+{% endblock %}
 
-  {% block free_text %}
-  {% with template=active_segment.get_questions_template() %}
-  {% if template.free_text_require %}
-  <div class="fit_survey_why collapse {% if template.free_text_minlength > 0 and survey_response %}show active{% endif %}" data-fit_feedback_why>
-    <div class="form-group">
-      <label for="reason">
-        {{ template.free_text_entry }}
-        {% if template.free_text_minlength > 0 %}
-        <span class="fit_why_count">
-          <span data-fit_survey_force_counter>{% if survey_response %}{{ survey_response.free_text_response|length }}{% else %}0{% endif %}</span>
+{% block free_text %}
+    {% with template=active_segment.get_questions_template() %}
+        {% if template.free_text_require %}
+            <div class="fit_survey_why collapse {% if template.free_text_minlength > 0 and survey_response %}show active{% endif %}"
+                 data-fit_feedback_why>
+                <div class="form-group">
+                    <label for="reason">
+                        {{ template.free_text_entry }}
+                        {% if template.free_text_minlength > 0 %}
+                            <span class="fit_why_count">
+          <span data-fit_survey_force_counter>{% if survey_response %}
+              {{ survey_response.free_text_response|length }}{% else %}0{% endif %}</span>
           / minimum
           <span data-fit_survey_force_counter_total>{{ template.free_text_minlength }}</span>
         </span>
+                        {% endif %}
+                    </label>
+                    <textarea class="form-control" {% if template.free_text_minlength > 0 %}
+                              data-fit_feedback_why_input
+                              data-fit_survey_force="{{ template.free_text_minlength }}"{% endif %}
+                              id="reason" rows="3">{% if survey_response %}{{ survey_response.free_text_response }}{% endif %}</textarea>
+                </div>
+            </div>
         {% endif %}
-      </label>
-      <textarea class="form-control" {% if template.free_text_minlength > 0 %}
-                data-fit_feedback_why_input
-                data-fit_survey_force="{{ template.free_text_minlength }}"{% endif %}
-                id="reason" rows="3">{% if survey_response %}{{ survey_response.free_text_response }}{% endif %}</textarea>
-    </div>
-  </div>
-  {% endif %}
-  {% endwith %}
-  {% endblock %}
+    {% endwith %}
+{% endblock %}
 
-  <div class="fit_survey_submit">
+<div class="fit_survey_submit">
     {% block skip_button %}
         {% include 'partials/segments/survey/_skip_button.html' %}
     {% endblock %}
@@ -42,5 +42,4 @@
         {% block submit_button %}
         {% endblock %}
     {% endif %}
-  </div>
 </div>

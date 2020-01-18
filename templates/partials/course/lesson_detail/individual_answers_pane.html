@@ -1,0 +1,28 @@
+<table class="table">
+    <tbody>
+    {% for answer in survey_individual_responses %}
+    <tr>
+        <td style="width: 100px;">
+            <a href="#" class="fit_btn">
+                <div class="fit_pic">
+                    <img src="{{ answer.avatar_url }}" alt="image">
+                </div>
+                <span class="fit_txt">{{ answer.user_fullname }} {% if answer.is_teacher %}<span class="badge badge-pill badge-primary">teacher</span>{% endif %}</span>
+            </a>
+        </td>
+        {% if answer.chosen_answer %}
+        <td style="width: 32px">
+            <div class="response_num response_num_{{ answer.chosen_answer }}">{{ answer.chosen_answer }}</div>
+        </td>
+        {% endif %}
+        <td>
+            <div class="response">
+                {{ answer.free_text_response }}
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+
+</table>

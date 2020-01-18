@@ -751,7 +751,7 @@ $( document ).ready(function() {
           dataContainer.innerHTML = "";
           let parser = new DOMParser();
           let html = parser.parseFromString(data['html'], 'text/html');
-          dataContainer.append(html.body.firstChild);
+          dataContainer.append(html.body);
         } else {
           unlockedPane.style.display = "none";
           lockedPane.style.display = "block";

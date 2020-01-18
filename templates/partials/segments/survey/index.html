@@ -1,0 +1,18 @@
+<div class="fit_survey" data-fit_iconselect_parent>
+    {% include "partials/segments/survey/" + active_segment.survey_type.name + ".html" %}
+</div>
+<div class="fasdfasfdsa"></div>
+{% if current_user and current_user.teaches(course) %}
+    <div class="fit_survey_responses">
+        <!--
+        <h3>All answers.</h3>
+        <div class="fit_chart">
+
+        </div>
+        -->
+
+        <h3>Individual answers.</h3>
+        {% include "partials/course/lesson_detail/individual_answers_pane.html" %}
+
+    </div>
+{% endif %}

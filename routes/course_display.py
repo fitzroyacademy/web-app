@@ -6,6 +6,7 @@ import datamodels
 from routes.blueprint import SubdomainBlueprint
 from dataforms import AjaxCSRFTokenForm
 from charts.student_progress import get_course_progress, get_students_progress
+from charts.survey_individual_answers import get_survey_individual_responses
 from routes.utils import (
     find_segment_barrier,
     get_session_data,
@@ -58,11 +59,13 @@ def get_segment_object(segment_id):
         )
     elif active_segment.type == datamodels.SegmentType.survey:
         html = render_template(
-            "partials/segments/survey/{}.html".format(active_segment.survey_type.name),
+            "partials/segments/survey/index.html",
             active_segment=active_segment,
             survey_response=get_survey_response_for_student(
                 current_user, active_segment, session
             ),
+            survey_individual_responses=get_survey_individual_responses(active_segment),
+            course=course,
         )
     else:
         html = ""
@@ -123,6 +126,7 @@ def view(course_slug, lesson_slug, segment_slug, institute=""):
         "students": get_students_progress(lesson.course),
         "active_lesson": lesson,
         "active_segment": segment,
+        "survey_individual_responses": get_survey_individual_responses(segment),
         "survey_response": get_survey_response_for_student(
             get_current_user(), segment, session
         ),
