@@ -194,7 +194,7 @@ def get_survey_response_for_student(user, segment, session) -> dict:
     if segment.type != datamodels.SegmentType.survey:
         return {}
     if not user:
-        return get_session_data(session, "anon_surveys").get(segment.id, {})
+        return get_session_data(session, "anon_surveys").get(str(segment.id), {})
     else:
         response = datamodels.SegmentSurveyResponse.get_response_for_user(segment, user)
         return response.get_response_dict() if response is not None else {}

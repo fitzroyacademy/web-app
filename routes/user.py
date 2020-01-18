@@ -38,6 +38,15 @@ def merge_anonymous_data(user_id, data):
         )
 
 
+def merge_anonymous_surveys_data(user_id, data):
+    for seg_id in data:
+        response = datamodels.SegmentSurveyResponse()
+        response.segment_id = seg_id
+        response.user_id = user_id
+        response.answers = json.dumps(data[seg_id])
+        response.save()
+
+
 @blueprint.subdomain_route("/user/<slug>", methods=["GET"])
 def view(slug, institute=""):
     """ View a user's profile. """
@@ -50,7 +59,9 @@ def view(slug, institute=""):
 @blueprint.subdomain_route("/edit", methods=["GET"])
 @login_required
 def retrieve(user, institute=""):
-
+    """
+    Get the current user data.
+    """
     return render_template("user_edit.html", **{"form": EditUserForm()})
 
 
@@ -155,6 +166,10 @@ def create(institute=""):
             d = get_session_data(session, "anon_progress")
             merge_anonymous_data(user.id, d)
             session.pop("anon_progress")
+        if "anon_surveys" in session:
+            d = get_session_data(session, "anon_surveys")
+            merge_anonymous_surveys_data(user.id, d)
+            session.pop("anon_surveys")
 
         session["user_id"] = user.id
         flash("Thanks for registering, " + user.full_name + "!")

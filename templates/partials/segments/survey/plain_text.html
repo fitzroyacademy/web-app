@@ -20,6 +20,7 @@
     </div>
 
     <div class="fit_survey_submit">
+        {% if not survey_response %}
         <button type="button" disabled data-fit_iconselects_submit="Save answer"
                 data-fit_iconselects_disabled="Please enter an answer"
                 data-fit_iconselects_free_text_required="Please enter an answer"
@@ -27,6 +28,7 @@
                 data-fit-segment-id="{{ active_segment.id }}"
                 class="btn btn-lg btn-secondary">Please enter an answer
         </button>
+        {% endif %}
 
         {% include 'partials/segments/survey/_skip_button.html' %}
     </div>

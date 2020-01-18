@@ -175,5 +175,7 @@ def submit_segment_survey(institute=""):
         data = get_session_data(session, "anon_progress")
         data[segment_id] = 100
         set_session_data(session, "anon_progress", data)
+        db = datamodels.get_session()
+        db.rollback()
 
     return jsonify({"message": "Survey response saved"})
