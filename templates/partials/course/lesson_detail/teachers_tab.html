@@ -1,0 +1,20 @@
+<a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_teacher" role="button" aria-expanded="fitse"
+   aria-controls="fit_lesson_teacher">
+    <i class="fal fa-chalkboard-teacher"></i>
+    <span class="fit_txt">Teacher</span>
+    <i class="fas fa-chevron-down"></i>
+</a>
+
+<div class="fit_body collapse" id="fit_lesson_teacher">
+    {% for instructor in course.instructors %}
+        <div class="fit_body_content">
+            <div class="fit_btn">
+                <span class="fit_pic circle"><img src="{{ instructor.profile_picture }}" alt="user"></span>
+                <span class="fit_txt">
+            {{ instructor.full_name }}
+            <small>{{ instructor.bio }}</small>
+          </span>
+            </div>
+        </div>
+    {% endfor %}
+</div>

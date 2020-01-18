@@ -100,7 +100,7 @@ def lesson_resources(lesson_id):
         "active_lesson": lesson,
         "course_progress": get_course_progress(course),
     }
-    return render_template("partials/course/_lesson_detail.html", **data)
+    return render_template("partials/course/lesson_detail/index.html", **data)
 
 
 @blueprint.subdomain_route(

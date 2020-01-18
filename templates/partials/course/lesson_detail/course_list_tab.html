@@ -1,0 +1,13 @@
+<a class="fit_btn courselist" data-toggle="collapse" href="#fit_lesson_list" role="button">
+    <i class="fal fa-list"></i>
+    <span class="fit_txt">Course</span>
+    <i class="fas fa-chevron-down"></i>
+</a>
+
+<div class="fit_body courselist collapse show" id="fit_lesson_list">
+    <div class="fit_lesson_asider">
+        {% for lesson in course.get_ordered_lessons() %}
+            {% include 'partials/course/_nav_lesson.html' %}
+        {% endfor %}
+    </div>
+</div>

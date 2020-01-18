@@ -152,7 +152,7 @@ def copy_resource(user, course, course_slug, lesson_id, resource_id, institute="
     return redirect("/course/{}/lessons/{}/edit".format(course.slug, lesson_id))
 
 
-@blueprint.subdomain_route("<resource_id>")
+@blueprint.subdomain_route("/resources/<resource_id>")
 def view(resource_id, institute=""):
     """
     Proxy for resource links which logs access then redirects the user.
