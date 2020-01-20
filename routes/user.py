@@ -121,7 +121,7 @@ def edit(user, institute=""):
         return jsonify(data)
 
 
-@blueprint.subdomain_route("/register", methods=["POST"])
+@blueprint.subdomain_route("/register", methods=["POST", "GET"])
 def create(institute=""):
     """
     Create a new user.
@@ -132,6 +132,8 @@ def create(institute=""):
     # to prevent mass assignment vulnerabilities.
     form = AddUserForm(request.form)
     data = {"errors": [], "form": form}
+    if request.method == "GET":
+        return render_template("login.html", **data)
 
     user = datamodels.get_user_by_email(request.form.get("email"))
     if user is not None:
@@ -152,7 +154,7 @@ def create(institute=""):
         except IntegrityError:
             db.rollback()
             flash("This username is already taken")
-            return redirect(redirect(request.args.get("last_page", "/")))
+            return redirect(request.args.get("last_page", "/"))
         except Exception as e:
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)

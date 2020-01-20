@@ -1481,9 +1481,8 @@ $( document ).ready(function() {
   }
 
   delegate('[data-fit-toggl-pane-trigger]', 'click', (e, t) => {
-    let pane = t.value;
+    let pane = (t.value ? t.value : t.dataset['fitPaneValue']);
     let type = t.dataset['fitPaneType'];
-
     activatePane(pane, type)
   });
 

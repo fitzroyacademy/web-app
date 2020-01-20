@@ -2,41 +2,51 @@
 
   <ul class="nav nav-tabs nav-justified mb-3" id="tab" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" id="register-tab" data-toggle="pill" href="#register" role="tab" aria-controls="profile" aria-selected="false">New <span class="d-none d-sm-inline">account</span></a>
+      <a class="nav-link active"
+         data-fit-pane-type="login_content"
+         data-fit-pane-value="register_tab_panel"
+         data-fit-toggl-pane-trigger data-toggle="pill" href="#register" aria-controls="profile" aria-selected="false">New <span class="d-none d-sm-inline">account</span></a>
     </li>    
     <li class="nav-item">
-      <a class="nav-link" id="login-tab" data-toggle="pill" href="#login" role="tab" aria-controls="home" aria-selected="true">Log in</a>
+      <a class="nav-link"
+         data-fit-pane-type="login_content"
+         data-fit-toggl-pane-trigger
+         data-fit-pane-value="login_tab_panel"
+         data-toggle="pill" href="#login" aria-controls="home" aria-selected="true">Log in</a>
     </li>
   </ul>
 
   <div class="tab-content" id="tabContent">
-    <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+    {% include 'partials/form/_errors.html' %}
+    <div class="tab-pane active"
+         data-fit-pane-type="login_content"
+         data-fit-pane-detail="register_tab_panel">
       <form class="form" action="{{ url_for('user.create') }}?last_page={{ request.path }}" method="post">
         
         {{ form.csrf_token }}
         <div class="row">
           <div class="col-sm-6">
             <div class="fit_fancyplace">
-              <label for="first_name">Given name</label>
-              <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Given name" required data-fit-fancyplace data-fit-slug-name data-fit-slug-first>
+              <label>Given name</label>
+              <input type="text" name="first_name" class="form-control" placeholder="Given name" required data-fit-fancyplace data-fit-slug-name data-fit-slug-first>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="fit_fancyplace">
-              <label for="last_name">Last name</label>
-              <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last name" required required data-fit-fancyplace data-fit-slug-name data-fit-slug-last>
+              <label>Last name</label>
+              <input type="text" name="last_name" class="form-control" placeholder="Last name" required required data-fit-fancyplace data-fit-slug-name data-fit-slug-last>
             </div>
           </div>
         </div>
 
         <div class="fit_fancyplace">
-          <label for="register_email">Email address</label>
-          <input type="email" id="register_email" class="form-control" name="email" placeholder="Email address" required data-fit-fancyplace>
+          <label >Email address</label>
+          <input type="email" class="form-control" name="email" placeholder="Email address" required data-fit-fancyplace>
         </div>
 
         <div class="fit_fancyplace">
-          <label for="register_password">Password</label>
-          <input type="password" name="password" id="register_password" class="form-control" placeholder="Password" required data-fit-fancyplace>
+          <label >Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
 <!-- 
         // this is a 'user can edit' version, moving to hidden field for now!
@@ -58,19 +68,20 @@
       </form>      
     </div><!-- register -->
 
-    <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
-      {% include 'partials/form/_errors.html' %}
+    <div class="tab-pane "
+         data-fit-pane-type="login_content"
+         data-fit-pane-detail="login_tab_panel">
       <form class="form" action="{{ url_for('user.login') }}?last_page={{ request.path }}" method="post">
         {{ form.csrf_token }}
         
         <div class="fit_fancyplace">
-          <label for="email_or_username">Email address</label>
-          <input type="email" id="email_or_username" name="email" class="form-control" placeholder="Email address" required data-fit-fancyplace>
+          <label >Email address</label>
+          <input type="email" name="email" class="form-control" placeholder="Email address" required data-fit-fancyplace>
         </div>
 
         <div class="fit_fancyplace">
-          <label for="login_password">Password</label>
-          <input type="password" id="login_password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
+          <label >Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Password" required data-fit-fancyplace>
         </div>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
