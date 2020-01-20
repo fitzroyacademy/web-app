@@ -97,19 +97,21 @@ def edit(user, institute=""):
 
     form = EditUserForm(request.form)
     if form.validate():
-        user.email = form.email.data.lower()
-        user.first_name = form.first_name.data
-        user.last_name = form.last_name.data
-        user.username = form.username.data
-        if form.password.data:
-            setattr(user, "password", form.password.data)
-
         try:
+            user.email = form.email.data.lower()
+            user.first_name = form.first_name.data
+            user.last_name = form.last_name.data
+            user.username = form.username.data
+            if form.password.data:
+                setattr(user, "password", form.password.data)
+
             db.add(user)
             db.commit()
         except IntegrityError:
             db.rollback()
             data["errors"] = ["Wrong email address"]
+        except ValueError as e:
+            data["errors"] = [str(e)]
     else:
         data["errors"] = form.errors
 
@@ -177,6 +179,7 @@ def create(institute=""):
         flash("Thanks for registering, " + user.full_name + "!")
     else:
         data["errors"] = form.errors
+        return render_template("login.html", **data)
     return redirect(request.args.get("from", "/"))
 
 

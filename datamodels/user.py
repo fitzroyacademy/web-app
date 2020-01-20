@@ -41,6 +41,8 @@ class User(BaseModel):
 
     @password.setter
     def password(self, password):
+        if any(c.isspace() for c in password):
+            raise ValueError("Password contains whitespace.")
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
