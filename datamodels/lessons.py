@@ -9,6 +9,8 @@ from .enums import ResourceTypeEnum
 from .enrollments import CourseEnrollment, lesson_user_enrollment_association_table
 from .segments import Segment
 
+from utils.defaults import DEFAULT_IMAGE
+
 
 class Lesson(OrderedBase):
     __tablename__ = "lessons"
@@ -79,7 +81,7 @@ class Lesson(OrderedBase):
             return self.cover_image_url
         elif self.segments:
             return self.segments[0].thumbnail_url
-        return ""
+        return DEFAULT_IMAGE
 
     @property
     def duration_seconds(self):

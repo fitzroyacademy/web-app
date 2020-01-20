@@ -43,7 +43,7 @@ def get_students_progress(course):
         _temp = {
             "id": student.id,
             "name": student.first_name,
-            "picture": student.profile_picture,
+            "picture": student.profile_picture_url,
             "admin": student.super_admin,
             "color": ""
         }

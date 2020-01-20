@@ -97,7 +97,7 @@ def edit(user, institute=""):
 
     form = EditUserForm(request.form)
     if form.validate():
-        user.email = form.email.data
+        user.email = form.email.data.lower()
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.username = form.username.data
@@ -144,10 +144,10 @@ def create(institute=""):
 
         try:
             user = datamodels.User()
-            user.email = form.email.data
+            user.email = form.email.data.lower()
             user.first_name = form.first_name.data
             user.last_name = form.last_name.data
-            user.username = user.available_username(form.username.data)
+            user.username = user.available_username(form.username.data.lower())
             setattr(user, "password", form.password.data)
             db.add(user)
             db.commit()
@@ -254,6 +254,7 @@ def logout(user, institute=""):
     for key in keys:
         session.pop(key)
 
+    flash("You have been successfully logged out.")
     return redirect(url_for("course.index"))
 
 

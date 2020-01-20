@@ -2,8 +2,9 @@ import datetime
 import unittest
 
 import datamodels
-from datamodels.enums import InstitutePermissionEnum, CourseAccess
 from app import app
+from datamodels.enums import InstitutePermissionEnum, CourseAccess
+from utils.defaults import DEFAULT_IMAGE
 
 
 class TestModels(unittest.TestCase):
@@ -16,14 +17,14 @@ class TestModels(unittest.TestCase):
 
     @staticmethod
     def makeUser(
-        id=1,
-        first_name="Homer",
-        last_name="Simpson",
-        email="homer@simpsons.com",
-        username="homer",
-        password="password",
-        phone_number="555-444-1234",
-        dob=None,
+            id=1,
+            first_name="Homer",
+            last_name="Simpson",
+            email="homer@simpsons.com",
+            username="homer",
+            password="password",
+            phone_number="555-444-1234",
+            dob=None,
     ):
         dob = dob or datetime.datetime.now()
         u = datamodels.User(
@@ -40,7 +41,7 @@ class TestModels(unittest.TestCase):
 
     @staticmethod
     def make_standard_course(
-        code="ABC123", guest_access=False, title="Foo Course", slug="abc-123"
+            code="ABC123", guest_access=False, title="Foo Course", slug="abc-123"
     ):
         course = datamodels.Course(
             course_code=code, title=title, slug=slug, guest_access=guest_access
@@ -49,7 +50,7 @@ class TestModels(unittest.TestCase):
 
     @staticmethod
     def make_standard_course_lesson(
-        course, title="Lesson", active=True, language="EN", slug="lesson", order=1
+            course, title="Lesson", active=True, language="EN", slug="lesson", order=1
     ):
         lesson = datamodels.Lesson(
             course=course,
@@ -63,11 +64,11 @@ class TestModels(unittest.TestCase):
 
     @staticmethod
     def make_segment(
-        lesson,
-        thumbnail="https://some_fancy_url_without_thumbnail_1.com/thumbnail.jpg",
-        title="Segment",
-        duration_seconds=200,
-        url="fitzroyacademy.com",
+            lesson,
+            thumbnail="https://some_fancy_url_without_thumbnail_1.com/thumbnail.jpg",
+            title="Segment",
+            duration_seconds=200,
+            url="fitzroyacademy.com",
     ):
         segment = datamodels.Segment(
             title=title,
@@ -82,10 +83,10 @@ class TestModels(unittest.TestCase):
 
     @staticmethod
     def makeInstitute(
-        obj_id=1,
-        name="University of Super Heroes",
-        slug="university_of_super_heroes",
-        logo="link_to_fancy_url",
+            obj_id=1,
+            name="University of Super Heroes",
+            slug="university_of_super_heroes",
+            logo="link_to_fancy_url",
     ):
         institute = datamodels.Institute(name=name, id=obj_id, logo=logo, slug=slug)
         return institute
@@ -246,7 +247,7 @@ class TestModels(unittest.TestCase):
         lesson = self.make_standard_course_lesson(course=course)
         self.session.add(lesson)
 
-        self.assertEqual(lesson.thumbnail, "")
+        self.assertEqual(lesson.thumbnail, DEFAULT_IMAGE)
 
         s1 = self.make_segment(lesson=lesson)
         s2 = self.make_segment(lesson=lesson, thumbnail="https://some_fancy_url_without_thumbnail_1.com/thumbnail2.jpg")

@@ -64,4 +64,6 @@ def get_user(user_id):
 
 
 def get_user_by_email(email):
-    return User.find_by_email(email)
+    if not email:
+        return None
+    return User.find_by_email(email.lower())

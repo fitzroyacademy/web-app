@@ -9,6 +9,8 @@ from flask import current_app as app
 from flask import url_for
 from sqlalchemy.ext.declarative import declarative_base
 
+from utils.defaults import DEFAULT_IMAGE
+
 _session = None
 
 
@@ -68,7 +70,7 @@ class BaseModel(Base):
     def _image_field_url(self, field):
         image_field = getattr(self, field, None)
         if not image_field:
-            return ""
+            return DEFAULT_IMAGE
         if image_field.startswith("/static/"):
             return image_field
         return (
