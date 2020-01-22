@@ -178,7 +178,7 @@ def create(institute=""):
         session["user_id"] = user.id
         flash("Thanks for registering, " + user.full_name + "!")
     else:
-        data["errors"] = form.errors
+        data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
         return render_template("login.html", **data)
     return redirect(request.args.get("from", "/"))
 

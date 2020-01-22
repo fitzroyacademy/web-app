@@ -323,32 +323,6 @@ $( document ).ready(function() {
      slug_userset = true;
      fit_slug_set();
     }
-  });  
-
-  // and set it automatically from the slug name
-  $("[data-fit-slug-name]").on({
-    'change, keyup': function() {
-      
-      // if it's empty, unset user input
-      if (slug_pretty == ''){
-        slug_userset = false;
-      }
-
-      // only if user hasn't set it manually:
-      if (slug_userset == false){
-        // first bit
-        let slugFirstElement = $('[data-fit-slug-first]');
-        if (slugFirstElement.length > 0 && slugFirstElement.val() != ''){
-          slug_ugly = slugFirstElement.val();
-        }
-        // add second if there
-        if (slugFirstElement.length > 0 && slugFirstElement.val() != ''){
-          slug_ugly = (slug_ugly + $('[data-fit-slug-last]').val());
-        }
-      }
-      
-      fit_slug_set();
-    }
   });
 
 
@@ -1631,6 +1605,32 @@ $( document ).ready(function() {
 
   delegate('[data-fit-skip-segment]', 'click', (e, t) => {
     nextSegment(true)
-  })
+  });
+
+  // and set it automatically from the slug name
+  delegate("[data-fit-slug-name]", "keyup",
+      (e, t) => {
+      // if it's empty, unset user input
+      if (slug_pretty === ''){
+        slug_userset = false;
+      }
+
+      // only if user hasn't set it manually:
+      if (slug_userset === false){
+        // first bit
+        let slugFirstElement = t.closest('form').querySelector('[data-fit-slug-first]');
+        if (slugFirstElement && slugFirstElement.value !== ''){
+          slug_ugly = slugFirstElement.value;
+        }
+
+        // add second if there
+        let slugLastElement = t.closest('form').querySelector('[data-fit-slug-last]');
+        if (slugLastElement && slugLastElement.value !== ''){
+          slug_ugly = (slug_ugly + slugLastElement.value);
+        }
+      }
+
+      fit_slug_set();
+  });
 
 });
