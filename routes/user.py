@@ -82,13 +82,13 @@ def edit(user, institute=""):
 
             filename = generate_thumbnail(file, "square_l")
             if not filename:
-                data["errors"] = ["Couldn't upload picture."]
+                data["errors"].append("Couldn't upload picture.")
             else:
                 user.profile_picture = filename
                 db.add(user)
                 db.commit()
         else:
-            data["errors"] = "Missing CSRF token"
+            data["errors"].append("Missing CSRF token")
 
         if data["errors"]:
             return jsonify(data), 400
@@ -109,9 +109,9 @@ def edit(user, institute=""):
             db.commit()
         except IntegrityError:
             db.rollback()
-            data["errors"] = ["Wrong email address"]
+            data["errors"].append("Wrong email address or username")
         except ValueError as e:
-            data["errors"] = [str(e)]
+            data["errors"].append(str(e))
     else:
         data["errors"] = form.errors
 

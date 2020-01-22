@@ -989,7 +989,13 @@ $( document ).ready(function() {
 
     post(url, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
-        showAlertSnackbar(res["message"]);
+        if ("errors" in res && res["errors"].length > 0){
+          for (let i = 0; i < res["errors"].length; i++) {
+            showAlertSnackbar(res["errors"][i])
+          }
+        } else {
+          showAlertSnackbar(res["message"]);
+        }
     });
   });
 
