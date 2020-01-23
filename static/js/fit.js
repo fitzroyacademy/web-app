@@ -658,7 +658,7 @@ $( document ).ready(function() {
     let p   = t.href;
     let sel = t.getAttribute('data-fit-panel');
     let matches = document.querySelectorAll(sel);
-    if (matches.length == 0) {
+    if (matches.length === 0) {
       return console.warn('No matching data panels for', sel);
     } 
     get(p, (e, xhr, data) => {
@@ -670,7 +670,14 @@ $( document ).ready(function() {
   delegate('[data-fit-preference-toggle]', 'click', (e, t) => {
     let value = !t.querySelector('input[type=checkbox]').checked;
     let tag = t.dataset.fitPreferenceToggle;
-    post(`/preference/${tag}/${(value)?'on':'off'}`);
+    post(`/preference/${tag}/${(value)?'on':'off'}`, {}, (e, xhr, data) => {
+      if (xhr.status === 200) {
+        showAlertSnackbar("Settings saved.")
+      } else {
+        showAlertSnackbar("An error has occurred.")
+      }
+    });
+
   });
 
   let studentSel = '[data-fit-student-completion].active';
