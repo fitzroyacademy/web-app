@@ -18,8 +18,6 @@ THUMBNAIL_SIZES = {
     "standard": (640, 320),
 }
 
-CLOUD_FRONT_URL = "http://assets.alpha.new.fitzroyacademy.com/"
-
 
 def upload_file_to_s3(file, bucket_name="", filename=None):
     s3 = boto3.client(
@@ -44,7 +42,7 @@ def upload_file_to_s3(file, bucket_name="", filename=None):
         print("Something Happened: ", e)
         return ""
 
-    return "{}{}".format(CLOUD_FRONT_URL, filename)
+    return "{}{}".format(current_app.config["CLOUD_FRONT_URL"], filename)
 
 
 def image_upload_dispatcher(im, filename):
@@ -59,6 +57,7 @@ def image_upload_dispatcher(im, filename):
         im.save(b, im.format)
         b.seek(0)
         filename = upload_file_to_s3(b, filename=filename)
+        print(filename)
 
     return filename
 
@@ -82,7 +81,21 @@ def generate_thumbnail(file, thumbnail_type):
     if ext not in ALLOWED_MIMETYPES:
         return ""
 
-    img = Image.open(file)
+    try:
+        img = Image.open(file)
+    except OSError:
+        raise ValueError("Cannot identify image file.")
+
+    width, height = img.size
+    if (
+        width < THUMBNAIL_SIZES[thumbnail_type][0]
+        or height < THUMBNAIL_SIZES[thumbnail_type][1]
+    ):
+        raise ValueError(
+            "Image should be at least {} pixels wide and {} pixels high.".format(
+                THUMBNAIL_SIZES[thumbnail_type][0], THUMBNAIL_SIZES[thumbnail_type][1]
+            )
+        )
     img.thumbnail(THUMBNAIL_SIZES[thumbnail_type])
 
     filename = generate_filename(thumbnail_type, file, ext)

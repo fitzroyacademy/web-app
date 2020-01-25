@@ -24,6 +24,7 @@ class Config(object):
     S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
     S3_SECRET = environ.get("S3_SECRET_ACCESS_KEY", default=None)
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
+    CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
     SERVER_NAME = "fitzroyacademy.com"
 
     UPLOAD_FOLDER = "static/uploads"

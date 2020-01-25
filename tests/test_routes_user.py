@@ -116,9 +116,6 @@ class TestUserEnrollment(ObjectsGenerator, unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(
-            "Username or email and password are required" in str(response.data)
-        )
 
         with s.session_transaction() as sess:
             with self.assertRaises(KeyError):
@@ -130,9 +127,6 @@ class TestUserEnrollment(ObjectsGenerator, unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(
-            "Username or email and password are required" in str(response.data)
-        )
 
         with s.session_transaction() as sess:
             with self.assertRaises(KeyError):

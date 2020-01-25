@@ -65,7 +65,13 @@
 
 
 <!-- FA JS -->
-{% block CSRFtoken %}{% endblock %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if form.csrf_token %}
+        var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
 <script src="{{ url_for('static', filename='js/fit.js') }}"></script>
 
 

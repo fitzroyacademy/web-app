@@ -80,7 +80,11 @@ def edit(user, institute=""):
         if form.validate():
             file = request.files["file"]
 
-            filename = generate_thumbnail(file, "square_l")
+            try:
+                filename = generate_thumbnail(file, "square_l")
+            except ValueError as e:
+                data["errors"].append(str(e))
+                return jsonify(data), 400
             if not filename:
                 data["errors"].append("Couldn't upload picture.")
             else:
@@ -180,7 +184,7 @@ def create(institute=""):
     else:
         data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
         return render_template("login.html", **data)
-    return redirect(request.args.get("from", "/"))
+    return redirect(request.args.get("last_page", "/"))
 
 
 @blueprint.subdomain_route("/enroll/<course_slug>", methods=["POST"])
@@ -242,7 +246,7 @@ def login(institute=""):
                         session.pop("anon_progress")
                     return redirect(request.args.get("last_page", "/"))
         else:
-            data["errors"].append("Username or email and password are required")
+            data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
     else:
         data["form"] = LoginForm()
     if len(data["errors"]) > 0 or request.method == "GET":

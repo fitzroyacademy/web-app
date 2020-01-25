@@ -4,7 +4,7 @@ from glob import glob
 from flask import render_template, redirect
 
 import datamodels
-from dataforms import LoginForm
+from dataforms import LoginForm, AjaxCSRFTokenForm
 from .blueprint import SubdomainBlueprint
 
 blueprint = SubdomainBlueprint("pages", __name__)
@@ -30,6 +30,7 @@ def _bind_render(s, p):
     data = {"form": None}
 
     def fun():
+        data["form"] = AjaxCSRFTokenForm()
         return render_template("static/{}/{}.html".format(s, p), **data)
 
     return fun

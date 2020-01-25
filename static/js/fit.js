@@ -993,7 +993,6 @@ $( document ).ready(function() {
       "email": formData.get("email"),
       "password": formData.get("password")
     };
-
     post(url, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);
         if ("errors" in res && res["errors"].length > 0){
@@ -1386,7 +1385,17 @@ $( document ).ready(function() {
             let form = input.closest('form');
             formData['file'] = blob;
             formData[input.name] = `a:/b/c/d/e.f.${ext}`;
-            post(form.action, formData);
+            post(form.action, formData, (responseText, xhr) => {
+              let res = JSON.parse(xhr.response);
+              if (xhr.status === 400) {
+                if ("errors" in res && res["errors"].length > 0) {
+                  for (let i = 0; i < res["errors"].length; i++) {
+                    showAlertSnackbar(res["errors"][i])
+                  }} else if ("message" in res) {
+                  showAlertSnackbar(res["message"])
+                }
+              }
+            });
             p.classList.remove('fit_upload_cropping');
             let reader = new FileReader();
             reader.onload = (e) => {
