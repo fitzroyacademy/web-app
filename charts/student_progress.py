@@ -63,26 +63,26 @@ def get_students_progress(course):
 
 
 def get_students_total_progress(course):
-    total_progress = _base_total_query(course). \
-        group_by(Lesson.id, SegmentUserProgress.user_id).all()
-    return {(Segment.find_by_id(progress.segment_id).lesson.id, progress.user_id): value for progress, value in
+    group_by = [SegmentUserProgress.user_id, Lesson.id]
+    total_progress = _base_total_query(course, group_by). \
+        group_by(*group_by).all()
+    return {(lesson_id, user_id): value for value, user_id, lesson_id in
             total_progress}
 
 
 def get_lessons_total_progress(course):
-    total_progress = _base_total_query(course).group_by(Lesson.id).all()
-    return {Segment.find_by_id(progress.segment_id).lesson.id: value for progress, value in total_progress}
+    group_by = [Lesson.id]
+    total_progress = _base_total_query(course, group_by).group_by(*group_by).all()
+    return {lesson_id: value for value, lesson_id in total_progress}
 
 
-def _base_total_query(course):
+def _base_total_query(course, group_by):
     session = get_session()
-
-    queryset = session.query(SegmentUserProgress, func.sum(SegmentUserProgress.progress)). \
-        join(Segment).join(Lesson). \
+    queryset = session.query(func.sum(SegmentUserProgress.progress), *group_by). \
+        join(Segment, SegmentUserProgress.segment_id == Segment.id).join(Lesson, Lesson.id == Segment.lesson_id). \
         join(CourseEnrollment,
              (SegmentUserProgress.user_id == CourseEnrollment.user_id) & (Lesson.course_id == CourseEnrollment.course_id)). \
         filter(Lesson.course_id == course.id). \
-        filter(CourseEnrollment.access_level == CourseAccess.student). \
-        distinct(SegmentUserProgress.id)
+        filter(CourseEnrollment.access_level == CourseAccess.student)
 
     return queryset

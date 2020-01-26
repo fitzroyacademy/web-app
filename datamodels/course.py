@@ -48,8 +48,6 @@ class Course(BaseModel):
     users = orm.relationship("CourseEnrollment", back_populates="course")
     translations = orm.relationship("CourseTranslation", back_populates="course")
 
-    preview_thumbnail = sa.Column(sa.String)
-
     def get_ordered_segments(self, only_barriers=False, show_hidden=True):
         db = get_session()
 

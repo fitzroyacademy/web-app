@@ -14,7 +14,12 @@ from .render_partials import (
     render_segment_list_element,
     render_segment_modal,
 )
-from .utils import reorder_items, clone_model, retrieve_wistia_id, SurveyViewInterface
+from .utils import (
+    reorder_items,
+    clone_model,
+    set_segment_video_url,
+    SurveyViewInterface,
+)
 
 blueprint = SubdomainBlueprint("segment", __name__, template_folder="templates")
 
@@ -101,41 +106,45 @@ def retrieve(user, course, course_slug, lesson_id, segment_id, institute=""):
 @teacher_required
 def add_edit_intro_segment(user, course, course_slug, lesson_id, institute=""):
     lesson = datamodels.Course.find_lesson_by_course_slug_and_id(course.slug, lesson_id)
-
     if not lesson:
         return jsonify({"message": "Lesson do not match course"}), 400
-
-    slug = "intro-video"
 
     if not AjaxCSRFTokenForm(request.form).validate():
         return jsonify({"message": "Invalid CSRF token"}), 400
 
-    segment = lesson.intro_segment
-    if segment:
-        segment.url = request.form["segment_url"]
-        segment.save()
-        return jsonify({"message": "Intro video updated"})
+    slug = "intro-video"
+
+    instance = lesson.intro_segment
+    editing = instance is not None
+    if not instance:
+        instance = datamodels.Segment(
+            url=request.form["segment_url"],
+            type=SegmentType.video,
+            video_type=VideoTypeEnum.standard,
+            barrier=SegmentBarrierEnum.normal,
+            order=0,
+            lesson=lesson,
+            slug=slug,
+            title="Intro segment",
+            text=request.form.get("text_segment_content", "Intro segment video"),
+        )
 
     segment = datamodels.find_segment_by_slugs(course_slug, lesson.slug, slug)
     if segment and segment.order != 0:
-        slug = slug + "-" + uuid4()[:3]
+        instance.slug = slug + "-" + uuid4()[:3]
 
-    segment = datamodels.Segment(
-        url=request.form["segment_url"],
-        type=SegmentType.video,
-        video_type=VideoTypeEnum.standard,
-        barrier=SegmentBarrierEnum.normal,
-        duration_seconds=0,
-        order=0,
-        lesson=lesson,
-        slug=slug,
-        title="Intro segment",
-        text=request.form.get("text_segment_content", "Intro segment video"),
-    )
+    try:
+        set_segment_video_url(instance, request.form["segment_url"])
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
 
-    segment.save()
+    instance.save()
+    data = {"message": "Intro video updated"}
 
-    return jsonify({"message": "Intro video added.", "html": render_intro(segment)})
+    if not editing:
+        data = {"message": "Intro video added.", "html": render_intro(segment)}
+
+    return jsonify(data)
 
 
 @blueprint.subdomain_route(
@@ -248,16 +257,10 @@ def add_edit_segment(
             VideoTypeEnum, request.form.get("video_types", "standard"), "standard"
         )
 
-        # ToDo: validate URL
-        instance.url = request.form["segment_url"]
-        if "wistia.com" in instance.url:
-            instance.external_id = retrieve_wistia_id(instance.url)
-            instance.set_duration()
-        elif "youtube.com" in instance.url:
-            # ToDo: maybe remove this for now?
-            pass
-        else:
-            return jsonify({"message": "Wrong video provider"}), 400
+        try:
+            set_segment_video_url(instance, request.form["segment_url"])
+        except ValueError as e:
+            return jsonify({"message": str(e)}), 400
         instance.type = SegmentType.video
         instance.video_type = video_type
     elif content_type == "survey":

@@ -324,7 +324,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
         self.session.commit()
 
         data = {
-            "segment_url": "https://youtube.com/some-video",
+            "segment_url": "https://fitzroyacademy.wistia.com/medias/4ub59urk8l",  # ToDo: mock this
             "text_segment_content": "This is the second segment. The one after our brilliant intro.",
         }
 

@@ -277,7 +277,8 @@ class TestUserSettings(ObjectsGenerator, unittest.TestCase):
     def test_set_setting_anonymous(self):
         s = app.test_client()
 
-        response = s.post("/user/settings", data={"key": "hardware", "value": "macbook"})
+        response = s.post("/user/settings", data={"key": "hardware",
+                                                  "value": "macbook"})
 
         d = json.loads(response.data)
         self.assertEqual(d["key"], "hardware")

@@ -82,9 +82,7 @@ def add_course(user, institute=""):  # ToDo: use Ajax
     :param institute: an institute subdomain
     :return: html response
     """
-
     form = AddCourseForm(request.form)
-    data = {"form": form}
 
     if institute:
         institute = datamodels.Institute.find_by_slug(institute)
@@ -98,21 +96,17 @@ def add_course(user, institute=""):  # ToDo: use Ajax
         course = datamodels.Course()
         course.title = form.title.data
         course.info = form.info.data
-        course.institute = institute
+        course.institute = institute or None
         course.course_code = str(uuid4())[:8]
         course.slug = slug
-
-        db = datamodels.get_session()
-        db.add(course)
+        course.save()
         course.add_instructor(user)
-        db.commit()
 
         return redirect("/course/{}/edit".format(slug))
     else:
         for key, value in form.errors.items():
             flash("Field {}: {}".format(key, ",".join(value)))
-        data["errors"] = form.errors
-        return redirect("/", **data)
+        return redirect("/")
 
 
 @blueprint.subdomain_route("/<course_slug>/edit", methods=["POST"])
@@ -185,17 +179,10 @@ def edit(user, course_slug=None, institute=""):
     if "cover_image" in request.form:
         file = request.files["file"]
 
-        filename = generate_thumbnail(file, "cover")
-        if not filename:
-            return (
-                jsonify(
-                    {
-                        "success": False,
-                        "message": "Couldn't upload picture. Try again or use different file format",
-                    }
-                ),
-                400,
-            )
+        try:
+            filename = generate_thumbnail(file, "cover")
+        except ValueError as e:
+            return jsonify({"success": False, "message": str(e)}), 400
 
         course.cover_image = filename
 
@@ -225,7 +212,7 @@ def retrieve(user, course_slug=None, institute=""):
         "teachers": [render_teacher(obj, course) for obj in course.instructors],
         "introduction": course.intro_lesson,
         "lessons": course.normal_lessons,
-        "ajax_csrf_form": AjaxCSRFTokenForm(),
+        "form": AjaxCSRFTokenForm(),
         "cover_image": course.cover_image_url,
         "add_lesson_form": AddLessonForm(),
     }

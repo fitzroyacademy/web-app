@@ -1,11 +1,4 @@
-{% extends "/layout.html" %}
-{% block CSRFtoken %}
-    <script type="text/javascript">
-        {% if ajax_csrf_form.csrf_token %}
-        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
-        {% endif %}
-    </script>
-{% endblock %}
+{% extends "layout.html" %}
 
 {% block body %}
 
@@ -14,19 +7,6 @@
   <article>
 
     <div class="fit_course intro">
-
-      <!-- <h1>
-        <span class="txt">Edit course.</span>
-        <small class="subtxt">
-          <a class="btn btn-sm btn-outline-secondary" href="{{ course.permalink }}"><i class="fal fa-external-link"></i> View live </a>
-          &nbsp;
-          <button class="btn btn-sm btn-outline-primary fit_btn_saver">
-            <span class="save" data-snackbar-alert="you are amazing, saved baby.">Save changes</span>
-            <span class="saved"><i class="fal fa-check"></i> Saved</span>
-            <span class="saving"><i class="fas fa-spin fa-spinner-third"></i> Saving...</span>
-          </button>
-        </small>
-      </h1> -->
 
       <div class="fit_fancyplace">
         <label for="course_name">Course name</label>

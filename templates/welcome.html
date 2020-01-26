@@ -76,9 +76,9 @@
 
   {% for course in public_courses %}
     <div class="fit_course_sell featured">
-      {% if course.preview_thumbnail %}
+      {% if course.cover_image %}
         <div class="fit_window">
-          <img src="{{ course.preview_thumbnail }}" alt="image">
+          <img src="{{ course.cover_image_url }}" alt="image">
           <a href="{{ course.permalink }}" class="play"><i class="fas fa-play-circle"></i></a>
         </div>
       {% endif %}

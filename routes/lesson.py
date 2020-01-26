@@ -14,7 +14,7 @@ from datamodels.enums import (
     CourseAccess,
 )
 from routes.decorators import login_required, teacher_required, enrollment_required
-from routes.utils import reorder_items
+from routes.utils import reorder_items, set_segment_video_url
 from utils.images import generate_thumbnail
 from .render_partials import render_question_answer, render_teacher, render_intro
 from .blueprint import SubdomainBlueprint
@@ -52,7 +52,7 @@ def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
             slug = slug + "-" + str(uuid4())[:3]
         if intro_lesson:
             segment = intro_lesson.intro_segment
-            segment.url = request.form["segment_url"]
+            set_segment_video_url(segment, request.form["segment_url"])
             html = ""
         else:
             intro_lesson = datamodels.Lesson(
@@ -69,17 +69,24 @@ def course_add_edit_intro_lesson(user, course, course_slug, institute=""):
                 lesson=intro_lesson,
                 order=0,
                 type="video",
+                title="Introduction",
                 barrier=SegmentBarrierEnum.normal,
                 video_type=VideoTypeEnum.standard,
                 url=request.form["segment_url"],
                 duration_seconds=0,
                 slug="intro-segment",
             )
+            set_segment_video_url(segment, request.form["segment_url"])
             html = render_intro(segment)
 
         db.add(segment)
         db.commit()
-        return jsonify({"message": "Intro lesson added", "html": html})
+        return jsonify(
+            {
+                "message": "Intro lesson {}".format("updated" if not html else "added"),
+                "html": html,
+            }
+        )
     else:
         return jsonify({"message": "Couldn't create intro lesson"}), 400
 

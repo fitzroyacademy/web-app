@@ -69,7 +69,6 @@ def reseed():
         u = datamodels.User(**user)
         u.password = password
         session.add(u)
-
     session.commit()
 
     c = datamodels.Course(
@@ -87,7 +86,7 @@ def reseed():
         <p><strong>On the social impact</strong> side of things, you'll define your impact model, look into creating behaviour
         change that lasts, and maybe even think about partnering with another organisation to create impact.</p>
         """,
-        preview_thumbnail="/static/assets/images/lessons/customer-interviews.jpg",
+        cover_image="/static/assets/images/lessons/customer-interviews.jpg",
         guest_access=True,
         draft=False,
         workload_title="",

@@ -67,8 +67,10 @@
 <!-- FA JS -->
 {% block CSRFtoken %}
     <script type="text/javascript">
-        {% if form.csrf_token %}
+        {% if form and form.csrf_token %}
         var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% elif ajax_csrf_form and ajax_csrf_form.csrf_token %}
+        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
         {% endif %}
     </script>
 {% endblock %}

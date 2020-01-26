@@ -1,4 +1,5 @@
 from os import environ
+from datetime import datetime
 
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
@@ -37,6 +38,8 @@ Base = declarative_base()
 class BaseModel(Base):
     __abstract__ = True
     _is_deleted = sa.Column(sa.Boolean, default=False)
+    created_on = sa.Column(sa.DateTime, default=datetime.now)
+    last_updated = sa.Column(sa.DateTime, onupdate=datetime.now)
 
     @classmethod
     def find_by_id(cls, obj_id):

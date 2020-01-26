@@ -67,6 +67,22 @@ def retrieve_wistia_id(url):
     return ""
 
 
+def set_segment_video_url(obj, url):
+    """
+    Use case: course editor adds video segment or intro lesson then video duration is retrieved
+    and URL is validated
+    """
+    obj.url = url
+    if "wistia.com" in obj.url:
+        obj.external_id = retrieve_wistia_id(obj.url)
+        obj.set_duration()
+    elif "youtube.com" in obj.url:
+        # ToDo: maybe remove this for now?
+        pass
+    else:
+        raise ValueError("Wrong video provider")
+
+
 def find_segment_barrier(current_user, course):
     segments = course.get_ordered_segments(only_barriers=True)
     for segment in segments:

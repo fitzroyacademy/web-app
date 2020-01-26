@@ -101,6 +101,11 @@ def generate_thumbnail(file, thumbnail_type):
     filename = generate_filename(thumbnail_type, file, ext)
     file_path = image_upload_dispatcher(img, filename)
 
+    if not file_path:
+        raise ValueError(
+            "Couldn't upload picture. Try again or use different file format"
+        )
+
     return file_path
 
 
