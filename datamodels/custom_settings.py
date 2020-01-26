@@ -8,7 +8,7 @@ from .custom_settings_list import CUSTOM_SETTINGS_KEYS
 class CustomSetting(BaseModel):
     __tablename__ = "custom_setting"
     __table_args__ = (
-        sa.UniqueConstraint("user_id", "key", name="_course_user_enrollment"),
+        sa.UniqueConstraint("user_id", "key", name="_user_custom_setting"),
     )
 
     id = sa.Column(sa.Integer, primary_key=True)
