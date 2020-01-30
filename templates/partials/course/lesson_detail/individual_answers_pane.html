@@ -12,7 +12,7 @@
         </td>
         {% if answer.chosen_answer %}
         <td style="width: 32px">
-            <div class="response_num response_num_{{ answer.chosen_answer }}">{{ answer.chosen_answer }}</div>
+            <div class="response_num response_num_{{ answer.chosen_answer }} {{ answer.custom_css_class }}">{{ answer.chosen_answer }}</div>
         </td>
         {% endif %}
         <td>

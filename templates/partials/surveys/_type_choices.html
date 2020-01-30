@@ -8,6 +8,7 @@
         >
         <label class="form-check-label watermelon" for="{{ survey_type.survey_id }}">
             {% if survey_type.surve_type_icon_type == "url" %}
+                <img src="{{ survey_type.survey_type_icon }}" alt="">
             {% else %}
                 <i class="{{ survey_type.survey_type_icon }}" aria-hidden="true"></i>
             {% endif %}
