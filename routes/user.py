@@ -137,7 +137,9 @@ def create(institute=""):
     # We'll roll in better validation with form error integration in beta; this is
     # to prevent mass assignment vulnerabilities.
     form = AddUserForm(request.form)
-    data = {"errors": [], "form": form}
+    last_page = request.args.get("last_page", "")
+    data = {"errors": [], "form": form, "last_page": last_page}
+
     if request.method == "GET":
         return render_template("login.html", **data)
 
@@ -160,7 +162,7 @@ def create(institute=""):
         except IntegrityError:
             db.rollback()
             flash("This username is already taken")
-            return redirect(request.args.get("last_page", "/"))
+            return redirect(last_page or "/")
         except Exception as e:
             data["errors"].append("{}".format(e))
             return render_template("login.html", **data)
@@ -184,7 +186,7 @@ def create(institute=""):
     else:
         data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
         return render_template("login.html", **data)
-    return redirect(request.args.get("last_page", "/"))
+    return redirect(last_page or "/")
 
 
 @blueprint.subdomain_route("/enroll/<course_slug>", methods=["POST"])
@@ -225,8 +227,9 @@ def enroll(course_slug, institute=""):
 
 @blueprint.subdomain_route("/login", methods=["GET", "POST"])
 def login(institute=""):
-    """ Validiate login and save current user to session. """
-    data = {"errors": [], "form": LoginForm()}
+    """ Validate login and save current user to session. """
+    last_page = request.args.get("last_page", "")
+    data = {"errors": [], "form": LoginForm(), "last_page": last_page}
     if request.method == "POST":
         form = LoginForm(request.form)
         data["form"] = form
@@ -244,7 +247,7 @@ def login(institute=""):
                         d = json.loads(session["anon_progress"])
                         merge_anonymous_data(user.id, d)
                         session.pop("anon_progress")
-                    return redirect(request.args.get("last_page", "/"))
+                    return redirect(last_page or "/")
         else:
             data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
     else:
