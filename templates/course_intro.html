@@ -11,8 +11,7 @@
       <h1>
         <span class="txt">{{ course.title }}</span>
         {% if current_user and current_user.teaches(course) %}
-          <a href="/course/{{ course.slug }}/edit" class="btn pull-right btn-outline-secondary"> 
-            <!-- <i class="fal fa-edit"></i> -->
+          <a href="/course/{{ course.slug }}/edit" class="btn pull-right btn-outline-secondary">
             Edit course
           </a>
         {% endif %}
@@ -44,30 +43,6 @@
             <p>Purpose-built templates and links that you can use forever.</p>
           </div>
           <div class="col-sm-4">
-
-            <!-- 
-              
-              Hot damn this is confusing, psuedocode first:
-
-              Registered:
-                + enrolled or teacher
-                  = continue
-                + not enrolled
-                  + free course
-                    = start course for free
-                  + paid course
-                    = pay
-
-              !Registered:
-                + anon access
-                  = start course
-                + paid course
-                    = sign up
-                + free course
-                    = sign up
-
-             -->
-
 
             <!-- signed up -->
             {% if current_user %}
@@ -101,7 +76,6 @@
                     <h4>${{ course.amount }} USD</h4>
                     <p>Use your card to continue.</p>
 
-
                   {% endif %}
 
                 {% endif %}
@@ -112,6 +86,11 @@
 
               {% if course.guest_access %}
                 <form method="post" action="/enroll/{{ course.slug}}">
+                        {% if course.visibility == "code" %}
+                            <div class="fit_form_code">
+                            <input type="text" class="form-control" name="course_code" placeholder="Course code" required data-fit-fancyplace>
+                            </div>
+                        {% endif %}
                         <button type="submit" class="btn btn-block btn-lg btn-watermelon" role="button">
                             Start course
                         </button>
@@ -220,7 +199,7 @@
         <h3>Ready to begin?</h3>
         <form class="fit_form_code fit_fancyplace fit_wiggle_daddy" method="post" action="/enroll/{{ course.slug }}">
           <div class="form-group">
-            <input type="text" class="form-control" name="course_code" id="course_code" placeholder="Course code" required data-fit-fancyplace>
+            <input type="text" class="form-control" name="course_code" placeholder="Course code" required data-fit-fancyplace>
             <label for="course_code">Course code</label>
             <button type="submit" class="btn btn-text fit_wiggle"><i class="fas fa-rocket"></i></button>
           </div>

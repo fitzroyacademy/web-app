@@ -14,7 +14,6 @@ from routes.utils import (
     get_survey_response_for_student,
 )
 from utils.base import get_current_user
-from utils.database import dump
 from routes.decorators import enrollment_required
 
 blueprint = SubdomainBlueprint("course_display", __name__, template_folder="templates")
@@ -80,8 +79,7 @@ def get_segment_object(segment_id):
         "html": html,
     }
     if ext == "json":
-        dumped_data = dump(data["active_segment"])
-        data["active_segment"] = dumped_data
+        data["active_segment"] = {"external_id": active_segment.external_id}
         return json.dumps(data)
     return render_template("partials/course/_active_segment.html", **data)
 

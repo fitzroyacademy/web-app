@@ -174,7 +174,10 @@ class OrderedBase(BaseModel):
     def previous(self):
         parent = self.get_parent()
         items = self.ordered_items_for_parent(parent, key=self.order_parent_key).all()
-        i = items.index(self)
+        try:
+            i = items.index(self)
+        except ValueError:
+            return None
         previous_parent = (
             parent.previous if parent and self.is_parent_ordered(parent) else None
         )
@@ -195,7 +198,10 @@ class OrderedBase(BaseModel):
         else:
             items = self.get_ordered_items().all()
 
-        i = items.index(self)
+        try:
+            i = items.index(self)
+        except ValueError:
+            return None
         next_parent = parent.next if parent and self.is_parent_ordered(parent) else None
         if i == len(items) - 1 and next_parent is None:
             return None

@@ -1,7 +1,4 @@
 import copy
-import json
-
-import sqlalchemy as sa
 
 import datamodels
 from datamodels.enums import SegmentType
@@ -11,53 +8,6 @@ from utils import stubs
 def get_seconds(dur):
     mmss = dur.split(":")  # no edge cases, we're handling stub data
     return int(mmss[0]) * 60 + int(mmss[1])
-
-
-def dump(obj, seen=None):
-    if not isinstance(obj, datamodels.base.Base):
-        if (
-            isinstance(obj, list)
-            and len(obj) > 0
-            and isinstance(obj[0], datamodels.base.Base)
-        ):
-            o = []
-            for i in obj:
-                o.append(dump(i, seen=seen))
-            return o
-        else:
-            return obj
-    seen = seen or []  # Recursion trap.
-    seen.append(id(obj))
-    ignored = ["metadata"]
-    fields = {}
-    for f in [x for x in dir(obj) if x.startswith("_") is False and x not in ignored]:
-        data = getattr(obj, f)
-        try:
-
-            json.dumps(data)
-            fields[f] = data
-        except TypeError:
-            if isinstance(data, sa.orm.query.Query):
-                fields[f[4:]] = None
-            elif isinstance(data, datamodels.base.Base):
-                if id(data) in seen:
-                    fields[f] = None
-                else:
-                    fields[f] = dump(data, seen)
-            elif callable(data) and f.startswith("get_") and isinstance(data, property):
-                _data = data()
-                if isinstance(_data, sa.orm.query.Query):
-                    fields[f[4:]] = None
-                else:
-                    fields[f[4:]] = dump(_data, seen)
-            elif isinstance(data, list):
-                fields[f] = []
-                for o in data:
-                    if id(o) in seen:
-                        fields[f].append(None)
-                    else:
-                        fields[f].append(dump(o, seen))
-    return fields
 
 
 def reseed():
