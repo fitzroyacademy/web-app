@@ -7,8 +7,6 @@ workflows:
     jobs:
       - test:
           filters:
-            branches:
-              only: /.*/
             tags:
               only: /.*/
 
@@ -17,11 +15,8 @@ workflows:
           requires:
             - test
           filters:
-            branches:
-              only:
-                - master
             tags:
-              only: /.*/
+              only: /^v[0-9]+\.[0-9]+/
 
       - approve-live-deploy:
           type: approval
@@ -29,7 +24,7 @@ workflows:
            - build
           filters:
             tags:
-              only: /^v[0-9]+\.[0-9]+$/
+              only: /^v[0-9]+\.[0-9]+/
 
       - deploy-live:
           context: fitzroy-circleci
@@ -37,7 +32,7 @@ workflows:
           - approve-live-deploy
           filters:
             tags:
-              only: /^v[0-9]+\.[0-9]+$/
+              only: /^v[0-9]+\.[0-9]+/
 
       - slack/approval-notification:
           message: Deploy to fitzroy.academy is awaiting approval.
@@ -45,7 +40,7 @@ workflows:
             - build
           filters:
             tags:
-              only: /^v[0-9]+\.[0-9]+$/
+              only: /^v[0-9]+\.[0-9]+/
 
       # - deploy-staging:
       #   context: fitzroy-circleci
