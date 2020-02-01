@@ -61,14 +61,14 @@ class TestSegments(ObjectsGenerator, unittest.TestCase):
         self.assertIsNone(self.l1s2.next)
 
     def test_add_video_segment(self):
-        segment = self.make_segment(self.l0, slug="test-type-video", order=2, title="Test type", type=SegmentType.video)
+        segment = self.make_segment(self.l0, slug="test-type-video", order=2, title="Test type", seg_type=SegmentType.video)
         self.session.add(segment)
         self.session.commit()
         segment = datamodels.find_segment_by_slugs(self.course.slug, self.l0.slug, "test-type-video")
         self.assertEqual(segment.type, SegmentType.video)
 
     def test_add_text_segment(self):
-        segment = self.make_segment(self.l0, slug="test-type-text", order=2, title="Test type", type=SegmentType.text)
+        segment = self.make_segment(self.l0, slug="test-type-text", order=2, title="Test type", seg_type=SegmentType.text)
         self.session.add(segment)
         self.session.commit()
         segment = datamodels.find_segment_by_slugs(self.course.slug, self.l0.slug, "test-type-text")
@@ -76,7 +76,7 @@ class TestSegments(ObjectsGenerator, unittest.TestCase):
 
     def test_add_survey_segment(self):
         segment = self.make_segment(self.l0, slug="test-type-survey",
-                                    order=2, title="Test type", type=SegmentType.survey)
+                                    order=2, title="Test type", seg_type=SegmentType.survey)
         self.session.add(segment)
         self.session.commit()
         segment = datamodels.find_segment_by_slugs(self.course.slug, self.l0.slug, "test-type-survey")

@@ -7,6 +7,7 @@ from routes.blueprint import SubdomainBlueprint
 from dataforms import AjaxCSRFTokenForm
 from charts.student_progress import get_course_progress, get_students_progress
 from charts.survey_individual_answers import get_survey_individual_responses
+from charts.survey_stats import get_survey_statistics
 from routes.utils import (
     find_segment_barrier,
     get_session_data,
@@ -19,7 +20,7 @@ from routes.decorators import enrollment_required
 blueprint = SubdomainBlueprint("course_display", __name__, template_folder="templates")
 
 
-@blueprint.route("/_segment/<segment_id>")
+@blueprint.route("/_segment/<int:segment_id>")
 def get_segment_object(segment_id):
     """ Returns a partial JSON dump of a Lesson Segment by ID. """
 
@@ -84,7 +85,7 @@ def get_segment_object(segment_id):
     return render_template("partials/course/_active_segment.html", **data)
 
 
-@blueprint.route("/_lesson_resources/<lesson_id>")
+@blueprint.route("/_lesson_resources/<int:lesson_id>")
 def lesson_resources(lesson_id):
     """ Returns a partial JSON dump of a Lesson Resource by ID. """
 
@@ -177,3 +178,18 @@ def submit_segment_survey(institute=""):
         db.rollback()
 
     return jsonify({"message": "Survey response saved"})
+
+
+@blueprint.subdomain_route("/course/survey/<int:segment_id>/stats", methods=["GET"])
+def get_survey_stats(segment_id, institute=""):
+    segment = datamodels.Segment.find_by_id(segment_id)
+
+    if not segment or segment.type != datamodels.SegmentType.survey:
+        return jsonify({"message": "No such survey."}), 400
+
+    user = get_current_user()
+    course = segment.lesson.course
+    if not user.teaches(course):
+        return jsonify({"message": "You don't have permission to view this page."}), 403
+
+    return jsonify(get_survey_statistics(segment))

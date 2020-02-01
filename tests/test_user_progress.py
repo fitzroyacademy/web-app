@@ -32,7 +32,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
                 title="Intro segment",
                 order=0,
                 slug="intro-segment",
-                type="video",
+                seg_type="video",
             )
             self.session.add(self.l0s0)
 
@@ -45,7 +45,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
                 title="Intro segment l1",
                 order=0,
                 slug="intro-segment-l1",
-                type="text",
+                seg_type="text",
             )
             self.l1s2 = self.make_segment(
                 self.l1, title="Segment l1s1", order=1, slug="segment-1"
@@ -66,7 +66,7 @@ class TestUserProgress(ObjectsGenerator, unittest.TestCase):
                 title="Intro segment l2",
                 order=0,
                 slug="intro-segment-l2",
-                type="text",
+                seg_type="text",
             )
             self.l2s2 = self.make_segment(
                 self.l2, title="Segment l2s1", order=1, slug="segment-1"

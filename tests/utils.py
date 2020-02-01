@@ -76,16 +76,19 @@ class ObjectsGenerator(object):
         url="fitzroyacademy.com/some_external_video_id",
         order=1,
         slug=None,
-        type=SegmentType.text,
+        seg_type=SegmentType.text,
         barrier=None,
         video_type=None,
+        survey_type=None
     ):
         if slug is None:
             slug = slugify(title)
         if barrier is None:
             barrier = SegmentBarrierEnum.normal
-        if type == "text":
+        if seg_type == "text":
             video_type = None
+        elif seg_type == "survey":
+            survey_type = survey_type or "emoji"
         else:
             if video_type is None:
                 video_type = VideoTypeEnum.standard
@@ -99,9 +102,10 @@ class ObjectsGenerator(object):
             _thumbnail=thumbnail,
             lesson=lesson,
             slug=slug,
-            type=type,
+            type=seg_type,
             barrier=barrier,
             video_type=video_type,
+            survey_type=survey_type
         )
         return segment
 
@@ -157,3 +161,14 @@ class ObjectsGenerator(object):
         )
         u.password = password
         return u
+
+    def set_basic_course(self):
+        self.course = self.make_standard_course(guest_access=True)
+        self.session.add(self.course)
+
+        self.user = self.makeUser(
+            email="home@teachers.com", id=1, username="the_teacher"
+        )
+        self.session.add(self.user)
+        self.session.commit()
+        self.course.add_instructor(self.user)

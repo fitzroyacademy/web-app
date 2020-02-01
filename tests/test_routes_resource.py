@@ -10,16 +10,7 @@ class TestSegmentsRoutes(ObjectsGenerator, unittest.TestCase):
     def setUp(self):
         with app.app_context():
             self.session = datamodels.get_session()
-
-            self.course = self.make_standard_course(guest_access=True)
-            self.session.add(self.course)
-
-            self.user = self.makeUser(
-                email="home@teachers.com", id=1, username="the_teacher"
-            )
-            self.session.add(self.user)
-            self.session.commit()
-            self.course.add_instructor(self.user)
+            self.set_basic_course()
 
             self.lesson1 = self.make_standard_course_lesson(
                 course=self.course, title="First lesson", order=1

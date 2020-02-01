@@ -50,7 +50,7 @@ SURVEYS_TEMPLATES = [
                 "icon_type": "css",
                 "single_word": "Meh",
                 "short_sentence": "Meh, not sure",
-                "id": "emoji_happiness_1_q_3",
+                "id": "q_3",
             },
             {
                 "icon": "fal fa-smile",
