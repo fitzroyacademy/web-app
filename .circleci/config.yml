@@ -107,8 +107,8 @@ jobs:
             source /tmp/workspace/scripts/assume-role.sh
             sudo apt-get install -y jq
             export DOCKER_IMAGE_URL=$SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
-            TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --family web-app-live --output text | sort -r | awk '{print $2}' | head -n 1)
+            TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --family web-app-live --output text --region us-east-2 | sort -r | awk '{print $2}' | head -n 1)
             NEXT_REVISION=$(echo $TASK_DEFINITION_ARN | awk 'BEGIN { FS = ":" } ; { print $NF+1 }')
-            NEXT_TASK_DEFINITION_BODY=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN | jq '.taskDefinition | del (.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities)' | sed "s@\"image\".*@\"image\": \"$DOCKER_IMAGE_URL\",@")
-            aws ecs register-task-definition --cli-input-json $NEXT_TASK_DEFINITION_BODY
+            NEXT_TASK_DEFINITION_BODY=$(aws ecs describe-task-definition --region us-east-2 --task-definition $TASK_DEFINITION_ARN | jq '.taskDefinition | del (.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities)' | sed "s@\"image\".*@\"image\": \"$DOCKER_IMAGE_URL\",@")
+            aws ecs register-task-definition --cli-input-json $NEXT_TASK_DEFINITION_BODY --region us-east-2
             aws ecs update-service --cluster web-app --service web-app-live --task-definition web-app-live:$NEXT_REVISION --region us-east-2 --force-new-deployment
