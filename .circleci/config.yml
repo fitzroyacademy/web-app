@@ -1,11 +1,17 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@3.2.0
+  slack: circleci/slack@3.4.2
 workflows:
   version: 2
   build:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
+
       - build:
           context: fitzroy-circleci
           requires:
@@ -14,6 +20,8 @@ workflows:
             branches:
               only:
                 - master
+            tags:
+              only: /.*/
 
       - approve-live-deploy:
           type: approval
@@ -21,16 +29,15 @@ workflows:
            - build
           filters:
             tags:
-              only:
-                - /v[0-9]+\.[0-9]+/
+              only: /^v[0-9]+\.[0-9]+$/
+
       - deploy-live:
           context: fitzroy-circleci
           requires:
           - approve-live-deploy
           filters:
             tags:
-              only:
-                - /v[0-9]+\.[0-9]+/
+              only: /^v[0-9]+\.[0-9]+$/
 
       - slack/approval-notification:
           message: Deploy to fitzroy.academy is awaiting approval.
@@ -38,8 +45,7 @@ workflows:
             - build
           filters:
             tags:
-              only:
-                - /v[0-9]+\.[0-9]+/
+              only: /^v[0-9]+\.[0-9]+$/
 
       # - deploy-staging:
       #   context: fitzroy-circleci
@@ -123,3 +129,5 @@ jobs:
             NEXT_TASK_DEFINITION_BODY=$(aws ecs describe-task-definition --region us-east-2 --task-definition $TASK_DEFINITION_ARN | jq '.taskDefinition | del (.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities)' | sed "s@\"image\".*@\"image\": \"$DOCKER_IMAGE_URL\",@")
             aws ecs register-task-definition --cli-input-json "$NEXT_TASK_DEFINITION_BODY" --region us-east-2 
             aws ecs update-service --cluster web-app --service web-app-live --task-definition web-app-live:$NEXT_REVISION --region us-east-2 --force-new-deployment
+      - slack/notify:
+          message: Just deployed ${CIRCLE_BRANCH} to fitzroy.academy.
