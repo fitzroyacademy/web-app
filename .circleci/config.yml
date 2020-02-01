@@ -88,17 +88,23 @@ jobs:
             docker tag $image_id $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
             $(aws ecr get-login --region us-east-2 --no-include-email)
             docker push $SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
+      - persist_to_workspace:
+          root: ~/repo/
+          paths:
+            - scripts
 
   deploy-live:
     machine:
       image: ubuntu-1604:201903-01
     working_directory: ~/repo
     steps:
+      - attach_workspace:
+          at: /tmp/workspace
       - run:
           name: Build task definition and deploy
           command: |
             set -o pipefail
-            source scripts/assume-role.sh
+            source /tmp/workspace/scripts/assume-role.sh
             sudo apt-get install -y jq
             export DOCKER_IMAGE_URL=$SANDBOX_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/fitzroy-academy/web-app:${CIRCLE_BRANCH}
             TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --family web-app-live --output text | sort -r | awk '{print $2}' | head -n 1)
