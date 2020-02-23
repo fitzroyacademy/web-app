@@ -20,12 +20,7 @@ THUMBNAIL_SIZES = {
 
 
 def upload_file_to_s3(file, bucket_name="", filename=None):
-    s3 = boto3.client(
-        "s3",
-        aws_access_key_id=current_app.config["S3_KEY"],
-        aws_secret_access_key=current_app.config["S3_SECRET"],
-        region_name="us-east-2",
-    )
+    s3 = boto3.client("s3")
 
     if not bucket_name:
         bucket_name = current_app.config["S3_BUCKET"]
