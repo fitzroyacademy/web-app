@@ -554,9 +554,6 @@ Let's mash this against an example lesson with its translations:
 		* Video: EN
 		* Transcript: EN / KH
 
-
-
-
 ---
 
 
@@ -569,4 +566,82 @@ Let's mash this against an example lesson with its translations:
 * fitzroy.design
 * fitzroy.academy
 * fitzroy.io
+
+
+# How to define future features
+
+* Brainstorm feature with everyone
+* Wireframe all the bits
+* Wireframe all the bits
+
+1. Do a blog post with screen shots
+2. Show it to `dev` to see how hard it is
+3. Change blog post until people are happy
+4. Do wireframes in XD or paper
+5. ???
+
+
+### Add Youtube as a video type
+
+* As a course editor I want to add youtube link as a video segment type
+* As a course viewer I want to watch a youtube video
+* As a analytics viewer I want to watch a youtube video
+
+Bits:
+
+* Biz logic
+* User stories
+* Brainstorm
+* Wireframe
+* Time budget
+
+
+### Day 1: Retro
+
+* What happened last sprint?
+* Check error bars for last months retro
+* Reprioritising existing features
+* Change processes?
+* Stakeholder update
+
+### Day 1.5: Ideas + snacks (together)
+
+* Debate this months work
+* Write / update blog posts for next months
+
+### Day 3: Research + rethink (small group)
+
+* Figure out hourly estimates for defined features
+* Any curly problems noted down
+* Backlog grooming
+* Tech debt
+* Cheap wireframing
+
+### Day 4: Refine the scope
+
+* Present ideas and problems (what we learned)
+* Match stories with hourly budget
+* Prioritise tasks
+* Put all the tickets in
+* Make tickets + assignemnt make sense
+
+### More stuff
+
+* Updates from the boss on what else is going on
+
+
+### Will, think about:
+
+* What stuff do I want the app to do before this month?
+* Testing: Do one day, or 2x .5 days
+* Role based testing for a few days?
+* See how much is left to burnt?
+* Tech debt?
+
+
+
+
+
+
+
 
