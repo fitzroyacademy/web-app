@@ -1,15 +1,14 @@
-
+{% if active_segment.is_wistia %}
 <script src="https://fast.wistia.com/embed/medias/{{ active_segment.external_id }}.jsonp" async></script>
 <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-
 <div class="wistia_embed wistia_async_{{ active_segment.external_id }} videoFoam=true">
   <div class="wistia_swatch">
     <img src="https://fast.wistia.com/embed/medias/{{ active_segment.external_id }}/swatch" alt="vid" onload="this.parentNode.style.opacity=1;" />
   </div>
 </div>
+{% elif active_segment.is_youtube %}
 
-<script>
-window._wq = window._wq || [];
-_wq.push({id: "_all", onReady: (v) => fitzVideoReady(v) });
-_wq.push({id: "{{ active_segment.external_id }}"});
-</script>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ active_segment.video_id }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% else %}
+No video to play. {{ active_segment.is_youtube }}
+{% endif %}

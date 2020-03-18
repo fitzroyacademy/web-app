@@ -721,8 +721,12 @@ $( document ).ready(function() {
         lockedPane.style.display = "none";
         activatePane(data['segment_type'] + "_content", "segment_display_content");
         if (data['segment_type'] === 'video') {
-          _fitz_video.replaceWith(data.active_segment.external_id);
-          _fitz_video.play();
+          try {
+            _fitz_video.replaceWith(data.active_segment.external_id);
+            _fitz_video.play();
+          } catch (e) {
+            console.log('chomp')
+          }
         } else if (data['segment_type'] === 'text') {
           dataContainer = document.querySelector('[data-fit-pane-detail="text_content"]');
           dataContainer.innerHTML = "";

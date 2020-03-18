@@ -246,6 +246,22 @@ class Segment(BarrierSegment, Survey, OrderedBase):
     def last_child(self, child):
         return None
 
+    @property
+    def is_wistia(self):
+        return 'wistia' in self.url
+
+    @property
+    def is_youtube(self):
+        return 'youtube' in self.url
+
+    @property
+    def video_id(self):
+        if self.is_youtube:
+            return self.url.split('?v=')[1]
+        elif self.is_wistia:
+            return self.url.split('medias/')[1]
+    
+
 
 class SegmentSurveyResponse(SurveyResponse):
     __tablename__ = "lesson_segments_survey_response"
