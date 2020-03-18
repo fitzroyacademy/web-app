@@ -2,7 +2,11 @@
 
   {% include "partials/course/lesson_detail/course_list_tab.html" %}
   {% include "partials/course/lesson_detail/resources_tab.html" %}
-  {% include "partials/course/lesson_detail/teachers_tab.html" %}
+  
+
+  <!-- not showing teacher tab for now!  -->
+  <!-- {% include "partials/course/lesson_detail/teachers_tab.html" %} -->
+	
 
   {% if current_user and current_user.teaches(course) %}
     {% include "partials/course/lesson_detail/students_progress_chart_tab.html" %}

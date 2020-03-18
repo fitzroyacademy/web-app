@@ -2446,6 +2446,7 @@ header .fit_btn_saver .saved{color: $text_light;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // breezy mode for lessons
+
 @media (min-width: 768px) {
 	.fit_player aside .fits{padding: 1rem;}
 	.fit_player aside .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
@@ -2557,6 +2558,11 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 @media (min-width: $container_wide) {
 	html.fit_breezy_player main.fit_player{margin: 3rem auto 1rem;}
 }
+
+
+// turning the reveals into tabs for the player
+
+html.fit_tabby_player .fit_player {}
 
 
 // locked survey
