@@ -41,8 +41,8 @@ $( document ).ready(function() {
     }
   });
 
+  // ------------------------ 
   // fail list sorter:
-
   $('[data-fit_fail_list]').click(function(e) {
     
     let set = $(this).data('fit_fail_list');
@@ -121,11 +121,13 @@ $( document ).ready(function() {
      }
   });
 
-  // Will does a hacky "last hit" thing
-  $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
+
+  // ------------------------------------------------
+  // Will does a hacky "last hit" thing for the tabs in the course player
+  $('html.fit_breezy_player .fit_player aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
     // remove the active classes
-    $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').removeClass('active_latest');
-    $('.fit_player.breezy aside > .fits > .fit_body.collapse').removeClass('active_latest');
+    $('html.fit_breezy_player .fit_player aside > .fits > .fit_btn[data-toggle="collapse"]').removeClass('active_latest');
+    $('html.fit_breezy_player .fit_player aside > .fits > .fit_body.collapse').removeClass('active_latest');
     
     // add just one
     $(this).addClass('active_latest');
@@ -133,7 +135,7 @@ $( document ).ready(function() {
   });
 
   // get first valid one and show it
-  let first_active_latest = $('.fit_player.breezy aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
+  let first_active_latest = $('html.fit_breezy_player .fit_player aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
   $(first_active_latest).addClass('active_latest');
   $($(first_active_latest).attr('href')).addClass('active_latest');
 

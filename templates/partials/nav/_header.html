@@ -144,13 +144,13 @@
             </span>
           </a>
 
-        {% else %}
+        {% elif current_section != 'login' %}
 
           <a href="{{ url_for('user.login') }}" class="fit_btn login" data-fit-userpanel>
-            <span class="fit_txt">Sign up</span>
+            <span class="fit_txt">Log in</span>
             <i class="fal fa-user"></i>
             <i class="fal fa-chevron-right"></i>
-          </a>
+          </a>         
 
         {% endif %}
 
@@ -172,7 +172,7 @@
 
   {% include 'partials/nav/_sidepanel_user.html' %}
 
-{% else %}
+{% elif current_section != 'login' %}
 
   {% include 'partials/nav/_sidepanel_login.html' %}
 

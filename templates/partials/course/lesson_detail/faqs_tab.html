@@ -1,0 +1,20 @@
+<a class="fit_btn collapsed" data-toggle="collapse" href="#fit_lesson_faqs" role="button" aria-expanded="fitse"
+   aria-controls="fit_lesson_faqs">
+    <i class="fal fa-question-circle"></i>
+    <span class="fit_txt">FAQs</span>
+    <i class="fas fa-chevron-down"></i>
+</a>
+
+<div class="fit_body collapse" id="fit_lesson_faqs">
+    {% for question in lesson.questions %}
+        <div class="fit_body_content">
+            <div class="fit_btn">
+                <span class="fit_pic circle"><i class="fas fa-question-circle"></i></span>
+                <span class="fit_txt">
+            {{ question.question }}
+            <small>{{ question.answer }}</small>
+          </span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
