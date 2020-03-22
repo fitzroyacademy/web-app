@@ -1,17 +1,43 @@
-<div class="fit_btn" id="item_{{ segment.id }}"
+<div class="fit_btn segment-type-{{ segment.type.name }}" id="item_{{ segment.id }}"
      data-list-el-id="{{ segment.id }}"
      data-segment-el-id-{{ segment.id }}>
-    <div class="fit_pic vid">
-        <img src="{{ segment.thumbnail_url }}" alt="course">
-    </div>
+
+    {% if segment.type.name == 'video' %}
+      <div class="fit_pic vid">
+          <img src="{{ segment.thumbnail_url }}" alt="course">
+      </div>
+    {% elif segment.type.name == 'text' %}
+      <i class="fas fa-align-left"></i>
+    {% elif segment.type.name == 'survey' %}
+      <i class="fas fa-comment-smile"></i>
+    {% endif %}
+    
+<!-- 
+    Removed this from <a class="fit_txt" and added the stuff from the edit dropdown, for some reason it works?
+
+    data-toggle="modal"
+    data-target="#fit_modal_add_{{ segment.type.name }}_segment"
+    data-fit-segment-id="{{ segment.id }}"
+
+ -->
+
+
     <a class="fit_txt"
-       data-toggle="modal"
-       data-target="#fit_modal_add_{{ segment.type.name }}_segment"
+       data-fit-edit-segment-action
+       data-fit-segment-type="{{ segment.type.name }}"
        data-fit-segment-id="{{ segment.id }}"
-       href="#">{{ segment.title }}</a>
+       href="#"
+
+       href="#">
+    {{ segment.title }}
+    
+    </a>
 
     <div class="sub buttonset">
-        <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>
+
+        {% if segment.type.name == 'video' %}
+          <div class="btn btn-text subtle">{{ segment.duration_seconds|hhmmss }}</div>
+        {% endif %}
 
         <div class="dropdown">
             <button href="#"
@@ -24,19 +50,22 @@
                 <i class="fal fa-ellipsis-v"></i>
             </button>
 
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_12345" style="z-index: 1000">
+            <div class="dropdown-menu dropdown-menu-right" style="z-index: 1000">
                 <a class="dropdown-item"
                    data-fit-edit-segment-action
                    data-fit-segment-type="{{ segment.type.name }}"
                    data-fit-segment-id="{{ segment.id }}"
-                   href="#">
+                   href="#"
+                >
                     <i class="fal fa-edit"></i> Edit</a>
                 <a class="dropdown-item"
                    href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/delete"
-                   data-toggle="modal" data-target="#fit_modal_delete">
+                   data-toggle="modal" data-target="#fit_modal_delete"
+                >
                     <i class="fal fa-trash"></i> Delete</a>
                 <a class="dropdown-item"
-                   href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/copy">
+                   href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{{ segment.id }}/copy"
+                >
                     <i class="fal fa-copy"></i> Duplicate</a>
             </div>
         </div>

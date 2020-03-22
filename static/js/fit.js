@@ -243,10 +243,23 @@ $( document ).ready(function() {
     });
   }
 
-  $('.modal').on('shown.bs.modal', function(index, el) {
+  // this happens literally any time any modal is finished buliding and shown
+
+  $(document).on('shown.bs.modal', '.modal', function (e) {
     fancyplace_reset();
   });
   fancyplace_reset();
+
+  // weird RHS modal fun
+  $(document).on('show.bs.modal', '.fit_modal_rhs', function (e) {
+    $('body').addClass('fit_rhs_modal_active');
+  });
+
+  $(document).on('hide.bs.modal', '.fit_modal_rhs', function (e) {
+    $('body').removeClass('fit_rhs_modal_active');
+  });
+  
+  
 
 
 
@@ -1072,7 +1085,7 @@ $( document ).ready(function() {
           if (segmentId) {
             addSegmentModalContent(modalObj[0], courseSlug, lessonId, segmentId);
           }
-          modalObj.modal('show')
+          modalObj.modal('show');
         } else {
           showAlertSnackbar("Something went wrong");
         }
@@ -1141,7 +1154,7 @@ $( document ).ready(function() {
     let modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
     if (modalObj.length > 0) {
       addSegmentModalContent(modalObj[0], courseSlug, lessonId, segmentId);
-      modalObj.modal('show')
+      modalObj.modal('show');
     } else {
       getModalSegment(courseSlug, lessonId, segmentType, segmentId);
     }
@@ -1168,7 +1181,7 @@ $( document ).ready(function() {
           modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
         }
         modalObj.modal('show');
-        modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
+        modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = "";
       } else {
         getModalSegment(courseSlug, lessonId, segmentType)
       }

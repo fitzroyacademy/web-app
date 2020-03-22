@@ -1,7 +1,7 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_survey_segment"
+<div class="modal fit_modal_rhs fade" tabindex="-1" role="dialog" id="fit_modal_add_survey_segment"
      data-fit-add-edit-segment-modal data-fit-add-survey-segment-modal>
   <form id="survey-segment" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/{% if segment %}{{ segment.id }}/edit{% else %}add{% endif %}/text"
-        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        class="modal-dialog"
         method="POST"
         data-fit-add-edit-segment-form
         data-fit-course-slug="{{ course.slug }}"
@@ -18,18 +18,18 @@
         </button>
       </div>
       <div class="modal-body">
-          <div class="fit_fancyplace">
-              <label for="segment_name">Question</label>
-              <input type="text" class="form-control" name="segment_name"
-                     value="" id="segment_name"
-                     placeholder="E.g. How are you going with the course so far?"
-                     required data-fit-fancyplace>
-          </div>
+        <div class="fit_fancyplace">
+          <label for="segment_name">Question</label>
+          <input type="text" class="form-control" name="segment_name"
+                 value="" id="segment_name"
+                 placeholder="E.g. How are you going with the course so far?"
+                 required data-fit-fancyplace>
+        </div>
 
-          <h3>Type:</h3>
-          {{ type_choices_html|safe }}
+        <h4>Type:</h4>
+        {{ type_choices_html|safe }}
 
-          <hr>
+        <hr>
 
         {% for survey_html in rendered_survey_types %}
             {{ survey_html|safe }}
@@ -37,13 +37,13 @@
 
         <hr>
 
-        <h3>Permissions:</h3>
+        <h4>Permissions:</h4>
         <div class="form-group fit_radio_icons" data-fit-radio-icons="">
 
           <div class="form-check">
             <input type="radio" class="form-check-input" checked="checked" value="normal" id="normal" name="permissions">
             <label class="form-check-label" for="normal">
-              <i class="fal fa-circle" aria-hidden="true"></i> Normal
+              <i class="fal fa-circle" aria-hidden="true"></i> Skippable
             </label>
           </div>
 
@@ -51,7 +51,7 @@
             <input type="radio" class="form-check-input" id="barrier" value="barrier" name="permissions">
             <label class="form-check-label" for="barrier">
               <i class="fal fa-lock" aria-hidden="true"></i> Barrier
-              <small class="form-text text-muted">Students must complete this, and all segments prior to this one to progress.</small>
+              <small class="form-text text-muted">Students must complete this, and all segments prior to this one.</small>
             </label>
           </div>
 
@@ -59,7 +59,7 @@
             <input type="radio" class="form-check-input" id="hidden" value="hidden" name="permissions">
             <label class="form-check-label" for="hidden">
               <i class="fal fa-eye" aria-hidden="true"></i> Hidden
-              <small class="form-text text-muted">Hidden from students. Use this to temporarily disable segments.</small>
+              <small class="form-text text-muted">Hidden from students.</small>
             </label>
           </div>
         </div>
@@ -67,9 +67,9 @@
       </div>
       <div class="modal-footer">
         <button type="submit"
-                name="intro_lesson"
-                class="btn btn-primary"
-                data-fit-segment-add-edit-submit
+          name="intro_lesson"
+          class="btn btn-primary"
+          data-fit-segment-add-edit-submit
         >Save changes</button>
       </div>
     </div>

@@ -1,13 +1,13 @@
 <div class="{% if survey.default %}active{% endif %}" data-fit-pane-type="survey_type" data-fit-pane-detail="{{ survey.survey_id }}">
 
-    <h3>{{ survey.survey_type_name }}:</h3>
+    <!-- <h3>{{ survey.survey_type_name }}:</h3> -->
 
     <table class="table fit_label_table">
         <thead>
         <tr>
             <th>&nbsp;</th>
-            <th>Single word. <small>Under the icon.</small></th>
-            <th>Short sentence. <small>In the button text.</small></th>
+            <th>Word.</th>
+            <th>Sentence.</th>
         </tr>
         </thead>
         <tbody>
@@ -29,26 +29,25 @@
         </tbody>
     </table>
 
-    <div class="form-row">
-        <div class="col">
-            <label>Require clarification (free text box):</label>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="checkbox" {% if survey.free_text_required %}checked{% endif %} name="free_text_require_{{ survey.survey_id }}">
-                    </div>
+    <div class="form-group">
+
+        <label>Require text:</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input type="checkbox" {% if survey.free_text_required %}checked{% endif %} name="free_text_require_{{ survey.survey_id }}">
                 </div>
-                <input type="text" class="form-control" name="free_text_entry_{{ survey.survey_id }}"
-                       placeholder="Question, e.g. Why do you feel that way?" value="{{ survey.free_text_entry }}">
             </div>
+            <input type="text" class="form-control" name="free_text_entry_{{ survey.survey_id }}"
+                   placeholder="Question, e.g. Why do you feel that way?" value="{{ survey.free_text_entry }}">
         </div>
-        <div class="col">
-            <label for="minimum_length_{{ survey.survey_id }}">Minimum response length (characters)</label>
-            <input class="form-control" name="free_text_minlength_{{ survey.survey_id }}"
-                   placeholder="E.g. 100" value="{{ survey.free_text_minlength }}"
-                   id="minimum_length_{{ survey.survey_id }}" step=1 type="number"
-            >
-        </div>
+    </div>
+    <div class="form-group">
+        <label for="minimum_length_{{ survey.survey_id }}">Minimum characters</label>
+        <input class="form-control" name="free_text_minlength_{{ survey.survey_id }}"
+               placeholder="E.g. 100" value="{{ survey.free_text_minlength }}"
+               id="minimum_length_{{ survey.survey_id }}" step=1 type="number"
+        >
     </div>
 
 </div>

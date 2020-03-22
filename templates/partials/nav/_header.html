@@ -5,7 +5,7 @@
     <!-- Left hand side logic -->
     <!-- ---------------------------------------------------------------- -->
 
-    {% if url_is('course.view') %}
+    {% if url_is('course_display.view') %}
       <!-- this means course intro -->
       
       <a href="/" class="fit_btn"> 
@@ -123,7 +123,7 @@
     <!-- Right hand side logic -->
     <!-- ---------------------------------------------------------------- -->
 
-    {% if url_is('course.view', 'lesson.view', 'segment.view', 'course.retrieve', 'lesson.retrieve', 'segment.add_edit_segment') %}
+    {% if url_is('course_display.view', 'lesson.view', 'segment.view', 'course.retrieve', 'lesson.retrieve', 'segment.add_edit_segment') %}
 
       <div class="right">
 
@@ -144,7 +144,7 @@
             </span>
           </a>
 
-        {% elif current_section != 'login' %}
+        {% else %}
 
           <a href="{{ url_for('user.login') }}" class="fit_btn login" data-fit-userpanel>
             <span class="fit_txt">Log in</span>
@@ -172,7 +172,7 @@
 
   {% include 'partials/nav/_sidepanel_user.html' %}
 
-{% elif current_section != 'login' %}
+{% else %}
 
   {% include 'partials/nav/_sidepanel_login.html' %}
 
