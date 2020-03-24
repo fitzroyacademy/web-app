@@ -293,7 +293,7 @@ body > .fit_player nav,
 }
 
 // this is the main bit that holds the other bits, wowee
-main{display:flex; height:100%; align-items:stretch;}
+main{display:flex; height:100%; align-items:stretch; padding-bottom: 5rem;}
 
 
 article{position: static;}
@@ -340,6 +340,7 @@ html.fit_minleft{}
 
 .input-group-text{background: #fff;}
 
+h4{font-weight: 900; font-size: 1.1rem; color:$brand; margin:0; padding:1.5rem 0 1rem;}
 
 
 
@@ -483,6 +484,23 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn .sub.buttonset .btn{padding: .25rem .5rem; margin: 0 .25rem; min-width: 2.5rem; line-height: 1.5rem}
 
 .fit_btn .sub .dropdown{display: inline-block;}
+
+// showing the drag n drop just on hover
+.fit_btn .sub.buttonset .btn[data-fit-dragndrop]{position: absolute; top:.5rem; left: .5rem; background: #fff; opacity: 0; color: $text_light;}
+.fit_btn:hover .sub.buttonset .btn[data-fit-dragndrop]{opacity: 1}
+.fit_btn .sub.buttonset .btn[data-fit-dragndrop]:hover{color: $blue;}
+
+// make it taller for resources
+.fit_btn.resource_link .sub.buttonset .btn[data-fit-dragndrop]{padding: .75rem .5rem;}
+
+// and showing the time only on hover
+.fit_btn .sub.buttonset .subtle{opacity: 0;}
+.fit_btn:hover .sub.buttonset .subtle{opacity: 1;}
+
+// making the sub buttons simpler with no background
+.fit_btn .sub.buttonset .btn{background: #fff;}
+.fit_btn .sub.buttonset .btn:hover{color:$blue;}
+
 // not needed without dropdown-toggle on elem --> .fit_btn .sub .dropdown .dropdown-toggle::after{display: none;}
 .dropdown .dropdown-item i{margin-right: .25rem; width: 1.2rem}
 
@@ -500,6 +518,15 @@ a.fit_btn:hover{color:$blue;}
 
 .fit_btn.outline:before{top:5px; left: 5px; right: 5px; bottom: 5px; border:1px solid $blue;}
 .fit_btn.secondary.outline:before{border-color: $border_medium;}
+
+
+// -----------------------------------------------------------------------------------------
+// sortables
+[data-fit-sortable-list] > .fit_btn{background: #fff;}
+
+.sortable-ghost{background: $bg;}
+.sortable-ghost > *{opacity: 0.5;}
+
 
 
 // wtf is happening here with white space and height aRRGHGHgh?!
@@ -594,6 +621,17 @@ header .fit_btn:hover > .fit_txt:after,
 
 
 
+// adding to a list like lessons or resources
+.fit_btn_add{background: #fff;}
+.fit_btn_add .fa-plus{position: relative;}
+.fit_btn_add .fa-plus:after{position: absolute; content: ''; display: block; width: calc(2rem - 1px); height: calc(2rem - 1px); border: 1px solid transparent; position: absolute; top:50%; left: 50%; margin: -1rem 0 0 -1rem; border-radius: $border_rad_sm;}
+
+.fit_btn_add:hover{background: #fff}
+.fit_btn_add:hover .fa-plus:after{border-color: $blue;}
+
+.fit_btn_add:last-child{border-radius: 0 0 $border_rad_sm $border_rad_sm;}
+
+
 // the short text explainer
 .fit_btn.resource_link .explain{padding: 0 1rem 0 4rem; font-size: 0.8rem; height: 2rem; overflow: hidden; color:$text_light; position: relative; cursor: s-resize; width: 100%;}
 .fit_btn.resource_link .explain:after{background: linear-gradient(0deg, #fff, rgba(255,255,255,0)); display: block; position: absolute; content: ''; width: 100%; bottom:0; left: 0; height: 2rem;}
@@ -626,11 +664,19 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn.case > [class*="fa-"]:before{content: "\f0b1";}
 .fit_btn.bonus > [class*="fa-"]:before{content: "\f005";}
 
-// but then there's 'state':
-.fit_btn.locked > [class*="fa-"]:before{content: "\f023";}
-.fit_btn.complete > [class*="fa-"]:before{content: "\f00c";}
-.fit_btn.touched > [class*="fa-"]:before{content: "\f5d0";}
+// text:
+.fit_btn.text > [class*="fa-"]:before{content: "\f036";}
+// and surveys
+.fit_btn.survey > [class*="fa-"]:before{content: "\f075";}
 
+// but then there's 'state':
+// .fit_btn.locked > [class*="fa-"]:before{content: "\f023";}
+// .fit_btn.complete > [class*="fa-"]:before{content: "\f00c";}
+// .fit_btn.touched > [class*="fa-"]:before{content: "\f5d0";}
+
+
+// others for scrap
+// question mark in square = \f2fd
 
 // and some colours and things for status:
 .fit_btn.active > i{color: $blue;}
@@ -813,12 +859,16 @@ header .fit_btn:first-child{margin-left: -1rem;}
 
 .fit_lesson_manage .fit_btn.subtitle:hover{background: none;}
 
+// the icons for text and comments and whatnot
+.fit_btn > i.fa-align-left{color:$new_purple}
+.fit_btn > i.fa-comment-smile{color:$watermelon}
+
 // -----------------------------------------------------------------------------------------
 /* video */
 
 .fit_vidya{position: relative; background: $blue;}
 .fit_vidya:after{padding-top: $ratio_169; display: block; content: '';}
-.fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0; border-radius: $border_rad_xl;}
+.fit_vidya .placeholder{width: 100%; position: absolute; top:0; left: 0; border-radius: $border_rad_sm;}
 
 .fit_subvidya{padding:1rem; position: relative;}
 @media (min-width: 768px) {
@@ -1459,8 +1509,34 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 .modal-title{font-weight: 900; font-size: 1.75rem; color:$text;}
 
+.modal-backdrop{background: none !important;}
+
+//weird right hand side modal mode
+@media (min-width: 768px) {
+
+	body.fit_rhs_modal_active{overflow:auto;}
+	
+	.fit_modal_rhs{ position: absolute; background: transparent;} 
+	// ^-- give this a background?
+
+	.fit_modal_rhs .modal-dialog{max-width: $container_wide;}
+	.fit_modal_rhs .modal-content{margin-left: 50%; box-shadow: none; margin-top: 10rem; width: auto;}
+
+	// fullwidth for text edit
+	// margin-top of -1.75rem resets
+	.fit_modal_rhs.fullwidth {background: #fff;}
+	.fit_modal_rhs.fullwidth .modal-content{margin:5rem -1rem 0; padding: 0;}
+
+	body.fit_rhs_modal_active .fit_coledit_lhs{}
+	body.fit_rhs_modal_active .fit_coledit_rhs{opacity: 0;}
+}
 
 
+// the image when it's being edited
+.fit_lessons .fit_vidya.fit_cropper,
+.fit_lessons .fit_vidya .placeholder{border-radius: $border_rad_sm; margin:0;}
+
+.fit_lessons .fit_vidya.fit_cropper{margin: 1rem;}
 
 // ------------------------------------------------------------------------------------
 // Iconselect: Sets of icons that can be selected!
@@ -1545,7 +1621,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 // for creating new things, higher amount of text
 
 .fit_iconselects.high_sub .fit_iconselect,
-.fit_iconselects.high_sub .fit_iconselect:hover{height: 7rem; width: 50%; margin-bottom: 5rem; border:none; text-decoration: none;}
+.fit_iconselects.high_sub .fit_iconselect:hover{height: 5rem; width: 50%; margin-bottom: 5rem; border:none; text-decoration: none;}
 .fit_iconselects.high_sub .fit_iconselect .sub h4{display: block; font-size:1.1rem; font-weight: bold; color:$brand;}
 
 .fit_iconselects.high_sub .watermelon i{color:$watermelon;}
@@ -2053,6 +2129,19 @@ $square_size: 22rem;
 .fit_form_code.fit_fancyplace.active .form-control:empty:-ms-input-placeholder { color:$watermelon_light; } /* IE 10+ */
 
 
+// Fancy big h2
+.fit_fancyplace.fancyh2{margin-left: -0.75rem; margin-bottom: 0;}
+.fit_fancyplace.fancyh2:not(.active) label,
+.fit_fancyplace.fancyh2 .form-control{border:none; font-size: 2rem; font-weight: 900; color:$brand; padding: 1rem}
+.fit_fancyplace.fancyh2 .form-control:focus{outline:none !important; box-shadow: none !important;}
+.fit_fancyplace.fancyh2.labelled label{display: none;}
+
+.fit_fancyplace.fancyh2 i{color:$text_light; position: absolute; top:50%; right: 0; margin: -.5rem 0 0 -1rem; font-size: 1rem;}
+@media (min-width: 768px){
+	.fit_fancyplace.fancyh2 i{right:auto; left: 0;}
+}
+
+
 
 // let's do the weird h2 size thing
 form .form-control-lg{}
@@ -2381,17 +2470,38 @@ header .fit_btn_saver .saved{color: $text_light;}
 // ------------------------------------------------------------------------------------
 // Edit FAQs
 
-.fit_faq_edits{}
-.fit_faq_edit{}
+.fit_faq_edits{padding-left: 0;}
 
-.fit_faq_edit{border-bottom: 1px solid $border_light; margin: -.5rem -.5rem 1rem; padding: .5rem; position: relative;}
-// removed coz we have the adder below now!
-.fit_faq_edit:last-child{border-bottom: none;}
+.fit_faq_edit{position: relative; padding: 1rem 4.5rem 1rem 1rem; margin: -1rem; border-radius: $border_rad_md;}
 
-.fit_faq_edit .fit_faq_drag{position: absolute; top:.5rem; bottom: 0; width: 2.25rem; left: -2.75rem; color:$text_light; padding: .4rem 0;}
-.fit_faq_edit .fit_faq_drag:hover{color:$text;background: $bg_light;}
 
-.fit_faq_edit .btn-remove:hover{color:$red; background: #fff;}
+.fit_faq_edit .form-control{border-left: none;}
+.fit_faq_edit .input-group-text{align-items:start; width: 2.5rem; }
+.fit_faq_edit .input-group-text i{padding-top: .35rem; color: $text_light;}
+
+.fit_faq_edit .input-group.primo .input-group-text{border-radius: $border_rad_sm 0 0 0;}
+.fit_faq_edit .input-group.primo .form-control{border-radius: 0 $border_rad_sm 0 0;}
+
+.fit_faq_edit .input-group.secondi{}
+.fit_faq_edit .input-group.secondi .input-group-text{border-radius: 0 0 0 $border_rad_sm; border-top:none}
+.fit_faq_edit .input-group.secondi textarea.form-control{border-radius: 0 0 $border_rad_sm 0; border-top:none; min-height: 6.2rem;}
+
+
+
+// controls
+.fit_faq_controls{position: absolute; top:1rem; right:1rem; bottom:1rem; padding: .5rem; width: 3.5rem; text-align: center; background: $bg_light; border-radius: 0 $border_rad_md $border_rad_md 0;}
+.fit_faq_drag{padding:.5rem; color: $text_light;}
+.fit_faq_drag:hover{color:$brand;}
+.fit_faq_edit .btn-remove:hover{color:$red; background: #fff; border-color: $red;}
+.fit_faq_controls .btn-outline-primary{border-color: transparent; color:$text_light;}
+.fit_faq_controls .btn-outline-primary:hover{color:#fff;}
+
+// bordered mode for faq controls
+.fit_faq_controls{background: #fff; border:1px solid $border_light; width: 3.6rem;}
+
+// last one is the adder
+.fit_faq_add{border: none; margin: 1rem -1rem -1rem -1rem; padding: 1rem; border-radius: 0 0 $border_rad_md $border_rad_md;}
+.fit_faq_add .deserto{margin: 1rem 0 0;}
 
 .fit_pane.white .fit_faq_edit{background: #fff;}
 
@@ -2413,7 +2523,7 @@ header .fit_btn_saver .saved{color: $text_light;}
 .fit_radio_icons label .form-text{margin-top: 0; color:$text_lighter !important;}
 
 .fit_radio_icons input:checked + label{color: $brand;}
-.fit_radio_icons input:checked + label .form-text{color: $text  !important;}
+// .fit_radio_icons input:checked + label .form-text{color: $blue  !important;}
 
 // some colours
 .fit_radio_icons input:checked + label.cyan{color: $new_cyan;}
@@ -2426,9 +2536,6 @@ header .fit_btn_saver .saved{color: $text_light;}
 .fit_radio_icons input:checked + label.blue{color: $new_blue;}
 .fit_radio_icons input:checked + label.watermelon{color: $new_watermelon;}
 
-
-// last one is the adder
-.fit_faq_add{border: none; margin: 0rem -2rem -1.5rem -4.2rem; padding: 1rem 2rem 1rem 4.2rem; border-radius: 0 0 $border_rad_md $border_rad_md; border-top:1px solid $border_light; background: $bg_dark;}
 
 
 // ------------------------------------------------------------------------------------
@@ -2446,11 +2553,7 @@ header .fit_btn_saver .saved{color: $text_light;}
 
 // ----------------------------------------------------------------------------------------------------------------
 // breezy mode for lessons
-@media (min-width: 768px) {
-	.fit_player aside .fits{padding: 1rem;}
-	.fit_player aside .fit_btn[data-toggle=collapse]:first-child{border-top:none;}
-	.fit_player aside .fits{border-bottom: 1px solid $border_light;}
-}
+
 
 
 html:not(.fit_breezy_player) header .container{max-width: none; padding: 0 1rem;}
@@ -2461,11 +2564,17 @@ html.fit_breezy_player main.fit_player article{overscroll-behavior:auto; overflo
 html.fit_breezy_player main.fit_player aside .fits
 html.fit_dispref-breezy .fit_player aside .fits{}
 
-html.fit_breezy_player main.fit_player aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
-html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
-html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] > *{}
-html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
-html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+// turning dropdown toggle things into tabs
+@media (min-width: 768px) {
+	.fit_player aside{border-top:1px solid $border_light; margin-top: 2rem;}
+	.fit_player aside .fits{border-bottom: none;}
+	.fit_player aside .fits .fit_body.show{border-bottom: 1px solid $border_light;}
+	html.fit_breezy_player main.fit_player aside .fits {padding: 1rem; display: flex; flex-wrap:wrap; justify-content: flex-start;  align-items :flex-start;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{border-top-color:transparent;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] > *{}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fit_txt{padding-right: 1.5rem;}
+	html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"] .fa-chevron-down{display: none;}
+}
 
 // on / off
 html.fit_breezy_player main.fit_player aside .fits > .fit_btn[data-toggle="collapse"]{color:$blue;}
@@ -2478,7 +2587,7 @@ html.fit_breezy_player main.fit_player aside .fits > .fit_btn.manage{order:3;}
 
 html.fit_breezy_player main.fit_player aside .fits > .fit_body{order:10; border-top:1px solid $border_light; width: 100%}
 
-html.course footer{display: none;}
+html.section-course footer{display: none;}
 
 
 html.fit_breezy_player main.fit_player{position: relative; max-width: $container_wide; top:auto; left: auto; bottom: auto; padding: 0;}
@@ -2557,6 +2666,11 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 @media (min-width: $container_wide) {
 	html.fit_breezy_player main.fit_player{margin: 3rem auto 1rem;}
 }
+
+
+// turning the reveals into tabs for the player
+
+html.fit_tabby_player .fit_player {}
 
 
 // locked survey
@@ -2764,6 +2878,11 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 // ------------------------------------------------------------------------------------
 // Medium wysiwyg editor
 
+.fit_further_reading{background: #fff; padding: 0rem 1rem 1rem; border-radius: $border_rad_sm;}
+.fit_further_reading .fit_wysiwyg{min-height: 3rem;}
+
+.fit_further_reading [data-fit-wysiwyg-preview]{border: 1px solid $border_light; background: #fff; border-radius: $border_rad_lg; cursor: text; padding: 1rem;}
+
 .fit_wysiwyg{position: relative;}
 .fit_wysiwyg.further{margin-top: 2rem;}
 
@@ -2777,7 +2896,6 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 .medium-toolbar-arrow-under:after{}
 
 .fit_wysiwyg blockquote{display: block; font-size: 1.3rem; border-left: 3px solid $border_light; padding: .25rem .5rem .25rem calc(1rem - 3px); margin-left: -1rem;}
-
 
 
 .medium-editor-toolbar,
@@ -2799,6 +2917,10 @@ html.fit_breezy_player main.fit_player nav{display: none;}
 	z-index: 6000!important;
 }
 
+
+// full height modal for wysiwyg edita:
+.modal-wysiwyg{height: 100%; max-width: $container_wide;}
+.modal-wysiwyg .modal-content{}
 
 
 

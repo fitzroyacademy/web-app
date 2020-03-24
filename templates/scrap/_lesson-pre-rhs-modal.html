@@ -18,19 +18,18 @@
 
     <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit" method="POST" enctype="multipart/form-data" data-fit-wysiwyg>
 
-      <div class="fit_fancyplace fancyh2">
+      <div class="fit_fancyplace">
         <label for="course_name">Lesson name</label>
-        <input type="text" class="form-control" name="title" value="{{ form.title.data }}" id="course_name" placeholder="E.g. Lesson name" required data-fit-fancyplace data-fit-lesson-edit>
-        <i class="fal fa-edit"></i>
+        <input type="text" class="form-control form-control-h2" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required data-fit-fancyplace data-fit-lesson-edit>
       </div>
 
-      <!-- <div class="fit_fancyplace">
+      <div class="fit_fancyplace">
         <label for="lesson_description">One-sentence description</label>
         <input type="text" value="{{ form.description.data }}" class="form-control" id="lesson_description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required data-fit-fancyplace data-fit-lesson-edit>
-      </div> -->
+      </div>
 
       <div class="row">
-        <div class="col-md-6 fit_coledit_lhs">
+        <div class="col-md-6">
           <h3>
             <span class="txt">The lesson.</span>
             <small class="subtxt"><span class="fas fa-clock"></span>
@@ -38,14 +37,12 @@
             </small>
           </h3>
           <div class="fit_paneless">
-              
+              {% with cover_image=lesson.get_cover if lesson else "", cover_action="/course/"+course.slug+"/lesson/" + lesson.id|string + "/edit" %}
+              {% include "partials/course/_cover_cropper.html" %}
+              {% endwith %}
           </div>
 
           <div class="fit_body fit_lessons">
-
-            {% with cover_image=lesson.get_cover if lesson else "", cover_action="/course/"+course.slug+"/lesson/" + lesson.id|string + "/edit" %}
-              {% include "partials/course/_cover_cropper.html" %}
-            {% endwith %}
 
               {% if not introduction %}
               <a class="fit_btn fit_btn_add add-segment"
@@ -87,7 +84,7 @@
 
         </div><!-- col -->
 
-        <div class="col-md-6 fit_coledit_rhs">
+        <div class="col-md-6">
 
           <h3>
             <span class="txt">Resources.</span>
@@ -102,15 +99,20 @@
                 {% endfor %}
             </div>
 
-            <a class="fit_btn btn-text fit_btn_add" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" data-toggle="modal" data-target="#fit_modal_add_resource_link">
+            <a class="fit_btn fit_btn_add" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" data-toggle="modal" data-target="#fit_modal_add_resource_link">
               <i class="fas fa-plus"></i>
               <span class="fit_txt">Add a resource</span>
             </a>
-            <form class="fit_further_reading">
-              <h4>Further reading</h4>
-              {{ wysiwyg('further_reading', lesson.further_reading) }}
-            </form>            
           </div><!-- pane -->
+
+          <div class="form-group">
+            <form>
+                <h4>Further reading (appears under resource links)</h4>
+                <div style="border:1px solid #ccc; padding:1rem;">
+                {{ wysiwyg('further_reading', lesson.further_reading) }}
+                </div>
+            </form>
+          </div>
 
 
           <h3>
@@ -118,45 +120,53 @@
           </h3>
 
           <div class="fit_pane bordered white">
+            <dl class="fit_summary_icons">
+
+              <!-- <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt> -->
 
               <!-- Would be cool to have the textareas have VERY simple WYSIWYG and auto-resize boxes? -->
 
-            <div class="fit_faq_edits">
+              <dd class="fit_faq_edits">
 
-              <div id="sortable-list-questions"
-                   data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/qa/reorder"
-                   data-fit-sortable-list-questions>
-              {% for question in questions %}
-                {{ question|safe }}
-              {% endfor %}
-              </div>
-
-              <div class="fit_faq_edit fit_faq_add">
-
-                <div class="input-group primo">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fal fa-question"></i></span>
-                  </div>
-                  <input type="text" id="lesson-question" class="form-control" placeholder="Question?" data-fit-lesson-question>
+                <div id="sortable-list-questions"
+                     data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/qa/reorder"
+                     data-fit-sortable-list-questions>
+                {% for question in questions %}
+                  {{ question|safe }}
+                {% endfor %}
                 </div>
 
-                <div class="input-group secondi">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
+                <div class="fit_faq_edit fit_faq_add">
+
+
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fal fa-question"></i></span>
+                      </div>
+                      <input type="text" id="lesson-question" class="form-control"
+                             placeholder="Question?" data-fit-lesson-question>
+                    </div>
                   </div>
-                  <textarea class="form-control" id="lesson-question-answer"
-                    aria-label="With textarea"
-                    placeholder="Answer!"
-                    data-fit-lesson-question-answer></textarea>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
+                      </div>
+                      <textarea class="form-control" id="lesson-question-answer"
+                                aria-label="With textarea"
+                                placeholder="Answer!"
+                                data-fit-lesson-question-answer></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex justify-content-between">
+                    <span>&nbsp;</span>
+                    <button class="btn btn-sm btn-primary" data-save-question-answer data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}"><i class="fal fa-plus"></i> Add new</button>
+                  </div> 
                 </div>
-
-                <div class="form-group deserto d-flex justify-content-between">
-                  <span>&nbsp;</span>
-                  <button class="btn btn-sm btn-outline-primary" data-save-question-answer data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}"><i class="fal fa-plus"></i> Add new</button>
-                </div> 
-              </div>
-            </div><!-- fit_faq_edits -->
-
+              </dd>
+              
+            </dl>
           </div><!-- pane -->
 
         </div><!-- col -->
