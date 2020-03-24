@@ -8,10 +8,9 @@
 
     <div class="fit_course intro">
 
-      <div class="fit_fancyplace fancyh2">
+      <div class="fit_fancyplace">
         <label for="course_name">Course name</label>
         <input type="text" class="form-control form-control-lg" name="course_name" value="{{ course.title }}" id="course_name" placeholder="Name your course" data-fit-slug-name data-fit-slug-first data-course-edit data-fit-fancyplace>
-        <i class="fal fa-edit"></i>
       </div>
 
 <!--       <div class="fit_fancyplace">
@@ -21,9 +20,9 @@
 
       <form action="/course/{{ course.slug }}/edit" method="post" id="course-edit-form" data-fit-wysiwyg>
         <div class="row">
-          <div class="col-md-6 fit_coledit_lhs">
+          <div class="col-md-6">
             <h3>
-              <span class="txt">The course.</span>
+              <span class="txt">Lessons.</span>
               <small class="subtxt">
                 <i class="fas fa-clock"></i>
                 {{ course.duration_seconds|format_time }}
@@ -31,10 +30,6 @@
             </h3>
 
             <div class="fit_body fit_lessons">
-
-              {% with cover_action="/course/"+course.slug+"/edit" %}
-                {% include "partials/course/_cover_cropper.html" %}
-              {% endwith %}
 
               {% if not introduction %}
               <a class="fit_btn fit_btn_add" href="#" data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
@@ -90,13 +85,98 @@
             </div><!-- end lesson stack -->
 
 
+            
 
+            <div class="fit_paneless">
+
+              {% with cover_action="/course/"+course.slug+"/edit" %}
+                {% include "partials/course/_cover_cropper.html" %}
+              {% endwith %}
+
+              <dl class="fit_summary_icons">
+
+                <!--
+                <dt><i class="far fa-building"></i> Program</dt>
+                <dd>
+                  <div class="form-group">
+                    <select class="form-control">
+                      <option>Leave No-one behind</option>
+                      <option>Global challenges</option>
+                    </select>
+                  </div>
+                </dd>-->
+
+                <dt><i class="far fa-clock"></i> Workload title</dt>
+                <dd>
+                  <div class="form-group">
+                    <input rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 4 hours per week, or 12 weeks total." value="{{ course.workload_title|default('') }}" data-course-edit>
+                    <small class="form-text text-muted">This appears next to the 'enrol' button.</small>
+                  </div>
+                </dd>
+                <dt><i class="far fa-clock"></i> Workload subtitle</dt>
+                <dd>
+                  <div class="form-group">
+                    <textarea rows="3" type="text" class="form-control" id="workload_subtitle" placeholder="E.g. 4 hours of study per week on average, best done with friends!" data-course-edit>{{ course.workload_subtitle|default("") }}</textarea>
+                    <small class="form-text text-muted">This also appears next to the 'enrol' button.</small>
+                  </div>
+                </dd>
+                
+                <dt><i class="far fa-calendar"></i> Year</dt>
+                <dd>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="{{ course.year.year if course.year }}" data-course-edit>
+                    <small class="form-text text-muted">Useful if you're running the same course over multiple years.</small>
+                  </div>
+                </dd>
+
+                <dt><i class="far fa-users"></i> Who's it for?</dt>
+                <dd>
+                  <div class="form-group">
+                    <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience|default("") }}</textarea>
+                  </div>
+                </dd>
+                
+                <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
+                <dd>
+                  <div class="form-group">
+                    <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary|default("") }}</textarea>
+                  </div>
+                </dd>
+
+                <dt><i class="far fa-university"></i> Skill level</dt>
+                <dd>
+                  <div class="form-group">
+                    <input  type="text" class="form-control" id="skill_level" placeholder="E.g. Introductory to intermediate." value="{{ course.skill_level }}" data-course-edit>
+                  </div>
+                </dd>
+
+                <dt><i class="far fa-info-square"></i> What you&rsquo;ll learn</dt>
+                <dd>
+                  <div class="form-group">
+                    <form>
+                    {{ wysiwyg('course_summary', course.summary_html) }}
+                    </form>
+                  </div>
+                </dd>
+                
+              </dl>
+
+
+            </div><!-- pane -->
+
+          </div><!-- col -->
+
+
+          <div class="col-md-6">
+
+            
 
             <h3>
               <span class="txt">Permissions.</span>
             </h3>
 
-            <div class="fit_pane white bordered">
+
+            <div class="fit_pane">
               <dl class="fit_summary_icons">
                 
                 <form action="/course/{{ course.slug }}/edit" method="post">
@@ -239,85 +319,8 @@
               </dl>
             </form>
           </dl>
-        </div>
 
 
-      </div><!-- col -->
-
-
-          <div class="col-md-6 fit_coledit_lhs">
-
-            <div class="fit_paneless">
-
-              <dl class="fit_summary_icons">
-
-                <!--
-                <dt><i class="far fa-building"></i> Program</dt>
-                <dd>
-                  <div class="form-group">
-                    <select class="form-control">
-                      <option>Leave No-one behind</option>
-                      <option>Global challenges</option>
-                    </select>
-                  </div>
-                </dd>-->
-
-                <dt><i class="far fa-clock"></i> Workload title</dt>
-                <dd>
-                  <div class="form-group">
-                    <input rows="3" type="text" class="form-control" id="workload_title" placeholder="E.g. 4 hours per week, or 12 weeks total." value="{{ course.workload_title|default('') }}" data-course-edit>
-                    <small class="form-text text-muted">This appears next to the 'enrol' button.</small>
-                  </div>
-                </dd>
-                <dt><i class="far fa-clock"></i> Workload subtitle</dt>
-                <dd>
-                  <div class="form-group">
-                    <textarea rows="3" type="text" class="form-control" id="workload_subtitle" placeholder="E.g. 4 hours of study per week on average, best done with friends!" data-course-edit>{{ course.workload_subtitle|default("") }}</textarea>
-                    <small class="form-text text-muted">This also appears next to the 'enrol' button.</small>
-                  </div>
-                </dd>
-                
-                <dt><i class="far fa-calendar"></i> Year</dt>
-                <dd>
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="year" placeholder="E.g. 2020" value="{{ course.year.year if course.year }}" data-course-edit>
-                    <small class="form-text text-muted">Useful if you're running the same course over multiple years.</small>
-                  </div>
-                </dd>
-
-                <dt><i class="far fa-users"></i> Who's it for?</dt>
-                <dd>
-                  <div class="form-group">
-                    <textarea rows="3" type="text" class="form-control" id="who_its_for" placeholder="E.g. Super-early stage social entrepreneurs who don't have an idea, but want to learn the basics.."  data-course-edit>{{ course.target_audience|default("") }}</textarea>
-                  </div>
-                </dd>
-                
-                <dt><i class="far fa-clock"></i> Course length &amp; workload</dt>
-                <dd>
-                  <div class="form-group">
-                    <textarea rows="3" type="text" class="form-control" id="workload_summary" placeholder="E.g. This course will take 20-30 hours on average, and is best done in teams." data-course-edit>{{ course.workload_summary|default("") }}</textarea>
-                  </div>
-                </dd>
-
-                <dt><i class="far fa-university"></i> Skill level</dt>
-                <dd>
-                  <div class="form-group">
-                    <input  type="text" class="form-control" id="skill_level" placeholder="E.g. Introductory to intermediate." value="{{ course.skill_level }}" data-course-edit>
-                  </div>
-                </dd>
-
-                <dt><i class="far fa-info-square"></i> What you&rsquo;ll learn</dt>
-                <dd>
-                  <div class="form-group">
-                    <form>
-                    {{ wysiwyg('course_summary', course.summary_html) }}
-                    </form>
-                  </div>
-                </dd>
-              </dl>
-
-            </div><!-- pane -->
-            
           </div><!-- col -->
         </div><!-- row -->
       </form>

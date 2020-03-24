@@ -2132,14 +2132,19 @@ $square_size: 22rem;
 // Fancy big h2
 .fit_fancyplace.fancyh2{margin-left: -0.75rem; margin-bottom: 0;}
 .fit_fancyplace.fancyh2:not(.active) label,
-.fit_fancyplace.fancyh2 .form-control{border:none; font-size: 2rem; font-weight: 900; color:$brand; padding: 1rem}
-.fit_fancyplace.fancyh2 .form-control:focus{outline:none !important; box-shadow: none !important;}
+.fit_fancyplace.fancyh2 .form-control{border:none; font-size: 2rem; border:1px solid transparent; font-weight: 900; color:$text; padding: 1rem; border-radius: $border_rad_lg;}
+.fit_fancyplace.fancyh2 .form-control:focus,
+.fit_fancyplace.fancyh2 .form-control:hover:focus{outline:none !important; box-shadow: none !important; border-color:$border_light;}
 .fit_fancyplace.fancyh2.labelled label{display: none;}
 
-.fit_fancyplace.fancyh2 i{color:$text_light; position: absolute; top:50%; right: 0; margin: -.5rem 0 0 -1rem; font-size: 1rem;}
-@media (min-width: 768px){
-	.fit_fancyplace.fancyh2 i{right:auto; left: 0;}
-}
+.fit_fancyplace.fancyh2 i{color:$text_light; position: absolute; top:50%; right: 0; margin: -.5rem 1.5rem 0 0; font-size: 1rem;}
+// @media (min-width: 768px){
+// 	.fit_fancyplace.fancyh2 i{right:auto; left: 0;}
+// }
+
+.fit_fancyplace.fancyh2 i{opacity: 0;}
+.fit_fancyplace.fancyh2 .form-control:hover{border-color:$border_light;}
+.fit_fancyplace.fancyh2:hover i{opacity: 1;}
 
 
 
