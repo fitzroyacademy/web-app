@@ -19,13 +19,9 @@ class Config(object):
     MAILGUN_API_URL = environ.get("MAILGUN_API_URL", default=None)
     MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
     S3_BUCKET = environ.get("S3_BUCKET", default=None)
-
-    S3_BUCKET = environ.get("S3_BUCKET_NAME", default=None)
-    S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
-    S3_SECRET = environ.get("S3_SECRET_ACCESS_KEY", default=None)
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
-    SERVER_NAME = environ.get("SERVER_NAME", default="fitzroyacademy.com")
+    SERVER_NAME = environ.get("SERVER_NAME", default=None)
 
     UPLOAD_FOLDER = "static/uploads"
 
@@ -64,7 +60,6 @@ class DevelopmentConfig(Config):
     DB_OPTIONS = environ.get("DB_OPTIONS", default="?check_same_thread=False")
     WTF_CSRF_SECRET = "qZeimuCyYqo27CqndJetJHx".encode()
     SERVER_NAME = "fitz-dev.com:5000"
-
     S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
 
 

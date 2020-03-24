@@ -15,40 +15,32 @@ workflows:
           requires:
             - test
           filters:
-            tags:
-              only: /^v[0-9]+\.[0-9]+/
             branches:
-              ignore: /.*/
+              only: master
 
       - approve-live-deploy:
           type: approval
           requires:
            - build
           filters:
-            tags:
-              only: /^v[0-9]+\.[0-9]+/
             branches:
-              ignore: /.*/
+              only: master
 
       - deploy-live:
           context: fitzroy-circleci
           requires:
           - approve-live-deploy
           filters:
-            tags:
-              only: /^v[0-9]+\.[0-9]+/
             branches:
-              ignore: /.*/
+              only: master
 
       - slack/approval-notification:
           message: Deploy to fitzroy.academy is awaiting approval.
           requires:
             - build
           filters:
-            tags:
-              only: /^v[0-9]+\.[0-9]+/
             branches:
-              ignore: /.*/
+              only: master
 
       # - deploy-staging:
       #   context: fitzroy-circleci
