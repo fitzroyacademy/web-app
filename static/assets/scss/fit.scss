@@ -240,7 +240,7 @@ header .fit_link:hover,
 
 // this subheader appears below the main sticky nav sometimes
 .fit_subhead{background: #fff; padding: 1rem; margin: 0 -1rem; border-bottom: 1px solid $border_light;}
-.fit_subhead li a{text-decoration: none !important;}
+.fit_subhead li a{text-decoration: none !important; font-size: 1rem;}
 .fit_subhead.sticky-top{top:$header_height;}
 
 @media (max-width: 575px) {
@@ -340,7 +340,7 @@ html.fit_minleft{}
 
 .input-group-text{background: #fff;}
 
-h4{font-weight: 900; font-size: 1.1rem; color:$brand; margin:0; padding:1.5rem 0 1rem;}
+h4{font-weight: 900; font-size: 1.1rem; color:$brand; margin:1.5rem 0 1rem; padding:0;}
 
 
 
@@ -359,6 +359,8 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 	html .fit_lesson_tooltip{visibility: visible;}
 }
 
+.alert-icond{padding-left: 3.2rem;}
+.alert-icond > i{position: absolute; top:1rem; left: 1rem;}
 .alert > i{font-size: 1.6rem; margin-right: 0.5rem;}
 
 .btn-google,
@@ -456,8 +458,7 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn > .fit_pic{padding: 0; height:2rem; width: 2rem; margin: 0.5rem 1rem; border-radius: $border_rad_sm; position: relative; overflow: hidden;}
 .fit_btn > .fit_pic img{height: 100%;}
 .fit_btn > .fit_pic.vid img{margin-left: -35%;} // this is super weird, but hopefully pushes it left enough to centre it.
-.fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 10px #fff;}
-
+.fit_btn > .fit_pic.circle{border-radius: $border_rad_r; box-shadow: 0 0 5px #fff;}
 
 // icons that appear over images if needed:
 .fit_btn > .fit_pic i{position: absolute; padding: .5rem 0; display: flex; top:0; width: 100%; height: 100%; color: $blue; justify-content: center; text-align: center; opacity: 0;}
@@ -465,9 +466,6 @@ a.fit_btn:hover{color:$blue;}
 // active classes
 .fit_lesson.active .fit_btn > .fit_pic i.fa-play{background: $aqua_80; opacity: 1; color: #fff;}
 // not needed because dropdown? .fit_lesson .fit_btn:hover > .fit_pic i.fa-play{background: $aqua_50; opacity: 1;}
-
-// weirdy border for the underline
-// .fit_btn > .fit_pic.circle:after{content: ''; display: block; position: absolute; top:0; left: 0; right: 0; bottom: 0; border-radius: $border_rad_r; border:5px solid #0f0;}
 
 // close the circle
 .fit_btn > .fit_pic .fa-times{position: absolute; display: flex; align-items: center; justify-content: center; top:0; left: 0; height: 100%; width: 100%; color: $blue; font-size: 1.2rem; background: #fff}
@@ -558,8 +556,19 @@ header .fit_btn.login:hover .fa-chevron-right{display: flex; opacity: 1;}
 // header underlines are weird
 header .fit_btn[href] > .fit_txt:after,
 .head .fit_btn[href] > .fit_txt:after{
-	transition: all .2s ease-in-out;
+	transition: all .3s ease-in-out;
 	display:block; content:''; position: absolute; bottom:.45rem; left:1.25rem; right:1.25rem; height: 3px; background: $blue; border-radius: $border_rad_xl; opacity: 0;}
+
+// Okay super weird for just the circle image
+header .fit_btn[data-fit-userpanel] > .fit_txt:after{right: 3.75rem;}
+header .fit_btn[data-fit-userpanel]:after{content: ''; display: block; position: absolute; top:.35rem; right: .75rem; width: 2.5rem; height: 2.5rem; border-radius:$border_rad_r; border:.25rem solid $blue; opacity: 0; transition: all .3s ease-in-out; transform: scale(0.9); }
+header .fit_btn[data-fit-userpanel]:hover:after{opacity: 0.4; transform: scale(1); }
+
+
+// hide the user panel when editing
+html.section-edit header .fit_btn[data-fit-userpanel]{display: none} 
+
+
 
 header .fit_btn:hover > .fit_txt:after,
 .head .fit_btn:hover > .fit_txt:after{opacity: 0.4; bottom: .6rem;}
@@ -596,6 +605,7 @@ header .fit_btn:hover > .fit_txt:after,
 // fade them out of the selector thing
 .fit_pane.faded{background: $bg_grey;}
 .fit_pane.faded .fit_btn[data-toggle="collapse"].collapsed{color: $text_lighter;}
+.fit_pane.faded .fit_btn[data-toggle="collapse"].collapsed:hover{color: $text;}
 
 // small screens
 @media (max-width: 767px) {
@@ -1064,7 +1074,7 @@ a.card.rating h5{color: #f4b115;}
 .fit_seduce i.blue{color: $blue;}
 .fit_seduce i.watermelon{color: $watermelon;}
 
-.fit_seduce h4{font-size: 1.4rem; font-weight: 900;}
+.fit_seduce h4{font-size: 1.4rem; font-weight: 900; margin: 0; padding-bottom: .5rem}
 .fit_seduce p{font-size: 0.9rem; color: $text_light; margin: 0 auto 2rem; max-width: 240px;}
 
 .fit_seduce .btn-block{height: 3rem; margin: 1rem auto 2rem; max-width: 260px;}
@@ -1888,7 +1898,15 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 // Long form text style
 // This is quite literally us copying what we like about Medium for our own long-form content. LOL. Hilarious.
 
+.fit_bg{padding: 1rem 0; margin: 1rem 0;}
+
+@media (min-width: $medium_width) {
+	.fit_bg{padding: 3rem 0; margin: 3rem 0;}
+}
+.fit_bg.alt{background:$bg;}
+
 .fit_medium{max-width: $medium_width; margin: 0 auto; padding:0 1rem; position: relative;}
+.fit_medium.large{max-width: $large_width;}
 
 @media (min-width: calc(760px + 2rem)) {
 	.fit_medium{padding: 0;}
@@ -1909,9 +1927,11 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium h3,
 .fit_medium h4{margin-bottom: 1rem; max-width: 600px; position: relative;}
 
-.fit_medium h4{font-weight: 900;}
+.fit_medium h4{font-weight: 900; font-size: 1.5rem;}
 
 .fit_medium h1.roomy{padding: 2rem 0;}
+
+.fit_medium h1:first-child{margin-top: 3rem;}
 
 // iconz
 .fit_medium > h1 > i:first-child,
@@ -1923,7 +1943,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 	.fit_medium > h1 > i:first-child,
 	.fit_medium > h2 > i:first-child,
 	.fit_medium > h3 > i:first-child,
-	.fit_medium > h4 > i:first-child{position: absolute; top:.25rem; right: 100%; margin-right: 1.5rem; font-size: 110%; color:$text_light;}
+	.fit_medium > h4 > i:first-child{position: absolute; top:.25rem; right: 100%; margin-right: 1.5rem; font-size: 110%; color:$text_lighter;}
 }
 
 .fit_medium p,
@@ -1957,7 +1977,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 @media (min-width: 992px) {
 	.fit_medium .breakbig{width: $large_width; margin-left: -$large_margin; position: relative;}
-	.fit_medium .breakbigger{width: $container_wide; margin-left: -$larger_margin; background: #fff; position: relative;}
+	.fit_medium .breakbigger{width: $container_wide; margin-left: -$larger_margin; background: #fff; position: relative; margin-bottom: 3rem}
 
 
 	// breaking big on a small medium rare friend
@@ -1979,6 +1999,7 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 
 .fit_spicy{color:$red; font-size: 2rem;}
 .fit_spicy .fal{color: $text_light;}
+.fit_spicy .fa-plus{margin-left: .5rem}
 
 
 // medium large is full size
@@ -2081,10 +2102,27 @@ $square_size: 22rem;
 
 
 
+// the mistakes list stuff
+@media (min-width: 575px) {
+	.fit_mistake_categories p{font-size: 1rem;}
+}
 
+.fit_mistakes_list{background: #fff; border-radius: $border_rad_lg; padding: 0 1rem 0.1rem;}
+.fit_mistakes_list .fit_pane{border-bottom:1px solid $border_light;}
+.fit_mistakes_list .fit_pane:last-child{border-bottom: none;}
+.fit_mistakes_list .fit_subhead{border-radius: $border_rad_lg $border_rad_lg 0 0;}
+
+@media (max-width: 575px) {
+.fit_mistakes_list{margin: 0 -1rem;}
+}
 
 // ----------------------------------------------------------------------------------------------------------------
 // Login and sign up and whatnot
+
+html.section-register footer,
+html.section-login footer{display: none;}
+html.section-register .fit_mobile_menu_dropdown .fit_btn.login,
+html.section-login .fit_mobile_menu_dropdown .fit_btn.login{display: none;}
 
 
 .fit_auth{max-width: 25rem; margin:0 auto; padding: 2rem;}
@@ -2321,6 +2359,7 @@ header .fit_search_header .results{position: fixed; display: flex; flex-directio
 
 html.fit_search_header_active .fit_search_header{display: flex;}
 
+
 // ------------------------------------------------------------------------------------
 // Mobile menu fun
 
@@ -2410,8 +2449,8 @@ html .fit_debug ul{width: 100%; height: 100%; overflow: none; overflow-y: scroll
 html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 
 
-.fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 5px 0 100px; border:2px solid $border_medium; position: relative;}
-.fit_quote p{font-size: 1.2rem; line-height: 1.5rem; color: $text_light; margin-bottom: 15px;}
+.fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 2rem 0 7rem; border:2px solid $border_medium; position: relative;}
+.fit_quote p{font-size: 1.2rem; line-height: 1.5rem; color: $text; margin-bottom: 15px;}
 .fit_quote p em{font-size: 1rem; display: block; color: $text; padding-bottom: 10px;}
 .fit_quote p strong{color: $text; padding: 0 3px; font-weight: inherit;}
 
@@ -2424,6 +2463,7 @@ html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 .fit_quote cite a{color: inherit; text-decoration: underline;}
 .fit_quote cite a:hover{color: $blue;}
 
+.fit_quote.md{max-width: 45rem;}
 
 // ------------------------------------------------------------------------------------
 // course edit stuff:
@@ -2858,6 +2898,8 @@ html.fit_tabby_player .fit_player {}
 .fit_table_price thead th.institute:after,
 .fit_table_price tbody tr:last-child td.institute:after{background: $brand; color:#fff;}
 
+.fit_table_price thead th.institute h4{color:#fff;}
+
 // fancy tooltippy boiez
 
 .fit_table_price tbody [data-toggle="tooltip"]{border-bottom: 2px dotted $border_light;}
@@ -2946,6 +2988,8 @@ html.fit_tabby_player .fit_player {}
 
 
 
+// Let's disable some stuff for testing to make everything simpler
+.fit_form_code_head{display: none !important;}
 
 
 

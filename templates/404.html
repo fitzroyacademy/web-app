@@ -1,36 +1,13 @@
-<!doctype html>
-<html lang="en" class="
-  {% if url_is('course.view', 'lesson.view', 'segment.view') %} course {% endif %}
-  {% if current_user %} current_user {% endif %}
-">
+{% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if form.csrf_token %}
+        var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
 
-<!-- fit_minleft -->
-<!-- fit_minright -->
-<!-- fit_revealuserpanel -->
-
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css">
-
-  <!-- Other fool's plugins -->
-  <link rel="stylesheet" href="/vendor/flag-icon-css-master/css/flag-icon.css">
-  <link rel="stylesheet" href="/vendor/bootstrap4-toggle/css/bootstrap4-toggle.css">
-  <script src="https://kit.fontawesome.com/1f45a33999.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="/vendor/node-snackbar/dist/snackbar.min.css" />
-  <link rel="stylesheet" type="text/css" href="/vendor/medium-editor/dist/css/medium-editor.min.css" />
-  <!-- <link rel="stylesheet" type="text/css" href="/vendor/medium-editor/dist/css/themes/flat.min.css" /> -->
-
-  <!-- Then our stuff -->
-  <link rel="stylesheet" href="/css/fit.css?{{ cache_code }}">
-
-  <title>FA! 😍</title>
-</head>
-<body>
-
+{% block body %}
 
 <main>
 
@@ -39,15 +16,15 @@
     <div class="fit_hero">
 
       <h1>
-      	Oops!
+      	Oops! 404 error.
       </h1>
-      <p><strong>404:</strong> Can't find what you&rsquo;re looking for.</p>
-      <p>Maybe go <a href="/">back home</a> and try again?</p>
+      <p>It's possible we broke something.</p>
+      <p>Email <a href="mailto:support@fitzroyacademy.com">support@fitzroyacademy.com</a> for help. 🥰</p>
 
 			<div class="fit_medium">
 			  
-				<div class="fit_picture">
-				  <img class="placeholder" src="/assets/images/static/cinematics/kitten_sad.jpg" alt="sad kitty">
+				<div class="fit_picture" style="margin:2rem 0;">
+				  <img class="" src="/static/assets/images/static/cinematics/kitten_sad.jpg" alt="sad kitty">
 				</div>
 				
 			</div>
@@ -58,5 +35,4 @@
 </main>
 
 
-</body>
-</html>
+{% endblock %}

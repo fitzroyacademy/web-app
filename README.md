@@ -409,6 +409,7 @@ Everything but UID is optional (woah! really? I think so! Wow.)
 ## Registered users
 
 * First name
+* Last ssname
 * Email
 * Password
 

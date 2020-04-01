@@ -1,6 +1,13 @@
 {% extends "/layout.html" %}
-{% block body %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if form.csrf_token %}
+        var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
 
+{% block body %}
 
 <main>
 
@@ -9,18 +16,19 @@
     <div class="fit_hero">
 
       <h1>
-      	We broke it.
+        Oops! 502 error.
       </h1>
-      <p><strong>502:</strong> Our server did a boo-boo. </p>
-      <p>Email <a href="mailto:support@fitzroyacademy.com">support@fitzroyacademy.com</a> for help.</p>
+      <p>We probably broke something.</p>
+      <p>Email <a href="mailto:support@fitzroyacademy.com">support@fitzroyacademy.com</a> for help. 🥰</p>
 
       <div class="fit_medium">
-	      
-				<div class="fit_picture">
-				  <img class="placeholder" src="/assets/images/static/cinematics/kitten_scared.jpg" alt="scared kitty">
-				</div>
-			</div>
-			
+        
+        <div class="fit_picture" style="margin:2rem 0;">
+          <img class="" src="/static/assets/images/static/cinematics/kitten_sad.jpg" alt="sad kitty">
+        </div>
+        
+      </div>
+
     </div>
 
   </article>
