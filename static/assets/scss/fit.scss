@@ -2994,3 +2994,62 @@ html.fit_tabby_player .fit_player {}
 
 
 
+// ------------------------------------------------------------------------------------
+// Let's try again!
+
+html.section-play footer{display: none;}
+
+.fat_course_back{background: $bg; min-height: 100%;}
+
+.fat_course{padding: 3rem 0;margin: 0 auto; max-width: $container_wide;}
+
+.fat_course .prior,
+.fat_course .soon{}
+
+.fat_course .lessons{margin: 0 12px;}
+.fat_course .lessons .lesson{height: 6px; background: #fff; margin: 4px 0; overflow: hidden; transition: all .25s ease-in-out;}
+
+// now
+.fat_course > .now{background: #fff; padding: 2rem;}
+
+.fat_course > .now h2{font-size: 2.5rem; line-height: 3rem; padding: 0 0 2rem 4rem; position: relative;;}
+.fat_course > .now h2 .no{width: 3rem; height: 3rem; background: $bg; color: $text_lightest; position: absolute; top:0; left: 0; display: flex; align-items: center; justify-content: center;}
+
+// the focus is what the student is focussing on now
+.fat_course > .now .focus{}
+
+// video
+.fat_course .focus > .video{background: $bg_blue; border-radius: $border_rad_lg;}
+
+// text
+.fat_course .focus > .html{ padding: 1rem 0;}
+.fat_course .focus > .video + .html{margin-top:2rem;}
+
+.fat_course .focus > .nav{display: flex; justify-content: space-between; padding-bottom: 3rem;}
+
+// sidebar chunks
+.fat_course > .now > .sidebar{border-top:3px solid $bg; display: flex; align-items:stretch; min-height: 10rem; padding: 3rem 0 0;}
+
+.fat_course > .now > .sidebar .chunk{border-right: 3px solid $bg; flex: 1; padding: 0 1.5rem;}
+.fat_course > .now > .sidebar .chunk:first-child{padding-left: 0;}
+.fat_course > .now > .sidebar .chunk:last-child{border-right: none; padding-right: 0;}
+
+.fat_course > .now > .sidebar .chunk h4{font-size: 1.2rem; position: relative; margin: 0; padding: 0 0 1rem;}
+.fat_course > .now > .sidebar .chunk h4 i{position: absolute; top:.15rem; right:0;}
+
+.fat_course > .now > .sidebar .fit_segments{max-height: 25rem; overflow-y: scroll;}
+
+
+.fat_course .lessons:hover .lesson{height: 8px;} 
+
+
+//neg margins
+.fat_course > .now > .sidebar .fit_btn.resource_link,
+.fat_course > .now > .sidebar .fit_segments{margin: 0 -1.5rem;}
+
+
+
+// resources links
+.fat_course > .now > .sidebar .fit_btn.resource_link > i{width: 4.25rem; text-align: right; padding-right: 1rem;}
+
+
