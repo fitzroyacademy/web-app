@@ -1,6 +1,7 @@
 {% from 'macros.html' import link_to, active_link, wysiwyg %}
 <!doctype html>
 <html lang="en" class="
+  
   fit_breezy_player
   section-{{ current_section }}
   section-sub-{{ current_section_sub }}
@@ -11,6 +12,9 @@
 <!-- 
 
 These are all HTML classes that change the layout in various ways:
+
+fat_coursebar_active
+
 fit_breezy_player
 fit_minleft
 fit_minright
@@ -94,18 +98,64 @@ fit_revealuserpanel
             <h1>Clare Carmody.</h1>
             <div class="fat_tease_btns">
               <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
-              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-cog"></i> Preferences</a>
+              <a class="btn btn-xl btn-text" href="#user_prefs"><i class="fal fa-cog"></i> Preferences</a>
               <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
             </div>
           </div>
 
-          <div class="fat_hero">
-            <h1>Your preferences.</h1>
-            <div class="fat_tease_btns">
-              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
-              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-cog"></i> Preferences</a>
-              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
-            </div>
+          <div class="fat_hero" id="user_prefs">
+            
+            <form class="fit_user_edit" method="post" action="/edit">
+              <div class="row">
+                <div class="col">
+                  <div class="fit_fancyplace labelled">
+                    <label for="firstname">Given name</label>
+                    <input type="text" id="firstname" name="first_name" class="form-control" value="Homer" placeholder="Given name" required="" data-fit-fancyplace="" data-fit-slug-name="" data-fit-slug-first="">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="fit_fancyplace labelled">
+                    <label for="lastname">Last name</label>
+                    <input type="text" id="lastname" name="last_name" class="form-control" value="Simpson" placeholder="Last name" required="" data-fit-fancyplace="" data-fit-slug-name="" data-fit-slug-last="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="fit_fancyplace labelled">
+                <label for="register_email">Email address</label>
+                <input type="email" id="register_email" name="email" class="form-control" value="homer@simpsons.com" placeholder="Email address" required="" data-fit-fancyplace="">
+              </div>
+
+              <div class="fit_fancyplace">
+                <label for="register_pass">Change password</label>
+                <input type="password" id="register_pass" name="password" class="form-control" placeholder="Change password" data-fit-fancyplace="">
+              </div>
+
+              <div class="form-group">
+                <div class="fit_squarelogo fit_cropper" data-fit-image-uploader="" data-fit-aspect-width="1" data-fit-aspect-height="1">
+                  
+                    <img src="/static/assets/stub/homer.png" alt="user">
+                  
+                  <a class="fit_vidya_play fit_upload_dropzone" href="#" data-fit-image-dropzone=""><i class="fas fa-upload" aria-hidden="true"></i></a>
+                    <input id="profile_picture" name="profile_picture" type="file" accept="image/png, image/jpeg, image/gif" data-fit-image-input="">
+                  <a class="btn btn-primary fit_save_crop" data-fit-save-crop=""><i class="fal fa-check" aria-hidden="true"></i> Save</a>
+                </div>
+              </div>        
+              
+              <div class="form-group">
+                <div class="input-group fit_fancyplace">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="user_at">@</span>
+                  </div>
+                  <input type="text" id="username" class="form-control" maxlength="20" name="username" value="homer" placeholder="username" aria-label="username" aria-describedby="user_at" data-fit-slug-set="">
+                </div>
+                <small id="sluglink" class="form-text text-muted">Your personal link will be: <span class="fit_sluglabel">fitzroyacademy.com/user/<strong data-fit-slug-reveal="">homer</strong></span></small>
+                <input type="hidden" value="homer" id="secretslug" name="secretslug" data-fit-slug-reveal-secret=""> <!-- DEV: store this input as username, it strips off weird characters -->
+              </div>
+
+              <button type="submit" class="btn btn-primary" data-fit-user-save="">Save changes</button>
+            </form>
+
           </div>
         
       </div>
@@ -123,10 +173,10 @@ fit_revealuserpanel
           <div class="fat_hero">
             <h1>Hey you. 🥰</h1>
             <div class="fat_tease_btns">
+              <a class="btn btn-xl btn-text" href="/play/"><i class="fal fa-home"></i> Home </a>
               <a class="btn btn-xl btn-text" href="/play/courses"><i class="fal fa-play"></i> Courses </a>
               <a class="btn btn-xl btn-text" href="/play/educators"><i class="fal fa-chalkboard-teacher"></i> Educators </a>
-              <a class="btn btn-xl btn-text" href="/play/about"><i class="fal fa-heart"></i> About us</a>
-              <a class="btn btn-xl btn-text" href="/play/product"><i class="fal fa-laptop"></i> Product</a>
+              <a class="btn btn-xl btn-text" href="/play/about"><i class="fal fa-heart"></i> About us</a>              
               <a class="btn btn-xl btn-text" href="/play/support"><i class="fal fa-question-circle"></i> Support</a>
             </div>
           </div>

@@ -626,7 +626,7 @@ header .fit_btn:hover > .fit_txt:after,
 .fit_btn > .fit_txt .fa-external-link{margin-left: .25rem; font-size: 80%;}
 
 .fit_btn.resource_link i.lg{font-size: 2rem;}
-.fit_txt small{display: block; color:$text_light;}
+.fit_txt small{display: block; color:$text_lighter;}
 .fit_pane .fit_btn.resource_link:hover small{color:$text;}
 
 .fit_btn.resource_link .fit_txt{}
@@ -3015,6 +3015,8 @@ html.fit_tabby_player .fit_player {}
 
 $black: #1c1f20;
 
+html.section-play .fit_debug{display: none;}
+
 
 // ------------------------------------------------------------------------------------
 // weird new fat header type
@@ -3032,7 +3034,7 @@ $black: #1c1f20;
 .fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out;}
 .fat_user i,
 .fat_user:hover .down{color:$blue;}
-.fat_user .down{position:absolute; left: -1.75rem; color: $blue; opacity: 0;transition: all .25s ease-in-out;}
+.fat_user .down{position:absolute; left: -1.95rem; color: $blue; opacity: 0;transition: all .25s ease-in-out;}
 
 .fat_user:hover{background: $blue}
 .fat_user:hover i{color: #fff;}
@@ -3078,13 +3080,12 @@ $black: #1c1f20;
 // now
 .fat_course > .now{background: #fff; padding: 2rem;}
 
-.fat_course > .now h2{font-size: 2.5rem; line-height: 3rem; padding: 0 0 2rem 4rem; position: relative;}
-.fat_course > .now h2 a{text-decoration: none;}
+.fat_course > .now h2{font-size: 2.5rem; line-height: 3rem; padding: 0 0 2rem; position: relative; display: flex;}
 .fat_course > .now h2 .txt{color: $black;}
-.fat_course > .now h2 .no{width: 3rem; height: 3rem; background: $bg; color: $text_lighter; position: absolute; top:0; left: 0; display: flex; align-items: center; justify-content: center; border: 1px solid transparent;}
-.fat_course > .now h2 .no:hover{color:$text_light;}
+.fat_course > .now h2 .no{height: 3rem; min-width: 3rem; background: $bg; color: $text_lighter; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; text-decoration: none; padding: 0 .5rem; margin-right: 1rem;}
+.fat_course > .now h2 .no:hover{color:$blue;}
 .fat_course > .now h2 .no i{position: absolute; left: -2.5rem; top:.5rem; font-size: 2rem; opacity: 0; transition: all .2s ease-in-out; }
-.fat_course > .now h2:hover .no i{opacity: 1;}
+.fat_course > .now h2 .no:hover i{opacity: 1;}
 
 // the focus is what the student is focussing on now
 .fat_course > .now .focus{}
@@ -3106,12 +3107,12 @@ $black: #1c1f20;
 .fat_course > .now > .sidebar .chunk:last-child{border-right: none; padding-right: 0;}
 
 .fat_course > .now > .sidebar .chunk h4{font-size: 1.2rem; position: relative; margin: 0; padding: 0 0 1rem;}
-.fat_course > .now > .sidebar .chunk h4 i{position: absolute; top:.15rem; right:0;}
+.fat_course > .now > .sidebar .chunk h4 i{position: absolute; top:.15rem; right:0; color:$text_lighter; opacity: 0;}
 
-.fat_course > .now > .sidebar .fit_segments{max-height: 25rem; overflow-y: scroll;}
+.fat_course > .now > .sidebar .fit_segments{max-height: 25rem; overflow-y: scroll; overscroll-behaviour:contain;}
 
 
-.fat_course .lessons:hover .lesson{height: 8px;} 
+
 
 
 //neg margins
@@ -3124,10 +3125,74 @@ $black: #1c1f20;
 .fat_course > .now > .sidebar .fit_btn.resource_link > i{width: 4.25rem; text-align: right; padding-right: 1rem;}
 
 
+// FAQs
+.fat_faqs{padding: .5rem 0;}
+.fat_faqs.none p{color:$text_light;}
 
 
+// ------------------------------------------------------------------------------------
+// the course bar comes in and does stuff
+
+$fat_coursebar_width: 50rem;
+
+html.section-play{overflow-x:hidden;}
+
+.fat_coursebar{z-index: 7000; position: fixed; top:0; left: -$fat_coursebar_width; bottom: 0; width: $fat_coursebar_width; padding: 2rem; background: #fff; overflow-y:scroll;}
+
+.fat_coursebar_head{padding: 0 1rem 1.5rem; position: relative;}
+.fat_coursebar_head h2 a{font-size: 1.8rem; padding: 0 10rem 0 0; display: flex; text-decoration: none; color: $black; align-items:baseline;}
+.fat_coursebar_head h2 a:hover{color: $blue;}
+.fat_coursebar_head h2 i{ margin-right: 1rem;}
+
+.fat_coursebar_head .x{position: absolute; top:-.5rem; right: .5rem; font-size: 2rem; height: 3rem; width: 3rem; display: flex; align-items: center; justify-content: center; text-decoration: none; color:$text_light;}
+.fat_coursebar_head .x:hover{background: #fff; color: $black;}
+
+// well this is wacky, using a psuedo on the X to do a closey friend. WACK
+.fat_coursebar_head .x:after{position: fixed; display: none; content: ''; top:0; right: 0; left: 50rem; bottom: 0;}
+
+.fat_lessons{}
+
+.fat_lesson{position: relative; padding: 1.5rem 1.5rem 1.5rem 13rem; min-height: 7.5rem; border: 1px solid transparent;}
+
+.fat_lesson .fit_window{position: absolute; top:1rem; left: 1rem; width: 10rem;}
+
+.fat_lesson a{text-decoration: none;}
+.fat_lesson > h4{font-size:1.3rem; padding:0 5rem .5rem 0; margin: 0; color:$black;}
+.fat_lesson > p{font-size: 0.95rem; padding:0 5rem 0 0; margin: 0; color:$text;}
+
+.fat_lesson a:hover h4{color: $blue;}
+
+.fat_lesson .fit_window img{border-radius: $border_rad_sm;}
+.fat_lesson .fit_window .play {font-size: 2rem;}
+
+.fat_lesson .status{position: absolute; top:1.5rem; right: 1rem; width: 2rem; height: 2rem; border-radius: $border_rad_r; background: #fff; border: 1px solid transparent; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center; font-size: 0.9rem; color:$text_lightest;}
+.fat_lesson .status i{color: $text_lighter;}
+
+.fat_lesson .status .fa-play{color: $blue;}
 
 
+.fat_lesson:hover{background: $bg; cursor: pointer;}
+.fat_lesson:hover .status{color: $text_light;}
+.fat_lesson:hover .status .fa-check{color: $new_green;}
+
+.fat_lesson[aria-expanded="true"]{background: $bg;}
+
+.fat_lesson .fit_segments{background: #fff; margin: 1.5rem 0 0; border-radius: $border_rad_sm;}
+
+
+// .fat_lesson:hover{background: $bg;}
+
+// animate the coursebar shit
+.fat_coursebar,
+.fat_course{transition: all .25s ease-in-out;}
+
+
+html.fat_coursebar_active body{overflow: hidden;}
+html.fat_coursebar_active .fat_course{}
+html.fat_coursebar_active .fat_coursebar{left: 0;}
+html.fat_coursebar_active .fat_coursebar_head .x:after{display: block;}
+
+html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 
 
 

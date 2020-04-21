@@ -5,6 +5,10 @@ $( document ).ready(function() {
 
   // weird horrible naked tests
   
+  $('[data-fit-toggle-coursebar]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fat_coursebar_active');
+  });
 
 
 
