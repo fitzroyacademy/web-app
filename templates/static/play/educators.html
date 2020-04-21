@@ -2,12 +2,12 @@
 {% block body %}
 
 
-<div class="fat_head purple">
+<div class="fat_head purple"  data-toggle="modal" data-target="#fat_menu_modal">
   <a href="/play" class="fat_device">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 897 1337"><path d="M896.926,417.590 L0.097,416.434 L0.056,119.532 L0.058,119.532 L0.024,119.525 L298.280,0.028 L297.542,119.532 L298.114,119.532 L298.088,119.525 L596.343,0.028 L596.792,119.532 L598.755,119.532 L598.721,119.525 L896.975,0.028 L896.926,417.590 ZM683.424,1022.533 L369.742,1023.094 L368.821,1336.982 L0.072,1335.695 L0.063,650.350 L683.424,650.350 L683.424,1022.533 ZM0.056,650.350 L0.063,650.350 L0.056,650.350 Z"></path></svg>
   </a>
 
-  <a class="fat_user" href="/play/user">
+  <a class="fat_user" href="/play/user" data-toggle="modal" data-target="#fat_user_modal">
     <i class="down fal fa-chevron-down"></i>
     <i class="icon fal fa-user"></i>
   </a>
@@ -18,11 +18,11 @@
 
 	<h1>We teach<br>learning, online.</h1>
 	<div class="fat_nav">
-		<a href="#" class="purple"><i class="fal fa-laptop"></i> <span class="txt">Make videos</span></a>
-		<a href="#" class="blue"><i class="fal fa-video"></i> <span class="txt">Lesson library</span></a>
-		<a href="#" class="green"><i class="fal fa-book"></i> <span class="txt">Workshops</span></a>
-		<a href="#" class="red"><i class="fal fa-tools"></i> <span class="txt">Gear list</span></a>
-		<a href="#" class="apricot"><i class="fal fa-book"></i> <span class="txt">Blog</span></a>
+		<a href="/play/educators#make" class="purple"><i class="fal fa-laptop"></i> <span class="txt">Make videos</span></a>
+		<a href="/play/educators" class="blue"><i class="fal fa-video"></i> <span class="txt">Lesson library</span></a>
+		<a href="/play/educators" class="green"><i class="fal fa-book"></i> <span class="txt">Workshops</span></a>
+		<a href="/play/educators" class="red"><i class="fal fa-tools"></i> <span class="txt">Gear list</span></a>
+		<a href="/play/educators" class="apricot"><i class="fal fa-book"></i> <span class="txt">Blog</span></a>
 	</div>
 
 <!-- 	<div class="fat_tease_btns">
@@ -37,7 +37,7 @@
 </div> -->
 
 
-<div class="fat_leo_list">
+<div class="fat_leo_list" id="make">
 	<img src="/static/assets/images/naked/leo_slingin.png" alt="leo" class="leo_slingin">
 	<h2>Great video lessons<br><span class="purple">start something like this:</span></h2>
 	<dl>
@@ -45,30 +45,38 @@
 		<dd>
 			<div class="fit_window">
 		    <img src="/static/assets/images/lessons/customer-interviews.jpg" alt="image">
-		    <a href="/course/fitzroy-academy" class="play"><i class="fas fa-play-circle"></i></a>
+		    <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
 		  </div>
-			<p><a href="#"><i class="fal fa-window-maximize"></i>  Online lessons with Leo.  <span class="timing">1:35</span></a></p>
+			<p><a href="#" data-toggle="modal" data-target="#fat_modal_video"><i class="fal fa-window-maximize"></i>  Online lessons with Leo.  <span class="timing">1:35</span></a></p>
 		</dd>
 
 		<dt><i class="fal fa-walking"></i>2: Talk a relaxing walk.</dt>
 		<dd>
-			<p>Grab a pen and paper, go for a walk and remember what inspired you in the first place.</p>
+			<p>Grab a pad, go for a walk and remember what inspired you in the first place.</p>
 			<p><a href="#"><i class="fal fa-window-maximize"></i>  Empathy walks.  <span class="timing">1:35</span></a></p>
 		</dd>
 
 		<dt><i class="fal fa-lightbulb-on"></i>3: Sketch some ideas.</dt>
 		<dd>
-			<p>Draw out the most important ‘beats’ and feels in your learning design.</p>
+			<p>Draw out the most important ‘beats’ of your learning design.</p>
 			<p><a href="#"><i class="fal fa-window-maximize"></i>  Learning arch design.  <span class="timing">4:18</span></a></p>
 		</dd>
 
 		<dt>Talk to us!</dt>
 		<dd>
 			<p>Leo is nice, say hi.</p>
-			<p><a href="#" class="btn btn-outline-primary btn-lg"><i class="fal fa-envelope"></i>  leo@fitzroyacademy.com</a></p>
+			<div class="fat_arrow_button">
+				<a href="#" class="btn btn-outline-primary btn-lg"><i class="fal fa-envelope"></i>  leo@fitzroyacademy.com</a>
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="123" viewBox="0 0 32 123" class="fat_arrow">
+					  <path class="cls-1" d="M11.252,2.347c0.233-1.041,6.966,15.555,8.435,21.871,5.3,22.777,7.221,42.314,2.468,64.984-0.892,4.253-4.072,15.7-3.693,15.716s2.937-1.831,7.672-6.558c0.883-.881,3.876,3.1,3.883,4.266,0,0.734-14.631,15.756-18.184,17.077s-9.99-29.594-9.99-29.594l7.447,18.82s2.976,4.513,8.374-28.38C24.465,39.1,11.018,3.388,11.252,2.347Z"/>
+					</svg>
+
+			</div>
 		</dd>
 
 	</dl>
 </div>
+
+
 
 {% endblock %}

@@ -1508,7 +1508,7 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 // make our modals a bit roomier...
 @media (min-width: 576px) {
-	.modal-dialog{max-width: 650px;}
+	// .modal-dialog{max-width: 650px;}
 	.fit_modal_single .modal-dialog{max-width: 350px;}
 }
 
@@ -3012,15 +3012,6 @@ html.fit_tabby_player .fit_player {}
 
 // Let's try again!
 
-.naked{padding: 1rem;}
-
-@media (min-width: 576px) {
-	.naked{margin-top: -3.2rem;}
-}
-
-@media (min-width: 1140px) {
-	.naked{padding: 2rem;}
-}
 
 $black: #1c1f20;
 
@@ -3030,21 +3021,22 @@ $black: #1c1f20;
 
 .btn-xl{font-size: 1.6rem; padding: .75rem 1.5rem;}
 
-.fat_head{position: relative;height: 4rem;}
+.fat_head{z-index: 6000; position: absolute; top:2rem; left: 2rem; right: 2rem; height: 4rem;}
 
 .fat_device{width: 2rem; height: 4rem; display: block; position: absolute; top:0; left: 0;}
-.fat_device svg > path{fill-rule: evenodd; fill: $blue;}
+.fat_device svg > path{fill-rule: evenodd; fill: $black;}
 
 .fat_device:hover svg > path{fill:$watermelon_vibrant;}
 
 
-.fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center;}
+.fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out;}
 .fat_user i,
 .fat_user:hover .down{color:$blue;}
-.fat_user .down{position:absolute; left: -1.75rem; color: $blue;}
+.fat_user .down{position:absolute; left: -1.75rem; color: $blue; opacity: 0;transition: all .25s ease-in-out;}
 
 .fat_user:hover{background: $blue}
 .fat_user:hover i{color: #fff;}
+.fat_user:hover .down{opacity: 1;}
 
 // ---------------------------------
 // culaz of hedda
@@ -3055,7 +3047,9 @@ $black: #1c1f20;
 .fat_head.purple .fat_user i,
 .fat_head.purple .fat_user .down,
 .fat_head.purple .fat_user:hover .down{color: $new_purple}
-.fat_head.purple .fat_user:hover{color: $new_purple}
+.fat_head.purple .fat_user:hover{background: $new_purple}
+
+.fat_head.purple .fat_user:hover i{color: #fff;}
 
 // ------------------------------------------------------------------------------------
 // footer hax
@@ -3071,7 +3065,7 @@ $black: #1c1f20;
 // course view
 
 
-.fat_course_back{background: $bg; min-height: 100%; margin-top: -3.2rem;}
+.fat_course_back{ min-height: 100%; margin: -6rem -3rem 0;}
 
 .fat_course{padding: 5rem 0;margin: 0 auto; max-width: $container_wide;}
 
@@ -3084,8 +3078,13 @@ $black: #1c1f20;
 // now
 .fat_course > .now{background: #fff; padding: 2rem;}
 
-.fat_course > .now h2{font-size: 2.5rem; line-height: 3rem; padding: 0 0 2rem 4rem; position: relative;;}
-.fat_course > .now h2 .no{width: 3rem; height: 3rem; background: $bg; color: $text_lightest; position: absolute; top:0; left: 0; display: flex; align-items: center; justify-content: center;}
+.fat_course > .now h2{font-size: 2.5rem; line-height: 3rem; padding: 0 0 2rem 4rem; position: relative;}
+.fat_course > .now h2 a{text-decoration: none;}
+.fat_course > .now h2 .txt{color: $black;}
+.fat_course > .now h2 .no{width: 3rem; height: 3rem; background: $bg; color: $text_lighter; position: absolute; top:0; left: 0; display: flex; align-items: center; justify-content: center; border: 1px solid transparent;}
+.fat_course > .now h2 .no:hover{color:$text_light;}
+.fat_course > .now h2 .no i{position: absolute; left: -2.5rem; top:.5rem; font-size: 2rem; opacity: 0; transition: all .2s ease-in-out; }
+.fat_course > .now h2:hover .no i{opacity: 1;}
 
 // the focus is what the student is focussing on now
 .fat_course > .now .focus{}
@@ -3144,14 +3143,17 @@ $black: #1c1f20;
 .fat_hero h2{font-size: 6rem; color:$black;}
 .fat_hero h2{font-size: 4rem;}
 
-.fat_tease_btns{flex-direction: row; padding: 2rem 0;}
+.fat_tease_btns{flex-direction: row; padding: 2rem 0; max-width: 50rem;}
 
-.fat_hero .btn{margin: 0 1rem;}
-.fat_hero .btn.course{color:$blue;}
-.fat_hero .btn.educators{color:$watermelon;}
+.fat_tease_btns .btn{margin: 0 1rem;}
+.fat_tease_btns .btn:hover{background: $bg; color: $blue;}
 
-.fat_hero .btn:hover{background: $bg;}
+.fat_tease_btns .btn.course{color:$blue;}
+.fat_tease_btns .btn.educators{color:$watermelon;}
 
+.fat_tease_btns .btn.course{color:$blue;}
+.fat_tease_btns .btn.educators,
+.fat_tease_btns .btn.educators:hover{color:$watermelon;}
 
 .fat_hero.left{text-align: left; align-items:normal; margin-left: 3rem;}
 .fat_hero.left h1{}
@@ -3194,36 +3196,52 @@ h1 + .fat_nav{margin-top: 2rem}
 
 
 .fat_leo_list{padding-left: 8rem; position: relative;}
-.fat_leo_list h2{font-size: 4rem; margin: 0 0 5rem -5rem;}
+.fat_leo_list h2{font-size: 4rem; margin: 0 0 6rem -5rem;}
+.fat_leo_list h2 .purple{color: $new_purple;}
 
-.fat_leo_list dl{margin: 0 0 10rem 8rem; position: relative;}
+.fat_leo_list dl{margin: 0 0 10rem 7rem; position: relative;}
 
 .fat_leo_list dt{color: $black; font-size: 1.6rem; padding-bottom: 1rem; position: relative;}
 .fat_leo_list dt i{color: #9d989f; font-size: 4rem; position: absolute; top:-.5rem; left: -7rem; width: 5rem; text-align: center; display: block;}
 
 .fat_leo_list dd {padding-bottom: 2.5em;}
-.fat_leo_list dd p{color: $black; font-size: 1.1rem; padding-bottom: .75rem; max-width: 22rem; margin: 0;}
-.fat_leo_list dd p a{display: inline-block; color: $new_purple;}
+.fat_leo_list dd p{color: $black; font-size: 1.2rem; padding-bottom: .75rem; max-width: 22rem; margin: 0;}
+.fat_leo_list dd p a{display: inline-block; color: $new_purple; text-decoration: none; position: relative;}
+.fat_leo_list dd p a i{margin-right: 0.5rem; width: 1rem;}
+.fat_leo_list dd p a:hover::after{display: block; content: ''; position: absolute;bottom: -2px; left: 1.75rem; right: 0; border-bottom: 1px solid $new_purple;}
 
 .fat_leo_list dd .fit_window{width: 20rem; margin: 0 0 1rem;}
 
-.fat_leo_list dd .timing{color: $text_lighter;}
+.fat_leo_list dd .timing{color: $text_lighter; font-size: 80%;}
 
+.fat_leo_list .btn{color: $new_purple; border-color: $new_purple;}
+
+.fat_arrow_button{position: relative; margin-bottom: 3rem;}
+.fat_arrow_button svg{transform: scaleY(-1) rotate(295deg); position: absolute; top:-4rem; left: 22rem; }
+.fat_arrow_button svg > path{fill: $text_lighter; fill-rule: evenodd;}
 
 // leo SLINGIN
-
-
-
 .leo_slingin{position: absolute; bottom: 0; right: 10%; width:30%;}
 
 
+// ------------------------------------------------------------------------------------
+// video modal
+
+.fat_video_modal .modal-content{box-shadow: none;}
+
+.fat_video_modal .modal-body p{font-size: 1.2rem;}
+
+.fat_video_modal .wistia_responsive_padding{margin-bottom: 2rem;}
 
 
 
+// the menu that is just basically full screen lol
 
+	.fat_menu_modal .modal-dialog{margin: 0; max-width: none;}
 
-
-
+@media (min-width: 576px) {
+	.fat_menu_modal .modal-dialog{margin: 0; max-width: none;}	
+}
 
 
 

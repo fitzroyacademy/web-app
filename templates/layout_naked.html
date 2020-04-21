@@ -41,16 +41,99 @@ fit_revealuserpanel
 
 {% include 'partials/_flash_alerts.html' %}
 
-<div class="naked">
 
-  {% block body %}{% endblock %}
 
-</div>
+{% block body %}{% endblock %}
+
 
 <div class="fat_footer">
 
   {% include 'partials/nav/_footer.html' %}
 
+</div>
+
+
+
+<div class="modal fade fat_video_modal" tabindex="-1" role="dialog" id="fat_modal_video">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Go online with Leo.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+      </div>
+      <div class="modal-body">
+        
+          <script src="https://fast.wistia.com/embed/medias/r8h55dcl8x.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_r8h55dcl8x videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/r8h55dcl8x/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+
+          <h2>Why this is rad.</h2>
+
+          <p>I'm baby blue bottle ugh migas cray messenger bag butcher activated charcoal try-hard literally green juice pinterest DIY ramps dreamcatcher. Ramps celiac seitan semiotics, irony vinyl poutine quinoa prism raw denim jianbing gluten-free. Fashion axe 8-bit unicorn, cred schlitz brooklyn gluten-free cold-pressed microdosing street art lyft. Hammock heirloom kitsch mumblecore, cray lyft small batch pour-over tbh narwhal asymmetrical prism tacos copper mug chambray. Cray enamel pin gentrify tbh disrupt glossier tumblr vegan.</p>
+
+          <h3>Nah mate you're also rad.</h3>
+
+          <p>Mustache vegan four dollar toast fashion axe chicharrones. Whatever readymade plaid hexagon vaporware. Fixie kale chips cardigan, 8-bit umami cold-pressed fashion axe roof party photo booth snackwave salvia PBR&B swag street art humblebrag. Selvage shaman occupy jianbing stumptown hexagon meditation paleo pug yr williamsburg gochujang. You probably haven't heard of them tilde chia snackwave swag chambray iceland.</p>
+
+          <p>Blue bottle farm-to-table chicharrones, actually put a bird on it heirloom succulents pickled. Put a bird on it pok pok XOXO, before they sold out fashion axe intelligentsia hammock man braid disrupt taxidermy keffiyeh trust fund tote bag keytar. Pok pok cornhole fanny pack, aesthetic glossier mlkshk asymmetrical organic jean shorts farm-to-table freegan poke bitters 8-bit. Cray you probably haven't heard of them next level, tote bag ethical pabst poke pug hammock palo santo selvage hexagon. Food truck prism dreamcatcher pug tilde cardigan viral. Authentic brunch organic street art iPhone twee. Before they sold out godard gentrify fashion axe intelligentsia lo-fi ugh sartorial next level butcher.</p>
+          
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade fat_menu_modal" tabindex="-1" role="dialog" id="fat_user_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+          <div class="fat_hero">
+            <img class="fat_user_avatar" src="/static/assets/images/static/faces/clare.jpg" alt="image">
+            <h1>Clare Carmody.</h1>
+            <div class="fat_tease_btns">
+              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
+              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-cog"></i> Preferences</a>
+              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
+            </div>
+          </div>
+
+          <div class="fat_hero">
+            <h1>Your preferences.</h1>
+            <div class="fat_tease_btns">
+              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
+              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-cog"></i> Preferences</a>
+              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade fat_menu_modal" tabindex="-1" role="dialog" id="fat_menu_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+          <div class="fat_hero">
+            <h1>Hey you. 🥰</h1>
+            <div class="fat_tease_btns">
+              <a class="btn btn-xl btn-text" href="/play/courses"><i class="fal fa-play"></i> Courses </a>
+              <a class="btn btn-xl btn-text" href="/play/educators"><i class="fal fa-chalkboard-teacher"></i> Educators </a>
+              <a class="btn btn-xl btn-text" href="/play/about"><i class="fal fa-heart"></i> About us</a>
+              <a class="btn btn-xl btn-text" href="/play/product"><i class="fal fa-laptop"></i> Product</a>
+              <a class="btn btn-xl btn-text" href="/play/support"><i class="fal fa-question-circle"></i> Support</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
 </div>
 
 
