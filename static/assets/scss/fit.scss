@@ -3091,11 +3091,13 @@ html.section-play .fit_debug{display: none;}
 .fat_course > .now .focus{}
 
 // video
-.fat_course .focus > .video{background: $bg_blue; border-radius: $border_rad_lg;}
+.fat_course .focus > .video{background: $bg_blue; border-radius: $border_rad_lg; overflow: hidden; border-radius: $border_rad_sm;}
 
 // text
-.fat_course .focus > .html{ padding: 1rem 0;}
+.fat_course .focus > .html{ padding: 2rem 0;}
 .fat_course .focus > .video + .html{margin-top:2rem;}
+
+.fat_course .focus > .html p{font-size: 1.1rem; color: $text;}
 
 .fat_course .focus > .nav{display: flex; justify-content: space-between; padding-bottom: 3rem;}
 
@@ -3111,6 +3113,9 @@ html.section-play .fit_debug{display: none;}
 
 .fat_course > .now > .sidebar .fit_segments{max-height: 25rem; overflow-y: scroll; overscroll-behaviour:contain;}
 
+.fat_course > .now > .sidebar .chunk .more {color: $text_light; padding-top: .5rem;}
+.fat_course > .now > .sidebar .chunk .more a{color:$text_light; text-decoration: underline;}
+.fat_course > .now > .sidebar .chunk .more a:hover{color: $blue;}
 
 
 
@@ -3137,7 +3142,7 @@ $fat_coursebar_width: 50rem;
 
 html.section-play{overflow-x:hidden;}
 
-.fat_coursebar{z-index: 7000; position: fixed; top:0; left: -$fat_coursebar_width; bottom: 0; width: $fat_coursebar_width; padding: 2rem; background: #fff; overflow-y:scroll;}
+.fat_coursebar{z-index: 7000; position: fixed; top:0; left: -$fat_coursebar_width; bottom: 0; width: $fat_coursebar_width; padding: 2rem; background: #fff; overflow:hidden; overflow-y:scroll; overscroll-behavior: contain; }
 
 .fat_coursebar_head{padding: 0 1rem 1.5rem; position: relative;}
 .fat_coursebar_head h2 a{font-size: 1.8rem; padding: 0 10rem 0 0; display: flex; text-decoration: none; color: $black; align-items:baseline;}
