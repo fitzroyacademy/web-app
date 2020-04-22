@@ -3012,6 +3012,8 @@ html.fit_tabby_player .fit_player {}
 
 // Let's try again!
 
+body{transition: padding .25s ease-in-out;}
+
 
 $black: #1c1f20;
 
@@ -3034,11 +3036,11 @@ html.section-play .fit_debug{display: none;}
 .fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out;}
 .fat_user i,
 .fat_user:hover .down{color:$blue;}
-.fat_user .down{position:absolute; left: -1.95rem; color: $blue; opacity: 0;transition: all .25s ease-in-out;}
+.fat_user .down{position:absolute; left: -1.95rem; color: $blue; opacity: 0; transition: all .25s ease-in-out; top:1.2rem;}
 
 .fat_user:hover{background: $blue}
 .fat_user:hover i{color: #fff;}
-.fat_user:hover .down{opacity: 1;}
+.fat_user:hover .down{opacity: 1; top:1.4rem;}
 
 // ---------------------------------
 // culaz of hedda
@@ -3084,8 +3086,8 @@ html.section-play .fit_debug{display: none;}
 .fat_course > .now h2 .txt{color: $black;}
 .fat_course > .now h2 .no{height: 3rem; min-width: 3rem; background: $bg; color: $text_lighter; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; text-decoration: none; padding: 0 .5rem; margin-right: 1rem;}
 .fat_course > .now h2 .no:hover{color:$blue;}
-.fat_course > .now h2 .no i{position: absolute; left: -2.5rem; top:.5rem; font-size: 2rem; opacity: 0; transition: all .2s ease-in-out; }
-.fat_course > .now h2 .no:hover i{opacity: 1;}
+.fat_course > .now h2 .no .fa-chevron-left{position: absolute; left: -2.5rem; top:.5rem; font-size: 2rem; opacity: 1; color: $text_lighter; transition: all .2s ease-in-out; }
+.fat_course > .now h2 .no:hover .fa-chevron-left{color: $blue; left: -2.6rem;}
 
 // the focus is what the student is focussing on now
 .fat_course > .now .focus{}
@@ -3119,7 +3121,6 @@ html.section-play .fit_debug{display: none;}
 
 
 
-
 //neg margins
 .fat_course > .now > .sidebar .fit_btn.resource_link,
 .fat_course > .now > .sidebar .fit_segments{margin: 0 -1.5rem;}
@@ -3133,6 +3134,17 @@ html.section-play .fit_debug{display: none;}
 // FAQs
 .fat_faqs{padding: .5rem 0;}
 .fat_faqs.none p{color:$text_light;}
+
+
+
+
+
+// course intro page
+
+.fat_course_sell{display: flex; flex-direction:row; padding: 3rem 0;}
+.fat_course_sell h3{font-size: 2rem; padding: 0 5rem 0 0}
+.fat_course_sell .enrol{width: 25rem;}
+.fat_course_sell .enrol:hover{color: #fff;}
 
 
 // ------------------------------------------------------------------------------------
@@ -3149,7 +3161,7 @@ html.section-play{overflow-x:hidden;}
 .fat_coursebar_head h2 a:hover{color: $blue;}
 .fat_coursebar_head h2 i{ margin-right: 1rem;}
 
-.fat_coursebar_head .x{position: absolute; top:-.5rem; right: .5rem; font-size: 2rem; height: 3rem; width: 3rem; display: flex; align-items: center; justify-content: center; text-decoration: none; color:$text_light;}
+.fat_coursebar_head .x{position: absolute; top:-.5rem; right: 2rem; font-size: 2rem; height: 3rem; width: 3rem; display: flex; align-items: center; justify-content: center; text-decoration: none; color:$text_light;}
 .fat_coursebar_head .x:hover{background: #fff; color: $black;}
 
 // well this is wacky, using a psuedo on the X to do a closey friend. WACK
@@ -3170,11 +3182,30 @@ html.section-play{overflow-x:hidden;}
 .fat_lesson .fit_window img{border-radius: $border_rad_sm;}
 .fat_lesson .fit_window .play {font-size: 2rem;}
 
-.fat_lesson .status{position: absolute; top:1.5rem; right: 1rem; width: 2rem; height: 2rem; border-radius: $border_rad_r; background: #fff; border: 1px solid transparent; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center; font-size: 0.9rem; color:$text_lightest;}
-.fat_lesson .status i{color: $text_lighter;}
+.fat_lesson > .status{position: absolute; top:2.5rem; right: 2.5rem; width: 2rem; height: 2rem; border-radius: $border_rad_r; border: 1px solid transparent; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center; font-size: 0.9rem; color:$text_lightest; }
+//  add background: #fff; to .status for white backer?
 
-.fat_lesson .status .fa-play{color: $blue;}
+.fat_lesson > .status i{color: $text_lighter;}
 
+.fat_lesson > .status .fa-play{color: $blue;}
+
+// progress ring
+.progress_ring{	transform: rotate(-90deg);}
+.progress_ring .progress_meter,
+.progress_ring .progress_value{fill:none;}
+
+.progress_ring .progress_meter{stroke:$bg_dark;}
+.progress_ring .progress_value{stroke: $border_dark; stroke-linecap: round;}
+
+.fat_lesson .fit_btn.active > .fit_status .progress_ring .progress_meter{stroke: $text_lightest;}
+.fat_lesson .fit_btn.active > .fit_status .progress_ring .progress_value{stroke: $blue;}
+
+// check goes over the time
+.fat_lesson .fit_btn > .fit_status{ position: absolute; top:0; right: 0; background: #fff; display: flex; align-items: center; justify-content: center; width: 4.5rem; height: 100%;}
+.fat_lesson .fit_btn:hover > .fit_status{background: $bg;}
+.fat_lesson .fit_btn:hover > .fit_status .fa-check{color: $new_green;}
+
+.fat_lesson .fit_btn.active > .fit_status{background: $bg;}
 
 .fat_lesson:hover{background: $bg; cursor: pointer;}
 .fat_lesson:hover .status{color: $text_light;}
@@ -3192,8 +3223,8 @@ html.section-play{overflow-x:hidden;}
 .fat_course{transition: all .25s ease-in-out;}
 
 
-html.fat_coursebar_active body{overflow: hidden;}
-html.fat_coursebar_active .fat_course{}
+html.fat_coursebar_active body{overflow: hidden; padding-left: 2rem;}
+html.fat_coursebar_active .fat_course{ }
 html.fat_coursebar_active .fat_coursebar{left: 0;}
 html.fat_coursebar_active .fat_coursebar_head .x:after{display: block;}
 
@@ -3204,7 +3235,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 // ------------------------------------------------------------------------------------
 // hero
 
-.fat_hero{min-height: 100vh; margin-top: -4rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
+.fat_hero{min-height: 100vh; margin-top: 0rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
 
 
 .fat_hero *:first-child{margin-top: -3rem;}
@@ -3228,6 +3259,8 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero.left{text-align: left; align-items:normal; margin-left: 3rem;}
 .fat_hero.left h1{}
 
+.fat_hero.halfy{min-height: 50vh; justify-content:flex-end;}
+
 .fat_hero.header{min-height: 0;}
 
 .fat_hero.purple > *,
@@ -3245,8 +3278,13 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 // nav
 
 h1 + .fat_nav{margin-top: 2rem}
-.fat_nav{margin-left: -1rem;}
-.fat_nav a{display: inline-block; font-size: 1.6rem; padding: .75rem 1.5rem; margin-right: 1.5srem; text-decoration: none; border-radius: $border_rad_lg;}
+
+.fat_hero.sticky{position: sticky;}
+.fat_nav{z-index: 5000; position: sticky; flex-direction:row; top:0; background: #fff; padding: 1rem; background: #fff; margin-bottom: calc(50vh - 6rem);}
+
+.fat_nav a{font-size: 1.6rem; padding: .75rem 1.5rem; margin:0 1.5rem 0 0 !important; text-decoration: none; border-radius: $border_rad_lg; border-color: transparent; color: $text_lighter;}
+.fat_nav a.active{background: $bg; border-color: $border_lighter; color: $text_light;}
+
 .fat_nav .purple{color: $new_purple;}
 .fat_nav .blue{color: $new_blue;}
 .fat_nav .green{color: $new_green;}
@@ -3259,13 +3297,22 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_nav a:hover{background: $bg;}
 
+.fat_nav a.top{}
+
+@media (max-width: 1300px) {
+	.fat_nav a {padding: .5rem 1rem; font-size: 1.4rem; margin-right: .5rem;}
+}
+
+@media (max-width: 1100px) {
+	.fat_nav a .txt{display: none;}
+}
 
 
 // edit the user
 .fat_user_avatar{height: 20rem; border-radius: $border_rad_r; overflow: hidden; margin-bottom: 2rem;}
 
 
-.fat_leo_list{padding-left: 8rem; position: relative;}
+.fat_leo_list{padding: 10rem 0 0 8rem; position: relative;}
 .fat_leo_list h2{font-size: 4rem; margin: 0 0 6rem -5rem;}
 .fat_leo_list h2 .purple{color: $new_purple;}
 
@@ -3316,7 +3363,10 @@ h1 + .fat_nav{margin-top: 2rem}
 
 
 
-
+.fat_temp{height: 100vh; padding: 6rem 2rem;}
+.fat_temp:nth-child(odd){background: $bg;}
+.fat_temp h2{font-size: 4rem;}
+.fat_temp p{font-size: 1rem;}
 
 
 

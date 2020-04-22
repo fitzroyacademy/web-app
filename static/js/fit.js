@@ -11,6 +11,9 @@ $( document ).ready(function() {
   });
 
 
+  // scroll spy for static pages
+  $('body').scrollspy({ target: '#scrollspy' })
+
 
 
 
