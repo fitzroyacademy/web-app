@@ -141,7 +141,9 @@ class TestCourseRoutes(unittest.TestCase):
         self.session.add(lesson)
         segment = self.make_segment(lesson=lesson, thumbnail="thumbnail_1")
         self.session.add(segment)
-
+        self.session.add(course)
+        self.session.commit()
+        
         s = app.test_client()
 
         # No permission to set course options
