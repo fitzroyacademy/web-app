@@ -8,7 +8,7 @@
   {% if url_is('course.view', 'lesson.view', 'segment.view') %} course {% endif %}
   {% if current_user %} current_user {% endif %}
 
-  fat_coursebar_active
+  
 
 ">
 
@@ -94,16 +94,19 @@ fit_revealuserpanel
 <div class="modal fade fat_menu_modal" tabindex="-1" role="dialog" id="fat_user_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <button type="button" class="x" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+      </button>
       <div class="modal-body">
-        
-          <div class="fat_hero">
-            <img class="fat_user_avatar" src="/static/assets/images/static/faces/clare.jpg" alt="image">
-            <h1>Clare Carmody.</h1>
-            <div class="fat_tease_btns">
-              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
-              <a class="btn btn-xl btn-text" href="#user_prefs"><i class="fal fa-cog"></i> Preferences</a>
-              <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
-            </div>
+      
+        <div class="fat_hero">
+          <img class="fat_user_avatar" src="/static/assets/images/static/faces/clare.jpg" alt="image">
+          <h1>Clare Carmody.</h1>
+          <div class="fat_tease_btns">
+            <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
+            <a class="btn btn-xl btn-text" href="#user_prefs"><i class="fal fa-cog"></i> Preferences</a>
+            <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
+          </div>
           </div>
         
       </div>
@@ -113,21 +116,24 @@ fit_revealuserpanel
 
 
 
-<div class="modal fade fat_menu_modal" tabindex="-1" role="dialog" id="fat_menu_modal">
+<div class="modal fade fat_menu_modal fat_menu_lhs" tabindex="-1" role="dialog" id="fat_menu_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <button type="button" class="x" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+      </button>      
       <div class="modal-body">
         
-          <div class="fat_hero">
-            <h1>Hi! 🥰</h1>
-            <div class="fat_tease_btns">
-              <a class="btn btn-xl btn-text" href="/play/"><i class="fal fa-home"></i> Home </a>
-              <a class="btn btn-xl btn-text" href="/play/courses"><i class="fal fa-play"></i> Courses </a>
-              <a class="btn btn-xl btn-text" href="/play/educators"><i class="fal fa-chalkboard-teacher"></i> Educators </a>
-              <a class="btn btn-xl btn-text" href="/play/about"><i class="fal fa-heart"></i> About us</a>              
-              <a class="btn btn-xl btn-text" href="/play/support"><i class="fal fa-question-circle"></i> Support</a>
-            </div>
+        <div class="fat_hero">
+          <h1>Hi! 🥰</h1>
+          <div class="fat_tease_btns">
+            <a class="btn btn-xl btn-text" href="/play/"><i class="fal fa-home"></i> Home </a>
+            <a class="btn btn-xl btn-text blue" href="/play/courses"><i class="fal fa-play"></i> Courses </a>
+            <a class="btn btn-xl btn-text purple" href="/play/educators"><i class="fal fa-chalkboard-teacher"></i> Educators </a>
+            <a class="btn btn-xl btn-text watermelon" href="/play/about"><i class="fal fa-heart"></i> About us</a>              
+            <a class="btn btn-xl btn-text green" href="/play/support"><i class="fal fa-question-circle"></i> Support</a>
           </div>
+        </div>
         
       </div>
     </div>

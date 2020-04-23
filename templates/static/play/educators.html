@@ -2,19 +2,12 @@
 {% block body %}
 
 
-<div class="fat_head purple"  data-toggle="modal" data-target="#fat_menu_modal">
-  <a href="/play" class="fat_device">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 897 1337"><path d="M896.926,417.590 L0.097,416.434 L0.056,119.532 L0.058,119.532 L0.024,119.525 L298.280,0.028 L297.542,119.532 L298.114,119.532 L298.088,119.525 L596.343,0.028 L596.792,119.532 L598.755,119.532 L598.721,119.525 L896.975,0.028 L896.926,417.590 ZM683.424,1022.533 L369.742,1023.094 L368.821,1336.982 L0.072,1335.695 L0.063,650.350 L683.424,650.350 L683.424,1022.533 ZM0.056,650.350 L0.063,650.350 L0.056,650.350 Z"></path></svg>
-  </a>
-
-  <a class="fat_user" href="/play/user" data-toggle="modal" data-target="#fat_user_modal">
-    <i class="down fal fa-chevron-down"></i>
-    <i class="icon fal fa-user"></i>
-  </a>
+<div class="fat_head purple">
+	{% include 'static/play/_head.html' %}
 </div>
 
 
-<div class="fat_hero left purple halfy" id="top">
+<div class="fat_hero left purple" id="top">
 
 	<h1>We teach<br>learning, online.</h1>
 
@@ -25,11 +18,11 @@
 
 </div>
 
-<div class="fat_nav list-group" id="scrollspy">
+<div class="fat_nav lefty list-group" id="scrollspy">
 	<a href="#top" class="list-group-item top"><i class="fal fa-arrow-up"></i></a>
-	<a href="#make" class="purple list-group-item"><i class="fal fa-laptop"></i> <span class="txt">Make videos</span></a>
+	<a href="#make" class="purple list-group-item"><i class="fal fa-laptop"></i> <span class="txt">Go online</span></a>
 	<a href="#library" class="blue list-group-item"><i class="fal fa-video"></i> <span class="txt">Lesson library</span></a>
-	<a href="#workshops" class="green list-group-item"><i class="fal fa-book"></i> <span class="txt">Workshops</span></a>
+	<a href="#workshops" class="green list-group-item"><i class="fal fa-book"></i> <span class="txt">Online workshops</span></a>
 	<a href="#gear" class="red list-group-item"><i class="fal fa-tools"></i> <span class="txt">Gear list</span></a>
 	<a href="#blog" class="apricot list-group-item"><i class="fal fa-book"></i> <span class="txt">Blog</span></a>
 </div>
@@ -40,15 +33,92 @@
 
 
 <div class="fat_leo_list" id="make">
+
 	<img src="/static/assets/images/naked/leo_slingin.png" alt="leo" class="leo_slingin">
 	<h2>Great video lessons<br><span class="purple">start something like this:</span></h2>
-	<dl>
-		<dt><i class="fal fa-window-maximize"></i>1: Watch this intro.</dt>
-		<dd>
-			<div class="fit_window">
-		    <img src="/static/assets/images/lessons/customer-interviews.jpg" alt="image">
-		    <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+
+	<!-- <div class="fat_video_full">
+		<script src="https://fast.wistia.com/embed/medias/qp2c1utajg.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_qp2c1utajg videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/qp2c1utajg/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+	</div> -->
+
+	<div class="fat_video_sidenav">
+		<div class="viddy">
+			<script src="https://fast.wistia.com/embed/medias/qp2c1utajg.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_qp2c1utajg videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/qp2c1utajg/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+		</div>
+		<div class="side">
+			<div class="fit_segments">
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_a" data-fit-segment="2" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Introduction"></i><span class="sr-only">Introduction</span>
+		      <span class="fit_txt">Introduction</span>
+		      <span class="fit_sub">1:12</span>
+		      <span class="fit_status"><i class="fas fa-check"></i></span>
+		    </a>
+
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_b" data-fit-segment="3" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Lesson Resources"></i><span class="sr-only">Lesson Resources</span>
+		      <span class="fit_txt">Lesson Resources</span>
+		      <span class="fit_sub">2:36</span>
+		      <span class="fit_status"><i class="fas fa-check"></i></span>
+		    </a>
+
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_c" data-fit-segment="4" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Drawing without words"></i><span class="sr-only">Drawing without words</span>
+		      <span class="fit_txt">Drawing without words</span>
+		      <span class="fit_sub">8:12</span>
+		      <span class="fit_status"><i class="fas fa-check"></i></span>
+		    </a>
+
+		    <a class="fit_btn video accessible active" href="/course/fitzroy-academy/how-to-have-good-ideas/seg_d" data-fit-segment="5" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Five designers in a box"></i><span class="sr-only">Five designers in a box</span>
+		      <span class="fit_txt">Five designers in a box</span>
+		      <span class="fit_sub">1:36</span>
+		      <span class="fit_status">
+		        <svg class="progress_ring" width="26" height="26" viewBox="0 0 120 120">
+		          <circle class="progress_meter" cx="60" cy="60" r="54" stroke-width="12"></circle>
+		          <circle class="progress_value" cx="60" cy="60" r="54" stroke-width="12" style="stroke-dasharray: 340; stroke-dashoffset: 135;"></circle>
+		        </svg>
+		      </span>
+		    </a>
+
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_e" data-fit-segment="6" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Quiet loud brainstorming"></i><span class="sr-only">Quiet loud brainstorming</span>
+		      <span class="fit_txt">Quiet loud brainstorming</span>
+		      <span class="fit_sub">7:14</span>
+		      <span class="fit_status">
+		        <svg class="progress_ring" width="26" height="26" viewBox="0 0 120 120">
+		          <circle class="progress_meter" cx="60" cy="60" r="54" stroke-width="12"></circle>
+		          <circle class="progress_value" cx="60" cy="60" r="54" stroke-width="12" style="stroke-dasharray: 340; stroke-dashoffset: 260;"></circle>
+		        </svg>
+		      </span>
+		    </a>
+
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_f" data-fit-segment="7" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Party in the woods"></i><span class="sr-only">Party in the woods</span>
+		      <span class="fit_txt">Party in the woods</span>
+		      <span class="fit_sub">2:47</span>
+		    </a>
+
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_g" data-fit-segment="8" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Find your Awe"></i><span class="sr-only">Find your Awe</span>
+		      <span class="fit_txt">Find your Awe</span>
+		      <span class="fit_sub">7:56</span>
+		    </a>
+
+		    <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_h" data-fit-segment="9" data-fit-parent="2" data-fit-segment-link="">
+		      <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Mulago Fellow"></i><span class="sr-only">Mulago Fellow</span>
+		      <span class="fit_txt">Mulago Fellow</span>
+		      <span class="fit_sub">3:33</span>
+		    </a>
+
 		  </div>
+
+		</div>
+	</div>
+
+	<dl>
+		<dt><i class="fal fa-window-maximize"></i>1: Watch the intro vid!</dt>
+		<dd>
+			<p>The one right above.</p>
 			<p><a href="#" data-toggle="modal" data-target="#fat_modal_video"><i class="fal fa-window-maximize"></i>  Online lessons with Leo.  <span class="timing">1:35</span></a></p>
 		</dd>
 
