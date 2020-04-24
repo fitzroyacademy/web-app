@@ -450,7 +450,7 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn > i{width: $nav_left_width_collapsed; justify-content: center; text-align: center;}
 
 // wee bits of text on the right
-.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem;}
+.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem; white-space: nowrap;}
 
 // if the sub has a href (is a link)
 .fit_btn > .fit_sub[href]{color: $text_light;}
@@ -859,6 +859,13 @@ header .fit_btn:first-child{margin-left: -1rem;}
 .fit_segments .fa-check{color: #aaa;}
 .fit_segments .fa-play{color: $aqua;}
 
+
+.fit_segments_title{padding: 1.5rem 1.5rem 1rem;}
+.fit_segments_title h4,
+.fit_segments_title p{ margin: 0; padding: 0 0 .5rem;}
+
+.fit_segments_title h4{font-weight: normal; font-size: 1.5rem;}
+.fit_segments_title p{color:$text_light; font-size: 0.8rem;}
 
 .fit_lesson_manage{box-sizing:border-box;margin:0.5rem; border-radius: $border_rad_sm; background: $bg; overflow: hidden; border:0.15rem solid $bg; }
 
@@ -3017,8 +3024,16 @@ body{transition: padding .25s ease-in-out;}
 
 $black: #1c1f20;
 
+$fat_sidepad:  6rem;
+
 html.section-play .fit_debug{display: none;}
 
+
+dfn{position: relative; font-style: inherit; border-bottom: 2px dashed $border_lightest}
+dfn i{position: absolute; top:0rem; right: -0.9rem; font-size: 40%; color: $black; opacity: 0;}
+dfn:hover{border-color: $border_light;}
+dfn:hover i{color: $black; opacity: 0.5}
+dfn i:hover{color: $blue; opacity: 1;}
 
 // ------------------------------------------------------------------------------------
 // weird new fat header type
@@ -3265,7 +3280,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_tease_btns .btn.educators,
 .fat_tease_btns .btn.educators:hover{color:$watermelon;}
 
-.fat_hero.left{text-align: left; align-items:normal; margin: 0 8rem;}
+.fat_hero.left{text-align: left; align-items:normal; margin: 0 $fat_sidepad;}
 .fat_hero.left h1{}
 
 .fat_hero.halfy{min-height: 60vh; justify-content:flex-end;}
@@ -3294,8 +3309,13 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_hero.sticky{position: sticky;}
 .fat_nav{z-index: 5000; position: sticky; flex-direction:row; top:0; background: #fff; padding: 1rem; background: #fff; margin-bottom: calc(50vh - 6rem);}
 
-.fat_nav a{font-size: 1.6rem; padding: .75rem 1.5rem; margin:0 1.5rem 0 0 !important; text-decoration: none; border-radius: $border_rad_lg; border-color: transparent; color: $text_lighter;}
+.fat_nav a{font-size: 1.6rem; padding: .75rem 1.5rem; margin:0 1rem 0 0 !important; text-decoration: none; border-radius: $border_rad_lg; border-color: transparent; color: $text_lighter;}
 .fat_nav a.active{background: $bg; border-color: $border_lighter; color: $text_light;}
+
+// first one  gose to the top
+.fat_nav a.top{width: 4rem; opacity: 1; transition: all .25s ease-in-out; cursor: default;}
+.fat_nav a.top i{margin-right: 0;}
+.fat_nav a.top.active{opacity: 0;}
 
 .fat_nav .purple{color: $new_purple;}
 .fat_nav .blue{color: $new_blue;}
@@ -3333,7 +3353,7 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_user_avatar{height: 18rem; border-radius: $border_rad_r; overflow: hidden; margin-bottom: 2rem;}
 
 
-.fat_leo_list{padding: 10rem 8rem 0rem; position: relative;}
+.fat_leo_list{padding: 10rem $fat_sidepad 0rem; position: relative; max-width: 120rem; overflow: hidden;}
 .fat_leo_list h2{font-size: 4rem; margin: 0 0 4rem 0rem;}
 .fat_leo_list h2 .purple{color: $new_purple;}
 
@@ -3355,22 +3375,32 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_leo_list .btn{color: $new_purple; border-color: $new_purple;}
 
 .fat_arrow_button{position: relative; margin-bottom: 3rem;}
+.fat_arrow_button  .btn{margin-top: 1rem; border: 1px solid $new_purple}
+.fat_arrow_button  .btn:hover{background: $new_purple; color:#fff;}
 .fat_arrow_button svg{transform: scaleY(-1) rotate(295deg); position: absolute; top:-4rem; left: 22rem; }
 .fat_arrow_button svg > path{fill: $text_lighter; fill-rule: evenodd;}
 
 // leo SLINGIN
-.leo_slingin{position: absolute; bottom: 0; right: 10%; width:30%; z-index: 5600; }
+.leo_slingin{position: absolute; bottom: 0; right: 10%; width:30%; z-index: 3600; }
 
+
+// the gradient
+.fat_leo_list:after{ display: block; height: 19rem; content: ''; position: absolute; bottom: -9rem; left: 0; right: -6rem; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(0, 0, 0, 0.1)); transform: rotate(-10deg);}
+// .fat_leo_list{box-shadow: inset 0rem -1rem 1rem rgba(0,0,0,0.1);}
 
 // video with some sidenav
 
-.fat_video_sidenav{z-index: 5500; display: flex; flex-direction:column; position: relative; margin-bottom: 3rem; border-radius: $border_rad_lg; overflow: hidden;}
+.fat_video_sidenav{z-index: 3500; display: flex; flex-direction:column; position: relative; margin-bottom: 3rem; border-radius: $border_rad_lg; overflow: hidden;}
 .fat_video_sidenav .viddy{width: 70%;}
 .fat_video_sidenav .side{width: 30%; position: absolute; top:0; right: 0; bottom: 0; background: $bg; overflow: hidden; overflow-y: scroll;}
 
 .fat_video_sidenav .side .fit_btn .fit_status{background: $bg;}
 .fat_video_sidenav .side .fit_btn:hover,
 .fat_video_sidenav .side .fit_btn:hover .fit_status{background: #fff;}
+.fat_video_sidenav .side .fit_btn:hover .fit_status{opacity: 0;}
+
+.fat_video_sidenav .side .fit_btn.active,
+.fat_video_sidenav .side .fit_btn.active .fit_status{background: #fff;}
 
 // ------------------------------------------------------------------------------------
 // video modal
