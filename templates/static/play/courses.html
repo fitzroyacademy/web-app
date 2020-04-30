@@ -1,0 +1,129 @@
+{% extends "/layout_naked.html" %}
+{% block body %}
+
+
+<div class="fat_head watermelon">
+	{% include 'static/play/_head.html' %}
+</div>
+
+
+<div class="fat_hero left halfy watermelon" id="top">
+
+	<h1>Learn online, <br>not alone.</h1>
+
+</div>
+
+<div class="fat_nav list-group" id="scrollspy">
+	<a href="#top" class="list-group-item top"><i class="fal fa-arrow-up"></i></a>
+	<a href="#trailers" class="watermelon list-group-item"><i class="fal fa-play-circle"></i> <span class="txt">Online courses</span></a>
+	<a href="#hello" class="purple list-group-item"><i class="fal fa-tools"></i> <span class="txt">Custom courses</span></a>
+</div>
+
+
+<div class="fat_section fat_pic_grid coursetease left"  id="trailers">
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/willvert.jpg" alt="" class="vert">
+		<img src="/static/assets/images/lessons_hires/will.jpg" alt="" class="hori">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Watch the trailer <span class="timing">1:56</span></small></a>
+	</div>
+	<div class="portrait text watermelon">
+		<h2>
+			<small><i class="fal fa-play-circle"></i> Online course</small>
+			Social enterprise fundamentals.
+		</h2>
+		<div class="meta">
+			<div class="deet">
+				<i class="fal fa-info-square"></i>
+				<p><strong>Overview</strong> Basics to boardroom! Customer discovery, biz models, product, impact, through to pitching for investment. ❤️ 🚀</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-calendar"></i>
+				<p><strong>Schedule</strong> 3 hours per week over 12 weeks.</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-users"></i>
+				<p><strong>Audience</strong> Social enterprise team leads, small biz and startup founders.</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-usd-circle"></i>
+				<p><strong>Cost</strong> $100 <small>USD</small>, at your own pace.</p>
+			</div>
+		</div>
+		<a href="#" class="btn btn-lg btn-outline-primary"><i class="fal fa-chevron-right"></i> More info, enrol online</a>
+	</div>
+</div>
+
+<div class="fat_section fat_pic_grid coursetease right"  id="trailers">
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/clarevert.jpg" alt="" class="vert">
+		<img src="/static/assets/images/lessons_hires/clare.jpg" alt="" class="hori">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Watch the trailer <span class="timing">1:36</span></small></a>
+	</div>	
+	<div class="portrait text teal">
+		<h2>
+			<small><i class="fal fa-play-circle"></i> Online course</small>
+			Don't run a shit non-profit.
+		</h2>
+		<div class="meta">
+			<div class="deet">
+				<i class="fal fa-info-square"></i>
+				<p><strong>Overview</strong> Set a clear vision, get your tech in order and run a snappy, agile team that gets things done.</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-users"></i>
+				<p><strong>Audience</strong> Non-profit leaders chasing tight, focussed impact. The doers who are impatient about change.</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-calendar"></i>
+				<p><strong>Schedule</strong> 3 hours per week over 12 weeks</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-usd-circle"></i>
+				<p><strong>Cost</strong> $1,200 <small>USD</small>, 12 people max per cohort.</p>
+			</div>
+		</div>
+		<a href="#" class="btn btn-lg btn-outline-primary"><i class="fal fa-chevron-right"></i> More info, enrol online</a>
+	</div>
+</div>
+
+
+
+
+<div class="fat_section purple" id="hello">
+	
+	<h2>
+		<small><i class="fal fa-tools"></i> Custom courses</small>
+		Let's make things together.
+	</h2>
+	<div class="bigly">
+		<a class="btn btn-absurd purple" href="/play/educators"><i class="fal fa-envelope"></i> Our services <span class="party">🥳</span></a>
+		<div class="nb">We can help you build  custom for your team, school or business. We love capacity building!</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
