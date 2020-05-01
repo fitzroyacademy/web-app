@@ -11,7 +11,7 @@ from flask import (
     jsonify,
 )
 from sqlalchemy.exc import IntegrityError
-
+from flask import current_app
 import datamodels
 from datamodels.enums import PreferenceTags
 from dataforms import (
@@ -228,32 +228,7 @@ def enroll(course_slug, institute=""):
 @blueprint.subdomain_route("/login", methods=["GET", "POST"])
 def login(institute=""):
     """ Validate login and save current user to session. """
-    last_page = request.args.get("last_page", "")
-    data = {"errors": [], "form": LoginForm(), "last_page": last_page}
-    if request.method == "POST":
-        form = LoginForm(request.form)
-        data["form"] = form
-        if form.validate():
-            user = datamodels.get_user_by_email(form.email.data)
-            if user is None:
-                data["errors"].append("Bad username or password, try again?")
-            else:
-                valid = user.check_password(form.password.data)
-                if not valid:
-                    data["errors"].append("Bad username or password, try again?")
-                else:
-                    session["user_id"] = user.id
-                    if "anon_progress" in session:
-                        d = json.loads(session["anon_progress"])
-                        merge_anonymous_data(user.id, d)
-                        session.pop("anon_progress")
-                    return redirect(last_page or "/")
-        else:
-            data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
-    else:
-        data["form"] = LoginForm()
-    if len(data["errors"]) > 0 or request.method == "GET":
-        return render_template("login.html", **data)
+    return current_app.auth0.authorize_redirect(redirect_uri='{}/callback'.format(current_app.config['SERVER_NAME']))
 
 
 @blueprint.subdomain_route("/logout", methods=["POST"])
@@ -267,6 +242,27 @@ def logout(user, institute=""):
     flash("You have been successfully logged out.")
     return redirect(url_for("course.index"))
 
+@blueprint.subdomain_route("/callback", methods=["POST", "GET"])
+def callback(institute=""):
+    """
+    Handle the Auth0 callback after login.
+    """
+    # Handles response from token endpoint
+    current_app.auth0.authorize_access_token()
+    resp = current_app.auth0.get('userinfo')
+    userinfo = resp.json()
+    # if "anon_progress" in session:
+    #     d = json.loads(session["anon_progress"])
+    #     merge_anonymous_data(user.id, d)
+    #     session.pop("anon_progress")
+    # Store the user information in flask session.
+    session['jwt_payload'] = userinfo
+    session['profile'] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture']
+    }
+    return redirect('/')
 
 @blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
 @login_required

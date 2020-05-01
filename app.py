@@ -5,6 +5,8 @@ import sass
 from flask import Flask, render_template, request, url_for, flash
 from werkzeug.routing import BuildError
 from werkzeug.utils import import_string
+from authlib.integrations.flask_client import OAuth
+from six.moves.urllib.parse import urlencode
 
 import commands
 import template_filters
@@ -14,7 +16,7 @@ import routes.course
 import routes.error
 
 
-app = Flask("FitzroyFrontend")
+app = Flask("web-app")
 
 environment = environ.get("FLASK_ENV", default="")
 
@@ -51,6 +53,22 @@ app.add_url_rule(
     view_func=app.send_static_file,
     subdomain="<institute>",
 )
+
+if 'AUTH0_CLIENT_ID' in app.config.keys():
+    oauth = OAuth(app)
+    api_url = 'https://{}'.format(app.config['AUTH0_DOMAIN'])
+    app.auth0 = oauth.register(
+        'auth0',
+        client_id=app.config['AUTH0_CLIENT_ID'],
+        client_secret=app.config['AUTH0_CLIENT_SECRET'],
+        api_base_url=api_url,
+        access_token_url='{}/oauth/token'.format(api_url),
+        authorize_url='{}/authorize'.format(api_url),
+        client_kwargs={
+            'scope': 'openid profile email',
+        },
+    )
+
 
 
 @app.url_value_preprocessor
@@ -137,7 +155,7 @@ if __name__ == "__main__":
         def ignore_func(path):
             if path.split(".")[-1] == "sqlite":
                 return True
-
+        print(app.config)
         server = Server(app.wsgi_app)
         server.watch("./static/assets/scss/*", compile_sass)
         server.watch("./", ignore=ignore_func)

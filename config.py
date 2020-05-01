@@ -22,9 +22,10 @@ class Config(object):
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
     SERVER_NAME = environ.get("SERVER_NAME", default=None)
-
+    AUTH0_CLIENT_ID = environ.get("AUTH0_CLIENT_ID", default=None)
+    AUTH0_DOMAIN = environ.get("AUTH0_DOMAIN", default=None)
+    AUTH0_CLIENT_SECRET = environ.get("AUTH0_CLIENT_SECRET", default=None)
     UPLOAD_FOLDER = "static/uploads"
-
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET = environ.get("WTF_CSRF_SECRET", "").encode()
 
@@ -59,7 +60,6 @@ class DevelopmentConfig(Config):
     DB_HOST = environ.get("DB_HOST", default="dev_db.sqlite")
     DB_OPTIONS = environ.get("DB_OPTIONS", default="?check_same_thread=False")
     WTF_CSRF_SECRET = "qZeimuCyYqo27CqndJetJHx".encode()
-    SERVER_NAME = "fitz-dev.com:5000"
     S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
 
 
