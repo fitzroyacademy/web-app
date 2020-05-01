@@ -2,13 +2,20 @@
 <!doctype html>
 <html lang="en" class="
   fit_breezy_player
+  section-{{ current_section }}
+  section-sub-{{ current_section_sub }}
   {% if url_is('course.view', 'lesson.view', 'segment.view') %} course {% endif %}
   {% if current_user %} current_user {% endif %}
 ">
 
-<!-- fit_minleft -->
-<!-- fit_minright -->
-<!-- fit_revealuserpanel -->
+<!-- 
+
+These are all HTML classes that change the layout in various ways:
+fit_breezy_player
+fit_minleft
+fit_minright
+fit_revealuserpanel
+ -->
 
 <head>
   <!-- Required meta tags -->

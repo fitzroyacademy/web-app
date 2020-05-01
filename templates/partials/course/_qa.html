@@ -1,33 +1,33 @@
 <div class="fit_faq_edit draggable" data-list-el-id="{{ question.id }}" data-fit-qa-container>
-    <a href="#" class="btn fit_faq_drag btn-link handle" data-fit-dragndrop="">
-        <i class="far fa-arrows-v" aria-hidden="true"></i>
-    </a>
 
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fal fa-question"></i></span>
-            </div>
-            <input type="text" id="lesson-question-{{ question.id }}" class="form-control" placeholder="Question?"
-                   value="{{ question.question }}">
+    <div class="input-group primo">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fal fa-question"></i></span>
         </div>
+        <input type="text" id="lesson-question-{{ question.id }}" class="form-control" placeholder="Question?"
+            value="{{ question.question }}">
     </div>
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
-            </div>
-            <textarea class="form-control" id="lesson-answer-{{ question.id }}" aria-label="With textarea"
-                      placeholder="Answer!">{{ question.answer }}</textarea>
+
+    <div class="input-group secondi">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
         </div>
+        <textarea class="form-control" id="lesson-answer-{{ question.id }}" aria-label="With textarea"
+            placeholder="Answer!">{{ question.answer }}</textarea>
     </div>
-    <div class="form-group d-flex justify-content-between">
-        <a class="btn btn-sm btn-light btn-remove"
+
+    <div class="fit_faq_controls">
+        <a href="#" class="btn fit_faq_drag btn-link btn-block handle" data-fit-dragndrop="">
+            <i class="far fa-arrows-v" aria-hidden="true"></i>
+        </a>
+        <a class="btn btn-sm btn-text btn-block btn-remove"
            href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/qa/{{ question.id }}/delete" data-toggle="modal"
-           data-target="#fit_modal_delete"><i class="fal fa-trash"></i> Remove</a>
-        <button class="btn btn-sm btn-outline-primary" data-question-id="{{ question.id }}"
+           data-target="#fit_modal_delete"><i class="fal fa-trash"></i>
+       </a>
+       <button class="btn btn-sm btn-block btn-outline-primary" data-question-id="{{ question.id }}"
                 data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}" data-save-question><i
-                class="fal fa-check"></i> Save
+                class="fal fa-check"></i>
         </button>
     </div>
+
 </div>

@@ -1,0 +1,256 @@
+{% from 'macros.html' import link_to, active_link, wysiwyg %}
+<!doctype html>
+<html lang="en" class="
+  
+  fit_breezy_player
+  section-{{ current_section }}
+  section-sub-{{ current_section_sub }}
+  {% if url_is('course.view', 'lesson.view', 'segment.view') %} course {% endif %}
+  {% if current_user %} current_user {% endif %}
+
+  
+
+">
+
+<!-- 
+
+These are all HTML classes that change the layout in various ways:
+
+fat_coursebar_active
+
+fit_breezy_player
+fit_minleft
+fit_minright
+fit_revealuserpanel
+ -->
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }} ">
+
+  <!-- Other fool's plugins -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/flag-icon-css-master/css/flag-icon.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap4-toggle/css/bootstrap4-toggle.css') }}">
+  <script src="https://kit.fontawesome.com/1f45a33999.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/node-snackbar/dist/snackbar.min.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/medium-editor/dist/css/medium-editor.min.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/cropperjs/cropper.min.css') }}" />
+  <!-- Then our stuff -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fit.css')}}?{{ cache_code }}">
+
+  <title>FA! 😍</title>
+</head>
+<body>
+
+{% include 'partials/_flash_alerts.html' %}
+
+
+
+{% block body %}{% endblock %}
+
+
+<div class="fat_footer">
+
+  {% include 'partials/nav/_footer.html' %}
+
+</div>
+
+
+
+<div class="modal fade fat_video_modal" tabindex="-1" role="dialog" id="fat_modal_video">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Barrier mapping - Ari Johnson.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+      </div>
+      <div class="modal-body">
+        
+          <script src="https://fast.wistia.com/embed/medias/baba5nfzx9.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_baba5nfzx9 videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/baba5nfzx9/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+
+          <div class="fat_lesson" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true">
+            <div class="fit_window">
+              <img src="/static/assets/images/lessons/barrier-mapping.jpg" alt="image">
+              <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+            </div>
+              <h4>Barrier Mapping</h4>
+              <p>Ari Johnson, CEO @ Muso Health</p>
+              <p>Pull your head in and humble up before finding out what a community really needs.</p>
+            <div class="status">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapse show" id="collapseExample">
+              <div class="fit_segments">
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_a" data-fit-segment="2" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Introduction"></i><span class="sr-only">Introduction</span>
+                  <span class="fit_txt">Introduction</span>
+                  <span class="fit_sub">1:12</span>
+                  <span class="fit_status"><i class="fas fa-check"></i></span>
+                </a>
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_b" data-fit-segment="3" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Lesson Resources"></i><span class="sr-only">Lesson Resources</span>
+                  <span class="fit_txt">Lesson Resources</span>
+                  <span class="fit_sub">2:36</span>
+                  <span class="fit_status"><i class="fas fa-check"></i></span>
+                </a>
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_c" data-fit-segment="4" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Drawing without words"></i><span class="sr-only">Drawing without words</span>
+                  <span class="fit_txt">Drawing without words</span>
+                  <span class="fit_sub">8:12</span>
+                  <span class="fit_status"><i class="fas fa-check"></i></span>
+                </a>
+
+                <a class="fit_btn video accessible" href="/course/fitzroy-academy/how-to-have-good-ideas/seg_d" data-fit-segment="5" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Five designers in a box"></i><span class="sr-only">Five designers in a box</span>
+                  <span class="fit_txt">Five designers in a box</span>
+                  <span class="fit_sub">1:36</span>
+                  <span class="fit_status">
+                    <svg class="progress_ring" width="26" height="26" viewBox="0 0 120 120">
+                      <circle class="progress_meter" cx="60" cy="60" r="54" stroke-width="12"></circle>
+                      <circle class="progress_value" cx="60" cy="60" r="54" stroke-width="12" style="stroke-dasharray: 340; stroke-dashoffset: 135;"></circle>
+                    </svg>
+                  </span>
+                </a>
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_e" data-fit-segment="6" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Quiet loud brainstorming"></i><span class="sr-only">Quiet loud brainstorming</span>
+                  <span class="fit_txt">Quiet loud brainstorming</span>
+                  <span class="fit_sub">7:14</span>
+                  <span class="fit_status">
+                    <svg class="progress_ring" width="26" height="26" viewBox="0 0 120 120">
+                      <circle class="progress_meter" cx="60" cy="60" r="54" stroke-width="12"></circle>
+                      <circle class="progress_value" cx="60" cy="60" r="54" stroke-width="12" style="stroke-dasharray: 340; stroke-dashoffset: 260;"></circle>
+                    </svg>
+                  </span>
+                </a>
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_f" data-fit-segment="7" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Party in the woods"></i><span class="sr-only">Party in the woods</span>
+                  <span class="fit_txt">Party in the woods</span>
+                  <span class="fit_sub">2:47</span>
+                </a>
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_g" data-fit-segment="8" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Find your Awe"></i><span class="sr-only">Find your Awe</span>
+                  <span class="fit_txt">Find your Awe</span>
+                  <span class="fit_sub">7:56</span>
+                </a>
+
+                <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_h" data-fit-segment="9" data-fit-parent="2" data-fit-segment-link="">
+                  <i class="fas fa-circle" data-fit_lesson_tooltip="" title="" aria-hidden="true" data-original-title="Mulago Fellow"></i><span class="sr-only">Mulago Fellow</span>
+                  <span class="fit_txt">Mulago Fellow</span>
+                  <span class="fit_sub">3:33</span>
+                </a>
+
+              </div>
+
+              <div class="embed">
+                
+                <a href="#" class="btn btn btn-primary"><i class="fal fa-window-restore"></i> Use this lesson</a>
+              </div>
+
+
+            </div><!-- collapse -->
+          </div>
+          
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade fat_menu_modal" tabindex="-1" role="dialog" id="fat_user_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button type="button" class="x" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+      </button>
+      <div class="modal-body">
+      
+        <div class="fat_hero">
+          <img class="fat_user_avatar" src="/static/assets/images/static/faces/clare.jpg" alt="image">
+          <h1>Clare Carmody.</h1>
+          <div class="fat_tease_btns">
+            <a class="btn btn-xl btn-text" href="#"><i class="fal fa-play"></i> Your courses</a>
+            <a class="btn btn-xl btn-text" href="#user_prefs"><i class="fal fa-cog"></i> Preferences</a>
+            <a class="btn btn-xl btn-text" href="#"><i class="fal fa-sign-out"></i> Sign out </a>
+          </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade fat_menu_modal fat_menu_lhs" tabindex="-1" role="dialog" id="fat_menu_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button type="button" class="x" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+      </button>      
+      <div class="modal-body">
+        
+        <div class="fat_hero">
+          <h1>Hi! 🥰</h1>
+          <div class="fat_tease_btns">
+            <a class="btn btn-xl btn-text" href="/play/"><i class="fal fa-home"></i> Home </a>
+            <a class="btn btn-xl btn-text watermelon" href="/play/courses"><i class="fal fa-play"></i> Online courses </a>
+            <a class="btn btn-xl btn-text purple" href="/play/educators"><i class="fal fa-chalkboard-teacher"></i> Services </a>
+            <a class="btn btn-xl btn-text blue" href="/play/about"><i class="fal fa-heart"></i> About us</a>              
+            <a class="btn btn-xl btn-text green" href="/play/support"><i class="fal fa-question-circle"></i> Support</a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Other fool's JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap4-toggle/js/bootstrap4-toggle.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/apexcharts/dist/apexcharts.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
+<script src="{{ url_for('static', filename='vendor/node-snackbar/dist/snackbar.min.js') }}"></script>
+
+<!-- medium wysiwyg -->
+<script src="{{ url_for('static', filename='vendor/medium-editor/dist/js/medium-editor.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/medium-editor-autolist/dist/autolist.min.js') }}"></script>
+<!-- wysiwyg -->
+
+<script src="{{ url_for('static', filename='vendor/cropperjs/cropper.min.js') }}"></script>
+
+
+<!-- FA JS -->
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if form and form.csrf_token %}
+        var csrf_token = "{{ form.csrf_token.current_token }}";
+        {% elif ajax_csrf_form and ajax_csrf_form.csrf_token %}
+        var csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
+<script src="{{ url_for('static', filename='js/fit.js') }}"></script>
+
+
+{% include 'partials/_debug_template_vars.html' %}
+
+</body>
+</html>

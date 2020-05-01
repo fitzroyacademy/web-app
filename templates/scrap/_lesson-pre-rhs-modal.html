@@ -1,0 +1,224 @@
+{% extends "/layout.html" %}
+{% block CSRFtoken %}
+    <script type="text/javascript">
+        {% if ajax_csrf_form.csrf_token %}
+        let csrf_token = "{{ ajax_csrf_form.csrf_token.current_token }}";
+        {% endif %}
+    </script>
+{% endblock %}
+{% block body %}
+
+<!-- Editing a lesson here -->
+
+<main>
+
+  <article>
+
+    <div class="fit_course intro">
+
+    <form id="lesson-edit-form" action="/course/{{ course.slug }}/lessons/{{ lesson.id }}/edit" method="POST" enctype="multipart/form-data" data-fit-wysiwyg>
+
+      <div class="fit_fancyplace">
+        <label for="course_name">Lesson name</label>
+        <input type="text" class="form-control form-control-h2" name="title" value="{{ form.title.data }}" id="title" placeholder="E.g. Lesson name" required data-fit-fancyplace data-fit-lesson-edit>
+      </div>
+
+      <div class="fit_fancyplace">
+        <label for="lesson_description">One-sentence description</label>
+        <input type="text" value="{{ form.description.data }}" class="form-control" id="lesson_description" name="description" maxlength="140" placeholder="Short description of the lesson. 140 characters max." required data-fit-fancyplace data-fit-lesson-edit>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h3>
+            <span class="txt">The lesson.</span>
+            <small class="subtxt"><span class="fas fa-clock"></span>
+              {{ lesson.duration_seconds|hhmmss }}
+            </small>
+          </h3>
+          <div class="fit_paneless">
+              {% with cover_image=lesson.get_cover if lesson else "", cover_action="/course/"+course.slug+"/lesson/" + lesson.id|string + "/edit" %}
+              {% include "partials/course/_cover_cropper.html" %}
+              {% endwith %}
+          </div>
+
+          <div class="fit_body fit_lessons">
+
+              {% if not introduction %}
+              <a class="fit_btn fit_btn_add add-segment"
+                href="#"
+                data-toggle="modal" data-target="#fit_modal_add_intro" data-fit-add-intro>
+                <i class="fas fa-plus"></i>
+                <span class="fit_txt">Add an intro video</span>
+              </a>
+              {% endif %}
+
+              <div data-fit-sortable-list-with-intro-element>
+
+
+                <!-- This first one is special, just for the intro video: -->
+                {% if introduction %}
+                    {% include "partials/course/_intro.html" %}
+                {% endif %}
+
+                <div id="sortable-list"
+                     data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/reorder"
+                     data-fit-list-elements-container
+                     data-fit-course-slug="{{ course.slug }}"
+                     data-fit-lesson-id="{{ lesson.id }}"
+                     data-fit-sortable-list>
+                    {% for segment in segments %}
+                      {% include "partials/course/_list_segment_element.html" %}
+                    {% endfor %}
+                </div>
+              </div>
+
+              <a class="fit_btn fit_btn_add add-segment" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/segments/add/"
+                 data-toggle="modal" data-target="#fit_modal_add_segment">
+                <i class="fas fa-plus"></i>
+                <span class="fit_txt">Add new</span>
+              </a>
+
+          </div>
+          <!-- end vid stack -->          
+
+        </div><!-- col -->
+
+        <div class="col-md-6">
+
+          <h3>
+            <span class="txt">Resources.</span>
+          </h3>
+
+          <div class="fit_pane slimmest bordered">
+            <div id="sortable-list-resources"
+                 data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/reorder"
+                 data-fit-sortable-list-resources>
+                {% for resource in resources %}
+                    {% include 'partials/course/_list_resource_element.html' %}
+                {% endfor %}
+            </div>
+
+            <a class="fit_btn fit_btn_add" href="/course/{{ course.slug }}/lessons/{{ lesson.id }}/resources/add" data-toggle="modal" data-target="#fit_modal_add_resource_link">
+              <i class="fas fa-plus"></i>
+              <span class="fit_txt">Add a resource</span>
+            </a>
+          </div><!-- pane -->
+
+          <div class="form-group">
+            <form>
+                <h4>Further reading (appears under resource links)</h4>
+                <div style="border:1px solid #ccc; padding:1rem;">
+                {{ wysiwyg('further_reading', lesson.further_reading) }}
+                </div>
+            </form>
+          </div>
+
+
+          <h3>
+            <span class="txt">FAQs.</span>
+          </h3>
+
+          <div class="fit_pane bordered white">
+            <dl class="fit_summary_icons">
+
+              <!-- <dt><i class="far fa-question-square"></i> Frequently Asked Questions</dt> -->
+
+              <!-- Would be cool to have the textareas have VERY simple WYSIWYG and auto-resize boxes? -->
+
+              <dd class="fit_faq_edits">
+
+                <div id="sortable-list-questions"
+                     data-action-url="/course/{{ course.slug }}/lessons/{{ lesson.id }}/qa/reorder"
+                     data-fit-sortable-list-questions>
+                {% for question in questions %}
+                  {{ question|safe }}
+                {% endfor %}
+                </div>
+
+                <div class="fit_faq_edit fit_faq_add">
+
+
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fal fa-question"></i></span>
+                      </div>
+                      <input type="text" id="lesson-question" class="form-control"
+                             placeholder="Question?" data-fit-lesson-question>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fal fa-comment-dots"></i></span>
+                      </div>
+                      <textarea class="form-control" id="lesson-question-answer"
+                                aria-label="With textarea"
+                                placeholder="Answer!"
+                                data-fit-lesson-question-answer></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex justify-content-between">
+                    <span>&nbsp;</span>
+                    <button class="btn btn-sm btn-primary" data-save-question-answer data-lesson-id="{{ lesson.id }}" data-course-slug="{{ course.slug }}"><i class="fal fa-plus"></i> Add new</button>
+                  </div> 
+                </div>
+              </dd>
+              
+            </dl>
+          </div><!-- pane -->
+
+        </div><!-- col -->
+      </div><!-- row -->
+
+
+    </form>
+
+
+
+
+  </article>
+</main>
+
+{% if lesson %}
+  {% include 'partials/modal/_add_segment.html' %}
+  {% include 'partials/modal/_add_resource.html' %}
+  {% with action="/course/" + course.slug + "/lessons/" + lesson.id|string + "/segments/add/intro_video", intro=introduction %}
+  {% include 'partials/modal/_add_intro.html' %}
+  {% endwith %}
+{% endif %}
+
+
+<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+<script>let editorResource = new MediumEditor('#fit_wysiwyg_resource');
+let furtherReading = document.getElementById("further_reading");
+</script>
+
+<script>
+// probably there is more elegant way to add editor to dynamically loaded content.
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (!mutation.addedNodes) return;
+
+    for (var i = 0; i < mutation.addedNodes.length; i++) {
+      // do things to your newly added nodes here
+      var node = mutation.addedNodes[i];
+      if (node.id === 'fit_modal_add_text_segment') {
+          let editor = new MediumEditor('#fit_wysiwyg_editor');
+          observer.disconnect()
+      }
+    }
+  })
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: false,
+    characterData: false
+})
+</script>
+
+{% endblock %}

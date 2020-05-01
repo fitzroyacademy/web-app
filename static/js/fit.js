@@ -2,6 +2,42 @@ $( document ).ready(function() {
 
   // Go team Javascriptz, hack them codez, roxor them boxorz.
 
+
+  // weird horrible naked tests
+  
+  $('[data-fit-toggle-coursebar]').click(function(e) {
+    e.preventDefault();   
+    $('html').toggleClass('fat_coursebar_active');
+  });
+
+
+  // scroll spy for static pages
+  $('body').scrollspy({ target: '#scrollspy' })
+
+
+  // wistia preview thing
+  $('[data-fit-wistia-preview]').click(function(e) {
+    e.preventDefault();  
+    e.stopPropagation();
+    console.log($(this).data('fit-wistia-preview'));
+    $('[data-fit-wistia-preview-player]').empty().html('<script src="https://fast.wistia.com/embed/medias/' + $(this).data('fit-wistia-preview') + '.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_baba5nfzx9 videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/baba5nfzx9/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>');
+  });
+
+
+  $('[data-fit-fatquote] .dot').click(function(e) {
+    e.preventDefault();
+    
+    var target = $(this).attr('href');
+
+    $('[data-fit-fatquote] .dot').removeClass('active');
+    $('[data-fit-fatquote] .friend').removeClass('active');
+    
+    $(target).addClass('active');
+    $(this).addClass('active');
+  });
+  
+
+
   // standard tooltips
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -41,8 +77,8 @@ $( document ).ready(function() {
     }
   });
 
+  // ------------------------ 
   // fail list sorter:
-
   $('[data-fit_fail_list]').click(function(e) {
     
     let set = $(this).data('fit_fail_list');
@@ -121,11 +157,13 @@ $( document ).ready(function() {
      }
   });
 
-  // Will does a hacky "last hit" thing
-  $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
+
+  // ------------------------------------------------
+  // Will does a hacky "last hit" thing for the tabs in the course player
+  $('html.fit_breezy_player .fit_player aside > .fits > .fit_btn[data-toggle="collapse"]').on('click', function(e) {
     // remove the active classes
-    $('.fit_player.breezy aside > .fits > .fit_btn[data-toggle="collapse"]').removeClass('active_latest');
-    $('.fit_player.breezy aside > .fits > .fit_body.collapse').removeClass('active_latest');
+    $('html.fit_breezy_player .fit_player aside > .fits > .fit_btn[data-toggle="collapse"]').removeClass('active_latest');
+    $('html.fit_breezy_player .fit_player aside > .fits > .fit_body.collapse').removeClass('active_latest');
     
     // add just one
     $(this).addClass('active_latest');
@@ -133,7 +171,7 @@ $( document ).ready(function() {
   });
 
   // get first valid one and show it
-  let first_active_latest = $('.fit_player.breezy aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
+  let first_active_latest = $('html.fit_breezy_player .fit_player aside > .fits > [data-toggle="collapse"]:not(.collapsed)').first();
   $(first_active_latest).addClass('active_latest');
   $($(first_active_latest).attr('href')).addClass('active_latest');
 
@@ -241,10 +279,23 @@ $( document ).ready(function() {
     });
   }
 
-  $('.modal').on('shown.bs.modal', function(index, el) {
+  // this happens literally any time any modal is finished buliding and shown
+
+  $(document).on('shown.bs.modal', '.modal', function (e) {
     fancyplace_reset();
   });
   fancyplace_reset();
+
+  // weird RHS modal fun
+  $(document).on('show.bs.modal', '.fit_modal_rhs', function (e) {
+    $('body').addClass('fit_rhs_modal_active');
+  });
+
+  $(document).on('hide.bs.modal', '.fit_modal_rhs', function (e) {
+    $('body').removeClass('fit_rhs_modal_active');
+  });
+  
+  
 
 
 
@@ -1070,7 +1121,7 @@ $( document ).ready(function() {
           if (segmentId) {
             addSegmentModalContent(modalObj[0], courseSlug, lessonId, segmentId);
           }
-          modalObj.modal('show')
+          modalObj.modal('show');
         } else {
           showAlertSnackbar("Something went wrong");
         }
@@ -1139,7 +1190,7 @@ $( document ).ready(function() {
     let modalObj = $(`[data-fit-add-${segmentType}-segment-modal]`);
     if (modalObj.length > 0) {
       addSegmentModalContent(modalObj[0], courseSlug, lessonId, segmentId);
-      modalObj.modal('show')
+      modalObj.modal('show');
     } else {
       getModalSegment(courseSlug, lessonId, segmentType, segmentId);
     }
@@ -1166,7 +1217,7 @@ $( document ).ready(function() {
           modalObj[0].querySelector('[data-fit-segment-normal]').checked = true;
         }
         modalObj.modal('show');
-        modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = ""
+        modalObj[0].querySelector('[data-fit-add-edit-segment-form]').dataset['fitSegmentId'] = "";
       } else {
         getModalSegment(courseSlug, lessonId, segmentType)
       }

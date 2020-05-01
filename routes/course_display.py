@@ -20,7 +20,7 @@ from routes.decorators import enrollment_required
 blueprint = SubdomainBlueprint("course_display", __name__, template_folder="templates")
 
 
-@blueprint.route("/_segment/<int:segment_id>")
+@blueprint.route("/_segment/<segment_id>")
 def get_segment_object(segment_id):
     """ Returns a partial JSON dump of a Lesson Segment by ID. """
 

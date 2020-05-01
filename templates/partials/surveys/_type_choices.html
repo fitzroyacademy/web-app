@@ -6,14 +6,14 @@
                name="survey_types" data-fit-pane-type="survey_type" data-fit-toggl-pane-trigger
                {% if survey_type.default %}checked="checked"{% endif %}
         >
-        <label class="form-check-label watermelon" for="{{ survey_type.survey_id }}">
+        <label class="form-check-label watermelon {{survey_type.survey_type}}" for="{{ survey_type.survey_id }}">
             {% if survey_type.surve_type_icon_type == "url" %}
                 <img src="{{ survey_type.survey_type_icon }}" alt="">
             {% else %}
                 <i class="{{ survey_type.survey_type_icon }}" aria-hidden="true"></i>
             {% endif %}
-            {{survey_type.survey_type_name}}
-            <small class="form-text text-muted">{{ survey_type.survey_type_description }}</small>
+            {{survey_type.survey_type_name}}<br>
+            <!-- <small class="form-text text-muted">{{ survey_type.survey_type_description }}</small> -->
         </label>
     </div>
 

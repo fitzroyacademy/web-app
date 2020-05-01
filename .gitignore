@@ -9,3 +9,5 @@ Pipfile.lock
 static/assets/scss/fit.scss
 static/css/fit.css.map
 secrets.yaml
+local_dev_secrets.sh
+.noseids

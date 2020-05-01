@@ -1,5 +1,5 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="fit_modal_add_intro" data-fit-add-edit-segment-modal>
-  <form action="{{ action }}" class="modal-dialog modal-dialog-centered" role="document" method="post">
+<div class="modal fit_modal_rhs fade" tabindex="-1" role="dialog" id="fit_modal_add_intro" data-fit-add-edit-segment-modal>
+  <form action="{{ action }}" class="modal-dialog" role="document" method="post">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Introduction.</h5>
@@ -13,7 +13,7 @@
           <label for="segment_url">Introduction video link</label>
           <input type="url" id="segment_url" name="segment_url" {% if intro %}value="{{ intro.url }}"{% endif %} class="form-control" placeholder="E.g. https://fitzroyacademy.wistia.com/medias/ABC123" required data-fit-fancyplace data-fit-intro-input>
         </div>
-        <p><i class="fas fa-exclamation-circle"></i> The best intro videos are 1-2 minutes long, keep it snappy!</p>
+        <p><i class="fas fa-exclamation-circle"></i> The best intros are 1-2 minutes long. Keep it snappy!</p>
 
       </div>
       <div class="modal-footer">

@@ -17,7 +17,7 @@ def get_survey_individual_responses(survey):
                 "is_teacher": response.user.teaches(course),
                 "chosen_answer": answer.get("chosen_answer", "").split("_")[-1],
                 "custom_css_class": "{} {}".format(survey_id,
-                                                   answer.get("chosen_answer", ""))
+                 answer.get("chosen_answer", ""))
             })
 
     return temp

@@ -37,7 +37,7 @@ def inject_resume_video():
 def inject_current_section():
     current_app.logger.info(request.path)
     return dict(current_section=request.path.split('/')[1])
-
+    
 
 @bp.app_context_processor
 def inject_cache_code():
