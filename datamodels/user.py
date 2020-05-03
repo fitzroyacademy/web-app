@@ -16,10 +16,11 @@ class User(BaseModel):
     __tablename__ = "users"
 
     id = sa.Column(sa.Integer, primary_key=True)
+    auth0_id = sa.Column(sa.String)
     username = sa.Column(sa.String(50), unique=True)
     first_name = sa.Column(sa.String)
     last_name = sa.Column(sa.String)
-    email = sa.Column(sa.String, unique=True)
+    email = sa.Column(sa.String)
     phone_number = sa.Column(sa.String(15))
     dob = sa.Column(sa.Date)
     password_hash = sa.Column(sa.String(128))
@@ -89,6 +90,10 @@ class User(BaseModel):
     @classmethod
     def find_by_email(cls, email):
         return cls.objects().filter(cls.email == email).first()
+
+    @classmethod
+    def find_by_auth0_id(cls, auth0_id):
+        return cls.objects().filter(cls.auth0_id == auth0_id).first()
 
     def get_custom_settings(self):
         return {obj.key: obj.value for obj in self.custom_settings}

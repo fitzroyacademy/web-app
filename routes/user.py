@@ -1,5 +1,4 @@
 import json
-
 from flask import (
     render_template,
     session,
@@ -27,6 +26,7 @@ from .decorators import login_required
 from .utils import get_session_data, set_session_data
 from utils.images import generate_thumbnail
 from .blueprint import SubdomainBlueprint
+from six.moves.urllib.parse import urlencode
 
 blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")
 
@@ -235,12 +235,12 @@ def login(institute=""):
 @login_required
 def logout(user, institute=""):
     """ Clear session data, logging the current user out. """
-    keys = [key for key in session.keys() if key != "csrf"]
-    for key in keys:
-        session.pop(key)
-
+    # Clear session stored data
+    session.clear()
     flash("You have been successfully logged out.")
-    return redirect(url_for("course.index"))
+    # Redirect user to logout endpoint
+    params = {'returnTo': current_app.config['SERVER_NAME'], 'client_id': current_app.config['AUTH0_CLIENT_ID']}
+    return redirect(current_app.auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 @blueprint.subdomain_route("/callback", methods=["POST", "GET"])
 def callback(institute=""):
@@ -248,21 +248,54 @@ def callback(institute=""):
     Handle the Auth0 callback after login.
     """
     # Handles response from token endpoint
+    last_page = request.args.get("last_page", "")
+    data = {"errors": [], "last_page": last_page, "form": []}
+    # try:
     current_app.auth0.authorize_access_token()
     resp = current_app.auth0.get('userinfo')
     userinfo = resp.json()
-    # if "anon_progress" in session:
-    #     d = json.loads(session["anon_progress"])
-    #     merge_anonymous_data(user.id, d)
-    #     session.pop("anon_progress")
-    # Store the user information in flask session.
+    db = datamodels.get_session()
+    user = datamodels.get_user_by_auth0_id(userinfo['sub'])
+    # except Exception as e:
+    #     data["errors"].append("{}".format(e))
+    #     return render_template("502.html", **data)
+    
+
+    if user is None:
+        try:
+            user = datamodels.User()
+            user.email = user.username = userinfo['email']
+            user.first_name = userinfo['given_name']
+            user.last_name = userinfo['family_name']
+            user.auth0_id = userinfo['sub']
+            db.add(user)
+            db.commit()
+        except Exception as e:
+            data["errors"].append("{}".format(e))
+            return render_template("welcome.html", **data)
+        if "enrollments" in session:
+            d = get_session_data(session, "enrollments")
+            for course_id in d:
+                course = datamodels.Course.find_by_id(int(course_id))
+                if course:
+                    course.enroll(user)
+        if "anon_progress" in session:
+            d = get_session_data(session, "anon_progress")
+            merge_anonymous_data(user.id, d)
+            session.pop("anon_progress")
+        if "anon_surveys" in session:
+            d = get_session_data(session, "anon_surveys")
+            merge_anonymous_surveys_data(user.id, d)
+            session.pop("anon_surveys")
+
+    session["user_id"] = user.id
     session['jwt_payload'] = userinfo
     session['profile'] = {
         'user_id': userinfo['sub'],
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
-    return redirect('/')
+    return redirect(last_page or "/")
 
 @blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
 @login_required
