@@ -21,10 +21,28 @@ $new_navy: #fcab05;
 $new_green: #1ec22d;
 $new_blue: #2774f8;
 $new_watermelon: #f82a5f;
+$new_maroon: #7f0909;
 
 // pale and stale yo
 $old_blue: #0f7ff4;
 $old_blue_light: #21adf5;
+
+
+// ------------------------------------------------------------------------------------
+// colours!
+
+.cyan:not(.btn){color:$new_cyan !important;}
+.teal:not(.btn){color:$new_teal !important;}
+.purple:not(.btn){color:$new_purple !important;}
+.pink:not(.btn){color:$new_pink !important;}
+.red:not(.btn){color:$new_red !important;}
+.bergundy:not(.btn){color:$new_bergundy !important;}
+.apricot:not(.btn){color:$new_apricot !important;}
+.navy:not(.btn){color:$new_navy !important;}
+.green:not(.btn){color:$new_green !important;}
+.blue:not(.btn){color:$new_blue !important;}
+.watermelon:not(.btn){color:$new_watermelon !important;}
+.maroon:not(.btn){color:$new_maroon !important;}
 
 
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me. */
@@ -376,6 +394,9 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 .btn-watermelon:hover {color: white; background-color: $watermelon;}
 .btn-watermelon:hover{background-color: darken($watermelon, 15%);}
 
+.btn-blue,
+.btn-blue:hover {color: white; background-color: $new_blue;}
+.btn-blue:hover{background-color: darken($new_blue, 15%);}
 
 // -----------------------------------------------------------------------------------------
 // the brand device up the top left
@@ -1816,7 +1837,7 @@ transition: all .1s ease-in-out;}
 // label the pic if that's a thing.
 .fit_picture{margin: 0 0 2rem;}
 .fit_picture img{width: 100%;}
-.caption{display: block; padding: 0.5rem 1rem 1rem; text-align: center; font-size: 0.8rem; color: $text_light; }
+.caption{display: block; padding: 0.5rem 1rem 2rem; text-align: center; font-size: 0.8rem; color: $text_light; }
 .caption a{color:inherit; text-decoration: underline;}
 
 
@@ -2090,10 +2111,9 @@ $square_size: 22rem;
 
 
 .fit_partner_logos {margin: 3rem 0;}
-.fit_partner_logos:first-child{margin-top: 0;}
-.fit_partner_logos + .fit_partner_logos {margin-top: -1rem;}
-.fit_partner_logos img{max-height: 70px; margin:2rem 0 1rem; width: auto;}
+.fit_partner_logos img{max-height: 5rem; margin:2rem 0 1rem; width: auto;}
 
+.fit_partner_logos .tile{border-radius: 1rem; background: #fff; padding:1.5rem;}
 
 .fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
 
@@ -3759,20 +3779,6 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 #hello.fat_section .nb{font-size: 1.1rem; font-weight: 300; color: $text_light; max-width: 20rem; padding: 2rem 0;}
 
 
-// ------------------------------------------------------------------------------------
-// colours!
-
-.cyan:not(.btn){color:$new_cyan !important;}
-.teal:not(.btn){color:$new_teal !important;}
-.purple:not(.btn){color:$new_purple !important;}
-.pink:not(.btn){color:$new_pink !important;}
-.red:not(.btn){color:$new_red !important;}
-.bergundy:not(.btn){color:$new_bergundy !important;}
-.apricot:not(.btn){color:$new_apricot !important;}
-.navy:not(.btn){color:$new_navy !important;}
-.green:not(.btn){color:$new_green !important;}
-.blue:not(.btn){color:$new_blue !important;}
-.watermelon:not(.btn){color:$new_watermelon !important;}
 
 
 // ------------------------------------------------------------------------------------
@@ -3784,7 +3790,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .plaintext p,
 .plaintext li{font-size: 1.2rem; }
 
-.plaintext [class^='col']{margin-bottom: 3rem}
+.plaintext [class^='col']{margin-bottom: 1rem}
 
 .plaintext .points [class^='col'] p{max-width: 20rem;}
 .plaintext .points [class^='col'] li{max-width: 18rem;}
