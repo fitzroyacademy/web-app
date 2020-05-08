@@ -3333,6 +3333,8 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero h2{font-size: 6rem; color:$black;}
 .fat_hero h2{font-size: 4rem;}
 
+.fat_hero h1 a{text-decoration: none; color: inherit;}
+
 .fat_tease_btns{flex-direction: row; padding: 2rem 0; max-width: 50rem;}
 
 .fat_tease_btns .btn{margin: 0 .5rem;}
