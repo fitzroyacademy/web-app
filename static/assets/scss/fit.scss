@@ -3376,7 +3376,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 
 h1 + .fat_nav{margin-top: 2rem}
 
-.fat_nav{z-index: 5000; top:0; background: #fff; margin-bottom: calc(50vh - 6rem); display: block;}
+.fat_nav{z-index: 5000; top:-1px; background: #fff; margin-bottom: calc(50vh - 6rem); display: block;}
 .fat_nav.marginless{margin-bottom: 0}
 
 .fat_nav .contain{padding: 1rem; max-width: $max_width; margin: 0 auto; display: flex; flex-direction:row; }
@@ -3618,12 +3618,16 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_pic_grid .play{position: absolute; top:0; right: 0; left: 0; bottom: 0; display: flex; align-items: center; justify-content: center; text-decoration: none; flex-direction:column; transition: all .15s ease-in-out;}
 .fat_pic_grid .play i{font-size: 3rem; line-height: 7rem; color: #fff; transition: all .15s ease-in-out; margin-top: 2rem;}
-.fat_pic_grid .play small{display: block; font-size: 1.1rem; color: $black; transition: all .15s ease-in-out; opacity: 0; background: rgba(255,255,255,0.9); padding: .5rem 1rem;}
-.fat_pic_grid .play small .timing{font-size: 80%; opacity: 0.5; margin-left: .5rem}
+.fat_pic_grid .play small{display: block; font-size: .9rem; color: $black; transition: all .15s ease-in-out; opacity: 0.5; background: rgba(255,255,255,0.9); padding: .5rem 1rem; border-radius: $border_rad_sm;}
+.fat_pic_grid .play small .timing{font-size: 70%; opacity: 0.5; margin-left: .5rem}
+
+// move the portrait ones down a bti
+.fat_pic_grid > .portrait.pic .play i{margin-top: 25%;}
+
 
 .fat_pic_grid .play:hover{background: rgba(0,0,0,0.2);}
-.fat_pic_grid .play:hover i{transform: scale(1.2);}
-.fat_pic_grid .play:hover small{opacity: 1;}
+.fat_pic_grid .play:hover i{transform: scale(1.25);}
+.fat_pic_grid .play:hover small{opacity: 1; transform: scale(1.1);}
 
 .fat_pic_grid .portrait.text{padding:2rem;display: flex; align-items:flex-start; flex-direction:column; justify-content: center; }
 .fat_pic_grid .portrait.text h2{font-size:2.5rem; padding-bottom: 2rem; color: $new_teal; margin: 0;}
