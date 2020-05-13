@@ -121,6 +121,8 @@ $box_shadow_blue: rgba(8,53,99,0.2);
 
 // Google fonts
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,600,900');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&display=swap');
+
 body{font-family: "Lato", Arial, san-serif;}
 
 h1, h2, h3{font-weight: 900;}
@@ -3445,6 +3447,8 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_section{padding: $fat_sidepad/2 $fat_sidepad}
 
+.fat_section.nobot{padding-bottom: 0 !important; margin-bottom: 0;}
+
 .bg{background: $bg;}
 
 .fat_section h2{font-size: 4rem; margin-bottom: 4rem;}
@@ -3508,15 +3512,17 @@ h1 + .fat_nav{margin-top: 2rem}
 // ------------------------------------------------------------------------------------
 // leo list
 // max-width: 120rem; nah?
-.fat_leo_list{ position: relative; overflow: hidden;}
+// overflow: hidden;
+.fat_leo_list{ position: relative;}
 .fat_leo_list h2{font-size: 4rem; margin: 0 0 4rem 0rem;}
 .fat_leo_list h3{font-size: 2.5rem; margin: 0 0 2rem 0;}
 .fat_leo_list h2 .purple{color: $new_purple;}
 
 .fat_leo_list dl{margin: 0 0 1rem 7rem; position: relative;}
 
-.fat_leo_list dt{color: $black; font-size: 1.6rem; padding-bottom: 1rem; position: relative;}
+.fat_leo_list dt{color: $black; font-size: 1.6rem; padding-bottom: 1rem; position: relative; display: flex; align-items: center;}
 .fat_leo_list dt i{color: $text_lightest; font-size: 4rem; position: absolute; top:.5rem; left: -7rem; width: 5rem; text-align: center; display: block;}
+.fat_leo_list dt .no{background: $bg; border-radius: $border_rad_sm; margin-right: .75rem; align-items: center; justify-content: center; display: flex; font-size: 1.2rem; color: $text_light; width: 1.5rem; height: 1.5rem;}
 
 .fat_leo_list dd {padding-bottom: 2.5em; max-width: 22rem;}
 .fat_leo_list dd p{color: $black; font-size: 1.2rem; padding-bottom: .75rem; margin: 0;}
@@ -3537,7 +3543,7 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_arrow_button svg > path{fill: $text_lighter; fill-rule: evenodd;}
 
 // leo SLINGIN
-.leo_slingin{position: absolute; bottom: 0; right: 15%; width:30%; z-index: 3600; max-width: 600px}
+.leo_slingin{position: absolute; bottom: 0; right: 0%; width:30%; z-index: 3600; max-width: 600px}
 
 // the gradient
 // nah not for now
@@ -3571,7 +3577,7 @@ h1 + .fat_nav{margin-top: 2rem}
 	.fat_video_sidenav .side{width: 30%; position: absolute; top:0; right: 0; bottom: 0; background: $bg; overflow: hidden; overflow-y: scroll;}
 }
 
-// --------------------`----------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // video modal
 .fat_video_full{border-radius: $border_rad_lg; overflow: hidden; margin: 0 0 4rem;}
 
@@ -3620,7 +3626,7 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_pic_grid .play{position: absolute; top:0; right: 0; left: 0; bottom: 0; display: flex; align-items: center; justify-content: center; text-decoration: none; flex-direction:column; transition: all .15s ease-in-out;}
 .fat_pic_grid .play i{font-size: 3rem; line-height: 7rem; color: #fff; transition: all .15s ease-in-out; margin-top: 2rem;}
-.fat_pic_grid .play small{display: block; font-size: .9rem; color: $black; transition: all .15s ease-in-out; opacity: 0.5; background: rgba(255,255,255,0.9); padding: .5rem 1rem; border-radius: $border_rad_sm;}
+.fat_pic_grid .play small{display: block; font-size: .9rem; color: $black; transition: all .15s ease-in-out; background: rgba(255,255,255,0.9); padding: .5rem 1rem; border-radius: $border_rad_sm; opacity: 0.95;}
 .fat_pic_grid .play small .timing{font-size: 70%; opacity: 0.5; margin-left: .5rem}
 
 // move the portrait ones down a bti
@@ -3629,7 +3635,8 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_pic_grid .play:hover{background: rgba(0,0,0,0.2);}
 .fat_pic_grid .play:hover i{transform: scale(1.25);}
-.fat_pic_grid .play:hover small{opacity: 1; transform: scale(1.1);}
+.fat_pic_grid .play:hover small{opacity: 1;}
+ // nah: transform: scale(1.0.5);
 
 .fat_pic_grid .portrait.text{padding:2rem;display: flex; align-items:flex-start; flex-direction:column; justify-content: center; }
 .fat_pic_grid .portrait.text h2{font-size:2.5rem; padding-bottom: 2rem; color: $new_teal; margin: 0;}
@@ -3689,13 +3696,20 @@ h1 + .fat_nav{margin-top: 2rem}
 
 // reverse text
 .fat_pic_grid .text.reverse{background: $bg; box-shadow: none;}
-.fat_pic_grid .text.reverse h2{color: $blue;}
+.fat_pic_grid .text.reverse h2{color: $new_blue;}
 .fat_pic_grid .text.reverse h2 small{color: $text_lighter;}
 .fat_pic_grid .text.reverse .meta .deet p{color:$black;}
 .fat_pic_grid .text.reverse .meta .deet p strong{color: $black;}
-
 .fat_pic_grid .text.reverse .btn{border-color: $new_blue; color: $new_blue;}
 .fat_pic_grid .text.reverse .btn:hover{background: $new_blue; color: #fff;}
+
+.fat_pic_grid .text.reverse.white{background: #fff;}
+
+.fat_pic_grid .text.reverse.pink h2{color: $new_pink;}
+.fat_pic_grid .text.reverse.pink .btn{border-color: $new_pink; color: $new_pink;}
+.fat_pic_grid .text.reverse.pink .btn:hover{background: $new_pink; color: #fff;}
+
+
 
 body .fat_pic_grid > .landscape .play i{margin-top: 10rem; font-size: 5rem;}
 body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
@@ -3738,7 +3752,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 .fat_quote .friend{padding:1.5rem 2rem 0.5rem; display: none;  opacity: 0; transition: all .25s ease-in-out; cursor: pointer;}
 .fat_quote .friend.active{display: block; opacity: 1}
-.fat_quote p{font-size: 1.5rem;}
+.fat_quote p{font-size: 1.5rem; font-family: 'Merriweather', serif;}
 
 .fat_quote .dots{position: absolute; top:100%; right:.5rem; margin: 1rem 0 0; display: block; text-align: right;}
 .fat_quote .dots .dot{border-radius: $border_rad_r; background: $text_lightest; height: 1.75rem; width: 1.75rem; border: .4rem solid #fff; display: inline-block; text-decoration: none;}
@@ -3760,11 +3774,39 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_hero h1 strong{}
 
 
+.fat_section .centered{text-align: center;}
+
+// ------------------------------------------------------------------------------------
+// icons in a row
+
+.fat_iconrow h3{font-size: 2.5rem;}
+.fat_iconrow h3 i{font-size: 8rem; padding: 2rem 0 1rem; display: block;}
+.fat_iconrow p,
+.fat_iconrow li{font-size: 1.3rem; max-width: 16rem; margin: 0 auto; margin-bottom: 1rem;}
+
+.fat_iconrow.medium{padding: 3rem 3rem 2rem;  border-radius: $border_rad_xl; background: #fff; max-width: 50rem; margin: 5rem auto 3rem;}
+
+.fat_iconrow.medium h3{padding-bottom: 2rem;}
+.fat_iconrow.medium h4{font-size: 1.6rem; padding-bottom: 1rem;}
+.fat_iconrow.medium p,
+.fat_iconrow.medium li{max-width: none;}
+
+.fat_iconrow.medium hr{max-width: 10rem; border-top: .25rem solid $border_light; margin: 4rem auto;}
+
+.fat_iconrow.medium .morethings p{font-size: 1.1rem; padding-bottom: 1.5rem;}
+
+@media (max-width: 575px) {
+	.fat_iconrow.medium{padding: 2rem; margin: 1rem 0;}
+	.fat_iconrow h3{font-size: 2rem;}
+	.fat_iconrow h3 i{font-size: 5rem;}
+}
+
+
 // ------------------------------------------------------------------------------------
 // why, hello there
 
 #hello.fat_section h1{color: $new_watermelon;}
-#hello.fat_section .bigly{min-height: calc(100vh - 20rem); display: flex; align-items: flex-start; justify-content: center; flex-direction:column;}
+#hello.fat_section .bigly{min-height: calc(80vh - 20rem); display: flex; align-items: flex-start; justify-content: center; flex-direction:column;}
 
 
 
