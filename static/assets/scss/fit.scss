@@ -1995,8 +1995,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium hr{margin: 3.5rem 0; height: 0; background: transparent; border-color: transparent;}
 .fit_medium hr.dots:after{display: block; content: '...'; letter-spacing: 2rem; font-size: 2rem; color: $text_light; text-align: center; position: relative; top: -2rem;}
 
-.fit_medium hr.blunt{border-bottom:0.25rem solid $border_light; max-width: 12rem; margin-left: auto; margin-right: auto; }
-.fit_medium hr.spacer{margin: 1.5rem 0;}
+hr.blunt{border-bottom:0.25rem solid $border_light; max-width: 12rem; margin: 2rem auto 4rem;}
+hr.spacer{margin: 1.5rem 0; border:none; margin: 3rem 0;}
 
 .fit_medium dd,
 .fit_medium dd p{font-size: 1.05rem;}
@@ -2480,7 +2480,8 @@ html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 
 
 .fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 2rem 0 7rem; border:2px solid $border_medium; position: relative;}
-.fit_quote p{font-size: 1.2rem; line-height: 1.5rem; color: $text; margin-bottom: 15px;}
+.fit_quote p,
+.plaintext .fit_quote p{font-size: 1.3rem; line-height: 1.7rem; color: $text; margin-bottom: 15px; font-family: 'Merriweather', serif;}
 .fit_quote p em{font-size: 1rem; display: block; color: $text; padding-bottom: 10px;}
 .fit_quote p strong{color: $text; padding: 0 3px; font-weight: inherit;}
 
@@ -3113,6 +3114,14 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_head.teal .fat_user:hover{background: $new_teal}
 .fat_head.teal .fat_user:hover i{color: #fff;}
 
+// cyan
+.fat_head.cyan .fat_device svg > path{fill:$new_cyan;}
+.fat_head.cyan .fat_user i,
+.fat_head.cyan .fat_user .down,
+.fat_head.cyan .fat_user:hover .down{color: $new_cyan}
+.fat_head.cyan .fat_user:hover{background: $new_cyan}
+.fat_head.cyan .fat_user:hover i{color: #fff;}
+
 // watermelon
 .fat_head.watermelon .fat_device svg > path{fill:$new_watermelon;}
 .fat_head.watermelon .fat_user i,
@@ -3120,6 +3129,8 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_head.watermelon .fat_user:hover .down{color: $new_watermelon}
 .fat_head.watermelon .fat_user:hover{background: $new_watermelon}
 .fat_head.watermelon .fat_user:hover i{color: #fff;}
+
+
 
 // ------------------------------------------------------------------------------------
 // footer hax
@@ -3328,8 +3339,8 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 
 .fat_hero{min-height: 100vh; margin-top: 0rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
 
-
-.fat_hero *:first-child{margin-top: -1rem;}
+// wtf?
+// .fat_hero *:first-child{margin-top: -1rem;}
 
 .fat_hero h1,
 .fat_hero h2{font-size: 6rem; color:$black;}
@@ -3352,7 +3363,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero.left{text-align: left; align-items:normal;}
 .fat_hero.left h1{}
 
-.fat_hero.halfy{min-height: 50vh; justify-content:flex-end; padding: 0 $fat_sidepad}
+.fat_hero.halfy{min-height: 55vh; justify-content:flex-end; padding: 0 $fat_sidepad}
 
 .fat_hero.header{min-height: 0;}
 
@@ -3543,7 +3554,7 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_arrow_button svg > path{fill: $text_lighter; fill-rule: evenodd;}
 
 // leo SLINGIN
-.leo_slingin{position: absolute; bottom: 0; right: 0%; width:30%; z-index: 3600; max-width: 600px}
+.leo_slingin{position: absolute; bottom: 0; right: 15%; width:30%; z-index: 3600; max-width: 600px}
 
 // the gradient
 // nah not for now
@@ -3768,6 +3779,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 }
 
 
+.fat_whitejab .fat_quote{max-width: none; margin-left: 2.5rem;}
+
 // I fancy me some text clipping
 
 .fat_hero h1{}
@@ -3784,23 +3797,31 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_iconrow p,
 .fat_iconrow li{font-size: 1.3rem; max-width: 16rem; margin: 0 auto; margin-bottom: 1rem;}
 
-.fat_iconrow.medium{padding: 3rem 3rem 2rem;  border-radius: $border_rad_xl; background: #fff; max-width: 50rem; margin: 5rem auto 3rem;}
+.fat_whitejab{padding: 3rem 3rem 2rem;  border-radius: $border_rad_xl; background: #fff; max-width: 50rem; margin: 5rem auto 3rem;}
 
-.fat_iconrow.medium h3{padding-bottom: 2rem;}
-.fat_iconrow.medium h4{font-size: 1.6rem; padding-bottom: 1rem;}
-.fat_iconrow.medium p,
-.fat_iconrow.medium li{max-width: none;}
+.fat_whitejab h3{padding-bottom: 2rem;}
+.fat_whitejab h4{font-size: 1.6rem; padding-bottom: 1rem;}
+.fat_whitejab p,
+.fat_whitejab li{max-width: none;}
 
-.fat_iconrow.medium hr{max-width: 10rem; border-top: .25rem solid $border_light; margin: 4rem auto;}
+.fat_whitejab hr{max-width: 10rem; border-top: .25rem solid $border_light; margin: 4rem auto;}
 
-.fat_iconrow.medium .morethings p{font-size: 1.1rem; padding-bottom: 1.5rem;}
+.fat_whitejab .morethings p{font-size: 1.1rem; padding-bottom: 1.5rem;}
 
 @media (max-width: 575px) {
-	.fat_iconrow.medium{padding: 2rem; margin: 1rem 0;}
+	.fat_whitejab{padding: 2rem; margin: 1rem 0;}
 	.fat_iconrow h3{font-size: 2rem;}
 	.fat_iconrow h3 i{font-size: 5rem;}
 }
 
+
+.fat_polaroid{padding: 1.5rem; box-shadow: 10px 10px 30px rgba(0,0,0,0.15); transform: rotate(2deg); border-radius: $border_rad_sm; text-align: center; background: #fff; margin-bottom: -5rem;}
+.fat_polaroid img{max-width: 100%;}
+.fat_polaroid .caption{padding: 1rem;}
+
+@media (min-width: 992px) {
+	.fat_polaroid {margin-bottom: -7rem;}
+}
 
 // ------------------------------------------------------------------------------------
 // why, hello there
@@ -3855,8 +3876,9 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 // ------------------------------------------------------------------------------------
 // Some big ol mobile styles LOL should have done it the other way around IDK
 
-@media (min-width: 992px) {
-	
+@media (min-width: 1140px) {
+	.fat_nav {position: sticky;}
+	.fat_section{padding-top: 6rem;}
 }
 
 @media (min-width: 1450px) {
@@ -3866,10 +3888,6 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_hero.halfy,
 	.fat_nav .contain,
 	.fat_section:not(.fat_pic_grid){max-width: $max_width; margin-left: auto; margin-right: auto; padding-left: 0; padding-right: 0;}
-
-	// nav
-	.fat_nav {position: sticky;}
-
 
 	.fat_section:not(.fat_pic_grid){padding-top: 8rem; padding-bottom: 8rem;}
 }
