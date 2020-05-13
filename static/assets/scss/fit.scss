@@ -3872,13 +3872,12 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 
 // ------------------------------------------------------------------------------------
-
 // ------------------------------------------------------------------------------------
 // Some big ol mobile styles LOL should have done it the other way around IDK
 
 @media (min-width: 1140px) {
 	.fat_nav {position: sticky;}
-	.fat_section{padding-top: 6rem;}
+	.fat_section:not(.fat_pic_grid){padding-top: 6rem;}
 }
 
 @media (min-width: 1450px) {
