@@ -23,7 +23,7 @@
     <div class="tab-pane"
          data-fit-pane-type="login_content"
          data-fit-pane-detail="register_tab_panel">
-      <form class="form" action="{{ url_for('user.create') }}?last_page={{ last_page or request.path }}" method="post">
+      <form class="form" action="{{ url_for('user.callback') }}?last_page={{ last_page or request.path }}" method="post">
         
         {{ form.csrf_token }}
         <div class="row">

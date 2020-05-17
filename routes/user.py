@@ -126,69 +126,6 @@ def edit(user, institute=""):
         data["message"] = "Changes saved"
         return jsonify(data)
 
-
-@blueprint.subdomain_route("/register", methods=["POST", "GET"])
-def create(institute=""):
-    """
-    Create a new user.
-    """
-    db = datamodels.get_session()
-
-    # We'll roll in better validation with form error integration in beta; this is
-    # to prevent mass assignment vulnerabilities.
-    form = AddUserForm(request.form)
-    last_page = request.args.get("last_page", "")
-    data = {"errors": [], "form": form, "last_page": last_page}
-
-    if request.method == "GET":
-        return render_template("login.html", **data)
-
-    user = datamodels.get_user_by_email(request.form.get("email"))
-    if user is not None:
-        data["errors"].append("Email address already in use.")
-        return render_template("login.html", **data)
-
-    if form.validate():
-
-        try:
-            user = datamodels.User()
-            user.email = form.email.data.lower()
-            user.first_name = form.first_name.data
-            user.last_name = form.last_name.data
-            user.username = user.available_username(form.username.data.lower())
-            setattr(user, "password", form.password.data)
-            db.add(user)
-            db.commit()
-        except IntegrityError:
-            db.rollback()
-            flash("This username is already taken")
-            return redirect(last_page or "/")
-        except Exception as e:
-            data["errors"].append("{}".format(e))
-            return render_template("login.html", **data)
-        if "enrollments" in session:
-            d = get_session_data(session, "enrollments")
-            for course_id in d:
-                course = datamodels.Course.find_by_id(int(course_id))
-                if course:
-                    course.enroll(user)
-        if "anon_progress" in session:
-            d = get_session_data(session, "anon_progress")
-            merge_anonymous_data(user.id, d)
-            session.pop("anon_progress")
-        if "anon_surveys" in session:
-            d = get_session_data(session, "anon_surveys")
-            merge_anonymous_surveys_data(user.id, d)
-            session.pop("anon_surveys")
-
-        session["user_id"] = user.id
-        flash("Thanks for registering, " + user.full_name + "!")
-    else:
-        data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
-        return render_template("login.html", **data)
-    return redirect(last_page or "/")
-
-
 @blueprint.subdomain_route("/enroll/<course_slug>", methods=["POST"])
 def enroll(course_slug, institute=""):
     """
@@ -250,16 +187,15 @@ def callback(institute=""):
     # Handles response from token endpoint
     last_page = request.args.get("last_page", "")
     data = {"errors": [], "last_page": last_page, "form": []}
-    # try:
-    current_app.auth0.authorize_access_token()
-    resp = current_app.auth0.get('userinfo')
-    userinfo = resp.json()
-    db = datamodels.get_session()
-    user = datamodels.get_user_by_auth0_id(userinfo['sub'])
-    # except Exception as e:
-    #     data["errors"].append("{}".format(e))
-    #     return render_template("502.html", **data)
-    
+    try:
+        current_app.auth0.authorize_access_token()
+        resp = current_app.auth0.get('userinfo')
+        userinfo = resp.json()
+        db = datamodels.get_session()
+        user = datamodels.get_user_by_auth0_id(userinfo['sub'])
+    except Exception as e:
+        data["errors"].append("{}".format(e))
+        return render_template("welcome.html", **data)
 
     if user is None:
         try:
