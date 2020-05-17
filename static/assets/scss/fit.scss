@@ -21,11 +21,28 @@ $new_navy: #fcab05;
 $new_green: #1ec22d;
 $new_blue: #2774f8;
 $new_watermelon: #f82a5f;
-
+$new_maroon: #7f0909;
 
 // pale and stale yo
 $old_blue: #0f7ff4;
 $old_blue_light: #21adf5;
+
+
+// ------------------------------------------------------------------------------------
+// colours!
+
+.cyan:not(.btn){color:$new_cyan !important;}
+.teal:not(.btn){color:$new_teal !important;}
+.purple:not(.btn){color:$new_purple !important;}
+.pink:not(.btn){color:$new_pink !important;}
+.red:not(.btn){color:$new_red !important;}
+.bergundy:not(.btn){color:$new_bergundy !important;}
+.apricot:not(.btn){color:$new_apricot !important;}
+.navy:not(.btn){color:$new_navy !important;}
+.green:not(.btn){color:$new_green !important;}
+.blue:not(.btn){color:$new_blue !important;}
+.watermelon:not(.btn){color:$new_watermelon !important;}
+.maroon:not(.btn){color:$new_maroon !important;}
 
 
 $fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me. */
@@ -104,6 +121,8 @@ $box_shadow_blue: rgba(8,53,99,0.2);
 
 // Google fonts
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,600,900');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&display=swap');
+
 body{font-family: "Lato", Arial, san-serif;}
 
 h1, h2, h3{font-weight: 900;}
@@ -377,6 +396,9 @@ html.fit_minleft .fit_lesson_tooltip{visibility: visible;}
 .btn-watermelon:hover {color: white; background-color: $watermelon;}
 .btn-watermelon:hover{background-color: darken($watermelon, 15%);}
 
+.btn-blue,
+.btn-blue:hover {color: white; background-color: $new_blue;}
+.btn-blue:hover{background-color: darken($new_blue, 15%);}
 
 // -----------------------------------------------------------------------------------------
 // the brand device up the top left
@@ -450,7 +472,7 @@ a.fit_btn:hover{color:$blue;}
 .fit_btn > i{width: $nav_left_width_collapsed; justify-content: center; text-align: center;}
 
 // wee bits of text on the right
-.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; color: $text_lighter; font-size: 0.8rem; white-space: nowrap;}
+.fit_btn > .fit_sub{flex: 0 0 4rem; justify-content: center; text-align: right; padding-right: 1.5rem; padding-left: 1rem; color: $text_lighter; font-size: 0.8rem; white-space: nowrap;}
 
 // if the sub has a href (is a link)
 .fit_btn > .fit_sub[href]{color: $text_light;}
@@ -1816,8 +1838,8 @@ transition: all .1s ease-in-out;}
 
 // label the pic if that's a thing.
 .fit_picture{margin: 0 0 2rem;}
-.fit_picture img{max-width: 100%;}
-.caption{display: block; padding: 0.5rem 1rem 1rem; text-align: center; font-size: 0.8rem; color: $text_light; }
+.fit_picture img{width: 100%;}
+.caption{display: block; padding: 0.5rem 1rem 2rem; text-align: center; font-size: 0.8rem; color: $text_light; }
 .caption a{color:inherit; text-decoration: underline;}
 
 
@@ -1973,8 +1995,8 @@ p.tagline .tag i{position: absolute; top:.25rem; left: 0;}
 .fit_medium hr{margin: 3.5rem 0; height: 0; background: transparent; border-color: transparent;}
 .fit_medium hr.dots:after{display: block; content: '...'; letter-spacing: 2rem; font-size: 2rem; color: $text_light; text-align: center; position: relative; top: -2rem;}
 
-.fit_medium hr.blunt{border-bottom:0.25rem solid $border_light; max-width: 12rem; margin-left: auto; margin-right: auto; }
-.fit_medium hr.spacer{margin: 1.5rem 0;}
+hr.blunt{border-bottom:0.25rem solid $border_light; max-width: 12rem; margin: 2rem auto 4rem;}
+hr.spacer{margin: 1.5rem 0; border:none; margin: 3rem 0;}
 
 .fit_medium dd,
 .fit_medium dd p{font-size: 1.05rem;}
@@ -2091,10 +2113,9 @@ $square_size: 22rem;
 
 
 .fit_partner_logos {margin: 3rem 0;}
-.fit_partner_logos:first-child{margin-top: 0;}
-.fit_partner_logos + .fit_partner_logos {margin-top: -1rem;}
-.fit_partner_logos img{max-height: 70px; margin:2rem 0 1rem; width: auto;}
+.fit_partner_logos img{max-height: 5rem; margin:2rem 0 1rem; width: auto;}
 
+.fit_partner_logos .tile{border-radius: 1rem; background: #fff; padding:1.5rem;}
 
 .fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
 
@@ -2459,7 +2480,8 @@ html.fit_debug_on .fit_debug .clicky{background: $bg; cursor: s-resize;}
 
 
 .fit_quote{border-radius: 9px; background: #fff; padding: 30px 30px 15px;  text-align: left; margin: 2rem 0 7rem; border:2px solid $border_medium; position: relative;}
-.fit_quote p{font-size: 1.2rem; line-height: 1.5rem; color: $text; margin-bottom: 15px;}
+.fit_quote p,
+.plaintext .fit_quote p{font-size: 1.3rem; line-height: 1.7rem; color: $text; margin-bottom: 15px; font-family: 'Merriweather', serif;}
 .fit_quote p em{font-size: 1rem; display: block; color: $text; padding-bottom: 10px;}
 .fit_quote p strong{color: $text; padding: 0 3px; font-weight: inherit;}
 
@@ -3021,10 +3043,11 @@ html.fit_tabby_player .fit_player {}
 
 body{transition: padding .25s ease-in-out;}
 
-
 $black: #1c1f20;
 
-$fat_sidepad:  6rem;
+$fat_sidepad: 6rem;
+
+$max_width: 80rem;
 
 html.section-play .fit_debug{display: none;}
 
@@ -3048,7 +3071,7 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_device:hover svg > path{fill:$watermelon_vibrant;}
 
 
-.fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out;}
+.fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out; display: none !important;}
 .fat_user i,
 .fat_user:hover .down,
 .fat_device i,
@@ -3091,6 +3114,14 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_head.teal .fat_user:hover{background: $new_teal}
 .fat_head.teal .fat_user:hover i{color: #fff;}
 
+// cyan
+.fat_head.cyan .fat_device svg > path{fill:$new_cyan;}
+.fat_head.cyan .fat_user i,
+.fat_head.cyan .fat_user .down,
+.fat_head.cyan .fat_user:hover .down{color: $new_cyan}
+.fat_head.cyan .fat_user:hover{background: $new_cyan}
+.fat_head.cyan .fat_user:hover i{color: #fff;}
+
 // watermelon
 .fat_head.watermelon .fat_device svg > path{fill:$new_watermelon;}
 .fat_head.watermelon .fat_user i,
@@ -3098,6 +3129,8 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_head.watermelon .fat_user:hover .down{color: $new_watermelon}
 .fat_head.watermelon .fat_user:hover{background: $new_watermelon}
 .fat_head.watermelon .fat_user:hover i{color: #fff;}
+
+
 
 // ------------------------------------------------------------------------------------
 // footer hax
@@ -3230,6 +3263,8 @@ html.section-play body{padding-top: 0;}
 
 .fat_lessons{}
 
+.fat_lessons > h3:first-child{color: $text_lighter; padding: 1rem 1rem .5rem; font-weight: normal; font-size: 1.5rem;}
+
 .fat_lesson{position: relative; padding: 1.5rem 1.5rem 1.5rem 13rem; min-height: 7.5rem; border: 1px solid transparent;}
 
 .fat_lesson .fit_window{position: absolute; top:1rem; left: 1rem; width: 10rem;}
@@ -3237,6 +3272,9 @@ html.section-play body{padding-top: 0;}
 .fat_lesson a{text-decoration: none;}
 .fat_lesson > h4{font-size:1.3rem; padding:0 5rem .5rem 0; margin: 0; color:$black;}
 .fat_lesson > p{font-size: 0.95rem; padding:0 5rem 0 0; margin: 0; color:$text;}
+
+.fat_lesson .person {padding: 1rem 0 0; font-size: 1.1rem; font-weight: bold;}
+.fat_lesson .person i{margin-right: .25rem;}
 
 .fat_lesson a:hover h4{color: $blue;}
 
@@ -3262,17 +3300,17 @@ html.section-play body{padding-top: 0;}
 .fit_btn.active > .fit_status .progress_ring .progress_value{stroke: $blue;}
 
 // check goes over the time
-.fit_btn > .fit_status{ position: absolute; top:0; right: 0; background: #fff; display: flex; align-items: center; justify-content: center; width: 4.5rem; height: 100%;}
+.fit_btn > .fit_status{ position: absolute; top:0; right: 0; background: #fff; display: flex; align-items: center; justify-content: center; width: 4.5rem; height: 100%; color: $text_lighter;}
 .fit_btn:hover > .fit_status{background: $bg;}
 .fit_btn:hover > .fit_status .fa-check{color: $new_green;}
 
 .fit_btn.active > .fit_status{background: $bg;}
 
-.fat_lesson:hover{background: $bg; cursor: pointer;}
+
 .fat_lesson:hover .status{color: $text_light;}
 .fat_lesson:hover .status .fa-check{color: $new_green;}
 
-.fat_lesson[aria-expanded]:hover{cursor: pointer;}
+.fat_lesson[aria-expanded]:hover{background: $bg; cursor: pointer;}
 .fat_lesson[aria-expanded="true"]{background: $bg;}
 
 .fat_lesson .fit_segments{background: #fff; margin: 1.5rem 0 0; border-radius: $border_rad_sm;}
@@ -3301,12 +3339,14 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 
 .fat_hero{min-height: 100vh; margin-top: 0rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
 
-
-.fat_hero *:first-child{margin-top: -1rem;}
+// wtf?
+// .fat_hero *:first-child{margin-top: -1rem;}
 
 .fat_hero h1,
 .fat_hero h2{font-size: 6rem; color:$black;}
 .fat_hero h2{font-size: 4rem;}
+
+.fat_hero h1 a{text-decoration: none; color: inherit;}
 
 .fat_tease_btns{flex-direction: row; padding: 2rem 0; max-width: 50rem;}
 
@@ -3323,7 +3363,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero.left{text-align: left; align-items:normal;}
 .fat_hero.left h1{}
 
-.fat_hero.halfy{min-height: 50vh; justify-content:flex-end; padding: 0 $fat_sidepad}
+.fat_hero.halfy{min-height: 55vh; justify-content:flex-end; padding: 0 $fat_sidepad}
 
 .fat_hero.header{min-height: 0;}
 
@@ -3351,35 +3391,42 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 
 h1 + .fat_nav{margin-top: 2rem}
 
-.fat_hero.sticky{position: sticky;}
-.fat_nav{z-index: 5000; flex-direction:row; top:0; background: #fff; padding: 1rem; background: #fff; margin-bottom: calc(50vh - 6rem);}
+.fat_nav{z-index: 5000; top:-1px; background: #fff; margin-bottom: calc(50vh - 6rem); display: block;}
+.fat_nav.marginless{margin-bottom: 0}
 
-.fat_nav a{padding: .5rem 1rem; font-size: 1.3rem; margin: 0 .5rem 0 0 !important; text-decoration: none; border-radius: $border_rad_lg; border-color: transparent; color: $text_lighter;}
+.fat_nav .contain{padding: 1rem; max-width: $max_width; margin: 0 auto; display: flex; flex-direction:row; }
+
+.fat_nav a{padding: .5rem 1rem; font-size: 1.3rem; margin: 0 .5rem 0 0; text-decoration: none; border-radius: $border_rad_lg; border-color: transparent; color: $text_lighter;}
 .fat_nav a.active{background: $bg; border-color: $border_lighter; color: $text_light;}
 
 // first one  gose to the top
-.fat_nav a.top{width: 2.5rem; padding: .5rem 0.5rem; opacity: 1; transition: all .25s ease-in-out; cursor: default; margin-right: 0;}
+.fat_nav a.top{padding: .5rem 0; text-align: center; width: 0; overflow: hidden; margin: 0 0 0 -1.5rem; transition: all .25s ease-in-out; opacity: 0;}
 .fat_nav a.top i{margin-right: 0;}
-.fat_nav a.top.active{opacity: 0;}
+.fat_nav a.top:not(.active){width: 4rem; margin: 0 1rem 0 0; opacity: 1;}
 
 .fat_nav a .txt i{color: $text_lightest; font-size: 70%; margin: 0 0 0 .25rem;}
 .fat_nav a:hover .txt i{color: $text_light;}
 .fat_nav a .txt i:hover{color: $new_apricot;}
 
-.fat_nav .purple{color: $new_purple;}
-.fat_nav .blue{color: $new_blue;}
-.fat_nav .green{color: $new_green;}
-.fat_nav .red{color: $new_red;}
-.fat_nav .bergundy{color: $new_bergundy;}
-.fat_nav .apricot{color: $new_apricot;}
-.fat_nav .teal{color: $new_teal;}
-.fat_nav .navy{color: $new_navy;}
-.fat_nav .watermelon{color: $new_watermelon;}
+// .fat_nav .purple{color: $new_purple;}
+// .fat_nav .blue{color: $new_blue;}
+// .fat_nav .green{color: $new_green;}
+// .fat_nav .red{color: $new_red;}
+// .fat_nav .bergundy{color: $new_bergundy;}
+// .fat_nav .apricot{color: $new_apricot;}
+// .fat_nav .teal{color: $new_teal;}
+// .fat_nav .navy{color: $new_navy;}
+// .fat_nav .watermelon{color: $new_watermelon;}
 
 .fat_nav a i{margin-right: .5rem;}
 
 .fat_nav a:hover{background: $bg;}
 
+// fat nav btn
+.fat_nav a.btn{color: #fff;}
+.fat_nav a.btn-watermelon:hover{background: darken($watermelon, 10%); color: #fff}
+
+.fat_nav a.right{float: right;}
 
 
 .fat_nav.lefty{flex-direction:column; position: fixed; top:0; left: 0; bottom: 0; margin-bottom: 0; justify-content: center; background: transparent; width: 6rem; overflow: visible;}
@@ -3389,6 +3436,14 @@ h1 + .fat_nav{margin-top: 2rem}
 
 
 
+// weird solo enroller thing
+.fat_enroller{position: sticky; top:0; display: none;}
+.fat_enroller .fat_nav{}
+
+
+.fat_nav .enrol{margin: 0 0 0 auto;}
+
+.fat_nav .enrol{position: sticky; top:0;}
 
 
 // edit the user
@@ -3403,8 +3458,10 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_section{padding: $fat_sidepad/2 $fat_sidepad}
 
+.fat_section.nobot{padding-bottom: 0 !important; margin-bottom: 0;}
 
-.fat_section.bg{background: $bg;}
+.bg{background: $bg;}
+
 .fat_section h2{font-size: 4rem; margin-bottom: 4rem;}
 .fat_section h2 small{font-size: 1rem; text-transform: uppercase; display: block; color: $text_lighter; letter-spacing: 1px; padding-bottom: 1rem;}
 .fat_section h2 small i{width: 1rem; margin-right: .5rem;}
@@ -3414,44 +3471,51 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_searchline .form-control:focus{box-shadow: none; border-bottom-color:$border_medium; }
 .fat_searchline i{color: $text_lighter; position: absolute; top:0; left: 0; font-size: 2rem; padding: 1.5rem 0 0 1rem;}
 
-.fat_section .fat_lessons{padding: 1rem; margin-left: -1rem; background: #fff;}
-.fat_section .fit_btn > .fit_status,
+.fat_section .fat_lessons{padding: 1rem; background: #fff;}
+.fat_section .fat_lessons.peeps .collapse,
+.fat_section .fat_lessons.peeps .collapsing{background: #fff; padding: .5rem 1.5rem 1rem; margin: 1rem 0 0;}
+
+.fit_segments.hoverstatus .fit_btn > .fit_status{opacity: 0;}
+.fit_segments.hoverstatus .fit_btn:hover > .fit_status{opacity: 1;}
 .fat_video_modal .fit_btn > .fit_status{display: none;}
 
 
 .fat_section .fat_lesson[aria-expanded="true"] .status .fa-chevron-down{transform: rotate(180deg);}
 
 
-
-.fat_section.purple h2{color:$new_purple;}
+.fat_section .caption{font-size: 0.9rem;}
 
 // ------------------------------------------------------------------------------------
 // the LIBRARY OF DOOM
 
-#library.fat_section h2{color: $new_blue;}
-#library.fat_section .fat_lesson:hover h4{color: $new_blue;}
+.fat_library{margin-bottom: 2rem;}
 
 
 .fat_library_explainer{background: #fff;}
 
-.fat_library_explainer .vid{display: block; padding-top: $ratio_169; position: relative; overflow: hidden; background: $bg_blue}
-.fat_library_explainer .vid .holder{position: absolute; top:0; left: 0; right: 0; bottom: 0;}
+.fat_library_explainer .vid{display: block; position: relative; overflow: hidden; background: $bg_blue; margin-bottom: 1.5rem; padding: 0;}
+// .fat_library_explainer .vid.active{padding-top: $ratio_169;}
+// .fat_library_explainer .vid .holder{position: absolute; top:0; left: 0; right: 0; bottom: 0;}
 .fat_library_explainer .vid i{font-size: 3rem; color: #fff; position: absolute; top:50%; left: 50%; width: 4rem; height: 4rem; margin: -2rem 0 0 -2rem; display: flex; align-items: center; justify-content: center; }
 
-.fat_library_explainer .explain{padding: 1.5rem;}
+.fat_library_explainer .explain{padding: 2rem; margin-top: -2rem;}
+.fat_library_explainer .explain:first-child{margin-top: 0;}
 .fat_library_explainer .explain h4{font-size: 1.2rem; padding: 0; margin: 2rem 0 .5rem;}
 .fat_library_explainer .explain h4 i{width: 1rem; margin-right: .5rem;}
 .fat_library_explainer .explain p{font-size: 1rem; color: $text_light;}
 
 // pad mode
 .fat_library_explainer .explain h4,
-.fat_library_explainer .explain p{position: relative; padding-left: 2.5rem}
+.fat_library_explainer .explain p{position: relative; padding-left: 2.5rem; margin:0;}
 .fat_library_explainer .explain h4 i{position: absolute; top:0; left: 0; font-size: 1.5rem;}
 
 .fat_library_explainer .explain h4:first-child{margin-top: .5rem;}
 
 @media (min-width: 992px) {
-	.fat_library_explainer{position: sticky; top: 2rem;}
+	.fat_library_explainer.sticky{position: sticky; top: 2rem;}
+}
+@media (min-width: 1450px) {
+	.fat_library_explainer.sticky{top:7rem;}
 }
 
 
@@ -3459,15 +3523,17 @@ h1 + .fat_nav{margin-top: 2rem}
 // ------------------------------------------------------------------------------------
 // leo list
 // max-width: 120rem; nah?
-.fat_leo_list{ position: relative; overflow: hidden;}
+// overflow: hidden;
+.fat_leo_list{ position: relative;}
 .fat_leo_list h2{font-size: 4rem; margin: 0 0 4rem 0rem;}
 .fat_leo_list h3{font-size: 2.5rem; margin: 0 0 2rem 0;}
 .fat_leo_list h2 .purple{color: $new_purple;}
 
 .fat_leo_list dl{margin: 0 0 1rem 7rem; position: relative;}
 
-.fat_leo_list dt{color: $black; font-size: 1.6rem; padding-bottom: 1rem; position: relative;}
+.fat_leo_list dt{color: $black; font-size: 1.6rem; padding-bottom: 1rem; position: relative; display: flex; align-items: center;}
 .fat_leo_list dt i{color: $text_lightest; font-size: 4rem; position: absolute; top:.5rem; left: -7rem; width: 5rem; text-align: center; display: block;}
+.fat_leo_list dt .no{background: $bg; border-radius: $border_rad_sm; margin-right: .75rem; align-items: center; justify-content: center; display: flex; font-size: 1.2rem; color: $text_light; width: 1.5rem; height: 1.5rem;}
 
 .fat_leo_list dd {padding-bottom: 2.5em; max-width: 22rem;}
 .fat_leo_list dd p{color: $black; font-size: 1.2rem; padding-bottom: .75rem; margin: 0;}
@@ -3490,10 +3556,14 @@ h1 + .fat_nav{margin-top: 2rem}
 // leo SLINGIN
 .leo_slingin{position: absolute; bottom: 0; right: 15%; width:30%; z-index: 3600; max-width: 600px}
 
-
 // the gradient
-.fat_leo_list:after{ display: block; height: 19rem; content: ''; position: absolute; bottom: -9rem; left: 0; right: -6rem; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(0, 0, 0, 0.1)); transform: rotate(-10deg);}
+// nah not for now
+// .fat_leo_list:after{z-index: 3650;  display: block; height: 19rem; content: ''; position: absolute; bottom: -9rem; left: 0; right: -6rem; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(0, 0, 0, 0.1)); transform: rotate(-10deg);}
 // .fat_leo_list{box-shadow: inset 0rem -1rem 1rem rgba(0,0,0,0.1);}
+
+
+// plain old video
+.fat_video{border-radius: $border_rad_lg; overflow: hidden;}
 
 // video with some sidenav
 
@@ -3502,7 +3572,7 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_video_sidenav .side .fit_btn .fit_status{background: $bg;}
 .fat_video_sidenav .side .fit_btn:hover,
 .fat_video_sidenav .side .fit_btn:hover .fit_status{background: #fff;}
-.fat_video_sidenav .side .fit_btn:hover .fit_status{opacity: 0;}
+
 
 .fat_video_sidenav .side .fit_btn.active,
 .fat_video_sidenav .side .fit_btn.active .fit_status{background: #fff;}
@@ -3518,7 +3588,7 @@ h1 + .fat_nav{margin-top: 2rem}
 	.fat_video_sidenav .side{width: 30%; position: absolute; top:0; right: 0; bottom: 0; background: $bg; overflow: hidden; overflow-y: scroll;}
 }
 
-// --------------------`----------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 // video modal
 .fat_video_full{border-radius: $border_rad_lg; overflow: hidden; margin: 0 0 4rem;}
 
@@ -3567,12 +3637,17 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_pic_grid .play{position: absolute; top:0; right: 0; left: 0; bottom: 0; display: flex; align-items: center; justify-content: center; text-decoration: none; flex-direction:column; transition: all .15s ease-in-out;}
 .fat_pic_grid .play i{font-size: 3rem; line-height: 7rem; color: #fff; transition: all .15s ease-in-out; margin-top: 2rem;}
-.fat_pic_grid .play small{display: block; font-size: 1.1rem; color: $black; transition: all .15s ease-in-out; opacity: 0; background: rgba(255,255,255,0.9); padding: .5rem 1rem;}
-.fat_pic_grid .play small .timing{font-size: 80%; opacity: 0.5; margin-left: .5rem}
+.fat_pic_grid .play small{display: block; font-size: .9rem; color: $black; transition: all .15s ease-in-out; background: rgba(255,255,255,0.9); padding: .5rem 1rem; border-radius: $border_rad_sm; opacity: 0.95;}
+.fat_pic_grid .play small .timing{font-size: 70%; opacity: 0.5; margin-left: .5rem}
+
+// move the portrait ones down a bti
+.fat_pic_grid > .portrait.pic .play i{margin-top: 25%;}
+
 
 .fat_pic_grid .play:hover{background: rgba(0,0,0,0.2);}
-.fat_pic_grid .play:hover i{transform: scale(1.2);}
+.fat_pic_grid .play:hover i{transform: scale(1.25);}
 .fat_pic_grid .play:hover small{opacity: 1;}
+ // nah: transform: scale(1.0.5);
 
 .fat_pic_grid .portrait.text{padding:2rem;display: flex; align-items:flex-start; flex-direction:column; justify-content: center; }
 .fat_pic_grid .portrait.text h2{font-size:2.5rem; padding-bottom: 2rem; color: $new_teal; margin: 0;}
@@ -3583,8 +3658,8 @@ h1 + .fat_nav{margin-top: 2rem}
 
 // icons n shit
 .fat_pic_grid .text .meta{}
-.fat_pic_grid .text .meta .deet{padding: 0 0 0 2.5rem; font-size: 1rem; position: relative;}
-.fat_pic_grid .text .meta .deet i{font-size: 1.5rem; position: absolute; top:0; left: 0; color: $text_light; color: $text_light;}
+.fat_pic_grid .text .meta .deet{padding: 0 0 0 1.75rem; font-size: 1rem; position: relative;}
+.fat_pic_grid .text .meta .deet i{display:block; text-align: center; font-size: 1rem; width: 1.5rem; position: absolute; top:.3rem; left: -.25rem; color: $text_light; color: $text_light;}
 .fat_pic_grid .text .meta .deet strong{display: block; font-size: 0.8rem; text-transform: uppercase; line-height: 1.5rem; font-weight: normal;}
 .fat_pic_grid .text .meta .deet i,
 .fat_pic_grid .text .meta .deet strong{opacity: .5;}
@@ -3623,12 +3698,28 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid .portrait.text p{color: #fff;}
 .fat_pic_grid .portrait.text h2 small{color: $text;}
 
-// watermelon`
-.fat_pic_grid .text.watermelon{color:darken($new_watermelon, 70%)}
+// watermelon
+.fat_pic_grid .text.watermelon{color:darken($new_watermelon, 70%); box-shadow: inset 0 0 200px #191b20;}
 .fat_pic_grid .text.watermelon h2{color: $new_watermelon;}
 .fat_pic_grid .text.watermelon h2 small{color: #fff; opacity: 0.3;}
 .fat_pic_grid .text.watermelon .btn{border-color: $new_watermelon; color: $new_watermelon;}
 .fat_pic_grid .text.watermelon .btn:hover{background: $new_watermelon; color: #fff;}
+
+// reverse text
+.fat_pic_grid .text.reverse{background: $bg; box-shadow: none;}
+.fat_pic_grid .text.reverse h2{color: $new_blue;}
+.fat_pic_grid .text.reverse h2 small{color: $text_lighter;}
+.fat_pic_grid .text.reverse .meta .deet p{color:$black;}
+.fat_pic_grid .text.reverse .meta .deet p strong{color: $black;}
+.fat_pic_grid .text.reverse .btn{border-color: $new_blue; color: $new_blue;}
+.fat_pic_grid .text.reverse .btn:hover{background: $new_blue; color: #fff;}
+
+.fat_pic_grid .text.reverse.white{background: #fff;}
+
+.fat_pic_grid .text.reverse.pink h2{color: $new_pink;}
+.fat_pic_grid .text.reverse.pink .btn{border-color: $new_pink; color: $new_pink;}
+.fat_pic_grid .text.reverse.pink .btn:hover{background: $new_pink; color: #fff;}
+
 
 
 body .fat_pic_grid > .landscape .play i{margin-top: 10rem; font-size: 5rem;}
@@ -3667,15 +3758,15 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_video_modal.show   .modal-dialog {transform: translate3d(0, 0, 0);}
 
 
-.fat_quote{background: $bg; border-radius: $border_rad_xl; position: relative; max-width: 30rem; margin: 2rem 0 7rem; min-height: 15rem; }
+.fat_quote{z-index: 4000; background: $bg; border-radius: $border_rad_xl; position: relative; max-width: 30rem; margin: 2rem 0 7rem; min-height: 15rem; }
 .fat_quote .ldquo{ position: absolute; top:-1.5rem; left: -2.5rem; font-size: 7rem; color: $text_lighter; font-family: "Times New Roman", times, serif; display: block;}
 
-.fat_quote .friend{padding:1.5rem 2rem 0.5rem; display: none;  opacity: 0; transition: all .25s ease-in-out; }
+.fat_quote .friend{padding:1.5rem 2rem 0.5rem; display: none;  opacity: 0; transition: all .25s ease-in-out; cursor: pointer;}
 .fat_quote .friend.active{display: block; opacity: 1}
-.fat_quote p{font-size: 1.5rem;}
+.fat_quote p{font-size: 1.5rem; font-family: 'Merriweather', serif;}
 
 .fat_quote .dots{position: absolute; top:100%; right:.5rem; margin: 1rem 0 0; display: block; text-align: right;}
-.fat_quote .dots .dot{border-radius: $border_rad_r; background: $text_lightest; height: 1.75rem; width: 1.75rem; border: .45rem solid #fff; display: inline-block;}
+.fat_quote .dots .dot{border-radius: $border_rad_r; background: $text_lightest; height: 1.75rem; width: 1.75rem; border: .4rem solid #fff; display: inline-block; text-decoration: none;}
 .fat_quote .dots .dot.active{background: $text_light;}
 .fat_quote .dots .dot:hover{background: $text; cursor: pointer;}
 
@@ -3683,6 +3774,12 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_quote cite a{color: inherit; text-decoration: underline;}
 .fat_quote cite a:hover{color: $blue;}
 
+@media (min-width: 1450px) {
+	.fat_quote{max-width: 40rem; min-height: 13rem;}
+}
+
+
+.fat_whitejab .fat_quote{max-width: none; margin-left: 2.5rem;}
 
 // I fancy me some text clipping
 
@@ -3690,18 +3787,55 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_hero h1 strong{}
 
 
+.fat_section .centered{text-align: center;}
+
+// ------------------------------------------------------------------------------------
+// icons in a row
+
+.fat_iconrow h3{font-size: 2.5rem;}
+.fat_iconrow h3 i{font-size: 8rem; padding: 2rem 0 1rem; display: block;}
+.fat_iconrow p,
+.fat_iconrow li{font-size: 1.3rem; max-width: 16rem; margin: 0 auto; margin-bottom: 1rem;}
+
+.fat_whitejab{padding: 3rem 3rem 2rem;  border-radius: $border_rad_xl; background: #fff; max-width: 50rem; margin: 5rem auto 3rem;}
+
+.fat_whitejab h3{padding-bottom: 2rem;}
+.fat_whitejab h4{font-size: 1.6rem; padding-bottom: 1rem;}
+.fat_whitejab p,
+.fat_whitejab li{max-width: none;}
+
+.fat_whitejab hr{max-width: 10rem; border-top: .25rem solid $border_light; margin: 4rem auto;}
+
+.fat_whitejab .morethings p{font-size: 1.1rem; padding-bottom: 1.5rem;}
+
+@media (max-width: 575px) {
+	.fat_whitejab{padding: 2rem; margin: 1rem 0;}
+	.fat_iconrow h3{font-size: 2rem;}
+	.fat_iconrow h3 i{font-size: 5rem;}
+}
+
+
+.fat_polaroid{padding: 1.5rem; box-shadow: 10px 10px 30px rgba(0,0,0,0.15); transform: rotate(2deg); border-radius: $border_rad_sm; text-align: center; background: #fff; margin-bottom: -5rem;}
+.fat_polaroid img{max-width: 100%;}
+.fat_polaroid .caption{padding: 1rem;}
+
+@media (min-width: 992px) {
+	.fat_polaroid {margin-bottom: -7rem;}
+}
+
 // ------------------------------------------------------------------------------------
 // why, hello there
 
 #hello.fat_section h1{color: $new_watermelon;}
-#hello.fat_section .bigly{min-height: calc(100vh - 20rem); display: flex; align-items: flex-start; justify-content: center; flex-direction:column;}
+#hello.fat_section .bigly{min-height: calc(80vh - 20rem); display: flex; align-items: flex-start; justify-content: center; flex-direction:column;}
+
 
 
 // ABSURDLY BIG BUTTON
 .btn-absurd{font-size: 2.5rem; background: $new_blue; padding:1rem 2rem; position: relative; text-decoration: none; color:#fff;}
 .btn-absurd i{margin-right: 1rem;}
 .btn-absurd:hover{color: #fff; background: darken($new_blue, 5%);}
-.btn-absurd .party{position: absolute; top:50%; right: -6rem; width: 4rem; height: 4rem; margin: -2rem 0 0; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 4rem;}
+.btn-absurd .party{position: absolute; top:50%; left: 100%; height:4rem; margin: -2rem 0 0 2rem; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 200%;}
 
 
 .btn-absurd.watermelon{background: $new_watermelon;}
@@ -3713,24 +3847,54 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 #hello.fat_section .nb{font-size: 1.1rem; font-weight: 300; color: $text_light; max-width: 20rem; padding: 2rem 0;}
 
+
+
+
+// ------------------------------------------------------------------------------------
+// plain text should work
+
+
+.plaintext h3{font-size: 2.2rem; margin: 1.5rem 0 1.5rem;}
+.plaintext h3 i{margin-right: .5rem;}
+.plaintext p,
+.plaintext li{font-size: 1.2rem; }
+
+.plaintext [class^='col']{margin-bottom: 1rem}
+
+.plaintext .points [class^='col'] p{max-width: 20rem;}
+.plaintext .points [class^='col'] li{max-width: 18rem;}
+
+.plaintext p img{max-width: 100%; border-radius: $border_rad_lg;}
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------
 // Some big ol mobile styles LOL should have done it the other way around IDK
 
-@media (min-width: 992px) {
-	.fat_nav a.top{width: 3.5rem; }
+@media (min-width: 1140px) {
+	.fat_nav {position: sticky;}
+	.fat_section:not(.fat_pic_grid){padding-top: 6rem;}
 }
 
 @media (min-width: 1450px) {
-	.fat_nav {position: sticky; top: -1px;}
-	.fat_nav a {font-size: 1.6rem; padding: .75rem 1.5rem; margin:0 1rem 0 0;}
-	.fat_nav a.top{padding: .75rem .5rem; margin-right: 0;}
-	.fat_section:not(.fat_pic_grid){padding-top: 8rem;}
+
+	// sizing:
+	.fat_hero,
+	.fat_hero.halfy,
+	.fat_nav .contain,
+	.fat_section:not(.fat_pic_grid){max-width: $max_width; margin-left: auto; margin-right: auto; padding-left: 0; padding-right: 0;}
+
+	.fat_section:not(.fat_pic_grid){padding-top: 8rem; padding-bottom: 8rem;}
 }
+
 
 @media (max-width: 991px) {
 
 	// nav
-	.fat_nav{margin-left: 1rem;}
 	.fat_nav a.top{display: none;}
 
 	// sections
@@ -3757,10 +3921,14 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.leo_slingin{right: -5%; height: auto; width: 30%;}
 }
 
+
+// Phonesz
+
 @media (max-width: 575px) {
 
 	// nav
 	.fat_nav{flex-direction:column; margin: 0 -.5rem calc(50vh - 15rem); }
+	.fat_nav .enrol{margin-left: 0;}
 
 	// sections
 	.fat_section:not(.fat_pic_grid){padding: $fat_sidepad/4}
@@ -3791,7 +3959,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_lesson .fit_window{width: 7rem;}
 	.fat_lesson .fit_segments{margin-left: -8rem;}
 
-	.btn-watermelon-absurd{font-size: 1.2rem}
+	.btn-absurd{font-size: 1.2rem; padding: 1rem 1.5rem;}
 
 	
 }

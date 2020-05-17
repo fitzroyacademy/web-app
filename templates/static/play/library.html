@@ -1,0 +1,376 @@
+{% extends "/layout_naked.html" %}
+{% block body %}
+
+
+<div class="fat_head blue purple">
+	{% include 'static/play/_head.html' %}
+</div>
+
+
+<div class="fat_hero left blue halfy" id="top">
+
+	<h1>Blended learning for<br>serious educators.</h1>
+
+</div>
+
+<div class="fat_nav list-group" id="scrollspy">
+	<div class="contain">
+		<a href="#top" class="list-group-item top"><i class="fal fa-arrow-up"></i></a>
+		<a href="#make" class="blue list-group-item"><i class="fal fa-play-circle"></i> <span class="txt">Lesson trailers</span></a>
+		<a href="#library" class="pink list-group-item"><i class="fal fa-books"></i> <span class="txt">Lesson library</span></a>
+		<a href="#workshops" class="green list-group-item"><i class="fal fa-book"></i> <span class="txt">Workshop guide</span></a>
+		<a href="#go" class="btn enrol btn-blue list-group-item"><span class="txt">Use our lessons</span> <i class="fal fa-bolt"></i></a>
+	 </div>
+</div>
+
+
+<div class="fat_section fat_pic_grid coursetease left"  id="trailers">
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/clarevert.jpg" alt="" class="vert">
+		<img src="/static/assets/images/lessons_hires/clare.jpg" alt="" class="hori">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Clare teaches Agile <span class="timing">1:36</span></small></a>
+	</div>	
+	<div class="portrait text teal">
+		<h2>
+			<small><i class="fal fa-play-circle"></i> Trailers</small>
+			Beautiful blended learning.
+		</h2>
+		<div class="meta">
+			<div class="deet">
+				<i class="fal fa-users"></i>
+				<p><strong>Audience</strong> Early to mid-stage entrepeneurs and changemakers, in everything from startup accelerators to university classes and corporate grad programs.</p>
+			</div>
+			<div class="deet">
+				<i class="fal fa-calendar"></i>
+				<p><strong>Suitability</strong> Accelerator programs, schools and inside businesses. Kids and adults from 16 to 65+ love our lessons.</p>
+			</div>
+<!-- 			<div class="deet">
+				<i class="fal fa-clock"></i>
+				<p><strong>Workload average</strong> One 30-60 minute lesson per week generates 3-5 hours of quality work.</p>
+			</div> -->
+			<div class="deet">
+				<i class="fal fa-usd-circle"></i>
+				<p><strong>Cost</strong> Sliding scale based on org size and access needs. Ask us!</p>
+			</div>
+		</div>
+		<a href="#go" class="btn btn-lg btn-outline-primary"><i class="fal fa-chevron-right"></i> Get started</a>
+	</div>
+</div>
+
+<div class="fat_pic_grid">
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/arivert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Ari teaches Barrier Mapping</small></a>
+	</div>
+	<div class="portrait">
+		<div class="landscape pic">
+			<img src="/static/assets/images/lessons_hires/kevin2.jpg" alt="">
+			<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Kevin teaches Impact at Scale</small></a>
+		</div>
+		<div class="landscape pic">
+			<img src="/static/assets/images/lessons_hires/dan.jpg" alt="">
+			<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Dan teaches Pitching for Investment</small></a>
+		</div>
+	</div>
+</div>
+
+
+<div class="fat_pic_grid threeup">
+	<div class="portrait">
+		<div class="landscape pic">
+			<img src="/static/assets/images/lessons_hires/gautam.jpg" alt="">
+			<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Gautam teaches Public Campaigning</small></a>
+		</div>
+		<div class="landscape pic">
+			<img src="/static/assets/images/lessons_hires/dan.jpg" alt="">
+			<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Dan teaches Pitching for Investment</small></a>
+		</div>
+		<div class="landscape pic">
+			<img src="/static/assets/images/lessons_hires/mel.jpg" alt="">
+			<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Mel teaches Gureilla Usability Testing</small></a>
+		</div>
+	</div>	
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/jennyvert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Jenny teaches Community Integration</small></a>
+	</div>
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/shivanivert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Shivani teaches Systems Mapping</small></a>
+	</div>		
+</div>
+
+<div class="fat_pic_grid">
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/mariavert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Maria teaches Performance</small></a>
+	</div>
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/willvert2.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Will teaches Basic Website</small></a>
+	</div>
+</div>
+
+<div class="fat_pic_grid threeup">
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/acevert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Ace teaches Child Protection</small></a>
+	</div>		
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/amandavert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Amanda teaches Financial Modelling</small></a>
+	</div>
+	<div class="portrait pic">
+		<img src="/static/assets/images/lessons_hires/maddyvert.jpg" alt="">
+		<a class="play" href="#" data-dismiss="modal" data-toggle="modal" data-target="#fat_modal_video"><i class="fas fa-play"></i><small>Maddy teaches Social Media</small></a>
+	</div>
+</div>
+
+<div class="bg">
+	<div class="fat_section">
+		
+		<h2>
+			<small><i class="fal fa-books"></i> Lesson library</small>
+			Learning, flipped.
+		</h2>
+		<form class="fat_searchline">
+			<input type="text" class="form-control" name="search" placeholder="Filter lesson list...">
+			<i class="fal fa-search"></i>
+		</form>
+
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-7">
+					<div class="fat_lessons">
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/agile-project-management.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Introduction</h4>
+				        <p>Welcome to the course!</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/customer-interviews.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Customer Discovery</h4>
+				        <p>How to talk to customers and find if they'll like your product or not.</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/lean-canvas.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Lean Canvas</h4>
+				        <p> How to scope out a business on one A4 page.</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson" data-toggle="collapse" href="#collapseroony" role="button">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/community-integration.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Community integration</h4>
+				        <p>Pull your head in and humble up before finding out what a community really needs.</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				      <div class="collapse" id="collapseroony">
+				        <div class="fit_segments">
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_a" data-fit-segment="2" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Introduction"></i><span class="sr-only">Introduction</span>
+				            <span class="fit_txt">Introduction</span>
+				            <span class="fit_sub">1:12</span>
+				            <span class="fit_status"><i class="fas fa-check"></i></span>
+				          </a>
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_b" data-fit-segment="3" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Lesson Resources"></i><span class="sr-only">Lesson Resources</span>
+				            <span class="fit_txt">Lesson Resources</span>
+				            <span class="fit_sub">2:36</span>
+				            <span class="fit_status"><i class="fas fa-check"></i></span>
+				          </a>
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_c" data-fit-segment="4" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Drawing without words"></i><span class="sr-only">Drawing without words</span>
+				            <span class="fit_txt">Drawing without words</span>
+				            <span class="fit_sub">8:12</span>
+				            <span class="fit_status"><i class="fas fa-check"></i></span>
+				          </a>
+
+				          <a class="fit_btn video accessible" href="/course/fitzroy-academy/how-to-have-good-ideas/seg_d" data-fit-segment="5" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Five designers in a box"></i><span class="sr-only">Five designers in a box</span>
+				            <span class="fit_txt">Five designers in a box</span>
+				            <span class="fit_sub">1:36</span>
+				            <span class="fit_status">
+				              <svg class="progress_ring" width="26" height="26" viewBox="0 0 120 120">
+				                <circle class="progress_meter" cx="60" cy="60" r="54" stroke-width="12"></circle>
+				                <circle class="progress_value" cx="60" cy="60" r="54" stroke-width="12" style="stroke-dasharray: 340; stroke-dashoffset: 135;"></circle>
+				              </svg>
+				            </span>
+				          </a>
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_e" data-fit-segment="6" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Quiet loud brainstorming"></i><span class="sr-only">Quiet loud brainstorming</span>
+				            <span class="fit_txt">Quiet loud brainstorming</span>
+				            <span class="fit_sub">7:14</span>
+				            <span class="fit_status">
+				              <svg class="progress_ring" width="26" height="26" viewBox="0 0 120 120">
+				                <circle class="progress_meter" cx="60" cy="60" r="54" stroke-width="12"></circle>
+				                <circle class="progress_value" cx="60" cy="60" r="54" stroke-width="12" style="stroke-dasharray: 340; stroke-dashoffset: 260;"></circle>
+				              </svg>
+				            </span>
+				          </a>
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_f" data-fit-segment="7" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Party in the woods"></i><span class="sr-only">Party in the woods</span>
+				            <span class="fit_txt">Party in the woods</span>
+				            <span class="fit_sub">2:47</span>
+				          </a>
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_g" data-fit-segment="8" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Find your Awe"></i><span class="sr-only">Find your Awe</span>
+				            <span class="fit_txt">Find your Awe</span>
+				            <span class="fit_sub">7:56</span>
+				          </a>
+
+				          <a class="fit_btn video accessible " href="/course/fitzroy-academy/how-to-have-good-ideas/seg_h" data-fit-segment="9" data-fit-parent="2" data-fit-segment-link="">
+				            <i class="fas fa-circle" data-original-title="Mulago Fellow"></i><span class="sr-only">Mulago Fellow</span>
+				            <span class="fit_txt">Mulago Fellow</span>
+				            <span class="fit_sub">3:33</span>
+				          </a>
+
+				        </div>
+
+				        <div class="embed">	
+									<a href="#" class="btn btn btn-primary" data-fit-wistia-preview="baba5nfzx9"><i class="fal fa-window-restore"></i> Preview this lesson</a>
+				        </div>
+
+
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/financial-models.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Financial models</h4>
+				        <p>Make a spreadsheet that covers 3 years of finance, from startup through to capital and tax.</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/good-ideas.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Good ideas</h4>
+				        <p>Chill out, take it easy and let the inspiration come to you, before you burn out.</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/sales.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Sales for people who hate selling</h4>
+				        <p>Don't be scared of your sales pipeline, it's just about making friends with people.</p>
+				      <div class="status">
+				      	<i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/design-iteration-form.jpg" alt="image">
+				        <a href="#" data-toggle="modal" data-target="#fat_modal_video" class="play"><i class="fas fa-play-circle"></i></a>
+				      </div>
+				        <h4>Design for Impact at Scale</h4>
+				        <p>How to use Mulago's method for designing for lasting impact.</p>
+				      <div class="status">
+				        <i class="fas fa-chevron-down"></i>
+				      </div>
+				    </div>
+
+				  </div>
+					
+				</div>
+				<div class="col-lg-5">
+
+					<div class="fat_library_explainer">
+						<div class="vid">
+							<i class="fas fa-play-circle"></i>
+							<div class="holder" data-fit-wistia-preview-player></div>
+						</div>
+						<div class="explain">
+							<h4><i class="fal fa-search"></i> Preview a lesson</h4>
+							<p>Search the list, see what's in the lesson, and click on the image to preview!</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="fat_section" id="hello">
+	
+	<h2>
+		<small><i class="fal fa-comments-alt"></i> Contact us</small>
+		Hello there!
+	</h2>
+	<div class="bigly">
+		<a class="btn btn-absurd watermelon" href="mailto:hello@fitzroyacademy.com"><i class="fal fa-envelope"></i> hello@fitzroyacademy.com <span class="party">🥳</span></a>
+		<div class="nb">Let’s sort cups of tea from our own homes, there’s a pandemic going on.</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

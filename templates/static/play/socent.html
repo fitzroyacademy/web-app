@@ -1,0 +1,343 @@
+{% extends "/layout_naked.html" %}
+{% block body %}
+
+
+<div class="fat_head watermelon">
+	{% include 'static/play/_head.html' %}
+</div>
+
+<div class="fat_hero left halfy watermelon" id="top">
+	<h1>Social enterprise.</h1>
+</div>
+
+<div class="fat_nav marginless list-group" id="scrollspy">
+	<div class="contain">
+		<a href="#top" class="list-group-item top"><i class="fal fa-arrow-up"></i></a>	
+		<a href="#trailer" class="green list-group-item"><i class="fal fa-play-circle"></i> <span class="txt">Trailer</span></a>
+		<a href="#audience" class="teal list-group-item"><i class="fal fa-lightbulb-on"></i> <span class="txt">Who it&rsquo;s for</span></a>
+		<a href="#curriculum" class="blue list-group-item"><i class="fal fa-books"></i> <span class="txt">What you&rsquo;ll learn</span></a>
+		<a href="#together" class="pink list-group-item"><i class="fal fa-users"></i> <span class="txt">Learn together!</span></a>
+		<!-- <a href="#faqs" class="navy list-group-item"><i class="fal fa-users"></i> <span class="txt">FAQs</span></a> -->
+		<a href="#enrol" class="btn enrol btn-watermelon list-group-item"><span class="txt">Enrol</span> <i class="fal fa-bolt"></i></a>
+	</div>
+</div>
+
+
+<div class="fat_enroller">
+	<div class="fat_nav">
+		<a href="#enrol" class="btn enrol btn-watermelon list-group-item"><span class="txt">Enrol</span> <i class="fal fa-bolt"></i></a>
+	</div>
+</div>
+
+<div class="fat_section" id="trailer">
+	<div class="fat_video">
+		<script src="https://fast.wistia.com/embed/medias/qp2c1utajg.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_qp2c1utajg videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/qp2c1utajg/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+	</div>
+</div>
+
+
+<div class="fat_section plaintext" id="audience">
+	<h2 class="teal">
+		<small><i class="fal fa-users"></i> Audience</small>
+		Who it&rsquo;s for.
+	</h2>
+	<div class="row points">
+		<div class="col-md-4">
+			<h3 class=""><i class="fal fa-money-bill-wave"></i> Entrepeneurs.</h3>
+			<p>For early stage founders who want to create impact with their business.</p>
+			<ul>
+				<li>Pre-revenue, or just getting started with an idea.</li>
+				<li>Mission-driven without much business experience.</li>
+			</ul>
+		</div>
+		<div class="col-md-4">
+			<h3 class=""><i class="fal fa-fist-raised"></i> Changemakers.</h3>
+			<p>For non-profit / NGO folks who are tired of the grant cycle.</p>
+			<ul>
+				<li>Finding more sustainable ways to reach beneficiaries and donors.</li>
+				<li>Wanting a shared language for agility and fast, smart work.</li>
+			</ul>
+		</div>
+		<div class="col-md-4">
+			<h3 class=""><i class="fal fa-bolt"></i> Activists.</h3>
+			<p>Mission-driven movement builders who want to shift systems.</p>
+			<ul>
+				<li>Tired of fighting for your cause with no money behind you?</li>
+				<li>Excited to get real traction and power behind your work.</li>
+			</ul>
+		</div>
+	</div>
+
+<!-- 	<p>
+	  <img src="/static/assets/images/static/about/aimee.jpg" alt="Learning stuff">
+	  <small class="caption">Aimee started a project built around a cogntive behavioural therapy app, for young people.</small>
+	</p>
+ -->
+
+	<div class="row">
+		<div class="col-md-8">
+			<p><img src="/static/assets/images/static/about/aimee.jpg" alt="Learning stuff"></p>
+		</div>
+		<div class="col-md-4">
+			<p><img src="/static/assets/images/static/about/kevin_cameras.jpg" alt="Learning stuff"></p>
+			<p><img src="/static/assets/images/static/about/gautam_gun.jpg" alt="Learning stuff"></p>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="bg">
+	<div class="fat_section" id="curriculum">
+		<h2 class="blue">
+			<small><i class="fal fa-books"></i> Curriculum</small>
+			What you&rsquo;ll learn.
+		</h2>
+
+		<div class="container-fluid">
+			<div class="row fat_library">
+				<div class="col-lg-7">
+					<div class="fat_lessons peeps">
+
+						<!-- <h3>These lovely people:</h3> -->
+
+				    <div class="fat_lesson" data-toggle="collapse" href="#agile" role="button" aria-expanded="false">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/agile-project-management.jpg" alt="image">
+				      </div>
+				        <h4>Agile project management</h4>
+					      <p>Making every week better than the previous through constant iteration. You'll learn how to plan weekly sprints, run stand up meetings and facilitate a great retro.</p>
+					      <div class="collapse" id="agile">
+					      	<p class="person"><i class="fal fa-user"></i> Clare Carmody, Customer Success at Salesforce.</p>
+					      	<p>Now proud to work for Salesforce.com the most innovative company in the world and pioneers of the pledge1% model of giving back.</p>
+					      	<ul>
+									<li>Teaches Agile and CRM for Social Impact at the Fitzroy Academy.</li>
+									<li>Holds an MBA from Melbourne Business School and a Theatre Degree from QUT.</li>
+									<li>Believes in the creative power of diversity.</li> 
+									<li>Interested in education, policy, economics, arts, business.</li> 
+									</ul>
+									<p>Loves clear thinking. Loves getting good things done.</p>
+									<a href="#" class="btn btn-primary" data-fit-wistia-preview="pduezntdkr"><i class="fal fa-play"></i> Watch Clare's trailer</a>
+						    </div>
+						    <div class="status"><i class="fal fa-chevron-down"></i></div>
+				    </div>
+
+				    <div class="fat_lesson" data-toggle="collapse" href="#cust" role="button" aria-expanded="false">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/customer-interviews.jpg" alt="image">
+				      </div>
+				        <h4>Customer Discovery</h4>
+				        <p>How to talk to customers and find if they'll like your product or not, when everyone is lying to you. It's all about asking the right questions without talking about your business.</p>
+				        
+				        <div class="collapse" id="cust">
+				        	<p class="person"><i class="fal fa-user"></i> Victoria Cullen, founder at A Touchy Subject.</p>
+				        	<p>I believe the future of healthcare is based on quality of life and compassion-based approaches, moving beyond just 'fixing' a physiological problem. </p>
+									<p>Every person has a set of values and principles that are important to them and encompass their health. These should be addressed during any healthcare journey to ensure they leave better than when they arrived and improve the chances of long-term well-being.</p>
+									<p>For the past five years I focused on human sexuality, an aspect of health often ignored and forgotten within someone's healthcare journey. Many people value sexual connection as part of their identity and overall well-being. Prostate cancer treatment commonly leads to physical side effects that impact this core value and there is a gap in solutions and strategies within the healthcare system to help.</p>
+									<p>Through my current PhD research, hundreds of conversations with men and their partners and a passion to innovate the patient journey I have created a website for conversation and practical resources : A Touchy Subject (www.atouchysubject.com)</p>
+									<p>I consult patients privately from Associate Professor Declan Murphy's practice, Cancer Specialists.</p>
+				        </div>
+				        <div class="status"><i class="fal fa-chevron-down"></i></div>
+				    </div>
+
+				    <div class="fat_lesson" data-toggle="collapse" href="#lean" role="button" aria-expanded="false">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/lean-canvas.jpg" alt="image">
+				      </div>
+				        <h4>Lean Canvas</h4>
+				        <p>Scope out a business on one A4 page, so you can explain your model to people quickly and plan out your experiments and tests.</p>
+				        
+				        <div class="collapse" id="lean">
+				        	<p class="person"><i class="fal fa-user"></i> Will Dayble, founder at Fitzroy Academy.</p>	
+				        </div>
+				        <div class="status"><i class="fal fa-chevron-down"></i></div>
+				    </div>
+
+				    <div class="fat_lesson" data-toggle="collapse" href="#community" role="button" aria-expanded="false">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/community-integration.jpg" alt="image">
+				      </div>
+				        <h4>Community integration</h4>
+				        <p>Pull your head in, humble up before finding out what a community really needs.</p>
+				        	<p>Jenny covers methods for planning your engagement with a community, sketch a plan for working together and created shared ownership.</p>
+				        
+				        <div class="collapse" id="community">
+				        	<p class="person"><i class="fal fa-user"></i> Jenny Schecter, CEO at Integrate Health.</p>	
+				        </div>
+				        <div class="status"><i class="fal fa-chevron-down"></i></div>
+				    </div>
+
+				    <div class="fat_lesson" data-toggle="collapse" href="#finance" role="button" aria-expanded="false">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/financial-models.jpg" alt="image">
+				      </div>
+				        <h4>Financial models</h4>
+				        <p>Make a simple spreadsheet that covers 3 years of finance, from startup through to capital and tax.</p>
+				        
+				        <div class="collapse" id="finance">
+					      	<p class="person"><i class="fal fa-user"></i> Amanda Goodman, Head of Syndication at Impact Investment Group.</p>  
+					      </div>
+					      <div class="status"><i class="fal fa-chevron-down"></i></div>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/good-ideas.jpg" alt="image">
+				      </div>
+				        <h4>Good ideas</h4>
+				        <p>Chill out, take it easy and let the inspiration come to you, before you burn out.</p>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/sales.jpg" alt="image">
+				      </div>
+				        <h4>Sales for people who hate selling</h4>
+				        <p>Don't be scared of your sales pipeline, it's just about making friends with people.</p>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/design-iteration-form.jpg" alt="image">
+				      </div>
+				        <h4>Design for Impact at Scale</h4>
+				        <p>How to use Mulago's method for designing for lasting impact.</p>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/good-ideas.jpg" alt="image">
+				      </div>
+				        <h4>Good ideas</h4>
+				        <p>Chill out, take it easy and let the inspiration come to you, before you burn out.</p>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/sales.jpg" alt="image">
+				      </div>
+				        <h4>Sales for people who hate selling</h4>
+				        <p>Don't be scared of your sales pipeline, it's just about making friends with people.</p>
+				    </div>
+
+				    <div class="fat_lesson">
+				      <div class="fit_window">
+				        <img src="/static/assets/images/lessons/design-iteration-form.jpg" alt="image">
+				      </div>
+				        <h4>Design for Impact at Scale</h4>
+				        <p>How to use Mulago's method for designing for lasting impact.</p>
+				    </div>
+
+				  </div>
+					
+				</div>
+				<div class="col-lg-5">
+
+					<div class="fat_library_explainer sticky">
+						<div class="vid"><div class="holder" data-fit-wistia-preview-player></div></div>
+
+						<div class="explain">
+							<h4 class="blue"><i class="fal fa-sparkles"></i> Fresh experts, weekly.</h4>
+							<p>Every week you'll learn from experts. CEOs, founders, pPhilanthropists, folks who do this stuff for a day job!</p>
+						</div>
+						<div class="explain">
+							<h4 class="green"><i class="fal fa-file-alt"></i> Templates and worksheets</h4>
+							<p>Every lesson comes with templates, case studies or worksheets that you can use in your business.</p>
+						</div>
+						<div class="explain">
+							<h4 class="apricot"><i class="fal fa-comments"></i> Coaching and support</h4>
+							<p>Get feedback on what you're doing well, where you need support, and what to do next.</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="plaintext">
+				<p>
+				  <img src="/static/assets/images/static/about/crowdfund.jpg" alt="Crowd!">
+				  <small class="caption">Who knows, you might end up running your own crowdfunding event...</small>
+				</p>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="fat_section plaintext" id="together">
+	<h2 class="pink">
+		<small><i class="fal fa-users"></i> Cohorts</small>
+		Learn online,<br> not alone.
+	</h2>
+
+	<p>We run learning cohorts, with a maximum of ~12 people per group.</p>
+
+	<p>This means it takes us a little while to begin programs, because we need to find you a group that will suit you. Trust us, it's worth it.</p>
+
+	<p>&nbsp;</p>
+
+	<div class="row">
+			<div class="col-md-4">
+				<h3 class="pink"><i class="fal fa-heart"></i> Friendship.</h3>
+				<p>Nothing can replace the magic of creating together with the people that become your friends, customers, mentors and suppliers.</p>
+			</div>
+			<div class="col-md-4">
+				<h3 class="teal"><i class="fal fa-fist-raised"></i> Accountability.</h3>
+				<p>It's so much easier to stay motivated and get things done with people around you, supporting you when things get hard.</p>
+			</div>
+			<div class="col-md-4">
+				<h3 class="red"><i class="fal fa-bolt"></i> Collective action.</h3>
+				<p>The problems we are all working on can't be solved individually. Working together is the only way to create lasting, systemic change.</p>
+			</div>
+		</div>
+
+		<p>
+		  <img src="/static/assets/images/static/about/gsddrinks.jpg" alt="The old crew.">
+		  <small class="caption">Members of the very first Fitzroy Academy crew going for drinks, halfway through a program.</small>
+		</p>
+
+	
+</div>
+
+<div class="bg">
+	<div class="fat_section plaintext" id="hello">
+		<h2 class="watermelon">
+			<small><i class="fal fa-bolt"></i> Enrol</small>
+			Reserve your spot.
+		</h2>
+		<div class="">
+			<a class="btn watermelon btn-absurd" href="#"><i class="fal fa-bolt"></i> $850 <small>AUD</small> <span class="party">🥳</span></a>
+			<div class="nb">Hit the button. We believe in you.</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
