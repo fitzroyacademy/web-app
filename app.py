@@ -155,7 +155,6 @@ if __name__ == "__main__":
         def ignore_func(path):
             if path.split(".")[-1] == "sqlite":
                 return True
-        print(app.config)
         server = Server(app.wsgi_app)
         server.watch("./static/assets/scss/*", compile_sass)
         server.watch("./", ignore=ignore_func)

@@ -188,16 +188,21 @@ def callback(institute=""):
     last_page = request.args.get("last_page", "")
     data = {"errors": [], "last_page": last_page, "form": []}
     try:
+        # Look for the current user
         current_app.auth0.authorize_access_token()
         resp = current_app.auth0.get('userinfo')
         userinfo = resp.json()
         db = datamodels.get_session()
         user = datamodels.get_user_by_auth0_id(userinfo['sub'])
+        if user is None:
+            # If this executes, user is registered but hasn't been signed in with Auth0 yet
+            user = datamodels.get_user_by_email(userinfo['email'])
     except Exception as e:
         data["errors"].append("{}".format(e))
         return render_template("welcome.html", **data)
 
     if user is None:
+        # Register a new user.
         try:
             user = datamodels.User()
             user.email = user.username = userinfo['email']

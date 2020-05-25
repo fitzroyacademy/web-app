@@ -20,7 +20,7 @@ class User(BaseModel):
     username = sa.Column(sa.String(50), unique=True)
     first_name = sa.Column(sa.String)
     last_name = sa.Column(sa.String)
-    email = sa.Column(sa.String)
+    email = sa.Column(sa.String, unique=True)
     phone_number = sa.Column(sa.String(15))
     dob = sa.Column(sa.Date)
     password_hash = sa.Column(sa.String(128))

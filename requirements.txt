@@ -18,3 +18,4 @@ wtforms==2.2.1
 python_slugify==3.0.4
 authlib
 python-dotenv
+alembic
