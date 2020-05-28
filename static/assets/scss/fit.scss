@@ -45,7 +45,7 @@ $old_blue_light: #21adf5;
 .maroon:not(.btn){color:$new_maroon !important;}
 
 
-$fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me. */
+$fff: #fff; /* LOL I keep screwing this up so whatever, don't @ me. */
 
 $bg: #f5f7f8;
 $bg_grey: #f7f7f7;
@@ -2116,6 +2116,7 @@ $square_size: 22rem;
 .fit_partner_logos img{max-height: 5rem; margin:2rem 0 1rem; width: auto;}
 
 .fit_partner_logos .tile{border-radius: 1rem; background: #fff; padding:1.5rem;}
+.fit_partner_logos .tile h4{font-size: 1.5rem;}
 
 .fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
 
@@ -3072,20 +3073,21 @@ dfn i:hover{color: $blue; opacity: 1;}
 
 
 .fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out; display: none !important;}
+
 .fat_user i,
 .fat_user:hover .down,
 .fat_device i,
 .fat_device:hover .down{color:$black;}
 
 .fat_device .down,
-.fat_user .down{position:absolute; left: -1.95rem; color: $black; opacity: 0; transition: all .25s ease-in-out; top:1.2rem; font-size: 1.5rem;}
+.fat_user .down{position:absolute; left: -1.95rem; color: $black; opacity: 0; transition: all .25s ease-in-out; top:0rem; font-size: 1.5rem; padding: 1rem;}
 
-.fat_device .down{left: 100%; margin-left: 1rem;}
+.fat_device .down{left: 100%; margin-left: 0rem; opacity: 0.25}
 
 .fat_user:hover{background: $black}
 .fat_user:hover i{color: #fff;}
 .fat_user:hover .down,
-.fat_device:hover .down{opacity: 1; top:1.4rem;}
+.fat_device:hover .down{opacity: 1; top:.2rem;}
 
 // ---------------------------------
 // culaz of hedda
