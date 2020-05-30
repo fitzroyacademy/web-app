@@ -22,11 +22,16 @@ class Config(object):
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
     SERVER_NAME = environ.get("SERVER_NAME", default=None)
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
 
     UPLOAD_FOLDER = "static/uploads"
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET = environ.get("WTF_CSRF_SECRET", "").encode()
+
+    @property
+    def SQLALCHEMY_DATABASE_URI(self):
+        return self.DB_URI
 
     @property
     def DB_URI(self):
