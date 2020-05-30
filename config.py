@@ -25,12 +25,14 @@ class Config(object):
     AUTH0_CLIENT_ID = environ.get("AUTH0_CLIENT_ID", default=None)
     AUTH0_DOMAIN = environ.get("AUTH0_DOMAIN", default=None)
     AUTH0_CLIENT_SECRET = environ.get("AUTH0_CLIENT_SECRET", default=None)
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
+
     UPLOAD_FOLDER = "static/uploads"
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET = environ.get("WTF_CSRF_SECRET", "").encode()
 
     @property
-    def DB_URI(self):
+    def SQLALCHEMY_DATABASE_URI(self):
         if self.DB_DRIVER == "sqlite":
             db_uri = "{}:///{}{}".format(self.DB_DRIVER, self.DB_HOST, self.DB_OPTIONS)
         elif self.DB_DRIVER == "postgres":

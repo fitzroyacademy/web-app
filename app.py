@@ -34,6 +34,11 @@ else:
 
 app.config.from_object(cfg)
 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 # Add main routes to the app
 routes.attach(app)
 
