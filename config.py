@@ -31,10 +31,6 @@ class Config(object):
 
     @property
     def SQLALCHEMY_DATABASE_URI(self):
-        return self.DB_URI
-
-    @property
-    def DB_URI(self):
         if self.DB_DRIVER == "sqlite":
             db_uri = "{}:///{}{}".format(self.DB_DRIVER, self.DB_HOST, self.DB_OPTIONS)
         elif self.DB_DRIVER == "postgres":
