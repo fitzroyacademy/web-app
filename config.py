@@ -21,7 +21,7 @@ class Config(object):
     S3_BUCKET = environ.get("S3_BUCKET", default=None)
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
-    SERVER_NAME = environ.get("SERVER_NAME", default=None)
+    SERVER_NAME = environ.get("SERVER_NAME", default="localhost:5000")
     AUTH0_CLIENT_ID = environ.get("AUTH0_CLIENT_ID", default=None)
     AUTH0_DOMAIN = environ.get("AUTH0_DOMAIN", default=None)
     AUTH0_CLIENT_SECRET = environ.get("AUTH0_CLIENT_SECRET", default=None)

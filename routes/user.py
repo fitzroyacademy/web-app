@@ -195,47 +195,48 @@ def callback(institute=""):
         db = datamodels.get_session()
         user = datamodels.get_user_by_auth0_id(userinfo['sub'])
         if user is None:
-            # If this executes, user is registered but hasn't been signed in with Auth0 yet
             user = datamodels.get_user_by_email(userinfo['email'])
+            if user is not None:
+                # User is registered with email, but hasn't signed in w/ Auth0 yet
+                user.auth0_id = userinfo['sub']
+                db.commit()
+            elif user is None:
+                # Register a new user.
+                try:
+                    user = datamodels.User()
+                    user.email = user.username = userinfo['email']
+                    user.first_name = userinfo['given_name']
+                    user.last_name = userinfo['family_name']
+                    user.auth0_id = userinfo['sub']
+                    db.add(user)
+                    db.commit()
+                except Exception as e:
+                    data["errors"].append("{}".format(e))
+                    return render_template("welcome.html", **data)
+                if "enrollments" in session:
+                    d = get_session_data(session, "enrollments")
+                    for course_id in d:
+                        course = datamodels.Course.find_by_id(int(course_id))
+                        if course:
+                            course.enroll(user)
+                if "anon_progress" in session:
+                    d = get_session_data(session, "anon_progress")
+                    merge_anonymous_data(user.id, d)
+                    session.pop("anon_progress")
+                if "anon_surveys" in session:
+                    d = get_session_data(session, "anon_surveys")
+                    merge_anonymous_surveys_data(user.id, d)
+                    session.pop("anon_surveys")
+        session["user_id"] = user.id
+        session['jwt_payload'] = userinfo
+        session['profile'] = {
+            'user_id': userinfo['sub'],
+            'name': userinfo['name'],
+            'picture': userinfo['picture']
+        }
     except Exception as e:
         data["errors"].append("{}".format(e))
         return render_template("welcome.html", **data)
-
-    if user is None:
-        # Register a new user.
-        try:
-            user = datamodels.User()
-            user.email = user.username = userinfo['email']
-            user.first_name = userinfo['given_name']
-            user.last_name = userinfo['family_name']
-            user.auth0_id = userinfo['sub']
-            db.add(user)
-            db.commit()
-        except Exception as e:
-            data["errors"].append("{}".format(e))
-            return render_template("welcome.html", **data)
-        if "enrollments" in session:
-            d = get_session_data(session, "enrollments")
-            for course_id in d:
-                course = datamodels.Course.find_by_id(int(course_id))
-                if course:
-                    course.enroll(user)
-        if "anon_progress" in session:
-            d = get_session_data(session, "anon_progress")
-            merge_anonymous_data(user.id, d)
-            session.pop("anon_progress")
-        if "anon_surveys" in session:
-            d = get_session_data(session, "anon_surveys")
-            merge_anonymous_surveys_data(user.id, d)
-            session.pop("anon_surveys")
-
-    session["user_id"] = user.id
-    session['jwt_payload'] = userinfo
-    session['profile'] = {
-        'user_id': userinfo['sub'],
-        'name': userinfo['name'],
-        'picture': userinfo['picture']
-    }
     return redirect(last_page or "/")
 
 @blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
