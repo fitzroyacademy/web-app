@@ -1,6 +1,6 @@
-# web-app
+# Fitzroy Academy
 
-Simple staging ground for our UX templates.
+The new LMS for Fitzroy Academy!
 
 Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
 
@@ -104,26 +104,27 @@ docker exec -it $$(docker ps -f name="postgres" -q) psql -U postgres
 ```
 If docker-compose is running, it will also be available via localhost on port 5001.
 
-# Reseeding the Local Development Database
-
-1. It's necessary to delete `dev_db.sqlite` if it exists before reseeding.  This will destroy all manually created local data.
-2. Stub data is provided for data-backed templates, which can be created using the `python3 reseed.py` script.
-
-```
-rm dev_db.sqlite
-export FLASK_ENV='development'
-python3 ./reseed.py
-```
+## Reseeding the DB in docker-compose
 
 The previous method will work for both Docker and non-Docker local development with sqlite. If you're using docker-compose, you will need to run the script on the application container:
 ```
-docker exec -it $(docker ps -f name="fitzroy-academy" -q) python /app/reseed.py
+docker exec -it $(docker ps -f name="fitzroy-academy" -q) flask utils reseed-database
 ```
 
 ## Cleaning out the docker-compose Postgres db (to start fresh):
 1. Ensure the containers aren't running (`docker-compose down` and `docker ps`)
 1. Run `docker volume list`, and find the postgres-container volume (should be like `web_app_dbdata`)
 2. Run `docker volume rm [volume name]`
+
+## Database migrations
+
+We use [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/) (Alembic) for database migrations. There are instructions on their page on how to use it properly, but here are the important ones when making DB changes:
+```
+flask db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]
+```
+> Equivalent to revision --autogenerate. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected automatically. This command does not make any changes to the database, just creates the revision script.
+
+Check in your changes and migrations as usual in a PR.
 
 ---
 
