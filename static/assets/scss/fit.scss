@@ -3130,6 +3130,13 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_head.watermelon .fat_user:hover{background: $new_watermelon}
 .fat_head.watermelon .fat_user:hover i{color: #fff;}
 
+// green
+.fat_head.green .fat_device svg > path{fill:$new_green;}
+.fat_head.green .fat_user i,
+.fat_head.green .fat_user .down,
+.fat_head.green .fat_user:hover .down{color: $new_green}
+.fat_head.green .fat_user:hover{background: $new_green}
+.fat_head.green .fat_user:hover i{color: #fff;}
 
 
 // ------------------------------------------------------------------------------------
@@ -3364,6 +3371,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero.left h1{}
 
 .fat_hero.halfy{min-height: 55vh; justify-content:flex-end; padding: 0 $fat_sidepad}
+.fat_hero.quartery{min-height: 25vh;}
 
 .fat_hero.header{min-height: 0;}
 
@@ -3373,9 +3381,10 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero.watermelon > *{color: $new_watermelon;}
 .fat_hero.green > *{color: $new_green;}
 
-.fat_hero .blue{color: $blue;}
+.fat_hero .blue{color: $new_blue;}
 .fat_hero .purple{color: $new_purple;}
-.fat_hero .watermelon{color: $watermelon;}
+.fat_hero .watermelon{color: $new_watermelon;}
+.fat_hero .cyan{color: $new_cyan;}
 .fat_hero .green{color: $new_green;}
 
 
@@ -3758,7 +3767,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_video_modal.show   .modal-dialog {transform: translate3d(0, 0, 0);}
 
 
-.fat_quote{z-index: 4000; background: $bg; border-radius: $border_rad_xl; position: relative; max-width: 30rem; margin: 2rem 0 7rem; min-height: 15rem; }
+.fat_quote{z-index: 4000; background: $bg; border-radius: $border_rad_xl; position: relative; max-width: 30rem; margin: 2rem 0 6rem; min-height: 15rem; }
+.fat_quote:last-child{margin-bottom: 4rem;}
 .fat_quote .ldquo{ position: absolute; top:-1.5rem; left: -2.5rem; font-size: 7rem; color: $text_lighter; font-family: "Times New Roman", times, serif; display: block;}
 
 .fat_quote .friend{padding:1.5rem 2rem 0.5rem; display: none;  opacity: 0; transition: all .25s ease-in-out; cursor: pointer;}
@@ -3869,6 +3879,18 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 
 
+// ------------------------------------------------------------------------------------
+// Genreric Vertical spacing
+.fat_vertspace{margin: 4rem 0;}
+
+@media (max-height: 1000px) {
+	.fat_vertspace{margin-top: 2rem; margin-bottom: 2rem}
+}
+
+@media (max-height: 750px) {
+	.fat_vertspace{margin-top: 1rem; margin-bottom: 1rem}
+}
+
 
 
 // ------------------------------------------------------------------------------------
@@ -3876,7 +3898,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 // Some big ol mobile styles LOL should have done it the other way around IDK
 
 @media (min-width: 1140px) {
-	.fat_nav {position: sticky;}
+	.fat_nav {position: sticky; padding: 0 4rem;}
 	.fat_section:not(.fat_pic_grid){padding-top: 6rem;}
 }
 
@@ -3898,7 +3920,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_nav a.top{display: none;}
 
 	// sections
-	.fat_hero.halfy{padding: 0 $fat_sidepad/2}
+	.fat_hero.halfy,
+	.fat_nav .contain{padding: 0 $fat_sidepad/2}
 	.fat_section:not(.fat_pic_grid){padding: $fat_sidepad/2}
 	.fat_hero h1{font-size: 4rem;}
 	.fat_section h2{font-size: 3rem; margin-bottom: 2rem;}
