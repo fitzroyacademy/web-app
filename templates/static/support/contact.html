@@ -5,49 +5,42 @@
   {% include 'static/play/_head.html' %}
 </div>
 
-<main>
+<div class="fat_section">
 
-  <article>
+  <div class="fit_hero leftie watermelon">
+    <a class="fit_heartplay">
+      <i class="bigboy fal fa-comment"></i>
+    </a>
+    <h1>
+      Contact us.
+      <small>We&rsquo;re nice, say hi anytime. 👋</small>
+    </h1>
+  </div>
 
-    <div class="fit_hero leftie watermelon">
-      <a class="fit_heartplay">
-        <i class="bigboy fal fa-comment"></i>
+  <div class="fit_medium_rare">
+
+    <div class="fit_rare" id="rare_nav">
+      <a class="nav-item nav-link fit_rare_dropdown_trigger" data-fit_active_trigger href="#rare_nav">
+        <i class="fal fa-chevron-down"></i> More in this section
       </a>
-      <h1>
-        Contact us.
-        <small>We&rsquo;re nice, say hi anytime. 👋</small>
-      </h1>
+      <div class="fit_rare_dropdown">
+        {% include 'partials/static_menus/_support.html' %}
+      </div>
     </div>
+    
+    <div class="fit_medium">
 
-    <div class="fit_medium_rare">
 
-      <div class="fit_rare" id="rare_nav">
-        <a class="nav-item nav-link fit_rare_dropdown_trigger" data-fit_active_trigger href="#rare_nav">
-          <i class="fal fa-chevron-down"></i> More in this section
-        </a>
-        <div class="fit_rare_dropdown">
-          {% include 'partials/static_menus/_support.html' %}
-        </div>
-      </div>
-      
-      <div class="fit_medium">
-
-        <h2>Say hello:</h2>
-
-        <dl class="fit_summary_icons lite">
-          <dt><i class="far fa-envelope"></i> <a href="mailto:will@fitzroyacademy.com">will@fitzroyacademy.com</a> to email our founder, Will.</dt>
-          <dt><i class="far fa-envelope"></i> <a href="mailto:support@fitzroyacademy.com">support@fitzroyacademy.com</a> for tech and teacher support.</dt>
-          <dt><i class="far fa-envelope"></i> <a href="mailto:enterprise@fitzroyacademy.com">enterprise@fitzroyacademy.com</a> for enterprise and institute sales.</dt>
-          <dt><i class="far fa-phone"></i> Aussies, call <a href="tel:1300 205 170">1300 205 170</a> during business hours.</dt>
-          
-        </dl>
-
-      </div>
+      <dl class="fit_summary_icons lite">
+        <dt><i class="far fa-envelope"></i> <a href="mailto:will@fitzroyacademy.com">will@fitzroyacademy.com</a> to email our founder, Will.</dt>
+        <dt><i class="far fa-envelope"></i> <a href="mailto:support@fitzroyacademy.com">support@fitzroyacademy.com</a> for tech and teacher support.</dt>
+        <dt><i class="far fa-phone"></i> Aussies, call <a href="tel:1300 205 170">1300 205 170</a> during business hours.</dt>
+        
+      </dl>
 
     </div>
 
-  </article>
-
-</main>
+  </div>
+</div>
 
 {% endblock %}

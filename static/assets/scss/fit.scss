@@ -242,11 +242,8 @@ $border_rad_r: 9999em;
 // -----------------------------------------------------------------------------------------
 /* header */
 
-@media (min-width: 576px) {
-	body{padding-top: $header_height}
-}
 
-header{height: $header_height; background: #fff; position: fixed; top:0; left: 0; right: 0; display: flex;}
+header{height: $header_height; background: #fff; position: relative;}
 
 header .container{display: flex; position: relative;}
 
@@ -2075,7 +2072,7 @@ hr.spacer{margin: 1.5rem 0; border:none; margin: 3rem 0;}
 
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger{color: $text; font-size: 0.9rem; margin: 0; display: block; }
 	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger:hover{border-color: transparent;}
-	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger:hover i{ transform: rotate(90deg);}
+	.fit_medium_rare .fit_rare .fit_rare_dropdown_trigger:hover i{ transform: rotate(-90deg);}
 	.fit_medium_rare .fit_rare .fit_rare_dropdown{display: none;}
 	.fit_medium_rare .fit_rare.active .fit_rare_dropdown{display: block; padding: .5rem;}
 
@@ -2087,7 +2084,7 @@ hr.spacer{margin: 1.5rem 0; border:none; margin: 3rem 0;}
 }
 
 @media (max-width: 750px) {
-	.fit_medium_rare .fit_rare{margin: 0 1rem;}
+	.fit_medium_rare .fit_rare{margin: 0 1rem 1rem;}
 }
 
 .fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
@@ -2327,9 +2324,11 @@ body > .fit_code {margin-top:10rem;}
 .fit_lawyermode li{font-size: 0.85rem; line-height: 1.1rem;}
 
 @media (max-width: 991px){
-	.fit_hero.leftie{max-width: 740px; margin: 0 auto; padding-left: 4.5rem;}
-	.fit_hero.leftie .fit_heartplay{top: 3.5rem}
+	.fit_hero.leftie{max-width: 740px; margin: 0 auto; padding: 0 0 1rem 4.5rem;}
+	.fit_hero.leftie .fit_heartplay{top: 1rem}
 	.fit_hero.leftie .fit_heartplay .bigboy{font-size: 4rem;}
+	.fit_hero.leftie .fit_heartplay,
+	.fit_heartplay i{height: auto}
 }
 
 @media (max-width: 750px){
@@ -3170,7 +3169,7 @@ dfn i:hover{color: $blue; opacity: 1;}
 .fat_footer .fit_footer_nav a{font-size: 1.2rem;}
 .fat_footer .fit_course{max-width: none; padding: .5rem;}
 .fat_footer .fit_device svg{height: 3rem}
-.fat_footer .fit_device svg > path{fill:$text_light;}
+.fat_footer .fit_device svg > path{fill:$text_lighter;}
 
 
 
@@ -3655,10 +3654,10 @@ h1 + .fat_nav{margin-top: 2rem}
 
 // ------------------------------------------------------------------------------------
 // the menu that is just basically full screen lol
-.fat_menu_modal .modal-dialog{margin: 0; max-width: none;}
+.fat_menu_modal .modal-dialog{margin: 0 !important; max-width: none;}
 
 @media (min-width: 576px) {
-	.fat_menu_modal .modal-dialog{margin: 0; max-width: none;}	
+	.fat_menu_modal .modal-dialog{margin: 0 !important; max-width: none;}	
 }
 
 
@@ -3746,6 +3745,8 @@ h1 + .fat_nav{margin-top: 2rem}
 // coloured backer
 .fat_pic_grid .portrait.text{background: $black; box-shadow: inset 0 0 200px #191b20;}
 .fat_pic_grid .portrait.text p{color: #fff;}
+.fat_pic_grid .portrait.text p a{color: inherit; text-decoration: underline;}
+.fat_pic_grid .portrait.text p a:hover{}
 .fat_pic_grid .portrait.text h2 small{color: $text;}
 
 // watermelon
@@ -4019,8 +4020,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_nav .enrol{margin-left: 0;}
 
 	// sections
-	.fat_section:not(.fat_pic_grid){padding: $fat_sidepad/4}
-	.fat_hero.halfy{padding: 0 $fat_sidepad/4}
+	.fat_section:not(.fat_pic_grid){padding: 1rem}
+	.fat_hero.halfy{padding: 0 1rem}
 
 	.fat_section h2{margin-bottom: 1rem;}
 	.fat_leo_list dt{font-size: 1.3rem;}
