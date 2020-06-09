@@ -1,22 +1,13 @@
 {% from 'macros.html' import link_to, active_link, wysiwyg %}
 <!doctype html>
 <html lang="en" class="
-  fit_breezy_player
+  
   section-{{ current_section }}
   section-sub-{{ current_section_sub }}
   {% if url_is('course.view', 'lesson.view', 'segment.view') %} course {% endif %}
   {% if current_user %} current_user {% endif %}
+
 ">
-
-<!-- 
-
-These are all HTML classes that change the layout in various ways:
-fit_breezy_player
-fit_minleft
-fit_minright
-fit_revealuserpanel
- -->
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -35,22 +26,46 @@ fit_revealuserpanel
   <!-- Then our stuff -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/fit.css')}}?{{ cache_code }}">
 
-  <title>FA! 😍</title>
+  <title>😍 Fitzroy Academy</title>
 </head>
 <body>
 
 {% include 'partials/_flash_alerts.html' %}
 
-{% include 'partials/nav/_header.html' %}
+
 
 {% block body %}{% endblock %}
 
 
-{% include 'partials/nav/_footer.html' %}
+<div class="fat_footer">
+  {% include 'partials/nav/_footer.html' %}
+</div>
 
-<!-- At some point we will decide how to bring these in sensibly -->
-{% include 'partials/modal/_add_course.html' %}
-{% include 'partials/modal/_delete.html' %}
+
+<div class="modal fade fat_menu_modal fat_menu_lhs" tabindex="-1" role="dialog" id="fat_menu_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button type="button" class="x" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+      </button>      
+      <div class="modal-body">
+        
+        <div class="fat_hero">
+          <h1>Hi! 🥰</h1>
+          <div class="fat_tease_btns">
+            <a class="btn btn-xl btn-text" href="/"><i class="fal fa-home"></i> Home </a>
+            <a class="btn btn-xl btn-text watermelon" href="/courses"><i class="fal fa-play"></i> Courses </a>
+            <a class="btn btn-xl btn-text purple" href="/services"><i class="fal fa-chalkboard-teacher"></i> Services </a>
+            <a class="btn btn-xl btn-text cyan" href="/about"><i class="fal fa-smile-beam"></i> About us</a>              
+            <a class="btn btn-xl btn-text green" href="/contact"><i class="fal fa-comment-alt-smile"></i> Contact us</a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- Other fool's JS -->
@@ -84,7 +99,8 @@ fit_revealuserpanel
 <script src="{{ url_for('static', filename='js/fit.js') }}"></script>
 
 
-{% include 'partials/_debug_template_vars.html' %}
+<!-- {% include 'partials/_debug_template_vars.html' %} -->
+
 
 </body>
 </html>

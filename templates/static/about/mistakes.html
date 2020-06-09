@@ -1,356 +1,349 @@
 {% extends "/layout.html" %}
 {% block body %}
 
-<main>
 
-  <article>
+<div class="fat_head">
+  {% include 'static/play/_head.html' %}
+</div>
 
-    <div class="fit_hero fuscia_line">
-      <a class="fit_heartplay" data-fit-heartplay>
-        <i class="bigboy far fa-heart-broken"></i>
-      </a>
-      <h1>The <strong data-fit-heartplay>mistakes</strong> list.</h1>
-      
+<div class="fat_section plaintext">
+
+  <div class="fit_hero fuscia_line">
+    <a class="fit_heartplay" data-fit-heartplay>
+      <i class="bigboy far fa-heart-broken"></i>
+    </a>
+    <h1>The <strong data-fit-heartplay>mistakes</strong> list.</h1>
+    
+  </div>
+
+  <div class="fit_medium">
+    <div class="fit_picture breakbig">
+      <img src="/static/assets/images/static/mistakes/facepalm_pink.jpg" alt="image">
     </div>
+    <p>&nbsp;</p>
+    <h3>Q: Why do this?</h3>
+    <p>After long conversations with partners, funders and friends about the social sector we felt we had to do something. So many screw ups are swept under the rug. Making big mistakes and writing shiny reports is commonplace.</p>
+    <p>&nbsp;</p>
 
-    <div class="fit_medium">
-      <div class="fit_picture breakbigger">
-        <img src="/static/assets/images/static/mistakes/facepalm_pink.jpg" alt="image">
-      </div>
-    </div>
+    <h3>Q: Are you sharing everything?</h3>
+    <p><strong>Nope.</strong> We're only sharing our clear, big mistakes that other folks might learn from and we are anonymising to protect employees, partners and friends.</p>
+    <p>The goal here is to be honestly self-critical, not create failure porn or 'out' anyone.</p>
+
+    <h3>Q: Has this been done before?</h3>
+    <p><strong>Yes!</strong> The <a href="https://www.admittingfailure.org/" target="_blank">admittingfailure.com</a> site is a wonderful NGO resource.</p>
+    <p>Also, <a href="http://startupgraveyard.io/" target="_blank">startupgraveyard.io</a> and <a href="https://www.failory.com/cemetery" target="_blank">failory.com/cemetery</a> for the startup side.</p>
+  </div>
+
+</div>
 
 
-    <div class="fit_medium_rare">
 
-      <div class="fit_rare" id="rare_nav">
-        <a class="nav-item nav-link fit_rare_dropdown_trigger" data-fit_active_trigger href="#rare_nav">
-          <i class="fal fa-chevron-down"></i> More in this section
-        </a>
-        <div class="fit_rare_dropdown">
-          {% include 'partials/static_menus/_about.html' %}
+<div class="fit_bg alt">
+
+  <div class="fat_section plaintext">
+    <h2 class="red">
+      <small><i class="fal fa-sad-tear"></i> Madness is...</small>
+      Foolish themes.
+    </h2>
+    <h3>While making the list, we noticed some themes.</h3>
+
+
+    
+    <div class="fit_mistake_categories">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="/static/assets/images/static/mistakes/picard.jpg" alt="image">
+          <h4>The dumb expert.</h4>
+          <p>Simple mistakes, which we teach our students to avoid. Ouch.</p>
         </div>
-      </div>
-      
-      <div class="fit_medium">
-
-        <h1>Sharing our dumb mistakes.</h1>
-        <p>&nbsp;</p>
-        <h3>Q: Why are we doing this?</h3>
-        <p>We had some long conversation with partners, funders and friends about social sector people making mistakes over and over without sharing, and how hard it is to share.</p>
-        <p>A lot has been written on the topic of failure in startups, and some in social entrepeneurship. In our experience, most of the most painful failures are hidden.</p>
-        <p>&nbsp;</p>
-
-        <h3>Q: Are you sharing everything, warts and all?</h3>
-        <p>No. We're only sharing our clear, big mistakes that other folks might learn from and we are anonymising to protect employees, partners and friends.</p>
-        <p>The goal here is to be honestly self-critical, not create failure porn.</p>  
+        <div class="col-md-4">
+          <img src="/static/assets/images/static/mistakes/holy.jpg" alt="image">
+          <h4>Repeat madness.</h4>
+          <p>Doing something dumb, then making the same mistake again later.</p>
+        </div>
+        <div class="col-md-4">
+          <img src="/static/assets/images/static/mistakes/statue.jpg" alt="image">
+          <h4>Ego.</h4>
+          <p>Letting our ego get in the way, thinking we are special and different.</p>
+        </div>          
       </div>
     </div>
 
-    <div class="fit_bg alt">
+    <hr class="blunt">
+    
+    <h1 id="fail_list">The list.</h1>
 
-      <div class="fit_medium large">
-        <h1>Foolish trends!</h1>
-          <h3>When we wrote down a list our screw-ups, we noticed some clear themes:</h3>
+    <hr class="spacer">
+    
+    <div class="fit_mistakes_list">
 
-
-        
-        <div class="fit_mistake_categories">
-          <div class="row">
-            <div class="col-md-4">
-              <img src="/static/assets/images/static/mistakes/picard.jpg" alt="image">
-              <h4>The dumb expert.</h4>
-              <p>Simple mistakes that we teach our students to avoid. Ouch.</p>
+      <div class="sticky-top fit_subhead">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="#fail_list" data-fit_fail_list="all"><i class="fal fa-check"></i> All</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#fail_list" data-fit_fail_list="dumb"><i class="fal fa-chalkboard-teacher"></i> Dumb <span class="d-none d-sm-inline-block">expert</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#fail_list" data-fit_fail_list="repeat"><i class="fal fa-repeat"></i> Repeat <span class="d-none d-sm-inline-block">madness</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#fail_list" data-fit_fail_list="ego"><i class="fal fa-fist-raised"></i> Ego</a>
+          </li>
+<!--             
+          <li class="nav-item dropdown pull-right">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sort by</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item active" href="#"><i class="fal fa-calendar"></i> Date</a>
+              <a class="dropdown-item" href="#"><i class="fal fa-pepper-hot"></i> Spiciness</a>
             </div>
-            <div class="col-md-4">
-              <img src="/static/assets/images/static/mistakes/holy.jpg" alt="image">
-              <h4>Repeat madness.</h4>
-              <p>Doing something dumb, then making the same dum mistake again.</p>
-            </div>
-            <div class="col-md-4">
-              <img src="/static/assets/images/static/mistakes/statue.jpg" alt="image">
-              <h4>Ego.</h4>
-              <p>Letting our ego get in the way, thinking we are special and different, not listening to others.</p>
-            </div>          
-          </div>
-        </div>
+          </li>
+           -->
+        </ul>
+      </div>
+      
+      <div class="fit_pane white" data-fit_fail_type="dumb">
+        <div class="fit">
+          <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_hire" role="button" aria-expanded="fitse" aria-controls="fail_hire">
+            <i class="far fa-chalkboard-teacher"></i> 
+            <span class="fit_txt">Hired too early, took too long to fire.</span>
+            <span class="fas fa-chevron-down"></span>
+          </a>
+          <div class="fit_body collapse" id="fail_hire">
+            <dl class="fit_summary_icons">
 
-        <hr class="blunt">
-        
-        <h1 id="fail_list">The list:</h1>
+              <dt><i class="far fa-heart-broken"></i> What happened?</dt>
+              <dd>
+                <p><strong>Late 2016:</strong> We hired a (great) staff member before we had enough work for them, then ran out of work for them <em>and</em> money to pay their wage all at once.</p> 
+                <p>We had to let them go and it felt real crappy.</p>
+              </dd>
+              <dt><i class="far fa-question"></i> Why did it happen?</dt>
+              <dd>
+                <p>We had enough cash in the bank to wear the hire, and expected we'd need them once we won a big, upcoming grant. We didn't win the big grant. 😣</p>
+                <p>Also we just <em>liked</em> them and figured we'd find the work to justify the hire. This was really dumb in retrospect.</p>
+              </dd>
+              <dt><i class="far fa-heart"></i> How we fixed it.</dt>
+              <dd>
+                <p>We helped that staff member get another job at a friend's company, and gave them 6 weeks to leave. In retrospect this probably wasn't a great idea either, and we should have made the firing decision earlier.</p>
+              </dd>
+              
+              <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happened?</dt>
+              <dd>
+                <p>We should have waiting longer to hire. <a href="https://www.google.com/search?q=Hire+slow%2C+fire+fast" target="_blank">Hire slow! Duh.</a> We didn't desperately need this person, so we couldn't define their role well enough to make it valuable.</p>
+                <p>On the flip-side, a year later it took is 3-4 months longer to hire than it should have for another role, which hurt us in other ways. Argh!</p>
+              </dd>
 
-        <hr class="spacer">
-        
-        <div class="fit_mistakes_list">
-
-          <div class="sticky-top fit_subhead">
-            <ul class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link active" href="#fail_list" data-fit_fail_list="all"><i class="fal fa-check"></i> All</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#fail_list" data-fit_fail_list="dumb"><i class="fal fa-chalkboard-teacher"></i> Dumb <span class="d-none d-sm-inline-block">expert</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#fail_list" data-fit_fail_list="repeat"><i class="fal fa-repeat"></i> Repeat <span class="d-none d-sm-inline-block">madness</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#fail_list" data-fit_fail_list="ego"><i class="fal fa-fist-raised"></i> Ego</a>
-              </li>
-    <!--             
-              <li class="nav-item dropdown pull-right">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sort by</a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item active" href="#"><i class="fal fa-calendar"></i> Date</a>
-                  <a class="dropdown-item" href="#"><i class="fal fa-pepper-hot"></i> Spiciness</a>
+              <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
+              <dd>
+                <p>We lost more money and time on this than we want to admit. Ouch.</p>
+                <div class="fit_spicy">
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
                 </div>
-              </li>
-               -->
-            </ul>
-          </div>
-          
-          <div class="fit_pane white" data-fit_fail_type="dumb">
-            <div class="fit">
-              <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_hire" role="button" aria-expanded="fitse" aria-controls="fail_hire">
-                <i class="far fa-chalkboard-teacher"></i> 
-                <span class="fit_txt">Hired too early, took too long to fire.</span>
-                <span class="fas fa-chevron-down"></span>
-              </a>
-              <div class="fit_body collapse" id="fail_hire">
-                <dl class="fit_summary_icons">
+              </dd>            
+            </dl>
+          </div><!-- collapse -->
+        </div><!-- fit -->
+      </div><!-- pane mistake -->
 
-                  <dt><i class="far fa-heart-broken"></i> What happened?</dt>
-                  <dd>
-                    <p><strong>Late 2016:</strong> We hired a (great) staff member before we had enough work for them, then ran out of work for them <em>and</em> money to pay their wage all at once.</p> 
-                    <p>We had to let them go and it felt real crappy.</p>
-                  </dd>
-                  <dt><i class="far fa-question"></i> Why did it happen?</dt>
-                  <dd>
-                    <p>We had enough cash in the bank to wear the hire, and expected we'd need them once we won a big, upcoming grant. We didn't win the big grant. 😣</p>
-                    <p>Also we just <em>liked</em> them and figured we'd find the work to justify the hire. This was really dumb in retrospect.</p>
-                  </dd>
-                  <dt><i class="far fa-heart"></i> How we fixed it.</dt>
-                  <dd>
-                    <p>We helped that staff member get another job at a friend's company, and gave them 6 weeks to leave. In retrospect this probably wasn't a great idea either, and we should have made the firing decision earlier.</p>
-                  </dd>
-                  
-                  <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happened?</dt>
-                  <dd>
-                    <p>We should have waiting longer to hire. <a href="https://www.google.com/search?q=Hire+slow%2C+fire+fast" target="_blank">Hire slow! Duh.</a> We didn't desperately need this person, so we couldn't define their role well enough to make it valuable.</p>
-                    <p>On the flip-side, a year later it took is 3-4 months longer to hire than it should have for another role, which hurt us in other ways. Argh!</p>
-                  </dd>
+      <div class="fit_pane white" data-fit_fail_type="ego">
+        <div class="fit">
+          <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_studio" role="button" aria-expanded="fitse" aria-controls="fail_studio">
+            <i class="fal fa-fist-raised"></i>
+            <span class="fit_txt">Rented the wrong studio space with the wrong people.</span>
+            <span class="fas fa-chevron-down"></span>
+          </a>
+          <div class="fit_body collapse" id="fail_studio">
+            <dl class="fit_summary_icons">
+              <dt><i class="far fa-heart-broken"></i> What happened?</dt>
+              <dd>
+                <p><strong>2016-17:</strong> We moved into a studio space we couldn&rsquo;t afford.</p>
+                <p>It was nice to have a place to work, but we didn't think it through, didn't totally click with our studio-mates (good people, we were just too different in work style to them).</p>
+              </dd>
+              <dt><i class="far fa-question"></i> Why did it happen?</dt>
+              <dd>
+                <p>We had just won a big customer and expected to get more quickly. We wanted to be a &lsquo;real&rsquo; company with space that people could visit, run workshops in, etc. We ended up running maybe one or two workshops and could have done most of this stuff from a co-working space or home.</p>
+              </dd>
+              <dt><i class="far fa-heart"></i> How we fixed it.</dt>
+              <dd>
+                <p>We moved out. It burnt a bunch of money and time, but now we work distributed. Will and Leo work most of the time in Will's loungeroom! We love it.</p>
+              </dd>
+              
+              <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happened?</dt>
+              <dd>
+                <p>We assumed that studio space was needed when it probably wasn't. We also had a decent-but-not-great relationship with the other company we shared the space with, which meant neither they or we got the full use of the space we wanted.</p>
+                <p>The compromise was lame for everyone.</p>
+              </dd>
 
-                  <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
-                  <dd>
-                    <p>We lost more money and time on this than we want to admit. Ouch.</p>
-                    <div class="fit_spicy">
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                    </div>
-                  </dd>            
-                </dl>
-              </div><!-- collapse -->
-            </div><!-- fit -->
-          </div><!-- pane mistake -->
+              <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
+              <dd>
+                <p>Kinda sucked. The money was less of a bummer than the failed relationship.</p>
+                <div class="fit_spicy">
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                </div>
+              </dd>            
+            </dl>
+          </div><!-- collapse -->
+        </div><!-- fit -->
+      </div><!-- pane mistake -->
 
-          <div class="fit_pane white" data-fit_fail_type="ego">
-            <div class="fit">
-              <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_studio" role="button" aria-expanded="fitse" aria-controls="fail_studio">
-                <i class="fal fa-fist-raised"></i>
-                <span class="fit_txt">Rented the wrong studio space with the wrong people.</span>
-                <span class="fas fa-chevron-down"></span>
-              </a>
-              <div class="fit_body collapse" id="fail_studio">
-                <dl class="fit_summary_icons">
-                  <dt><i class="far fa-heart-broken"></i> What happened?</dt>
-                  <dd>
-                    <p><strong>2016-17:</strong> We moved into a studio space we couldn&rsquo;t afford.</p>
-                    <p>It was nice to have a place to work, but we didn't think it through, didn't totally click with our studio-mates (good people, we were just too different in work style to them).</p>
-                  </dd>
-                  <dt><i class="far fa-question"></i> Why did it happen?</dt>
-                  <dd>
-                    <p>We had just won a big customer and expected to get more quickly. We wanted to be a &lsquo;real&rsquo; company with space that people could visit, run workshops in, etc. We ended up running maybe one or two workshops and could have done most of this stuff from a co-working space or home.</p>
-                  </dd>
-                  <dt><i class="far fa-heart"></i> How we fixed it.</dt>
-                  <dd>
-                    <p>We moved out. It burnt a bunch of money and time, but now we work distributed. Will and Leo work most of the time in Will's loungeroom! We love it.</p>
-                  </dd>
-                  
-                  <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happened?</dt>
-                  <dd>
-                    <p>We assumed that studio space was needed when it probably wasn't. We also had a decent-but-not-great relationship with the other company we shared the space with, which meant neither they or we got the full use of the space we wanted.</p>
-                    <p>The compromise was lame for everyone.</p>
-                  </dd>
+      <div class="fit_pane white" data-fit_fail_type="ego">
+        <div class="fit">
+          <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_tech" role="button" aria-expanded="fitse" aria-controls="fail_tech">
+            <i class="fal fa-fist-raised"></i>
+            <span class="fit_txt">The tech took a year too long.</span>
+            <span class="fas fa-chevron-down"></span>
+          </a>
+          <div class="fit_body collapse" id="fail_tech">
+            <dl class="fit_summary_icons">
+              <dt><i class="far fa-heart-broken"></i> What happened?</dt>
+              <dd>
+                <p><strong>2019:</strong> We thought we would rebuild our whole tech stack in 3 months.</p>
+                <p>HAH. Yeah right.</p>
+              </dd>
+              <dt><i class="far fa-question"></i> Why did it happen?</dt>
+              <dd>
+                <p>We thought we were different and special and could build a complicated thing fast without cutting any corners. This is particularly embarrassing because we are meant to be experts at this.</p>
+              </dd>
+              <dt><i class="far fa-heart"></i> How we fixed it.</dt>
+              <dd>
+                <p>We haven't yet. We're letting it take as long (and cost as much) as it needs to, and trying not to go broke in the meantime. In retrospect we didn't really have any other choice, but we still could have been smarter from the start.</p>
+              </dd>
+              
+              <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happened?</dt>
+              <dd>
+                <p>I (Will, founder) failed to scope out the true size of the build. If I'd have done this up front, we'd have known how long it was going to take and planned around that.</p>
+              </dd>
 
-                  <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
-                  <dd>
-                    <p>Kinda sucked. The money was less of a bummer than the failed relationship.</p>
-                    <div class="fit_spicy">
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                    </div>
-                  </dd>            
-                </dl>
-              </div><!-- collapse -->
-            </div><!-- fit -->
-          </div><!-- pane mistake -->
+              <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
+              <dd>
+                <p>This is a real pain. 😭</p>
+                <p>One thing that makes it feel better is that none of the work is <em>lost</em>, it's still great tech, it just wasn't finished in time.</p>
+                <div class="fit_spicy">
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                </div>
+              </dd>            
+            </dl>
+          </div><!-- collapse -->
+        </div><!-- fit -->
+      </div><!-- pane mistake -->
 
-          <div class="fit_pane white" data-fit_fail_type="ego">
-            <div class="fit">
-              <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_tech" role="button" aria-expanded="fitse" aria-controls="fail_tech">
-                <i class="fal fa-fist-raised"></i>
-                <span class="fit_txt">The tech took a year too long.</span>
-                <span class="fas fa-chevron-down"></span>
-              </a>
-              <div class="fit_body collapse" id="fail_tech">
-                <dl class="fit_summary_icons">
-                  <dt><i class="far fa-heart-broken"></i> What happened?</dt>
-                  <dd>
-                    <p><strong>2019:</strong> We thought we would rebuild our whole tech stack in 3 months.</p>
-                    <p>HAH. Yeah right.</p>
-                  </dd>
-                  <dt><i class="far fa-question"></i> Why did it happen?</dt>
-                  <dd>
-                    <p>We thought we were different and special and could build a complicated thing fast without cutting any corners. This is particularly embarrassing because we are meant to be experts at this.</p>
-                  </dd>
-                  <dt><i class="far fa-heart"></i> How we fixed it.</dt>
-                  <dd>
-                    <p>We haven't yet. We're letting it take as long (and cost as much) as it needs to, and trying not to go broke in the meantime. In retrospect we didn't really have any other choice, but we still could have been smarter from the start.</p>
-                  </dd>
-                  
-                  <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happened?</dt>
-                  <dd>
-                    <p>I (Will, founder) failed to scope out the true size of the build. If I'd have done this up front, we'd have known how long it was going to take and planned around that.</p>
-                  </dd>
+      <div class="fit_pane white" data-fit_fail_type="repeat">
+        <div class="fit">
+          <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_mad" role="button" aria-expanded="fitse" aria-controls="fail_mad">
+            <i class="fal fa-repeat"></i>
+            <span class="fit_txt">We keep undercooking our video budgets.</span>
+            <span class="fas fa-chevron-down"></span>
+          </a>
+          <div class="fit_body collapse" id="fail_mad">
+            <dl class="fit_summary_icons">
+              <dt><i class="far fa-heart-broken"></i> What happened?</dt>
+              <dd>
+                <p><strong>2015 - present:</strong> We <em>always</em> think we can make videos faster than we actually can.</p>
+                <p>This seems to come down to overpromising things to our partners, and then eating into our own budgets to cover it up. We should allow nearly double what we do, to be reasonable.</p>
+              </dd>
+              <dt><i class="far fa-question"></i> Why does it happen?</dt>
+              <dd>
+                <p>Partly it's that we feel the same thing as everyone else: <em>&ldquo;Hold up, video costs HOW much to make?! That's completely insane!&rdquo;</em>, and then try to cut it up a different way to make it more efficient or smarter or cleaner somehow.</p>
+                <p>We also assume that it will get cheaper over time, but the opposite is true. It costs the same amount and takes just as long (if not longer), but we get a better result. But that better result doesn't happen faster or cheaper.</p>
+              </dd>
+              <dt><i class="far fa-heart"></i> How we fix it.</dt>
+              <dd><p>We get more money to make good videos. This is not a great fix.</p></dd>
+              
+              <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happens?</dt>
+              <dd><p>We get excited to make our videos better. Like nature abhors a vacuum, video production fills to expand the space made available. We will probably always go over budget on our video production.</p></dd>
 
-                  <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
-                  <dd>
-                    <p>This is a real pain. 😭</p>
-                    <p>One thing that makes it feel better is that none of the work is <em>lost</em>, it's still great tech, it just wasn't finished in time.</p>
-                    <div class="fit_spicy">
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                    </div>
-                  </dd>            
-                </dl>
-              </div><!-- collapse -->
-            </div><!-- fit -->
-          </div><!-- pane mistake -->
-
-          <div class="fit_pane white" data-fit_fail_type="repeat">
-            <div class="fit">
-              <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_mad" role="button" aria-expanded="fitse" aria-controls="fail_mad">
-                <i class="fal fa-repeat"></i>
-                <span class="fit_txt">We keep undercooking our video budgets.</span>
-                <span class="fas fa-chevron-down"></span>
-              </a>
-              <div class="fit_body collapse" id="fail_mad">
-                <dl class="fit_summary_icons">
-                  <dt><i class="far fa-heart-broken"></i> What happened?</dt>
-                  <dd>
-                    <p><strong>2015 - present:</strong> We <em>always</em> think we can make videos faster than we actually can.</p>
-                    <p>This seems to come down to overpromising things to our partners, and then eating into our own budgets to cover it up. We should allow nearly double what we do, to be reasonable.</p>
-                  </dd>
-                  <dt><i class="far fa-question"></i> Why does it happen?</dt>
-                  <dd>
-                    <p>Partly it's that we feel the same thing as everyone else: <em>&ldquo;Hold up, video costs HOW much to make?! That's completely insane!&rdquo;</em>, and then try to cut it up a different way to make it more efficient or smarter or cleaner somehow.</p>
-                    <p>We also assume that it will get cheaper over time, but the opposite is true. It costs the same amount and takes just as long (if not longer), but we get a better result. But that better result doesn't happen faster or cheaper.</p>
-                  </dd>
-                  <dt><i class="far fa-heart"></i> How we fix it.</dt>
-                  <dd>We get more money to make good videos. This is not a great fix.</dd>
-                  
-                  <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happens?</dt>
-                  <dd>We get excited to make our videos better. Like nature abhors a vacuum, video production fills to expand the space made available. We will probably always go over budget on our video production.</dd>
-
-                  <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
-                  <dd>
-                    <p>This is one of the main reasons we are always running out of money, but we seem to get around it?</p>
-                    <div class="fit_spicy">
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                      <i class="fal fa-pepper-hot"></i>
-                    </div>
-                  </dd>            
-                </dl>
-              </div><!-- collapse -->
-            </div><!-- fit -->
-          </div><!-- pane mistake -->
+              <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
+              <dd>
+                <p>This is one of the main reasons we are constantly running out of money. OOF.</p>
+                <div class="fit_spicy">
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                  <i class="fal fa-pepper-hot"></i>
+                </div>
+              </dd>            
+            </dl>
+          </div><!-- collapse -->
+        </div><!-- fit -->
+      </div><!-- pane mistake -->
 
 
-          <div class="fit_pane white" data-fit_fail_type="dumb">
-            <div class="fit">
-              <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_overspend" role="button" aria-expanded="fitse" aria-controls="fail_overspend">
-                <i class="fal fa-repeat"></i>
-                <span class="fit_txt">Spending big money before we had a contract.</span>
-                <span class="fas fa-chevron-down"></span>
-              </a>
-              <div class="fit_body collapse" id="fail_overspend">
-                <dl class="fit_summary_icons">
-                  <dt><i class="far fa-heart-broken"></i> What happened?</dt>
-                  <dd>
-                    <p><strong>2019-2020:</strong> We started work on new technology before contracts were signed.</p>
-                    <p>The contract got cancelled, the cash never appeared, and sent us into debt.</p>
-                  </dd>
-                  <dt><i class="far fa-question"></i> Why did it happen?</dt>
-                  <dd>
-                    <p>We were incredibly passionate about the partner, and so eager to get the work done that everyone started working for free without contracts in place.</p>
-                  </dd>
-                  
-                  <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happens?</dt>
-                  <dd>
-                    <p>Okay, so this one really sucked.</p>
-                    <p>We just assumed that around $150K<small>AUD</small> would come in over the course of a year that we baked it into our budgets, including spending ahead of time to build the stuff needed.</p>
-                    <p>Part of this was that our partner wasn't technically savvy, and didn't know what went into building apps. They trusted us to just 'make it work', which meant we started as soon as we could, because we knew it would take two to four times as long as anyone expected, and we didn't want to let people down.</p>
-                    <p>What we didn't count on was that our partner's <em>parent organisation</em> was a big education institution, who are notoriously slow and defensive in their decision making, and they decided to pull the contract at the last minute.</p>
-                    <p>In theory, we should have known this would happen.</p>
-                  </dd>
+      <div class="fit_pane white" data-fit_fail_type="dumb">
+        <div class="fit">
+          <a class="fit_btn fit_btn_lg collapsed" data-toggle="collapse" href="#fail_overspend" role="button" aria-expanded="fitse" aria-controls="fail_overspend">
+            <i class="fal fa-repeat"></i>
+            <span class="fit_txt">Spending money before we had a contract.</span>
+            <span class="fas fa-chevron-down"></span>
+          </a>
+          <div class="fit_body collapse" id="fail_overspend">
+            <dl class="fit_summary_icons">
+              <dt><i class="far fa-heart-broken"></i> What happened?</dt>
+              <dd>
+                <p><strong>2019-2020:</strong> We started work on new tech before contracts were signed and sealed.</p>
+                <p>The contract got cancelled, the cash never appeared, and sent us into debt.</p>
+              </dd>
+              <dt><i class="far fa-question"></i> Why did it happen?</dt>
+              <dd>
+                <p>We were incredibly passionate about the partner, and so eager to get the work done that everyone started working for free without contracts in place.</p>
+              </dd>
+              
+              <dt><i class="far fa-comments-alt"></i> Real talk, what <em>actually</em> happens?</dt>
+              <dd>
+                <p>This one <em>really sucked.</em></p>
+                <p>We assumed that the revenue come in over the course of a year that we baked it into our budgets, including spending ahead of time to build the stuff needed.</p>
+                <p>Part of this was that our partner wasn't technically savvy, and didn't know what went into building apps. They trusted us to just 'make it work', which meant we started as soon as we could, because we knew it would take two to four times as long as anyone expected, and we didn't want to let people down.</p>
+                <p>What we didn't count on was that our partner's <em>parent organisation</em> was a big education institution, who are notoriously slow and defensive in their decision making, and they decided to pull the contract at the last minute.</p>
+                <p>In theory, we should have known this would happen.</p>
+              </dd>
 
-                  <dt><i class="far fa-lightning"></i> The damage?</dt>
-                  <dd>
-                    <p>Okay, so this one really sucked.</p>
-                    <p>We fell about $80K<small>AUD</small> into debt and had to let go technical staff. Huge pain for a tiny team. Huge!</p>
-                    <p>At the same time, coronavirus happened, so a lot of our other work dried up. Not sure if we'll make it through.</p>
-                  </dd>
+              <dt><i class="far fa-lightning"></i> The damage?</dt>
+              <dd>
+                <p>Okay, so this one really sucked.</p>
+                <p>COVID-19 happened, we fell into debt and had to let go technical staff. Huge pain for a tiny team. Huge!</p>
+                <p>At the same time, coronavirus happened, so a lot of our other work dried up. Not sure if we'll make it through.</p>
+              </dd>
 
-                  <dt><i class="far fa-heart"></i> How we will fix it.</dt>
-                  <dd>
-                    <p>We're clawing our way back out of this debt by reducing our overheads dramatically, only keeping core staff, and working hard. We will get through it, but we're not out yet.</p>
-                    <p>We have no plan for the disappearing contract. We're all hoping that it's eventually sorted and we can start the work again.</p>
-                  </dd>
+              <dt><i class="far fa-heart"></i> How we will fix it.</dt>
+              <dd>
+                <p>We clawed our way back out of the debt by reducing overheads dramatically, only keeping core staff, and working hard.</p>
+                <p>In some ways, it was a wake-up call that being a tiny company reliant on really big partners is a weak position.</p>
+              </dd>
 
-                  <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
-                  <dd>
-                    <p>This is the biggest mistake we've made yet.</p>
-                    <div class="fit_spicy">
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-pepper-hot"></i>
-                      <i class="fas fa-plus"></i>
-                    </div>
-                  </dd>            
-                </dl>
-              </div><!-- collapse -->
-            </div><!-- fit -->
-          </div><!-- pane mistake -->
+              <dt><i class="far fa-tachometer-alt-fast"></i> Spiciness:</dt>
+              <dd>
+                <p>This is the biggest mistake we've made yet.</p>
+                <div class="fit_spicy">
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-pepper-hot"></i>
+                  <i class="fas fa-plus"></i>
+                </div>
+              </dd>            
+            </dl>
+          </div><!-- collapse -->
+        </div><!-- fit -->
+      </div><!-- pane mistake -->
 
-        </div><!-- fit_mistakes_list -->
-      </div><!-- medium -->
-    </div> <!-- fit_bg -->
-  </article>
+    </div><!-- fit_mistakes_list -->
+  </div>
+</div>
 
-</main>
 
 <!-- 
 

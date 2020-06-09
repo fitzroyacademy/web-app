@@ -10,23 +10,30 @@
         </div>
         <div class="col-sm">
           <div class="fit_footer_nav">
-            {% include 'partials/static_menus/_about.html' %}
+            {{ link_to('courses.index', 'Courses')}}
+            {{ link_to('about.services', 'Services')}}
           </div>
         </div>
         <div class="col-sm">
           <div class="fit_footer_nav">
-            {% include 'partials/static_menus/_product.html' %}
+            {{ link_to('about.index', 'About us')}}       
+            {{ link_to('about.mistakes', 'Mistakes')}}
+            {{ link_to('about.michael', 'Michael')}}
+            <a href="https://medium.com/fitzroy-academy" target="_blank">Blog <i class="far fa-external-link"></i></a>
           </div>
         </div>
         <div class="col-sm">
           <div class="fit_footer_nav">
-            {% include 'partials/static_menus/_support.html' %}
+            {{ link_to("support.index", "Support") }}
+            {{ link_to('support.contact', 'Contact us')}}            
+            {{ link_to("support.terms", "Terms")}}
+            {{ link_to("support.privacy", "Privacy")}}
+            {{ link_to("support.conduct", "Conduct")}}            
           </div>
         </div>
         <div class="col-sm">
           <div class="fit_footer_nav">
             <a href="/support" class="note"><small>Need help?</small>Get support</a>
-            {{ link_to('about.michael', 'In loving memory')}}
           </div>
         </div>
       </div>
