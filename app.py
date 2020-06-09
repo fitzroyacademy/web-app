@@ -32,6 +32,11 @@ else:
 
 app.config.from_object(cfg)
 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 # Add main routes to the app
 routes.attach(app)
 
@@ -51,7 +56,6 @@ app.add_url_rule(
     view_func=app.send_static_file,
     subdomain="<institute>",
 )
-
 
 @app.url_value_preprocessor
 def before_route(endpoint, values):

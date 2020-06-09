@@ -22,6 +22,7 @@ class Config(object):
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
     SERVER_NAME = environ.get("SERVER_NAME", default=None)
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
 
     UPLOAD_FOLDER = "static/uploads"
 
@@ -29,7 +30,7 @@ class Config(object):
     WTF_CSRF_SECRET = environ.get("WTF_CSRF_SECRET", "").encode()
 
     @property
-    def DB_URI(self):
+    def SQLALCHEMY_DATABASE_URI(self):
         if self.DB_DRIVER == "sqlite":
             db_uri = "{}:///{}{}".format(self.DB_DRIVER, self.DB_HOST, self.DB_OPTIONS)
         elif self.DB_DRIVER == "postgres":

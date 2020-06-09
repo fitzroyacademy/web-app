@@ -16,3 +16,5 @@ python-dateutil==2.8.0
 s3transfer==0.2.1
 wtforms==2.2.1
 python_slugify==3.0.4
+flask-migrate==2.5.3
+alembic==1.4.2
