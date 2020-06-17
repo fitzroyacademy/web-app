@@ -26,6 +26,7 @@ class Config(object):
     AUTH0_DOMAIN = environ.get("AUTH0_DOMAIN", default=None)
     AUTH0_CLIENT_SECRET = environ.get("AUTH0_CLIENT_SECRET", default=None)
     SQLALCHEMY_TRACK_MODIFICATIONS=False
+    AUTH0_LOCAL_DEVELOPMENT = AUTH0_CLIENT_ID is None and AUTH0_DOMAIN is None and AUTH0_CLIENT_SECRET is None
 
     UPLOAD_FOLDER = "static/uploads"
     WTF_CSRF_ENABLED = True
@@ -76,3 +77,4 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     DB_DRIVER = environ.get("DB_DRIVER", default="postgres")
+    AUTH0_LOCAL_DEVELOPMENT = False
