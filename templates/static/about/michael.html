@@ -1,23 +1,16 @@
 {% extends "/layout.html" %}
 {% block body %}
 
-<main class="fit_michael">
+<div class="fat_head">
+  {% include 'static/play/_head.html' %}
+</div>
 
-  <article>
-
-    <div class="fit_hero">
-      <img src="/static/assets/images/static/about/michael.jpg" alt="Sketch by Audrey.">
-      <h1>
-        For Michael.
-        <small>In loving memory,<br>1922 - 2016.</small>
-      </h1>
-    </div>
-
-    <div class="fit_medium">
-      <p>Our work extends his legacy, spirit, and belief in a complex, improving universe.</p>
-    </div>
-  </article>
-
-</main>
+<div class="fat_hero for_michael">
+  <img src="/static/assets/images/static/about/michael.jpg" alt="Sketch by Audrey.">
+  <h1>
+    For Michael.
+    <small>In loving memory,<br>1922 - 2016.</small>
+  </h1>
+</div>
 
 {% endblock %}

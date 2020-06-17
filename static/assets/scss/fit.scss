@@ -45,7 +45,7 @@ $old_blue_light: #21adf5;
 .maroon:not(.btn){color:$new_maroon !important;}
 
 
-$fff: #fff; /* LOL I liteally keep screwing this up so whatever, don't judge me. */
+$fff: #fff; /* LOL I keep screwing this up so whatever, don't @ me. */
 
 $bg: #f5f7f8;
 $bg_grey: #f7f7f7;
@@ -262,7 +262,7 @@ header .fit_link:hover,
 // this subheader appears below the main sticky nav sometimes
 .fit_subhead{background: #fff; padding: 1rem; margin: 0 -1rem; border-bottom: 1px solid $border_light;}
 .fit_subhead li a{text-decoration: none !important; font-size: 1rem;}
-.fit_subhead.sticky-top{top:$header_height;}
+.fit_subhead.sticky-top{top:0;}
 
 @media (max-width: 575px) {
 	.fit_subhead.sticky-top{position: relative;}
@@ -310,7 +310,7 @@ body > .fit_player nav,
 .fit_survey{box-shadow: 0 0 1.5rem $box_shadow;}
 
 @media (min-width: 576px){
-	.modal-content{box-shadow: 0 .5rem 1.5rem $box_shadow;}
+	.modal-content{box-shadow: 0 .5rem 1.5rem #fff;}
 }
 
 // this is the main bit that holds the other bits, wowee
@@ -1552,6 +1552,10 @@ html.fit_minright [data-fit-minright] i{transform: rotate(-180deg);}
 
 .modal-backdrop{background: none !important;}
 
+@media (max-width: 991px) {
+	.modal-dialog{max-width: none !important; margin: 1.75rem !important;}
+}
+
 //weird right hand side modal mode
 @media (min-width: 768px) {
 
@@ -2082,6 +2086,10 @@ hr.spacer{margin: 1.5rem 0; border:none; margin: 3rem 0;}
 
 }
 
+@media (max-width: 750px) {
+	.fit_medium_rare .fit_rare{margin: 0 1rem;}
+}
+
 .fit_medium_nav{display: flex; border-top:0.25rem solid $border_light; margin-top: 4rem; padding: 2rem 0;}
 .fit_medium_nav .btn:last-child{margin-left: auto;}
 
@@ -2116,6 +2124,7 @@ $square_size: 22rem;
 .fit_partner_logos img{max-height: 5rem; margin:2rem 0 1rem; width: auto;}
 
 .fit_partner_logos .tile{border-radius: 1rem; background: #fff; padding:1.5rem;}
+.fit_partner_logos .tile h4{font-size: 1.5rem;}
 
 .fit_medium .fit_summary_icons dd{padding-bottom: 1rem;}
 
@@ -2131,10 +2140,14 @@ $square_size: 22rem;
 
 
 
+.fit_mistake_categories img{max-width: 100%; border-radius: $border_rad_lg;}
+.fit_mistake_categories h4{font-size: 1.5rem;}
+.fit_mistake_categories p{font-size: 1.3rem;}
 
 // the mistakes list stuff
 @media (min-width: 575px) {
-	.fit_mistake_categories p{font-size: 1rem;}
+	.fit_mistake_categories{margin:3rem auto;}
+	.fit_mistake_categories p{font-size: 1.2rem;}
 }
 
 .fit_mistakes_list{background: #fff; border-radius: $border_rad_lg; padding: 0 1rem 0.1rem;}
@@ -2313,6 +2326,16 @@ body > .fit_code {margin-top:10rem;}
 .fit_lawyermode p,
 .fit_lawyermode li{font-size: 0.85rem; line-height: 1.1rem;}
 
+@media (max-width: 991px){
+	.fit_hero.leftie{max-width: 740px; margin: 0 auto; padding-left: 4.5rem;}
+	.fit_hero.leftie .fit_heartplay{top: 3.5rem}
+	.fit_hero.leftie .fit_heartplay .bigboy{font-size: 4rem;}
+}
+
+@media (max-width: 750px){
+	.fit_hero.leftie{margin: 0 1rem;}
+}
+
 // -----------------------------------------------------------------------------------------
 /* fit header code */
 
@@ -2454,7 +2477,8 @@ footer .fit_device svg > path{fill: $watermelon;}
 
 @media (max-width: 575px) {
 	footer{padding:  0;}
-	footer [class^='col']{padding-bottom: 1.5rem;}
+	footer [class^='col']{padding-bottom: 1.5rem; width: 50%;}
+
 }
 
 
@@ -3072,20 +3096,21 @@ dfn i:hover{color: $blue; opacity: 1;}
 
 
 .fat_user{position: absolute; top:0; right: 0; font-size: 1.5rem; border-radius: $border_rad_r; width: 4rem; height: 4rem; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s ease-in-out; display: none !important;}
+
 .fat_user i,
 .fat_user:hover .down,
 .fat_device i,
 .fat_device:hover .down{color:$black;}
 
 .fat_device .down,
-.fat_user .down{position:absolute; left: -1.95rem; color: $black; opacity: 0; transition: all .25s ease-in-out; top:1.2rem; font-size: 1.5rem;}
+.fat_user .down{position:absolute; left: -1.95rem; color: $black; opacity: 0; transition: all .25s ease-in-out; top:0rem; font-size: 1.5rem; padding: 1rem;}
 
-.fat_device .down{left: 100%; margin-left: 1rem;}
+.fat_device .down{left: 100%; margin-left: 0rem; opacity: 0.25}
 
 .fat_user:hover{background: $black}
 .fat_user:hover i{color: #fff;}
 .fat_user:hover .down,
-.fat_device:hover .down{opacity: 1; top:1.4rem;}
+.fat_device:hover .down{opacity: 1; top:.2rem;}
 
 // ---------------------------------
 // culaz of hedda
@@ -3353,6 +3378,11 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero h2{font-size: 6rem; color:$black;}
 .fat_hero h2{font-size: 4rem;}
 
+@media (max-width: 575px) {
+	.fat_hero h2 br{display: none;}
+}
+
+
 .fat_hero h1 a{text-decoration: none; color: inherit;}
 
 .fat_tease_btns{flex-direction: row; padding: 2rem 0; max-width: 50rem;}
@@ -3367,6 +3397,10 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_tease_btns .btn.educators,
 .fat_tease_btns .btn.educators:hover{color:$watermelon;}
 
+@media (max-width: 575px) {
+	.fat_tease_btns .btn{display: block;}
+}
+
 .fat_hero.left{text-align: left; align-items:normal;}
 .fat_hero.left h1{}
 
@@ -3374,6 +3408,8 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero.quartery{min-height: 25vh;}
 
 .fat_hero.header{min-height: 0;}
+
+.fat_hero > p{font-size: 1.4rem; color: $text;}
 
 .fat_hero.purple > * {color: $new_purple;}
 .fat_hero.teal > *{color: $new_teal;}
@@ -3436,6 +3472,11 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_nav a.btn-watermelon:hover{background: darken($watermelon, 10%); color: #fff}
 
 .fat_nav a.right{float: right;}
+
+
+@media (max-width: 575px) {
+	.fat_nav .contain{flex-direction:column;}
+}
 
 
 .fat_nav.lefty{flex-direction:column; position: fixed; top:0; left: 0; bottom: 0; margin-bottom: 0; justify-content: center; background: transparent; width: 6rem; overflow: visible;}
@@ -3634,7 +3675,7 @@ h1 + .fat_nav{margin-top: 2rem}
 // ------------------------------------------------------------------------------------
 // grid of beautiful people
 
-.fat_pic_grid{display: flex; height: 100vh; align-items: center; justify-content: center; flex-direction:row; overflow: hidden; padding:0;}
+.fat_pic_grid{display: flex; height: 95vh; align-items: center; justify-content: center; flex-direction:row; overflow: hidden; padding:0;}
 .fat_pic_grid .pic{position: relative; width: 100%; height: 100%;}
 .fat_pic_grid .pic img{object-fit: cover; object-position: 50% 30%; height: 100%; width: 100%;}
 
@@ -3662,11 +3703,11 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid .portrait.text h2{font-size:2.5rem; padding-bottom: 2rem; color: $new_teal; margin: 0;}
 .fat_pic_grid .portrait.text p{font-size: 1.2rem;}
 .fat_pic_grid .portrait.text p > i{color: $new_teal;}
-.fat_pic_grid .portrait.text .btn{border-color: $new_teal; color: $new_teal; margin: 2rem 0;}
-.fat_pic_grid .portrait.text .btn:hover{background: $new_teal; color: #fff;}
+.fat_pic_grid .portrait.text .btn-outline-primary{border-color: $new_teal; color: $new_teal; margin-right: 1rem;}
+.fat_pic_grid .portrait.text .btn-outline-primary:hover{background: $new_teal; color: #fff;}
 
 // icons n shit
-.fat_pic_grid .text .meta{}
+.fat_pic_grid .text .meta{margin-bottom: 2rem}
 .fat_pic_grid .text .meta .deet{padding: 0 0 0 1.75rem; font-size: 1rem; position: relative;}
 .fat_pic_grid .text .meta .deet i{display:block; text-align: center; font-size: 1rem; width: 1.5rem; position: absolute; top:.3rem; left: -.25rem; color: $text_light; color: $text_light;}
 .fat_pic_grid .text .meta .deet strong{display: block; font-size: 0.8rem; text-transform: uppercase; line-height: 1.5rem; font-weight: normal;}
@@ -3708,11 +3749,18 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid .portrait.text h2 small{color: $text;}
 
 // watermelon
-.fat_pic_grid .text.watermelon{color:darken($new_watermelon, 70%); box-shadow: inset 0 0 200px #191b20;}
+.fat_pic_grid .text.watermelon{color:darken($new_watermelon, 70%); box-shadow: inset 0 0 200px #20191b;}
 .fat_pic_grid .text.watermelon h2{color: $new_watermelon;}
 .fat_pic_grid .text.watermelon h2 small{color: #fff; opacity: 0.3;}
-.fat_pic_grid .text.watermelon .btn{border-color: $new_watermelon; color: $new_watermelon;}
-.fat_pic_grid .text.watermelon .btn:hover{background: $new_watermelon; color: #fff;}
+.fat_pic_grid .text.watermelon .btn-outline-primary{border-color: $new_watermelon; color: $new_watermelon;}
+.fat_pic_grid .text.watermelon .btn-outline-primary:hover{background: $new_watermelon; color: #fff;}
+
+// blue
+.fat_pic_grid .text.blue{color:darken($new_blue, 70%); box-shadow: inset 0 0 200px #13161d;}
+.fat_pic_grid .text.blue h2{color: $new_blue;}
+.fat_pic_grid .text.blue h2 small{color: #fff; opacity: 0.3;}
+.fat_pic_grid .text.blue .btn-outline-primary{border-color: $new_blue; color: $new_blue;}
+.fat_pic_grid .text.blue .btn-outline-primary:hover{background: $new_blue; color: #fff;}
 
 // reverse text
 .fat_pic_grid .text.reverse{background: $bg; box-shadow: none;}
@@ -3720,14 +3768,14 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid .text.reverse h2 small{color: $text_lighter;}
 .fat_pic_grid .text.reverse .meta .deet p{color:$black;}
 .fat_pic_grid .text.reverse .meta .deet p strong{color: $black;}
-.fat_pic_grid .text.reverse .btn{border-color: $new_blue; color: $new_blue;}
-.fat_pic_grid .text.reverse .btn:hover{background: $new_blue; color: #fff;}
+.fat_pic_grid .text.reverse .btn-outline-primary{border-color: $new_blue; color: $new_blue;}
+.fat_pic_grid .text.reverse .btn-outline-primary:hover{background: $new_blue; color: #fff;}
 
 .fat_pic_grid .text.reverse.white{background: #fff;}
 
 .fat_pic_grid .text.reverse.pink h2{color: $new_pink;}
-.fat_pic_grid .text.reverse.pink .btn{border-color: $new_pink; color: $new_pink;}
-.fat_pic_grid .text.reverse.pink .btn:hover{background: $new_pink; color: #fff;}
+.fat_pic_grid .text.reverse.pink .btn-outline-primary{border-color: $new_pink; color: $new_pink;}
+.fat_pic_grid .text.reverse.pink .btn-outline-primary:hover{background: $new_pink; color: #fff;}
 
 
 
@@ -3791,6 +3839,11 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 .fat_whitejab .fat_quote{max-width: none; margin-left: 2.5rem;}
 
+@media (max-width: 575px) {
+	.fat_whitejab .fat_quote{margin-left: 0;}
+}
+
+
 // I fancy me some text clipping
 
 .fat_hero h1{}
@@ -3831,6 +3884,10 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 @media (min-width: 992px) {
 	.fat_polaroid {margin-bottom: -7rem;}
+}
+
+@media (max-width: 575px) {
+	.fat_polaroid {margin-bottom: 1rem;}
 }
 
 // ------------------------------------------------------------------------------------
@@ -3876,6 +3933,12 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 .plaintext p img{max-width: 100%; border-radius: $border_rad_lg;}
 
+
+
+// for michael
+.fat_hero.for_michael img{max-width: 800px; width: 100%;}
+.fat_hero.for_michael h1{font-size: 3rem; margin: 3rem auto;}
+.fat_hero.for_michael h1 small{display: block;font-size: 1.5rem; font-family: 'Merriweather', serif; padding-top: 1rem;}
 
 
 
@@ -3949,8 +4012,10 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 @media (max-width: 575px) {
 
+	body{padding-top: 7rem;}
+
 	// nav
-	.fat_nav{flex-direction:column; margin: 0 -.5rem calc(50vh - 15rem); }
+	.fat_nav .contain{padding: 1rem;}
 	.fat_nav .enrol{margin-left: 0;}
 
 	// sections
