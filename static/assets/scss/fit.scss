@@ -17,7 +17,7 @@ $new_pink: #ff0bba;
 $new_red: #f72555;
 $new_bergundy: #ae0e26;
 $new_apricot: #fcab05;
-$new_navy: #fcab05;
+$new_navy: #1927e4;
 $new_green: #1ec22d;
 $new_blue: #2774f8;
 $new_watermelon: #f82a5f;
@@ -3822,7 +3822,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 .fat_quote .friend{padding:1.5rem 2rem 0.5rem; display: none;  opacity: 0; transition: all .25s ease-in-out; cursor: pointer;}
 .fat_quote .friend.active{display: block; opacity: 1}
-.fat_quote p{font-size: 1.5rem; font-family: 'Merriweather', serif;}
+.fat_quote .friend p{font-size: 1.5rem; font-family: 'Merriweather', serif;}
 
 .fat_quote .dots{position: absolute; top:100%; right:.5rem; margin: 1rem 0 0; display: block; text-align: right;}
 .fat_quote .dots .dot{border-radius: $border_rad_r; background: $text_lightest; height: 1.75rem; width: 1.75rem; border: .4rem solid #fff; display: inline-block; text-decoration: none;}
@@ -3844,6 +3844,17 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_whitejab .fat_quote{margin-left: 0;}
 }
 
+// the BIG ASS QUOTES
+
+.fat_quote.fattest{background: transparent; max-width: 50rem; margin: 2rem auto 6rem;}
+.fat_quote.fattest .friend p:first-child{font-size: 2rem; padding-bottom:1.5rem;}
+.fat_quote.fattest cite{margin: 0; right: 0; font-size: 1rem;}
+
+@media (max-width: 575px) {
+	.fat_quote.fattest .friend p{font-size: 1.4rem;}
+	.fat_quote.fattest .friend p br{display: none;}
+	.fat_quote.fattest .friend p:first-child{font-size: 1.5rem;}
+}
 
 // I fancy me some text clipping
 
