@@ -3423,6 +3423,16 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 .fat_hero .green{color: $new_green;}
 
 
+// welcome / home page hero
+.fat_hero.welcome .fat_video{width: 35rem; background: $bg; margin-bottom: 2rem;}
+.fat_hero.welcome h1{font-size: 4rem;}
+.fat_hero.welcome .fat_tease_btns .btn-xl{font-size: 1.3rem;}
+
+@media (max-width: 575px) {
+	.fat_hero.welcome .fat_video{width: 90%;}
+	.fat_hero.welcome h1{font-size: 2.5rem;}
+}
+
 // ------------------------------------------------------------------------------------
 // window
 
@@ -3507,13 +3517,13 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_section{padding: $fat_sidepad/2 $fat_sidepad}
 
-.fat_section.nobot{padding-bottom: 0 !important; margin-bottom: 0;}
-
 .bg{background: $bg;}
 
 .fat_section h2{font-size: 4rem; margin-bottom: 4rem;}
-.fat_section h2 small{font-size: 1rem; text-transform: uppercase; display: block; color: $text_lighter; letter-spacing: 1px; padding-bottom: 1rem;}
-.fat_section h2 small i{width: 1rem; margin-right: .5rem;}
+.fat_section h2 small,
+.fat_hero h1 small{font-size: 1rem; text-transform: uppercase; display: block; color: $text_lighter; letter-spacing: 1px; padding-bottom: 1rem;}
+.fat_section h2 small i,
+.fat_hero h1 small i{width: 1rem; margin-right: .5rem;}
 
 .fat_searchline{max-width: 30rem; position: relative;}
 .fat_searchline .form-control{background: transparent; border: none; border-bottom: 3px solid $border_light; padding: 2.5rem; padding-left: 4.5rem; font-size: 2rem; color: $black; border-radius: 0; margin-bottom: 2rem;}
@@ -3563,7 +3573,7 @@ h1 + .fat_nav{margin-top: 2rem}
 @media (min-width: 992px) {
 	.fat_library_explainer.sticky{position: sticky; top: 2rem;}
 }
-@media (min-width: 1450px) {
+@media (min-width: 1140px) {
 	.fat_library_explainer.sticky{top:7rem;}
 }
 
@@ -3833,6 +3843,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_quote cite a{color: inherit; text-decoration: underline;}
 .fat_quote cite a:hover{color: $blue;}
 
+.fat_quote cite img{width: 2.8rem; height: 2.8rem; border-radius: $border_rad_r; overflow: hidden; float: left; margin: 0 1rem 2rem 0; }
+
 @media (min-width: 1450px) {
 	.fat_quote{max-width: 40rem; min-height: 13rem;}
 }
@@ -3868,7 +3880,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 // icons in a row
 
 .fat_iconrow h3{font-size: 2.5rem;}
-.fat_iconrow h3 i{font-size: 8rem; padding: 2rem 0 1rem; display: block;}
+.fat_iconrow h3 i{font-size: 7rem; padding: 2rem 0 1rem; display: block;}
 .fat_iconrow p,
 .fat_iconrow li{font-size: 1.3rem; max-width: 16rem; margin: 0 auto; margin-bottom: 1rem;}
 
@@ -3966,6 +3978,11 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_vertspace{margin-top: 1rem; margin-bottom: 1rem}
 }
 
+
+.fat_section.notop,
+.fat_section.nopad{padding-top: 0 !important; margin-top: 0 !important;}
+.fat_section.nobot,
+.fat_section.nopad{padding-bottom: 0 !important; margin-bottom: 0 !important;}
 
 
 // ------------------------------------------------------------------------------------
