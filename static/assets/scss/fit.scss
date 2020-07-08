@@ -3828,6 +3828,9 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 .fat_quote{z-index: 4000; background: $bg; border-radius: $border_rad_xl; position: relative; max-width: 30rem; margin: 2rem 0 6rem; min-height: 15rem; }
 .fat_quote:last-child{margin-bottom: 4rem;}
+
+.fat_quote:after{display: block; content: ''; position: absolute; top: 100%; left: 2.25rem; border:.75rem solid transparent; border-top-color: $bg; }
+
 .fat_quote .ldquo{ position: absolute; top:-1.5rem; left: -2.5rem; font-size: 7rem; color: $text_lighter; font-family: "Times New Roman", times, serif; display: block;}
 
 .fat_quote .friend{padding:1.5rem 2rem 0.5rem; display: none;  opacity: 0; transition: all .25s ease-in-out; cursor: pointer;}
@@ -3853,6 +3856,7 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_whitejab .fat_quote{max-width: none; margin-left: 2.5rem;}
 
 @media (max-width: 575px) {
+	.fat_quote{min-height: 0; margin-bottom: 6rem;}
 	.fat_whitejab .fat_quote{margin-left: 0;}
 }
 
@@ -3861,6 +3865,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 .fat_quote.fattest{background: transparent; max-width: 50rem; margin: 2rem auto 6rem;}
 .fat_quote.fattest .friend p:first-child{font-size: 2rem; padding-bottom:1.5rem;}
 .fat_quote.fattest cite{margin: 0; right: 0; font-size: 1rem;}
+
+.fat_quote.dotless cite{margin-right: 0;}
 
 @media (max-width: 575px) {
 	.fat_quote.fattest .friend p{font-size: 1.4rem;}
