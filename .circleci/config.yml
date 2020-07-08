@@ -18,24 +18,16 @@ workflows:
             branches:
               only: master
 
-      - approve-live-deploy:
-          type: approval
-          requires:
-           - build
-          filters:
-            branches:
-              only: master
-
       - deploy-live:
           context: fitzroy-circleci
           requires:
-          - approve-live-deploy
+            - build      
           filters:
             branches:
               only: master
 
       - slack/approval-notification:
-          message: Head on over to CircleCI to approve the deploy to fitzroy.academy!
+          message: Someone just deployed to staging!
           requires:
             - build
           filters:

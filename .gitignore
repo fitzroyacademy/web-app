@@ -10,3 +10,4 @@ static/assets/scss/fit.scss
 static/css/fit.css.map
 local_dev_secrets.sh
 .noseids
+env
