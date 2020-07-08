@@ -20,6 +20,8 @@ workflows:
 
       - deploy-live:
           context: fitzroy-circleci
+          requires:
+            - build      
           filters:
             branches:
               only: master
