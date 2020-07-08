@@ -8,17 +8,20 @@ Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](http
 
 First clone the repo into a directory somewhere, e.g. `~/dev/web-app`
 
-Then, install a bunch of stuff:
+Then, install a bunch of basic stuff:
 
 ```
 xcode-select --install
-brew upgrade openssl
-export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+brew install node
+brew upgrade openssl
 brew install postgresql
+npm install sass -g
+
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+
 python3 venv env
-source env/bin/activate
-pip3 install -r ./requirements.txt
 ```
 
 Add this to `~/.bash_profile`
