@@ -6,7 +6,7 @@ Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](http
 
 # When setting up the site on a new mac:
 
-First clone the repo into a directory somewhere, e.g. `~/dev/web-app`
+First up, clone the repo into a directory somewhere, e.g. `~/dev/web-app`
 
 Then, install a bunch of basic stuff:
 
