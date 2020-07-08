@@ -4,6 +4,32 @@ The new LMS for Fitzroy Academy!
 
 Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
 
+# When setting up the site on a new mac:
+
+First clone the repo into a directory somewhere, e.g. `~/dev/web-app`
+
+Then, install a bunch of stuff:
+
+```
+xcode-select --install
+brew upgrade openssl
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew install postgresql
+python3 venv env
+source env/bin/activate
+pip3 install -r ./requirements.txt
+```
+
+Add this to `~/.bash_profile`
+
+```
+# this stuff is for the Fitzroy python app
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+export PATH="~/.composer/vendor/bin/:$PATH"export FLASK_ENV=development
+source /Users/willdayble/dev/web-app/env/bin/activate
+```
+
 # Local Installation
 
 This application requires Python 3 to work as well as the libraries listed in requirements.txt.
