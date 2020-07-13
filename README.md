@@ -1,5 +1,7 @@
 # Fitzroy Academy
 
+[![CircleCI](https://circleci.com/gh/fitzroyacademy/web-app.svg?style=svg)](https://circleci.com/gh/fitzroyacademy/web-app)
+
 The new LMS for Fitzroy Academy!
 
 Bugs and issues go here: [https://github.com/fitzroyacademy/web-app/issues](https://github.com/fitzroyacademy/web-app/issues)
