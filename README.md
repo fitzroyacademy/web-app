@@ -1,4 +1,4 @@
-# Fitzroy Academy
+# Fitzroy Academy [![CircleCI](https://circleci.com/gh/fitzroyacademy/web-app.svg?style=svg&circle-token=675ba8fe3f8f5e094cbeafdf5b054724851864a0)](https://circleci.com/gh/fitzroyacademy/web-app)
 
 The new LMS for Fitzroy Academy!
 
@@ -21,7 +21,7 @@ npm install sass -g
 
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 
-python3 venv env
+python3 -m venv env
 ```
 
 Add this to `~/.bash_profile`
