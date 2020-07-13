@@ -1,6 +1,4 @@
-# Fitzroy Academy
-
-[![CircleCI](https://circleci.com/gh/fitzroyacademy/web-app.svg?style=svg&circle-token=675ba8fe3f8f5e094cbeafdf5b054724851864a0)](https://circleci.com/gh/fitzroyacademy/web-app)
+# Fitzroy Academy [![CircleCI](https://circleci.com/gh/fitzroyacademy/web-app.svg?style=svg&circle-token=675ba8fe3f8f5e094cbeafdf5b054724851864a0)](https://circleci.com/gh/fitzroyacademy/web-app)
 
 The new LMS for Fitzroy Academy!
 
