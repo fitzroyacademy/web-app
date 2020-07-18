@@ -22,6 +22,7 @@ class Config(object):
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
     SERVER_NAME = environ.get("SERVER_NAME", default="localhost:5000")
+    HTTP_SCHEME = environ.get("HTTP_SCHEME", default="http")
     AUTH0_CLIENT_ID = environ.get("AUTH0_CLIENT_ID", default=None)
     AUTH0_DOMAIN = environ.get("AUTH0_DOMAIN", default=None)
     AUTH0_CLIENT_SECRET = environ.get("AUTH0_CLIENT_SECRET", default=None)
@@ -78,3 +79,4 @@ class ProductionConfig(Config):
     TESTING = False
     DB_DRIVER = environ.get("DB_DRIVER", default="postgres")
     AUTH0_LOCAL_DEVELOPMENT = False
+    HTTP_SCHEME = "https"
