@@ -1,5 +1,4 @@
 import json
-
 from flask import (
     render_template,
     session,
@@ -11,7 +10,7 @@ from flask import (
     jsonify,
 )
 from sqlalchemy.exc import IntegrityError
-
+from flask import current_app
 import datamodels
 from datamodels.enums import PreferenceTags
 from dataforms import (
@@ -27,6 +26,7 @@ from .decorators import login_required
 from .utils import get_session_data, set_session_data
 from utils.images import generate_thumbnail
 from .blueprint import SubdomainBlueprint
+from six.moves.urllib.parse import urlencode
 
 blueprint = SubdomainBlueprint("user", __name__, template_folder="templates")
 
@@ -126,69 +126,6 @@ def edit(user, institute=""):
         data["message"] = "Changes saved"
         return jsonify(data)
 
-
-@blueprint.subdomain_route("/register", methods=["POST", "GET"])
-def create(institute=""):
-    """
-    Create a new user.
-    """
-    db = datamodels.get_session()
-
-    # We'll roll in better validation with form error integration in beta; this is
-    # to prevent mass assignment vulnerabilities.
-    form = AddUserForm(request.form)
-    last_page = request.args.get("last_page", "")
-    data = {"errors": [], "form": form, "last_page": last_page}
-
-    if request.method == "GET":
-        return render_template("login.html", **data)
-
-    user = datamodels.get_user_by_email(request.form.get("email"))
-    if user is not None:
-        data["errors"].append("Email address already in use.")
-        return render_template("login.html", **data)
-
-    if form.validate():
-
-        try:
-            user = datamodels.User()
-            user.email = form.email.data.lower()
-            user.first_name = form.first_name.data
-            user.last_name = form.last_name.data
-            user.username = user.available_username(form.username.data.lower())
-            setattr(user, "password", form.password.data)
-            db.add(user)
-            db.commit()
-        except IntegrityError:
-            db.rollback()
-            flash("This username is already taken")
-            return redirect(last_page or "/")
-        except Exception as e:
-            data["errors"].append("{}".format(e))
-            return render_template("login.html", **data)
-        if "enrollments" in session:
-            d = get_session_data(session, "enrollments")
-            for course_id in d:
-                course = datamodels.Course.find_by_id(int(course_id))
-                if course:
-                    course.enroll(user)
-        if "anon_progress" in session:
-            d = get_session_data(session, "anon_progress")
-            merge_anonymous_data(user.id, d)
-            session.pop("anon_progress")
-        if "anon_surveys" in session:
-            d = get_session_data(session, "anon_surveys")
-            merge_anonymous_surveys_data(user.id, d)
-            session.pop("anon_surveys")
-
-        session["user_id"] = user.id
-        flash("Thanks for registering, " + user.full_name + "!")
-    else:
-        data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
-        return render_template("login.html", **data)
-    return redirect(last_page or "/")
-
-
 @blueprint.subdomain_route("/enroll/<course_slug>", methods=["POST"])
 def enroll(course_slug, institute=""):
     """
@@ -228,45 +165,79 @@ def enroll(course_slug, institute=""):
 @blueprint.subdomain_route("/login", methods=["GET", "POST"])
 def login(institute=""):
     """ Validate login and save current user to session. """
-    last_page = request.args.get("last_page", "")
-    data = {"errors": [], "form": LoginForm(), "last_page": last_page}
-    if request.method == "POST":
-        form = LoginForm(request.form)
-        data["form"] = form
-        if form.validate():
-            user = datamodels.get_user_by_email(form.email.data)
-            if user is None:
-                data["errors"].append("Bad username or password, try again?")
-            else:
-                valid = user.check_password(form.password.data)
-                if not valid:
-                    data["errors"].append("Bad username or password, try again?")
-                else:
-                    session["user_id"] = user.id
-                    if "anon_progress" in session:
-                        d = json.loads(session["anon_progress"])
-                        merge_anonymous_data(user.id, d)
-                        session.pop("anon_progress")
-                    return redirect(last_page or "/")
-        else:
-            data["errors"] = [key + ": " + form.errors[key][0] for key in form.errors]
-    else:
-        data["form"] = LoginForm()
-    if len(data["errors"]) > 0 or request.method == "GET":
-        return render_template("login.html", **data)
+    return current_app.auth0.authorize_redirect(redirect_uri='{}/callback'.format(current_app.config['SERVER_NAME']))
 
 
 @blueprint.subdomain_route("/logout", methods=["POST"])
 @login_required
 def logout(user, institute=""):
     """ Clear session data, logging the current user out. """
-    keys = [key for key in session.keys() if key != "csrf"]
-    for key in keys:
-        session.pop(key)
-
+    # Clear session stored data
+    session.clear()
     flash("You have been successfully logged out.")
-    return redirect(url_for("course.index"))
+    # Redirect user to logout endpoint
+    params = {'returnTo': current_app.config['SERVER_NAME'], 'client_id': current_app.config['AUTH0_CLIENT_ID']}
+    return redirect(current_app.auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
+@blueprint.subdomain_route("/callback", methods=["POST", "GET"])
+def callback(institute=""):
+    """
+    Handle the Auth0 callback after login.
+    """
+    # Handles response from token endpoint
+    last_page = request.args.get("last_page", "")
+    data = {"errors": [], "last_page": last_page, "form": []}
+    try:
+        # Look for the current user
+        current_app.auth0.authorize_access_token()
+        resp = current_app.auth0.get('userinfo')
+        userinfo = resp.json()
+        db = datamodels.get_session()
+        user = datamodels.get_user_by_auth0_id(userinfo['sub'])
+        if user is None:
+            user = datamodels.get_user_by_email(userinfo['email'])
+            if user is not None:
+                # User is registered with email, but hasn't signed in w/ Auth0 yet
+                user.auth0_id = userinfo['sub']
+                db.commit()
+            elif user is None:
+                # Register a new user.
+                try:
+                    user = datamodels.User()
+                    user.email = user.username = userinfo['email']
+                    user.first_name = userinfo['given_name']
+                    user.last_name = userinfo['family_name']
+                    user.auth0_id = userinfo['sub']
+                    db.add(user)
+                    db.commit()
+                except Exception as e:
+                    data["errors"].append("{}".format(e))
+                    return render_template("welcome.html", **data)
+                if "enrollments" in session:
+                    d = get_session_data(session, "enrollments")
+                    for course_id in d:
+                        course = datamodels.Course.find_by_id(int(course_id))
+                        if course:
+                            course.enroll(user)
+                if "anon_progress" in session:
+                    d = get_session_data(session, "anon_progress")
+                    merge_anonymous_data(user.id, d)
+                    session.pop("anon_progress")
+                if "anon_surveys" in session:
+                    d = get_session_data(session, "anon_surveys")
+                    merge_anonymous_surveys_data(user.id, d)
+                    session.pop("anon_surveys")
+        session["user_id"] = user.id
+        session['jwt_payload'] = userinfo
+        session['profile'] = {
+            'user_id': userinfo['sub'],
+            'name': userinfo['name'],
+            'picture': userinfo['picture']
+        }
+    except Exception as e:
+        data["errors"].append("{}".format(e))
+        return render_template("welcome.html", **data)
+    return redirect(last_page or "/")
 
 @blueprint.subdomain_route("/preference/<preference_tag>/<on_or_off>", methods=["POST"])
 @login_required

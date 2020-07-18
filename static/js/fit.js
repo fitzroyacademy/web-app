@@ -261,8 +261,8 @@ $( document ).ready(function() {
   }); 
 
   // ------------------------------------------------------------
-  // user toggle
-  $('[data-fit-userpanel]').on("click", function(e, i) {
+  // user toggle. don't do it on login so we go to the login page for auth0 always
+  $('[data-fit-userpanel]').not('.login').on("click", function(e, i) {
     e.preventDefault();
     $('html').toggleClass('fit_revealuserpanel');
   });  
@@ -1066,7 +1066,6 @@ $( document ).ready(function() {
       "last_name": formData.get("last_name"),
       "username": formData.get("username"),
       "email": formData.get("email"),
-      "password": formData.get("password")
     };
     post(url, data, (responseText, xhr) => {
         let res = JSON.parse(xhr.response);

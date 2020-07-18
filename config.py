@@ -21,11 +21,14 @@ class Config(object):
     S3_BUCKET = environ.get("S3_BUCKET", default=None)
     S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
-    SERVER_NAME = environ.get("SERVER_NAME", default=None)
+    SERVER_NAME = environ.get("SERVER_NAME", default="localhost:5000")
+    AUTH0_CLIENT_ID = environ.get("AUTH0_CLIENT_ID", default=None)
+    AUTH0_DOMAIN = environ.get("AUTH0_DOMAIN", default=None)
+    AUTH0_CLIENT_SECRET = environ.get("AUTH0_CLIENT_SECRET", default=None)
     SQLALCHEMY_TRACK_MODIFICATIONS=False
+    AUTH0_LOCAL_DEVELOPMENT = AUTH0_CLIENT_ID is None and AUTH0_DOMAIN is None and AUTH0_CLIENT_SECRET is None
 
     UPLOAD_FOLDER = "static/uploads"
-
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET = environ.get("WTF_CSRF_SECRET", "").encode()
 
@@ -60,7 +63,6 @@ class DevelopmentConfig(Config):
     DB_HOST = environ.get("DB_HOST", default="dev_db.sqlite")
     DB_OPTIONS = environ.get("DB_OPTIONS", default="?check_same_thread=False")
     WTF_CSRF_SECRET = "qZeimuCyYqo27CqndJetJHx".encode()
-    SERVER_NAME = "fitz-dev.com:5000"
     S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
 
 
@@ -75,3 +77,4 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     DB_DRIVER = environ.get("DB_DRIVER", default="postgres")
+    AUTH0_LOCAL_DEVELOPMENT = False
