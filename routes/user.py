@@ -165,7 +165,7 @@ def enroll(course_slug, institute=""):
 @blueprint.subdomain_route("/login", methods=["GET", "POST"])
 def login(institute=""):
     """ Validate login and save current user to session. """
-    return current_app.auth0.authorize_redirect(redirect_uri='{}/callback'.format(current_app.config['SERVER_NAME']))
+    return current_app.auth0.authorize_redirect(redirect_uri='{}/callback'.format('https://' + current_app.config['SERVER_NAME']))
 
 
 @blueprint.subdomain_route("/logout", methods=["POST"])
