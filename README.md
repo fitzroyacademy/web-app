@@ -29,8 +29,8 @@ Add this to `~/.bash_profile`
 ```
 # this stuff is for the Fitzroy python app
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
-export PATH="~/.composer/vendor/bin/:$PATH"export FLASK_ENV=development
-source /Users/willdayble/dev/web-app/env/bin/activate
+export FLASK_ENV=development
+source ~/dev/web-app/env/bin/activate
 ```
 
 # Local Installation
@@ -154,6 +154,16 @@ flask db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-
 > Equivalent to revision --autogenerate. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected automatically. This command does not make any changes to the database, just creates the revision script.
 
 Check in your changes and migrations as usual in a PR.
+
+## Upgrading packages
+
+```
+# install latest versions of requirements
+pip install -r requirements-minimal.txt
+
+# update the pinned dependencies
+pip freeze > requirements.txt
+```
 
 ---
 
