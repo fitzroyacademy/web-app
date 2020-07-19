@@ -15,7 +15,6 @@ import routes
 import routes.course
 import routes.error
 
-
 app = Flask("web-app")
 
 environment = environ.get("FLASK_ENV", default="")

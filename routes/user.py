@@ -168,7 +168,7 @@ def login(institute=""):
     return current_app.auth0.authorize_redirect(redirect_uri='{}/callback'.format('{}://{}'.format(current_app.config['HTTP_SCHEME'], current_app.config['SERVER_NAME'])))
 
 
-@blueprint.subdomain_route("/logout", methods=["POST"])
+@blueprint.subdomain_route("/logout", methods=["GET", "POST"])
 @login_required
 def logout(user, institute=""):
     """ Clear session data, logging the current user out. """
@@ -176,7 +176,7 @@ def logout(user, institute=""):
     session.clear()
     flash("You have been successfully logged out.")
     # Redirect user to logout endpoint
-    params = {'returnTo': current_app.config['SERVER_NAME'], 'client_id': current_app.config['AUTH0_CLIENT_ID']}
+    params = {'returnTo': '{}://{}'.format(current_app.config['HTTP_SCHEME'], current_app.config['SERVER_NAME']), 'client_id': current_app.config['AUTH0_CLIENT_ID']}
     return redirect(current_app.auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 @blueprint.subdomain_route("/callback", methods=["POST", "GET"])

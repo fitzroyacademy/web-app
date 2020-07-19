@@ -2,7 +2,7 @@ werkzeug
 flask
 libsass
 sqlalchemy
-livereload
+livereload==2.5.1 # later versions are broken
 psycopg2
 nose
 requests
@@ -20,3 +20,4 @@ python-dotenv
 flask-migrate
 alembic
 email-validator
+gunicorn

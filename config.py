@@ -19,7 +19,6 @@ class Config(object):
     MAILGUN_API_URL = environ.get("MAILGUN_API_URL", default=None)
     MAILGUN_API_KEY = environ.get("MAILGUN_API_KEY", default=None)
     S3_BUCKET = environ.get("S3_BUCKET", default=None)
-    S3_LOCATION = "http://{}.s3.amazonaws.com/".format(S3_BUCKET)
     CLOUD_FRONT_URL = "https://assets.fitzroy.academy/"
     SERVER_NAME = environ.get("SERVER_NAME", default="localhost:5000")
     HTTP_SCHEME = environ.get("HTTP_SCHEME", default="http")
@@ -64,7 +63,6 @@ class DevelopmentConfig(Config):
     DB_HOST = environ.get("DB_HOST", default="dev_db.sqlite")
     DB_OPTIONS = environ.get("DB_OPTIONS", default="?check_same_thread=False")
     WTF_CSRF_SECRET = "qZeimuCyYqo27CqndJetJHx".encode()
-    S3_KEY = environ.get("S3_ACCESS_KEY", default=None)
 
 
 class TestingConfig(Config):
