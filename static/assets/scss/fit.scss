@@ -18,7 +18,7 @@ $new_red: #f72555;
 $new_bergundy: #ae0e26;
 $new_apricot: #fcab05;
 $new_navy: #1927e4;
-$new_green: #1ec22d;
+$new_green: #16ba54;
 $new_blue: #2774f8;
 $new_watermelon: #f82a5f;
 $new_maroon: #7f0909;
@@ -2118,7 +2118,8 @@ $square_size: 22rem;
 
 
 .fit_partner_logos {margin: 3rem 0;}
-.fit_partner_logos img{max-height: 5rem; margin:2rem 0 1rem; width: auto;}
+.fit_partner_logos .tile{height: 11rem;}
+.fit_partner_logos img{max-height: 5rem; max-width: 15rem; margin:1.5rem; width: auto;}
 
 .fit_partner_logos .tile{border-radius: 1rem; background: #fff; padding:1.5rem;}
 .fit_partner_logos .tile h4{font-size: 1.5rem;}
@@ -2321,7 +2322,7 @@ body > .fit_code {margin-top:10rem;}
 .fit_hero.leftie h1{max-width: none;}
 
 .fit_lawyermode p,
-.fit_lawyermode li{font-size: 0.85rem; line-height: 1.1rem;}
+.fit_lawyermode li{font-size: 1rem; line-height: 1.1rem;}
 
 @media (max-width: 991px){
 	.fit_hero.leftie{max-width: 740px; margin: 0 auto; padding: 0 0 1rem 4.5rem;}
@@ -3542,7 +3543,7 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_section .fat_lesson[aria-expanded="true"] .status .fa-chevron-down{transform: rotate(180deg);}
 
 
-.fat_section .caption{font-size: 0.9rem;}
+.fat_section .caption{font-size: 0.9rem; padding: 1.5rem 0;}
 
 // ------------------------------------------------------------------------------------
 // the LIBRARY OF DOOM
@@ -3679,8 +3680,6 @@ h1 + .fat_nav{margin-top: 2rem}
 
 
 
-
-
 // ------------------------------------------------------------------------------------
 // grid of beautiful people
 
@@ -3710,6 +3709,7 @@ h1 + .fat_nav{margin-top: 2rem}
 
 .fat_pic_grid .portrait.text{padding:2rem;display: flex; align-items:flex-start; flex-direction:column; justify-content: center; }
 .fat_pic_grid .portrait.text h2{font-size:2.5rem; padding-bottom: 2rem; color: $new_teal; margin: 0;}
+.fat_pic_grid .portrait.text h2 a{color: inherit;}
 .fat_pic_grid .portrait.text p{font-size: 1.2rem;}
 .fat_pic_grid .portrait.text p > i{color: $new_teal;}
 .fat_pic_grid .portrait.text .btn-outline-primary{border-color: $new_teal; color: $new_teal; margin-right: 1rem;}
@@ -3874,6 +3874,10 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_quote.fattest .friend p:first-child{font-size: 1.5rem;}
 }
 
+
+
+
+
 // I fancy me some text clipping
 
 .fat_hero h1{}
@@ -3906,6 +3910,11 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 	.fat_iconrow h3{font-size: 2rem;}
 	.fat_iconrow h3 i{font-size: 5rem;}
 }
+
+
+.fat_spotify{margin: 0 auto; text-align: center; padding:2rem; width: 23rem; border-radius: $border_rad_xl;}
+.fat_spotify h3{color: #1DB954; padding: 0 0 2rem; font-size: 2.2rem;}
+.fat_spotify h3 i{font-size: 4rem; display: block; margin-bottom: 1.5rem}
 
 
 .fat_polaroid{padding: 1.5rem; box-shadow: 10px 10px 30px rgba(0,0,0,0.15); transform: rotate(2deg); border-radius: $border_rad_sm; text-align: center; background: #fff; margin-bottom: -5rem;}
@@ -3968,9 +3977,22 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 // for michael
 .fat_hero.for_michael img{max-width: 800px; width: 100%;}
 .fat_hero.for_michael h1{font-size: 3rem; margin: 3rem auto;}
-.fat_hero.for_michael h1 small{display: block;font-size: 1.5rem; font-family: 'Merriweather', serif; padding-top: 1rem;}
+.fat_hero.for_michael h1 small{display: block;font-size: 1.5rem; font-family: 'Merriweather', serif; padding-top: 1rem; text-transform: none;}
 
 
+$fat_storyline_width: 9rem;
+
+dl.fat_storyline {padding: 2rem 0;}
+
+dl.fat_storyline dt,
+dl.fat_storyline dd{font-size: 1.2rem;}
+
+dl.fat_storyline dt{float: left; width:$fat_storyline_width; position: relative; color: $new_green; padding-left: 2.5rem;}
+dl.fat_storyline dt:after{display: block; content: ''; width: 1.75rem; height: 1.75rem; background:lighten($new_green, 45%); border-radius:$border_rad_r; position: absolute; top:0; left: 0; }
+dl.fat_storyline dd{padding-left: $fat_storyline_width; padding-bottom: 1.5rem; position: relative;}
+dl.fat_storyline dd:after{display: block; content: ''; width:.25rem; background:lighten($new_green, 45%); position: absolute; top:1rem; left: .75rem; bottom: -1rem;}
+
+dl.fat_storyline dd:last-child::after{display: none;}
 
 // ------------------------------------------------------------------------------------
 // Genreric Vertical spacing

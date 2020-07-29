@@ -47,6 +47,13 @@ export FLASK_ENV=development
 python3 app.py
 ```
 
+## Restarting the app, assuming everything is installed:
+
+```
+source ./env/bin/activate
+python3 app.py
+```
+
 To reseed the DB - this takes everything from `stubs.py` and puts it in the database `dev_db.sqlite`, which is our local databse:
 
 * To change the database, edit `stubs.py`, and rm `dev_db.sqlite`
