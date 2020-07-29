@@ -86,7 +86,7 @@
 								  </div>
 								  <input type="text" id="username" class="form-control" maxlength="20" name="username" value="{{ current_user.username }}" placeholder="username" aria-label="username" aria-describedby="user_at" data-fit-slug-set>
 								</div>
-								<small id="sluglink" class="form-text text-muted">Your personal link will be: <span class="fit_sluglabel">fitzroyacademy.com/user/<strong data-fit-slug-reveal>{{ current_user.username }}</strong></span></small>
+								<small id="sluglink" class="form-text text-muted">Your personal link will be: <span class="fit_sluglabel">{{ current_app.config.SERVER_NAME }}/user/<strong data-fit-slug-reveal>{{ current_user.username }}</strong></span></small>
 								<input type="hidden" value="{{ current_user.username }}" id="secretslug" name="secretslug" data-fit-slug-reveal-secret> <!-- DEV: store this input as username, it strips off weird characters -->
 							</div>
 

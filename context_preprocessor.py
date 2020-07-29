@@ -19,6 +19,9 @@ def inject_current_user():
 
     return dict(current_user=get_current_user(), custom_settings=custom_settings)
 
+@bp.app_context_processor
+def inject_current_app():
+    return dict(current_app=current_app)
 
 @bp.app_context_processor
 def inject_institute():

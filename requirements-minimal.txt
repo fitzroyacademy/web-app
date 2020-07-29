@@ -1,0 +1,23 @@
+werkzeug
+flask
+libsass
+sqlalchemy
+livereload==2.5.1 # later versions are broken
+psycopg2
+nose
+requests
+coverage
+pillow
+boto3
+botocore
+jmespath
+python-dateutil
+s3transfer
+wtforms
+python_slugify
+Authlib
+python-dotenv
+flask-migrate
+alembic
+email-validator
+gunicorn

@@ -67,3 +67,8 @@ def get_user_by_email(email):
     if not email:
         return None
     return User.find_by_email(email.lower())
+
+def get_user_by_auth0_id(auth0_id):
+    if not auth0_id:
+        return None
+    return User.find_by_auth0_id(auth0_id)

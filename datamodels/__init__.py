@@ -33,6 +33,7 @@ from .utils import (
     get_segment,
     get_user,
     get_user_by_email,
+    get_user_by_auth0_id
 )
 
 
