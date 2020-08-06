@@ -16,8 +16,6 @@ jobs:
       run: |
         docker build -t fitzroyacademy/web-app .
         image_id=$(docker images fitzroyacademy/web-app -q)
-        docker tag $image_id latest
-        docker tag $image_id $GITHUB_SHA
+        docker tag $image_id latest # keep it simple for now
         echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
         docker push fitzroyacademy/web-app:latest
-        docker push fitzroyacademy/web-app:$GITHUB_SHA
