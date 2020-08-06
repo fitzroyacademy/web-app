@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build, tag, and push the Docker image
+      run: |
+        docker build -t fitzroyacademy/web-app .
+        image_id=$(docker images fitzroyacademy/web-app -q)
+        docker tag $image_id latest
+        docker tag $image_id $GITHUB_SHA
+        echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+        docker push fitzroyacademy/web-app:latest
+        docker push fitzroyacademy/web-app:$GITHUB_SHA
