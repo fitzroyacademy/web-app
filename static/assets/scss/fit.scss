@@ -3373,6 +3373,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 // hero
 
 .fat_hero{min-height: 100vh; margin-top: 0rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
+.fat_hero.peeker{min-height: 90vh;}
 
 // wtf?
 // .fat_hero *:first-child{margin-top: -1rem;}
@@ -3737,6 +3738,7 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid.threeup .portrait > .landscape{height: 33.3333%}
 
 // course teasers
+.fat_pic_grid.coursetease{margin: 2rem;}
 .fat_pic_grid.coursetease .portrait{width: 60%}
 .fat_pic_grid.coursetease .portrait.text{width: 40%}
 
