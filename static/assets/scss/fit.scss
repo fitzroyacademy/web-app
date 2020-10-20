@@ -3373,7 +3373,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 // hero
 
 .fat_hero{min-height: 100vh; margin-top: 0rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
-.fat_hero.peeker{min-height: 90vh;}
+.fat_hero.peeker{min-height: 93vh;}
 
 // wtf?
 // .fat_hero *:first-child{margin-top: -1rem;}
@@ -3387,7 +3387,10 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 }
 
 
-.fat_hero h1 a{text-decoration: none; color: inherit;}
+.fat_hero h1 a{text-decoration: none; color: inherit; transition: all .25s ease-in-out; }
+.fat_hero h1 a .hinter{display:block; position: absolute; bottom: 6rem; left: 0; width: 100%; font-size: 3rem; color: $text_lighter;  transition: all .25s ease-in-out;}
+.fat_hero h1 a:hover{opacity: 0.9; }
+.fat_hero h1 a:hover .hinter{color: inherit; margin-bottom: -.5rem;}
 
 .fat_tease_btns{flex-direction: row; padding: 2rem 0; max-width: 50rem;}
 
@@ -3738,13 +3741,13 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid.threeup .portrait > .landscape{height: 33.3333%}
 
 // course teasers
-.fat_pic_grid.coursetease{margin: 2rem;}
-.fat_pic_grid.coursetease .portrait{width: 60%}
 .fat_pic_grid.coursetease .portrait.text{width: 40%}
+.fat_pic_grid.coursetease .portrait.pic{width: 60%;}
 
 
 @media (min-width: 992px) {
 	.fat_pic_grid.coursetease.left .pic{order:2;}
+	.fat_pic_grid.coursetease{margin: 1.5rem;}
 }
 
 
@@ -4046,7 +4049,7 @@ dl.fat_storyline dd:last-child::after{display: none;}
 .fat_board_report p,
 .fat_board_report li{padding-bottom: .5rem; font-size: 1rem; color: $text_light;}
 
-
+.fat_board_report.yearsprior p{font-size: 1.2rem; padding: 0 0 1rem;}
 
 
 .wistia_responsive_wrapper label{margin-bottom: 0 !important;}
