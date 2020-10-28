@@ -18,7 +18,7 @@ _session = None
 def get_session():
     global _session
     if _session is None:
-        engine = sa.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+        engine = sa.create_engine(app.config["SQLALCHEMY_DATABASE_URI"], connect_args={'check_same_thread': False})
         Base.metadata.create_all(engine)
         Session = orm.scoped_session(orm.sessionmaker(bind=engine))
         _session = Session()
