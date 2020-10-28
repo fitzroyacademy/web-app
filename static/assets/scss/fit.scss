@@ -4,6 +4,8 @@ TODO
 
 change .fas to [class^='fa'] or <i> ?
 
+
+
 */
 
 
@@ -644,6 +646,7 @@ header .fit_btn:hover > .fit_txt:after,
 
 .fit_btn > .fit_txt .fa-external-link{margin-left: .25rem; font-size: 80%;}
 
+.fit_btn.resource_link{align-items: flex-start;}
 .fit_btn.resource_link i.lg{font-size: 2rem;}
 .fit_txt small{display: block; color:$text_lighter;}
 .fit_pane .fit_btn.resource_link:hover small{color:$text;}
@@ -3370,6 +3373,7 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 // hero
 
 .fat_hero{min-height: 100vh; margin-top: 0rem; display: flex; align-items: center; justify-content: center; flex-direction:column; text-align: center;}
+.fat_hero.peeker{min-height: 93vh;}
 
 // wtf?
 // .fat_hero *:first-child{margin-top: -1rem;}
@@ -3383,7 +3387,10 @@ html.fat_coursebar_active .fat_course > .now h2 .no i{display: none;}
 }
 
 
-.fat_hero h1 a{text-decoration: none; color: inherit;}
+.fat_hero h1 a{text-decoration: none; color: inherit; transition: all .25s ease-in-out; }
+.fat_hero h1 a .hinter{display:block; position: absolute; bottom: 6rem; left: 0; width: 100%; font-size: 3rem; color: $text_lighter;  transition: all .25s ease-in-out;}
+.fat_hero h1 a:hover{opacity: 0.9; }
+.fat_hero h1 a:hover .hinter{color: inherit; margin-bottom: -.5rem;}
 
 .fat_tease_btns{flex-direction: row; padding: 2rem 0; max-width: 50rem;}
 
@@ -3625,6 +3632,10 @@ h1 + .fat_nav{margin-top: 2rem}
 // plain old video
 .fat_video{border-radius: $border_rad_lg; overflow: hidden;}
 
+.fat_video.conspicuously_absent{background:$bg_dark; border:5px solid $border_lighter; display: flex; align-items: center; justify-content: center; }
+.fat_video.conspicuously_absent i{color: $text_lightest; font-size:4rem;}
+.fat_video.conspicuously_absent:after{padding-top: $ratio_169; display: block; content: '';}
+
 // video with some sidenav
 
 .fat_video_sidenav{z-index: 3500; display: flex; flex-direction:column; position: relative; margin-bottom: 3rem; border-radius: $border_rad_lg; overflow: hidden;}
@@ -3730,12 +3741,13 @@ h1 + .fat_nav{margin-top: 2rem}
 .fat_pic_grid.threeup .portrait > .landscape{height: 33.3333%}
 
 // course teasers
-.fat_pic_grid.coursetease .portrait{width: 60%}
 .fat_pic_grid.coursetease .portrait.text{width: 40%}
+.fat_pic_grid.coursetease .portrait.pic{width: 60%;}
 
 
 @media (min-width: 992px) {
 	.fat_pic_grid.coursetease.left .pic{order:2;}
+	.fat_pic_grid.coursetease{margin: 1.5rem;}
 }
 
 
@@ -3956,6 +3968,8 @@ body .fat_pic_grid.threeup .portrait .landscape .play small{font-size: .9rem;}
 
 
 
+
+
 // ------------------------------------------------------------------------------------
 // plain text should work
 
@@ -4012,6 +4026,33 @@ dl.fat_storyline dd:last-child::after{display: none;}
 .fat_section.nobot,
 .fat_section.nopad{padding-bottom: 0 !important; margin-bottom: 0 !important;}
 
+
+
+// board reports
+.fat_board_reports{}
+
+// .fat_board_report{border-bottom: 3px solid $border_light; padding-bottom: 3rem; margin-bottom: 3rem;}
+
+.fat_board_report{padding: .5rem 2rem 0.01rem; background:#fff; margin: 3rem 0; border-radius: $border_rad_lg; border-bottom: 6px solid $border_lighter;}
+
+.fat_board_report .fat_video{margin-bottom: 1rem;}
+
+.fat_board_report h4,
+.fat_board_report p{padding-left: 1rem;}
+
+.fat_board_report h4{color: $text;}
+
+
+.fat_board_report ol,
+.fat_board_report ul{}
+
+.fat_board_report p,
+.fat_board_report li{padding-bottom: .5rem; font-size: 1rem; color: $text_light;}
+
+.fat_board_report.yearsprior p{font-size: 1.2rem; padding: 0 0 1rem;}
+
+
+.wistia_responsive_wrapper label{margin-bottom: 0 !important;}
 
 // ------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------
